@@ -108,3 +108,57 @@
     @apply bg-background text-foreground antialiased;
   }
 }
+
+/* ---------- macOS traffic lights: 12px pixel spec ---------- */
+.traffic-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  border: 1px solid;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  cursor: default;
+}
+.traffic-light-close {
+  color: #460804;
+  border-color: #e0443e;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08)),
+    #ff5f57;
+}
+.traffic-light-close:active {
+  color: #170101;
+  border-color: #a14239;
+  background: #b15048;
+}
+.traffic-light-minimize {
+  color: #90591d;
+  border-color: #dea123;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08)),
+    #febc2e;
+}
+.traffic-light-minimize:active {
+  color: #532a0a;
+  border-color: #a67f36;
+  background: #b8923b;
+}
+.traffic-light-maximize {
+  color: #2a6218;
+  border-color: #1aab29;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08)),
+    #28c840;
+}
+.traffic-light-maximize:active {
+  color: #113107;
+  border-color: #428234;
+  background: #4a9741;
+}
+.traffic-light-unfocused {
+  background: #dddddd;
+  border-color: #d1d0d2;
+}

@@ -11,10 +11,6 @@ async function safeCall(fn: () => Promise<unknown>): Promise<void> {
   }
 }
 
-const GLYPH_STROKE = "rgba(0, 0, 0, 0.5)";
-const UNFOCUSED_BG = "#D9D9DE";
-const UNFOCUSED_BORDER = "#C6C6CB";
-
 function CloseGlyph() {
   return (
     <svg
@@ -23,9 +19,9 @@ function CloseGlyph() {
       className="h-3 w-3 opacity-0 transition-opacity duration-100 group-hover:opacity-100"
     >
       <path
-        d="M3.8 3.8l4.4 4.4M8.2 3.8L3.8 8.2"
+        d="M3.2 3.2l5.6 5.6M8.8 3.2L3.2 8.8"
         fill="none"
-        stroke={GLYPH_STROKE}
+        stroke="currentColor"
         strokeWidth="1.1"
         strokeLinecap="round"
       />
@@ -41,10 +37,10 @@ function MinimizeGlyph() {
       className="h-3 w-3 opacity-0 transition-opacity duration-100 group-hover:opacity-100"
     >
       <path
-        d="M3.7 6h4.6"
+        d="M3.2 6h5.6"
         fill="none"
-        stroke={GLYPH_STROKE}
-        strokeWidth="1.1"
+        stroke="currentColor"
+        strokeWidth="1.25"
         strokeLinecap="round"
       />
     </svg>
@@ -59,9 +55,9 @@ function MaximizeGlyph() {
       className="h-3 w-3 opacity-0 transition-opacity duration-100 group-hover:opacity-100"
     >
       <path
-        d="M6.9 5.1L9 3M9 3H7.1M9 3v1.9M5.1 6.9L3 9M3 9h1.9M3 9V7.1"
+        d="M6.6 5.4L9.2 2.8M9.2 2.8H7.3M9.2 2.8v1.9M5.4 6.6L2.8 9.2M2.8 9.2h1.9M2.8 9.2V7.3"
         fill="none"
-        stroke={GLYPH_STROKE}
+        stroke="currentColor"
         strokeWidth="1.1"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -70,29 +66,27 @@ function MaximizeGlyph() {
   );
 }
 
+type LightTone = "close" | "minimize" | "maximize";
+
 interface LightProps {
   label: string;
-  base: string;
-  border: string;
+  tone: LightTone;
   focused: boolean;
   glyph: ReactNode;
   onClick: () => void;
 }
 
-function Light({ label, base, border, focused, glyph, onClick }: LightProps) {
+function Light({ label, tone, focused, glyph, onClick }: LightProps) {
   return (
     <button
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="flex h-3 w-3 items-center justify-center rounded-full outline-none active:brightness-90"
-      style={{
-        background: focused
-          ? `linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 55%), ${base}`
-          : UNFOCUSED_BG,
-        border: "1px solid",
-        borderColor: focused ? border : UNFOCUSED_BORDER,
-      }}
+      className={
+        focused
+          ? `traffic-light traffic-light-${tone}`
+          : "traffic-light traffic-light-unfocused"
+      }
     >
       {focused ? glyph : null}
     </button>
@@ -127,36 +121,40 @@ export function Titlebar({ title, dark, onToggleDark }: TitlebarProps) {
     <header
       data-tauri-drag-region
       onDoubleClick={handleDoubleClick}
-      className="grid h-12 shrink-0 select-none grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background px-4"
+      className="grid h-12 shrink-0 select-none grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background px-3"
     >
-      <div className="group flex items-center gap-2">
+      {/* 注意：data-tauri-drag-region 只对直接带该属性的元素生效，
+          子元素必须逐个加；按钮及内部符号不加，保证可点击 */}
+      <div data-tauri-drag-region className="group flex items-center gap-2">
         <Light
           label="关闭"
-          base="#FF5F57"
-          border="#E0443E"
+          tone="close"
           focused={focused}
           glyph={<CloseGlyph />}
           onClick={() => safeCall(() => getCurrentWindow().close())}
         />
         <Light
           label="最小化"
-          base="#FEBC2E"
-          border="#DEA123"
+          tone="minimize"
           focused={focused}
           glyph={<MinimizeGlyph />}
           onClick={() => safeCall(() => getCurrentWindow().minimize())}
         />
         <Light
           label="最大化"
-          base="#28C840"
-          border="#1AAB29"
+          tone="maximize"
           focused={focused}
           glyph={<MaximizeGlyph />}
           onClick={() => safeCall(() => getCurrentWindow().toggleMaximize())}
         />
       </div>
-      <div className="text-[13px] font-semibold">{title}</div>
-      <div className="flex items-center justify-end">
+      <div data-tauri-drag-region className="text-[13px] font-semibold">
+        {title}
+      </div>
+      <div
+        data-tauri-drag-region
+        className="flex items-center justify-end"
+      >
         <Button
           variant="ghost"
           size="icon"
