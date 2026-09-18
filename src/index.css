@@ -1,0 +1,4 @@
+/* minimal reset, App.css 负责主要样式 */
+body {
+  margin: 0;
+}
