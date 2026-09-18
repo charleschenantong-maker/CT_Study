@@ -36,7 +36,7 @@ function App() {
       <header className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold tracking-tight">打卡</h1>
-          <p className="text-[13px] text-muted-foreground">
+          <p className="text-[13px] tabular-nums text-muted-foreground">
             9月18日 星期五 · 已连续 {streak} 天
           </p>
         </div>
@@ -55,15 +55,25 @@ function App() {
           <CardTitle>今日打卡</CardTitle>
           <CardDescription>每天一个小目标，坚持就会有变化</CardDescription>
         </CardHeader>
-        <CardContent className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-[15px] font-semibold">
-            <Flame className="size-5 text-ios-orange" />
-            连续 {streak} 天
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Flame className="size-4 text-ios-orange" />
+            <span className="text-4xl font-bold tabular-nums tracking-tight">
+              {streak}
+            </span>
+            <span className="self-end pb-1.5 text-[13px] text-muted-foreground">
+              天连续打卡
+            </span>
           </div>
-          <Button onClick={toggleCheck}>
+          <Button
+            size="lg"
+            variant={checked ? "secondary" : "default"}
+            className="w-full rounded-full text-[15px]"
+            onClick={toggleCheck}
+          >
             {checked ? (
               <>
-                <Check /> 已打卡
+                <Check /> 今日已完成
               </>
             ) : (
               "打卡"
@@ -73,26 +83,33 @@ function App() {
       </SCard>
 
       <div className="grid grid-cols-2 gap-4">
-        <HeroCard shadow="sm" className="rounded-2xl">
+        <HeroCard shadow="none" className="rounded-xl border border-border">
           <CardBody className="flex flex-row items-center gap-4">
             <CircularProgress
-              value={checked ? 100 : 62}
+              aria-label="本周进度"
+              value={checked ? 100 : 80}
               color="primary"
+              size="md"
+              strokeWidth={6}
               showValueLabel
-              size="lg"
+              classNames={{
+                value: "text-[13px] font-semibold tabular-nums",
+              }}
             />
             <div>
               <p className="text-[13px] text-muted-foreground">本周进度</p>
-              <p className="text-[15px] font-semibold">
+              <p className="text-[15px] font-semibold tabular-nums">
                 {checked ? "5 / 5 天" : "4 / 5 天"}
               </p>
             </div>
           </CardBody>
         </HeroCard>
-        <HeroCard shadow="sm" className="rounded-2xl">
+        <HeroCard shadow="none" className="rounded-xl border border-border">
           <CardBody className="justify-center">
             <p className="text-[13px] text-muted-foreground">累计记录</p>
-            <p className="text-[15px] font-semibold">128 条 · 96 小时</p>
+            <p className="text-[15px] font-semibold tabular-nums">
+              128 条 · 96 小时
+            </p>
           </CardBody>
         </HeroCard>
       </div>
@@ -107,25 +124,27 @@ function App() {
         </CardContent>
       </SCard>
 
-      <SCard>
+      <SCard className="overflow-hidden">
         <CardHeader>
           <CardTitle>最近记录</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-1">
-          {records.map((r) => (
-            <div
-              key={r.date}
-              className="flex items-center justify-between rounded-xl px-3 py-2.5 hover:bg-accent"
-            >
-              <div>
-                <p className="text-sm font-medium">{r.note}</p>
-                <p className="text-xs text-muted-foreground">{r.date}</p>
+        <CardContent className="p-0">
+          <div className="divide-y divide-border">
+            {records.map((r) => (
+              <div
+                key={r.date}
+                className="flex items-center justify-between px-5 py-3 transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.04]"
+              >
+                <div>
+                  <p className="text-sm font-medium">{r.note}</p>
+                  <p className="text-xs text-muted-foreground">{r.date}</p>
+                </div>
+                <span className="text-[13px] font-semibold tabular-nums">
+                  {r.minutes}′
+                </span>
               </div>
-              <span className="text-[13px] font-semibold text-ios-blue">
-                {r.minutes}′
-              </span>
-            </div>
-          ))}
+            ))}
+          </div>
         </CardContent>
       </SCard>
     </main>
