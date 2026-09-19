@@ -22,7 +22,6 @@ const THEMES: Array<{ v: Theme; Icon: typeof Sun; label: string }> = [
 
 function App() {
   const [theme, setTheme] = useState<Theme>("system");
-  const [resolvedDark, setResolvedDark] = useState(false);
   const [pinnedExamId, setPinnedExamId] = useState<string | null>(null);
   const p = usePlanner();
 
@@ -31,7 +30,6 @@ function App() {
     const apply = () => {
       const dark = theme === "dark" || (theme === "system" && mq.matches);
       document.documentElement.classList.toggle("dark", dark);
-      setResolvedDark(dark);
     };
     apply();
     if (theme === "system") {
@@ -91,8 +89,7 @@ function App() {
               </div>
               <div className="w-full shrink-0 min-[1700px]:w-[440px]">
               <ContributionGrid
-                xpMap={p.xpMap}
-                dark={resolvedDark}
+                xpOf={(d) => p.xpMap.get(d) ?? 0}
                 className="h-full"
               />
               </div>

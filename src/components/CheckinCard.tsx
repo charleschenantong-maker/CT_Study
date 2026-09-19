@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { STUDY_CONFIG, getTask } from "@/study/config";
+import { getTask } from "@/study/config";
 import type { RepairEligibility } from "@/study/streak";
 import type { DailyPlanEntry } from "@/study/types";
 
@@ -31,10 +31,6 @@ export function CheckinCard({
   repair,
   onRepair,
 }: Props) {
-  const fallbackTasks = [...STUDY_CONFIG.tasks]
-    .filter((t) => t.active !== false)
-    .sort((a, b) => Number(b.core ?? false) - Number(a.core ?? false));
-
   return (
     <Card>
       <CardHeader>
@@ -106,44 +102,11 @@ export function CheckinCard({
                 </div>
               );
             })
-          : fallbackTasks.map((t) => {
-              const done = doneIds.has(t.id);
-              return (
-                <div
-                  key={t.id}
-                  className={`flex items-center justify-between rounded-xl px-3 py-2.5 ${
-                    done ? "opacity-55" : ""
-                  }`}
-                >
-                  <div>
-                    <p className="text-sm font-medium">
-                      {t.name}
-                      {t.core ? (
-                        <span className="ml-2 rounded-md bg-primary/10 px-1.5 py-0.5 text-[11px] font-semibold text-primary">
-                          核心
-                        </span>
-                      ) : null}
-                    </p>
-                    <p className="text-xs tabular-nums text-muted-foreground">
-                      {t.xp} XP
-                    </p>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant={done ? "secondary" : "default"}
-                    onClick={() => onToggle(t.id)}
-                  >
-                    {done ? (
-                      <>
-                        <Check /> 已完成
-                      </>
-                    ) : (
-                      "打卡"
-                    )}
-                  </Button>
-                </div>
-              );
-            })}
+          : (
+            <p className="px-3 py-6 text-center text-[13px] text-muted-foreground">
+              计划外日期（{today}），暂无打卡任务
+            </p>
+          )}
       </CardContent>
 
       <div className="mx-5 border-t border-border" />
