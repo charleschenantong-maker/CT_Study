@@ -275,7 +275,7 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
       <CardHeader>
         <CardTitle>成绩追踪</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-6 lg:grid-cols-[280px_1fr]">
+      <CardContent className="grid gap-6 min-[1300px]:grid-cols-[280px_1fr]">
         <GradeForm onAdd={onAdd} />
         <div className="min-w-0 space-y-4">
           <div className="flex flex-wrap items-center gap-2">
