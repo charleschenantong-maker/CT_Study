@@ -6,6 +6,7 @@ import minimizeBase from "@/assets/traffic/minimize-base.png";
 import minimizeHover from "@/assets/traffic/minimize-hover.png";
 import maximizeBase from "@/assets/traffic/maximize-base.png";
 import maximizeHover from "@/assets/traffic/maximize-hover.png";
+import unfocused from "@/assets/traffic/unfocused.png";
 
 async function safeCall(fn: () => Promise<unknown>): Promise<void> {
   try {
@@ -54,7 +55,7 @@ function Light({ label, base, hover, focused, onClick }: LightProps) {
         onClick={onClick}
         className="relative block h-[13.5px] w-[13.5px] outline-none"
       >
-        <LampImg src={base} layerClass="saturate-0 brightness-[1.65]" />
+        <LampImg src={unfocused} />
       </button>
     );
   }
@@ -104,7 +105,7 @@ export function Titlebar() {
     <header
       data-tauri-drag-region
       onDoubleClick={handleDoubleClick}
-      className="grid h-12 shrink-0 select-none grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background px-5"
+      className="grid h-8 shrink-0 select-none grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background px-2"
     >
       {/* 注意：data-tauri-drag-region 只对直接带该属性的元素生效，
           子元素必须逐个加；按钮不加，保证可点击 */}
