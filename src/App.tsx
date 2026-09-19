@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Monitor, Moon, Settings, Sun } from "lucide-react";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { Titlebar } from "@/components/titlebar";
 import { CheckinCard } from "@/components/CheckinCard";
 import { WeeklyCard } from "@/components/WeeklyCard";
@@ -58,6 +59,39 @@ function App() {
       return () => mq.removeEventListener("change", apply);
     }
   }, [theme]);
+
+  useEffect(() => {
+    let last = 0;
+    let unlisten: (() => void) | undefined;
+    // 切回前台时强制重绘：Chromium 被遮挡后可能丢合成帧（整窗黑屏），
+    // backdrop-filter 重的页面高发，重排一次即可恢复。
+    const repaint = () => {
+      const now = Date.now();
+      if (now - last < 1000) return;
+      last = now;
+      document.body.style.display = "none";
+      void document.body.offsetHeight;
+      document.body.style.display = "";
+    };
+    const onVisible = () => {
+      if (!document.hidden) repaint();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", repaint);
+    getCurrentWindow()
+      .onFocusChanged(({ payload }) => {
+        if (payload) repaint();
+      })
+      .then((u) => {
+        unlisten = u;
+      })
+      .catch((e) => console.error("[window] focus listener failed:", e));
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", repaint);
+      unlisten?.();
+    };
+  }, []);
 
   const doneIds = new Set(
     p.history.completions
