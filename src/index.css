@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@plugin "./hero.ts";
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------- shadcn base vars, tuned to iOS ---------- */
