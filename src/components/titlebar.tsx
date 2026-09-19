@@ -10,8 +10,9 @@ import maximizeHover from "@/assets/traffic/maximize-hover.png";
 async function safeCall(fn: () => Promise<unknown>): Promise<void> {
   try {
     await fn();
-  } catch {
-    // 纯 vite 预览（非 Tauri 环境）下窗口 API 不可用，直接忽略
+  } catch (e) {
+    // 纯 vite 预览（非 Tauri 环境）下窗口 API 不可用；devtools 里可见，别吞错
+    console.error("[titlebar]", e);
   }
 }
 
@@ -29,7 +30,7 @@ function LampImg({
       src={src}
       alt=""
       draggable={false}
-      className={`pointer-events-none absolute inset-0 h-[18px] w-[18px] transition-opacity duration-150${
+      className={`pointer-events-none absolute inset-0 h-[13.5px] w-[13.5px] transition-opacity duration-150${
         layerClass ? ` ${layerClass}` : ""
       }`}
     />
@@ -51,7 +52,7 @@ function Light({ label, base, hover, focused, onClick }: LightProps) {
         type="button"
         aria-label={label}
         onClick={onClick}
-        className="relative block h-[18px] w-[18px] outline-none"
+        className="relative block h-[13.5px] w-[13.5px] outline-none"
       >
         <LampImg src={base} layerClass="saturate-0 brightness-[1.65]" />
       </button>
@@ -63,7 +64,7 @@ function Light({ label, base, hover, focused, onClick }: LightProps) {
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="group/btn relative block h-[18px] w-[18px] outline-none drop-shadow-[0_1px_1px_#00000040]"
+      className="group/btn relative block h-[13.5px] w-[13.5px] outline-none drop-shadow-[0_1px_1px_#00000040]"
     >
       <LampImg
         src={base}
