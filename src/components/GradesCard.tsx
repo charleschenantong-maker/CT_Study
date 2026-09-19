@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, X } from "lucide-react";
 import {
   CartesianGrid,
   Line,
@@ -182,16 +182,41 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
   const [subjectId, setSubjectId] = useState(STUDY_CONFIG.subjects[0]?.id ?? "");
   const [paperId, setPaperId] = useState("");
   const [range, setRange] = useState<Range>("all");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalView, setModalView] = useState<"list" | "detail">("list");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  function openList() {
+    setSelectedId(null);
+    setModalView("list");
+    setModalOpen(true);
+  }
+
+  function openDetail(id: string) {
+    setSelectedId(id);
+    setModalView("detail");
+    setModalOpen(true);
+  }
+
+  function backToList() {
+    setSelectedId(null);
+    setModalView("list");
+  }
+
+  function closeModal() {
+    setModalOpen(false);
+    setSelectedId(null);
+    setModalView("list");
+  }
+
   useEffect(() => {
-    if (!selectedId) return;
+    if (!modalOpen) return;
     const close = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedId(null);
+      if (e.key === "Escape") closeModal();
     };
     window.addEventListener("keydown", close);
     return () => window.removeEventListener("keydown", close);
-  }, [selectedId]);
+  }, [modalOpen]);
 
   const selected = selectedId
     ? (grades.find((g) => g.id === selectedId) ?? null)
@@ -315,7 +340,7 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
                         style={{ cursor: "pointer" }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (p.payload?.id) setSelectedId(p.payload.id);
+                          if (p.payload?.id) openDetail(p.payload.id);
                         }}
                       />
                     )}
@@ -329,128 +354,176 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
               暂无成绩，先在左侧录入一条
             </p>
           )}
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex gap-1">
-              {(Object.keys(RANGE_LABEL) as Range[]).map((r) => (
-                <Button
-                  key={r}
-                  size="sm"
-                  variant={range === r ? "secondary" : "ghost"}
-                  className="h-7 px-2.5 text-xs"
-                  onClick={() => setRange(r)}
-                >
-                  {RANGE_LABEL[r]}
-                </Button>
-              ))}
-            </div>
-            <div className="flex gap-1">
-              {(
-                [
-                  ["today", "删今天"],
-                  ["week", "删本周"],
-                  ["month", "删本月"],
-                ] as Array<[Exclude<Range, "all">, string]>
-              ).map(([w, label]) => (
-                <Button
-                  key={w}
-                  size="sm"
-                  variant="ghost"
-                  className="h-7 px-2 text-xs text-muted-foreground hover:text-destructive"
-                  onClick={() => bulkDelete(w, label.replace("删", ""))}
-                >
-                  {label}
-                </Button>
-              ))}
-            </div>
-          </div>
-          <div className="divide-y divide-border">
-            {recent.map((g) => {
-              const deletable = Date.now() - g.createdAt <= DELETE_WINDOW_MS;
-              const pct = Math.round((g.raw / g.max) * 100);
-              return (
-                <div
-                  key={g.id}
-                  onClick={() => setSelectedId(g.id)}
-                  className="flex cursor-pointer items-center justify-between py-2"
-                >
-                  <div>
-                    <p className="text-sm font-medium">
-                      {getSubject(g.subjectId)?.name} · {getPaper(g.paperId)?.name}
-                    </p>
-                    <p className="text-xs tabular-nums text-muted-foreground">{g.date}</p>
+          <Button variant="outline" className="w-full" onClick={openList}>
+            成绩记录
+          </Button>
+        </div>
+      </CardContent>
+      {modalOpen ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={closeModal}
+        >
+          <div
+            className="flex max-h-[80vh] w-full max-w-lg flex-col rounded-2xl border bg-card shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {modalView === "detail" && selected ? (
+              <div className="flex min-h-0 flex-col">
+                <div className="flex items-center justify-between border-b p-4">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 px-2 text-[13px]"
+                    onClick={backToList}
+                  >
+                    <ArrowLeft /> 返回列表
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-8 w-8 text-muted-foreground"
+                    onClick={closeModal}
+                    aria-label="关闭"
+                  >
+                    <X />
+                  </Button>
+                </div>
+                <div className="overflow-y-auto p-5">
+                  <p className="text-[15px] font-semibold">
+                    {getSubject(selected.subjectId)?.name} ·{" "}
+                    {getPaper(selected.paperId)?.name}
+                  </p>
+                  <div className="mt-3 space-y-1.5 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">日期</span>
+                      <span className="tabular-nums">{selected.date}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">得分</span>
+                      <span className="font-semibold tabular-nums">
+                        {selected.raw}分 · {Math.round((selected.raw / selected.max) * 100)}%
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">录入时间</span>
+                      <span className="tabular-nums">
+                        {new Date(selected.createdAt).toLocaleString("zh-CN", {
+                          hour12: false,
+                        })}
+                      </span>
+                    </div>
+                    {selected.note ? (
+                      <div className="flex justify-between gap-4">
+                        <span className="shrink-0 text-muted-foreground">备注</span>
+                        <span className="text-right">{selected.note}</span>
+                      </div>
+                    ) : null}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[13px] font-semibold tabular-nums">
-                      {g.raw}分 · {pct}%
-                    </span>
-                    {deletable ? (
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDelete(g.id);
-                        }}
-                        aria-label="删除这条成绩（5分钟内）"
-                      >
-                        <Trash2 />
-                      </Button>
+                  <Button className="mt-4 w-full" onClick={closeModal}>
+                    关闭
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex min-h-0 flex-col">
+                <div className="flex items-center justify-between border-b p-4">
+                  <p className="text-[15px] font-semibold">成绩记录</p>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-8 w-8 text-muted-foreground"
+                    onClick={closeModal}
+                    aria-label="关闭"
+                  >
+                    <X />
+                  </Button>
+                </div>
+                <div className="min-h-0 overflow-y-auto p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex gap-1">
+                      {(Object.keys(RANGE_LABEL) as Range[]).map((r) => (
+                        <Button
+                          key={r}
+                          size="sm"
+                          variant={range === r ? "secondary" : "ghost"}
+                          className="h-7 px-2.5 text-xs"
+                          onClick={() => setRange(r)}
+                        >
+                          {RANGE_LABEL[r]}
+                        </Button>
+                      ))}
+                    </div>
+                    <div className="flex gap-1">
+                      {(
+                        [
+                          ["today", "删今天"],
+                          ["week", "删本周"],
+                          ["month", "删本月"],
+                        ] as Array<[Exclude<Range, "all">, string]>
+                      ).map(([w, label]) => (
+                        <Button
+                          key={w}
+                          size="sm"
+                          variant="ghost"
+                          className="h-7 px-2 text-xs text-muted-foreground hover:text-destructive"
+                          onClick={() => bulkDelete(w, label.replace("删", ""))}
+                        >
+                          {label}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mt-2 divide-y divide-border">
+                    {recent.map((g) => {
+                      const deletable = Date.now() - g.createdAt <= DELETE_WINDOW_MS;
+                      const pct = Math.round((g.raw / g.max) * 100);
+                      return (
+                        <div
+                          key={g.id}
+                          onClick={() => {
+                            setSelectedId(g.id);
+                            setModalView("detail");
+                          }}
+                          className="flex cursor-pointer items-center justify-between py-2"
+                        >
+                          <div>
+                            <p className="text-sm font-medium">
+                              {getSubject(g.subjectId)?.name} · {getPaper(g.paperId)?.name}
+                            </p>
+                            <p className="text-xs tabular-nums text-muted-foreground">{g.date}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[13px] font-semibold tabular-nums">
+                              {g.raw}分 · {pct}%
+                            </span>
+                            {deletable ? (
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onDelete(g.id);
+                                }}
+                                aria-label="删除这条成绩（5分钟内）"
+                              >
+                                <Trash2 />
+                              </Button>
+                            ) : null}
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {recent.length === 0 ? (
+                      <p className="py-6 text-center text-[13px] text-muted-foreground">
+                        这个范围暂无记录
+                      </p>
                     ) : null}
                   </div>
                 </div>
-              );
-            })}
-            {recent.length === 0 ? (
-              <p className="py-6 text-center text-[13px] text-muted-foreground">
-                这个范围暂无记录
-              </p>
-            ) : null}
-          </div>
-        </div>
-      </CardContent>
-      {selected ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-          onClick={() => setSelectedId(null)}
-        >
-          <div
-            className="w-full max-w-sm rounded-2xl border bg-card p-5 shadow-xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <p className="text-[15px] font-semibold">
-              {getSubject(selected.subjectId)?.name} ·{" "}
-              {getPaper(selected.paperId)?.name}
-            </p>
-            <div className="mt-3 space-y-1.5 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">日期</span>
-                <span className="tabular-nums">{selected.date}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">得分</span>
-                <span className="font-semibold tabular-nums">
-                  {selected.raw}分 · {Math.round((selected.raw / selected.max) * 100)}%
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">录入时间</span>
-                <span className="tabular-nums">
-                  {new Date(selected.createdAt).toLocaleString("zh-CN", {
-                    hour12: false,
-                  })}
-                </span>
-              </div>
-              {selected.note ? (
-                <div className="flex justify-between gap-4">
-                  <span className="shrink-0 text-muted-foreground">备注</span>
-                  <span className="text-right">{selected.note}</span>
-                </div>
-              ) : null}
-            </div>
-            <Button className="mt-4 w-full" onClick={() => setSelectedId(null)}>
-              关闭
-            </Button>
+            )}
           </div>
         </div>
       ) : null}

@@ -38,7 +38,11 @@ export function ExamSchedule({ exams, pinnedId, onPin }: Props) {
           return (
             <div
               key={e.id}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5"
+              className={
+                pinned
+                  ? "flex items-center gap-3 rounded-xl px-3 py-2.5 bg-primary/[0.06] shadow-[0_2px_10px_rgba(0,0,0,0.14)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.55)]"
+                  : "flex items-center gap-3 rounded-xl px-3 py-2.5"
+              }
             >
               <span className="w-16 shrink-0 text-[13px] font-bold tabular-nums">
                 {examLabel(e.date)}

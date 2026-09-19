@@ -54,8 +54,8 @@ function App() {
       {!p.loaded ? (
         <p className="p-6 text-sm text-muted-foreground">加载本地数据…</p>
       ) : (
-        <main className="flex min-h-0 flex-1 gap-4 p-4">
-          <section className="w-[300px] shrink-0 space-y-4 overflow-y-auto pb-2">
+        <main className="grid flex-1 min-h-0 gap-4 overflow-y-auto p-4 lg:grid-cols-[300px_minmax(0,1fr)] 2xl:grid-cols-[300px_minmax(0,1fr)_320px] 2xl:overflow-hidden">
+          <section className="w-full min-w-0 space-y-4 2xl:overflow-y-auto 2xl:pb-2">
             <p className="px-1 text-xs tabular-nums text-muted-foreground">
               {p.today} · 今日 {p.todayXp} XP
             </p>
@@ -76,12 +76,12 @@ function App() {
             />
           </section>
 
-          <section className="min-w-0 flex-1 space-y-4 overflow-y-auto pb-2">
-            <div className="flex items-stretch gap-4">
+          <section className="w-full min-w-0 flex-1 space-y-4 2xl:overflow-y-auto 2xl:pb-2">
+            <div className="flex flex-col gap-4 min-[1700px]:flex-row">
               <div className="min-w-0 flex-1">
                 <FlipClock exam={target} className="h-full" />
               </div>
-              <div className="w-[440px] shrink-0">
+              <div className="w-full shrink-0 min-[1700px]:w-[440px]">
                 <ContributionGrid
                   xpOf={(d) => p.xpMap.get(d) ?? 0}
                   className="h-full"
@@ -97,7 +97,7 @@ function App() {
             />
           </section>
 
-          <aside className="w-[320px] shrink-0 overflow-y-auto pb-2">
+          <aside className="w-full min-w-0 lg:col-span-2 2xl:col-span-1 2xl:overflow-y-auto 2xl:pb-2">
             <ExamSchedule
               exams={exams}
               pinnedId={pinnedExamId}
