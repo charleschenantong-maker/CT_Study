@@ -54,8 +54,8 @@ function App() {
       {!p.loaded ? (
         <p className="p-6 text-sm text-muted-foreground">加载本地数据…</p>
       ) : (
-        <main className="grid flex-1 min-h-0 gap-4 overflow-y-auto p-4 lg:grid-cols-[300px_minmax(0,1fr)] 2xl:grid-cols-[300px_minmax(0,1fr)_320px] 2xl:overflow-hidden">
-          <section className="w-full min-w-0 space-y-4 2xl:overflow-y-auto 2xl:pb-2">
+        <main className="grid min-h-0 flex-1 gap-3 overflow-y-auto p-4 lg:grid-cols-[300px_minmax(0,1fr)] min-[1400px]:grid-cols-[300px_minmax(0,1fr)_320px] min-[1400px]:overflow-hidden">
+          <section className="w-full min-w-0 space-y-4 min-[1400px]:overflow-y-auto min-[1400px]:pb-2">
             <p className="px-1 text-xs tabular-nums text-muted-foreground">
               {p.today} · 今日 {p.todayXp} XP
             </p>
@@ -76,8 +76,8 @@ function App() {
             />
           </section>
 
-          <section className="w-full min-w-0 flex-1 space-y-4 2xl:overflow-y-auto 2xl:pb-2">
-            <div className="flex flex-col gap-4 min-[1700px]:flex-row">
+          <section className="w-full min-w-0 flex-1 space-y-4 min-[1400px]:overflow-y-auto min-[1400px]:pb-2">
+            <div className="flex flex-col gap-3 min-[1700px]:flex-row">
               <div className="min-w-0 flex-1">
                 <FlipClock exam={target} className="h-full" />
               </div>
@@ -97,7 +97,7 @@ function App() {
             />
           </section>
 
-          <aside className="w-full min-w-0 lg:col-span-2 2xl:col-span-1 2xl:overflow-y-auto 2xl:pb-2">
+          <aside className="w-full min-w-0 lg:col-span-2 min-[1400px]:col-span-1 min-[1400px]:overflow-y-auto min-[1400px]:pb-2">
             <ExamSchedule
               exams={exams}
               pinnedId={pinnedExamId}
