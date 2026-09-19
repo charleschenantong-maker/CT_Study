@@ -35,9 +35,9 @@ export const FONT_SIZE_PX: Record<FontSize, string> = {
 /** 预设 id → CSS font-family；default 为空字符串（不设置，用系统默认）。 */
 export const FONT_FAMILY_CSS: Record<string, string> = {
   default: "",
-  serif: '"Songti SC, SimSun, NSimSun, serif"',
-  round: '"Yuanti SC, YouYuan, PingFang SC, sans-serif"',
-  mono: '"ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"',
+  serif: 'SimSun, NSimSun, "Songti SC", serif',
+  round: 'YouYuan, "Yuanti SC", "PingFang SC", sans-serif',
+  mono: 'Consolas, ui-monospace, SFMono-Regular, Menlo, monospace',
 };
 
 export const FONT_OPTIONS = ["default", "serif", "round", "mono"] as const;

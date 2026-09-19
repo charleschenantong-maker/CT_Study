@@ -190,7 +190,14 @@ export function SettingsModal({
     const f = e.target.files?.[0];
     if (!f) return;
     try {
-      const dataUrl = await optimizeWallpaper(f);
+      let dataUrl: string;
+      try {
+        dataUrl = await optimizeWallpaper(f);
+      } catch (err) {
+        // 优化（解码/压缩）失败就直接用原图，保证任何可读图片都能生效
+        console.error("[settings] optimize failed, using original:", err);
+        dataUrl = await readFileAsDataURL(f);
+      }
       try {
         setWallpaper(dataUrl);
       } catch {
@@ -198,6 +205,8 @@ export function SettingsModal({
         return;
       }
       setBg(CUSTOM_BG);
+    } catch (err) {
+      console.error("[settings] wallpaper failed:", err);
     } finally {
       e.target.value = "";
     }
