@@ -6,24 +6,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { t, type Lang } from "@/settings/i18n";
 import type { ExamDefinition } from "@/study/types";
 
 export function FlipClock({
   exam,
   className,
+  lang,
 }: {
   exam: ExamDefinition | undefined;
   className?: string;
+  lang: Lang;
 }) {
   if (!exam) {
     return (
       <Card className={className}>
         <CardHeader>
-          <CardTitle>考试倒计时</CardTitle>
+          <CardTitle>{t(lang, "clock.title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            暂无 upcoming 考试，去配置里加（study/config.ts → exams）
+            {t(lang, "clock.empty")}
           </p>
         </CardContent>
       </Card>
@@ -35,7 +38,7 @@ export function FlipClock({
     <Card className={className}>
       <CardHeader>
         <div className="flex items-baseline justify-between">
-          <CardTitle>距离 {exam.name}</CardTitle>
+          <CardTitle>{t(lang, "clock.until").replace("{name}", exam.name)}</CardTitle>
           <span className="text-[13px] tabular-nums text-muted-foreground">
             {exam.date}
           </span>
@@ -44,7 +47,7 @@ export function FlipClock({
       <CardContent className="flex justify-center overflow-x-auto py-2">
         <FlipClockCountdown
           to={new Date(y, m - 1, d).getTime()}
-          labels={["天", "时", "分", "秒"]}
+          labels={[t(lang, "clock.d"), t(lang, "clock.h"), t(lang, "clock.min"), t(lang, "clock.s")]}
           labelStyle={{ fontSize: 12, color: "var(--muted-foreground)" }}
           digitBlockStyle={{ width: 56, height: 76, fontSize: 38 }}
           duration={0.5}

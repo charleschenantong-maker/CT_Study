@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Monitor, Moon, Settings, Sun } from "lucide-react";
-import { useSettings, type Theme } from "@/settings/useSettings";
+import { bgCssFor, useSettings, type Theme } from "@/settings/useSettings";
+import { t, type StrKey } from "@/settings/i18n";
 import { SettingsModal } from "@/settings/SettingsModal";
 import { Titlebar } from "@/components/titlebar";
 import { CheckinCard } from "@/components/CheckinCard";
@@ -14,15 +15,29 @@ import { nearestExam, upcomingExams } from "@/study/exams";
 import { addDays, weekStart } from "@/study/dates";
 import { usePlanner } from "@/study/usePlanner";
 
-const THEMES: Array<{ v: Theme; Icon: typeof Sun; label: string }> = [
-  { v: "light", Icon: Sun, label: "浅色" },
-  { v: "dark", Icon: Moon, label: "深色" },
-  { v: "system", Icon: Monitor, label: "跟随系统" },
+const THEMES: Array<{ v: Theme; Icon: typeof Sun; labelKey: StrKey }> = [
+  { v: "light", Icon: Sun, labelKey: "theme.light" },
+  { v: "dark", Icon: Moon, labelKey: "theme.dark" },
+  { v: "system", Icon: Monitor, labelKey: "theme.system" },
 ];
 
 function App() {
-  const { theme, setTheme } = useSettings();
+  const {
+    theme,
+    setTheme,
+    fontSize,
+    setFontSize,
+    fontFamily,
+    setFontFamily,
+    bg,
+    setBg,
+    lang,
+    setLang,
+    wallpaper,
+    setWallpaper,
+  } = useSettings();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [resolvedDark, setResolvedDark] = useState(false);
   const [pinnedExamId, setPinnedExamId] = useState<string | null>(null);
   const p = usePlanner();
 
@@ -31,6 +46,7 @@ function App() {
     const apply = () => {
       const dark = theme === "dark" || (theme === "system" && mq.matches);
       document.documentElement.classList.toggle("dark", dark);
+      setResolvedDark(dark);
     };
     apply();
     if (theme === "system") {
@@ -50,19 +66,38 @@ function App() {
   const target = pinned && pinned.date >= p.today ? pinned : nearestExam(p.today);
   // 每日/每周刷新靠 today key 派生（todayPlan/quotas/doneIds 均已按 today 计算），无需定时器。
   const weekMonday = weekStart(p.today);
-  const weekLabel = `${weekMonday.slice(5)} ~ ${addDays(weekMonday, 6).slice(5)} · 本周`;
+  const weekLabel = `${weekMonday.slice(5)} ~ ${addDays(weekMonday, 6).slice(5)} ${t(lang, "app.thisWeek")}`;
+  const showWallpaper = bg === "custom" && wallpaper !== null;
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      <Titlebar />
+      {showWallpaper ? (
+        <div
+          aria-hidden
+          className="fixed inset-0 -z-10 bg-cover bg-center"
+          style={{ backgroundImage: `url(${wallpaper})` }}
+        />
+      ) : (
+        <div
+          aria-hidden
+          className="fixed inset-0 -z-10"
+          style={{ background: bgCssFor(bg) }}
+        />
+      )}
+      {resolvedDark ? (
+        <div aria-hidden className="fixed inset-0 -z-10 bg-black/45" />
+      ) : null}
+      <Titlebar lang={lang} />
 
       {!p.loaded ? (
-        <p className="p-6 text-sm text-muted-foreground">加载本地数据…</p>
+        <p className="p-6 text-sm text-muted-foreground">{t(lang, "app.loading")}</p>
       ) : (
         <main className="grid min-h-0 flex-1 gap-3 overflow-y-auto p-4 lg:grid-cols-[260px_minmax(0,1fr)_280px] lg:overflow-hidden min-[1400px]:grid-cols-[300px_minmax(0,1fr)_320px]">
           <section className="w-full min-w-0 space-y-4 lg:overflow-y-auto lg:pb-2">
             <p className="px-1 text-xs tabular-nums text-muted-foreground">
-              {p.today} · 今日 {p.todayXp} XP
+              {t(lang, "app.todayLine")
+                .replace("{date}", p.today)
+                .replace("{xp}", String(p.todayXp))}
             </p>
             <CheckinCard
               doneIds={doneIds}
@@ -73,25 +108,28 @@ function App() {
               streakBest={p.streakBest}
               repair={p.repair}
               onRepair={p.repairYesterday}
+              lang={lang}
             />
-            <WeeklyCard quotas={p.quotas} weekLabel={weekLabel} />
+            <WeeklyCard quotas={p.quotas} weekLabel={weekLabel} lang={lang} />
             <XpCard
               today={p.todayXp}
               week={p.weekXp}
               month={p.monthXp}
               total={p.totalXp}
+              lang={lang}
             />
           </section>
 
           <section className="w-full min-w-0 flex-1 space-y-4 lg:overflow-y-auto lg:pb-2">
             <div className="flex flex-col gap-3 min-[1700px]:flex-row">
               <div className="min-w-0 flex-1">
-                <FlipClock exam={target} className="h-full" />
+                <FlipClock exam={target} className="h-full" lang={lang} />
               </div>
               <div className="w-full shrink-0 min-[1700px]:w-[440px]">
               <ContributionGrid
                 xpOf={(d) => p.xpMap.get(d) ?? 0}
                 className="h-full"
+                lang={lang}
               />
               </div>
             </div>
@@ -101,6 +139,7 @@ function App() {
               onAdd={p.addGrade}
               onDelete={p.deleteGrade}
               onBulkDelete={p.deleteGrades}
+              lang={lang}
             />
           </section>
 
@@ -109,18 +148,19 @@ function App() {
               exams={exams}
               pinnedId={pinnedExamId}
               onPin={setPinnedExamId}
+              lang={lang}
             />
           </aside>
         </main>
       )}
 
       <div className="fixed bottom-5 right-5 z-50 flex items-center rounded-full border bg-card p-1 shadow-lg">
-        {THEMES.map(({ v, Icon, label }) => (
+        {THEMES.map(({ v, Icon, labelKey }) => (
           <button
             key={v}
             onClick={() => setTheme(v)}
-            aria-label={label}
-            title={label}
+            aria-label={t(lang, labelKey)}
+            title={t(lang, labelKey)}
             className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
               theme === v
                 ? "bg-primary text-primary-foreground"
@@ -132,8 +172,8 @@ function App() {
         ))}
         <button
           onClick={() => setSettingsOpen(true)}
-          aria-label="设置"
-          title="设置"
+          aria-label={t(lang, "settings.title")}
+          title={t(lang, "settings.title")}
           className="flex h-7 w-7 items-center justify-center rounded-full transition-colors text-muted-foreground hover:text-foreground"
         >
           <Settings className="size-4" />
@@ -143,6 +183,16 @@ function App() {
         open={settingsOpen}
         theme={theme}
         setTheme={setTheme}
+        fontSize={fontSize}
+        setFontSize={setFontSize}
+        fontFamily={fontFamily}
+        setFontFamily={setFontFamily}
+        bg={bg}
+        setBg={setBg}
+        lang={lang}
+        setLang={setLang}
+        wallpaper={wallpaper}
+        setWallpaper={setWallpaper}
         onClose={() => setSettingsOpen(false)}
       />
     </div>

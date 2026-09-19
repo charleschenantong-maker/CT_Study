@@ -6,12 +6,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { t, type Lang } from "@/settings/i18n";
 import type { ExamDefinition } from "@/study/types";
 
 interface Props {
   exams: ExamDefinition[];
   pinnedId: string | null;
   onPin: (id: string | null) => void;
+  lang: Lang;
 }
 
 function examLabel(date: string) {
@@ -23,13 +25,15 @@ function examLabel(date: string) {
   return `${Number(d)} ${months[Number(m) - 1]}`;
 }
 
-export function ExamSchedule({ exams, pinnedId, onPin }: Props) {
+export function ExamSchedule({ exams, pinnedId, onPin, lang }: Props) {
   return (
     <Card className="overflow-hidden">
       <CardHeader>
-        <CardTitle>考试日程</CardTitle>
+        <CardTitle>{t(lang, "exam.title")}</CardTitle>
         <CardDescription>
-          {exams.length > 0 ? `接下来 ${exams.length} 场` : "暂无安排"}
+          {exams.length > 0
+            ? `${t(lang, "exam.nextPrefix")}${exams.length}${t(lang, "exam.nextSuffix")}`
+            : t(lang, "exam.none")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-1 p-2">
@@ -56,14 +60,14 @@ export function ExamSchedule({ exams, pinnedId, onPin }: Props) {
                 className="h-7 shrink-0 px-2 text-xs"
                 onClick={() => onPin(pinned ? null : e.id)}
               >
-                {pinned ? "目标中" : "设为目标"}
+                {pinned ? t(lang, "exam.pinned") : t(lang, "exam.pin")}
               </Button>
             </div>
           );
         })}
         {exams.length === 0 ? (
           <p className="px-3 py-4 text-[13px] text-muted-foreground">
-            在 study/config.ts 的 exams 里添加
+            {t(lang, "exam.emptyHint")}
           </p>
         ) : null}
       </CardContent>

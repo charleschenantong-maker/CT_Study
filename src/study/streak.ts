@@ -78,11 +78,13 @@ export function additionalXpToday(
   return Math.max(0, total - required);
 }
 
+export type RepairReasonCode = "no-need" | "need-today" | "need-xp";
+
 export interface RepairEligibility {
   eligible: boolean;
   missedDate: string;
   cost: number;
-  reason?: string;
+  reasonCode?: RepairReasonCode;
 }
 
 export function repairEligibility(
@@ -94,17 +96,17 @@ export function repairEligibility(
   const missedDate = addDays(today, -1);
   const cost = STUDY_CONFIG.streakRepairCostXp;
   if (dayStatus(missedDate, completions, repairs, getEntry) !== "missed") {
-    return { eligible: false, missedDate, cost, reason: "昨日未断签，无需修复" };
+    return { eligible: false, missedDate, cost, reasonCode: "no-need" };
   }
   if (dayStatus(today, completions, repairs, getEntry) !== "complete") {
-    return { eligible: false, missedDate, cost, reason: "先完成今日全部核心任务" };
+    return { eligible: false, missedDate, cost, reasonCode: "need-today" };
   }
   if (additionalXpToday(today, completions) < cost) {
     return {
       eligible: false,
       missedDate,
       cost,
-      reason: `今日额外投入需 ≥ ${cost} XP（核心任务之外）`,
+      reasonCode: "need-xp",
     };
   }
   return { eligible: true, missedDate, cost };
