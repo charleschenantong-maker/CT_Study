@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { Monitor, Moon, Settings, Sun } from "lucide-react";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { Titlebar } from "@/components/titlebar";
 import { CheckinCard } from "@/components/CheckinCard";
 import { WeeklyCard } from "@/components/WeeklyCard";
@@ -62,10 +61,8 @@ function App() {
 
   useEffect(() => {
     let last = 0;
-    let unlisten: (() => void) | undefined;
-    let cancelled = false;
-    // 切回前台时强制重绘：Chromium 被遮挡后可能丢合成帧（整窗黑屏），
-    // backdrop-filter 重的页面高发，重排一次即可恢复。
+    // 只在页面从隐藏恢复时强制重绘（最小化/遮挡后切回黑屏的场景）。
+    // 注意：不要在启动聚焦时执行，WebView2 下可能把首帧卡成白屏。
     const repaint = () => {
       const now = Date.now();
       if (now - last < 1000) return;
@@ -78,25 +75,8 @@ function App() {
       if (!document.hidden) repaint();
     };
     document.addEventListener("visibilitychange", onVisible);
-    window.addEventListener("focus", repaint);
-    // getCurrentWindow 在非 Tauri 环境（纯 vite 预览）会同步抛错，
-    // 必须包住，否则整个 React 树被卸掉白屏。
-    (async () => {
-      try {
-        const win = getCurrentWindow();
-        const u = await win.onFocusChanged(({ payload }) => {
-          if (payload) repaint();
-        });
-        if (!cancelled) unlisten = u;
-      } catch (e) {
-        console.error("[window] focus listener unavailable:", e);
-      }
-    })();
     return () => {
-      cancelled = true;
       document.removeEventListener("visibilitychange", onVisible);
-      window.removeEventListener("focus", repaint);
-      unlisten?.();
     };
   }, []);
 
