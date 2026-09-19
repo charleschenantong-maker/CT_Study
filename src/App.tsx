@@ -9,6 +9,7 @@ import { GradesCard } from "@/components/GradesCard";
 import { FlipClock } from "@/components/FlipClock";
 import { ExamSchedule } from "@/components/ExamSchedule";
 import { nearestExam, upcomingExams } from "@/study/exams";
+import { addDays, weekStart } from "@/study/dates";
 import { usePlanner } from "@/study/usePlanner";
 
 type Theme = "light" | "dark" | "system";
@@ -21,6 +22,7 @@ const THEMES: Array<{ v: Theme; Icon: typeof Sun; label: string }> = [
 
 function App() {
   const [theme, setTheme] = useState<Theme>("system");
+  const [resolvedDark, setResolvedDark] = useState(false);
   const [pinnedExamId, setPinnedExamId] = useState<string | null>(null);
   const p = usePlanner();
 
@@ -29,6 +31,7 @@ function App() {
     const apply = () => {
       const dark = theme === "dark" || (theme === "system" && mq.matches);
       document.documentElement.classList.toggle("dark", dark);
+      setResolvedDark(dark);
     };
     apply();
     if (theme === "system") {
@@ -46,6 +49,9 @@ function App() {
   const exams = useMemo(() => upcomingExams(p.today), [p.today]);
   const pinned = exams.find((e) => e.id === pinnedExamId);
   const target = pinned && pinned.date >= p.today ? pinned : nearestExam(p.today);
+  // 每日/每周刷新靠 today key 派生（todayPlan/quotas/doneIds 均已按 today 计算），无需定时器。
+  const weekMonday = weekStart(p.today);
+  const weekLabel = `${weekMonday.slice(5)} ~ ${addDays(weekMonday, 6).slice(5)} · 本周`;
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
@@ -62,12 +68,14 @@ function App() {
             <CheckinCard
               doneIds={doneIds}
               onToggle={p.toggleTask}
+              todayPlan={p.todayPlan}
+              today={p.today}
               streakNow={p.streakNow}
               streakBest={p.streakBest}
               repair={p.repair}
               onRepair={p.repairYesterday}
             />
-            <WeeklyCard quotas={p.quotas} />
+            <WeeklyCard quotas={p.quotas} weekLabel={weekLabel} />
             <XpCard
               today={p.todayXp}
               week={p.weekXp}
@@ -82,10 +90,11 @@ function App() {
                 <FlipClock exam={target} className="h-full" />
               </div>
               <div className="w-full shrink-0 min-[1700px]:w-[440px]">
-                <ContributionGrid
-                  xpOf={(d) => p.xpMap.get(d) ?? 0}
-                  className="h-full"
-                />
+              <ContributionGrid
+                xpMap={p.xpMap}
+                dark={resolvedDark}
+                className="h-full"
+              />
               </div>
             </div>
             <GradesCard

@@ -8,11 +8,22 @@ import {
 import { getTask } from "@/study/config";
 import type { QuotaProgress } from "@/study/types";
 
-export function WeeklyCard({ quotas }: { quotas: QuotaProgress[] }) {
+export function WeeklyCard({
+  quotas,
+  weekLabel,
+}: {
+  quotas: QuotaProgress[];
+  weekLabel: string;
+}) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>本周配额</CardTitle>
+        <CardTitle>
+          本周配额
+          <span className="ml-2 text-xs font-normal tabular-nums text-muted-foreground">
+            {weekLabel}
+          </span>
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {quotas.map((q) => {

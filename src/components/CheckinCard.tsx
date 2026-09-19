@@ -6,12 +6,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { STUDY_CONFIG } from "@/study/config";
+import { STUDY_CONFIG, getTask } from "@/study/config";
 import type { RepairEligibility } from "@/study/streak";
+import type { DailyPlanEntry } from "@/study/types";
 
 interface Props {
   doneIds: Set<string>;
-  onToggle: (taskId: string) => void;
+  onToggle: (taskId: string, displayName?: string) => void;
+  todayPlan: DailyPlanEntry | undefined;
+  today: string;
   streakNow: number;
   streakBest: number;
   repair: RepairEligibility;
@@ -21,12 +24,14 @@ interface Props {
 export function CheckinCard({
   doneIds,
   onToggle,
+  todayPlan,
+  today,
   streakNow,
   streakBest,
   repair,
   onRepair,
 }: Props) {
-  const tasks = [...STUDY_CONFIG.tasks]
+  const fallbackTasks = [...STUDY_CONFIG.tasks]
     .filter((t) => t.active !== false)
     .sort((a, b) => Number(b.core ?? false) - Number(a.core ?? false));
 
@@ -34,46 +39,111 @@ export function CheckinCard({
     <Card>
       <CardHeader>
         <CardTitle>今日打卡</CardTitle>
+        {todayPlan ? (
+          <>
+            <div className="flex items-center gap-2 pt-1">
+              <span
+                className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${
+                  todayPlan.dayType === "Exam"
+                    ? "bg-muted text-muted-foreground"
+                    : "bg-primary/10 text-primary"
+                }`}
+              >
+                {todayPlan.dayType}
+              </span>
+              <span className="text-xs tabular-nums text-muted-foreground">
+                {today}
+              </span>
+            </div>
+            {todayPlan.note ? (
+              <p className="text-xs text-muted-foreground">{todayPlan.note}</p>
+            ) : null}
+          </>
+        ) : (
+          <p className="text-xs text-muted-foreground">
+            计划外日期（{today}）· 显示全部任务
+          </p>
+        )}
       </CardHeader>
       <CardContent className="space-y-1">
-        {tasks.map((t) => {
-          const done = doneIds.has(t.id);
-          return (
-            <div
-              key={t.id}
-              className={`flex items-center justify-between rounded-xl px-3 py-2.5 ${
-                done ? "opacity-55" : ""
-              }`}
-            >
-              <div>
-                <p className="text-sm font-medium">
-                  {t.name}
-                  {t.core ? (
-                    <span className="ml-2 rounded-md bg-primary/10 px-1.5 py-0.5 text-[11px] font-semibold text-primary">
-                      核心
-                    </span>
-                  ) : null}
-                </p>
-                <p className="text-xs tabular-nums text-muted-foreground">
-                  {t.xp} XP
-                </p>
-              </div>
-              <Button
-                size="sm"
-                variant={done ? "secondary" : "default"}
-                onClick={() => onToggle(t.id)}
-              >
-                {done ? (
-                  <>
-                    <Check /> 已完成
-                  </>
-                ) : (
-                  "打卡"
-                )}
-              </Button>
-            </div>
-          );
-        })}
+        {todayPlan
+          ? todayPlan.tasks.map((entry, i) => {
+              const task = getTask(entry.type);
+              const done = doneIds.has(entry.type);
+              return (
+                <div
+                  key={`${entry.type}-${i}`}
+                  className={`flex items-center justify-between rounded-xl px-3 py-2.5 ${
+                    done ? "opacity-55" : ""
+                  }`}
+                >
+                  <div>
+                    <p className="text-sm font-medium">
+                      {entry.label ?? task?.name ?? entry.type}
+                      {task?.core ? (
+                        <span className="ml-2 rounded-md bg-primary/10 px-1.5 py-0.5 text-[11px] font-semibold text-primary">
+                          核心
+                        </span>
+                      ) : null}
+                    </p>
+                    <p className="text-xs tabular-nums text-muted-foreground">
+                      {task?.xp ?? 0} XP
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant={done ? "secondary" : "default"}
+                    onClick={() => onToggle(entry.type, entry.label)}
+                  >
+                    {done ? (
+                      <>
+                        <Check /> 已完成
+                      </>
+                    ) : (
+                      "打卡"
+                    )}
+                  </Button>
+                </div>
+              );
+            })
+          : fallbackTasks.map((t) => {
+              const done = doneIds.has(t.id);
+              return (
+                <div
+                  key={t.id}
+                  className={`flex items-center justify-between rounded-xl px-3 py-2.5 ${
+                    done ? "opacity-55" : ""
+                  }`}
+                >
+                  <div>
+                    <p className="text-sm font-medium">
+                      {t.name}
+                      {t.core ? (
+                        <span className="ml-2 rounded-md bg-primary/10 px-1.5 py-0.5 text-[11px] font-semibold text-primary">
+                          核心
+                        </span>
+                      ) : null}
+                    </p>
+                    <p className="text-xs tabular-nums text-muted-foreground">
+                      {t.xp} XP
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant={done ? "secondary" : "default"}
+                    onClick={() => onToggle(t.id)}
+                  >
+                    {done ? (
+                      <>
+                        <Check /> 已完成
+                      </>
+                    ) : (
+                      "打卡"
+                    )}
+                  </Button>
+                </div>
+              );
+            })}
       </CardContent>
 
       <div className="mx-5 border-t border-border" />
