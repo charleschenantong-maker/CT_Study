@@ -29,7 +29,7 @@ function LampImg({
       src={src}
       alt=""
       draggable={false}
-      className={`pointer-events-none absolute inset-0 h-3 w-3 transition-opacity duration-150${
+      className={`pointer-events-none absolute inset-0 h-[18px] w-[18px] transition-opacity duration-150${
         layerClass ? ` ${layerClass}` : ""
       }`}
     />
@@ -51,7 +51,7 @@ function Light({ label, base, hover, focused, onClick }: LightProps) {
         type="button"
         aria-label={label}
         onClick={onClick}
-        className="relative block h-3 w-3 outline-none"
+        className="relative block h-[18px] w-[18px] outline-none"
       >
         <LampImg src={base} layerClass="saturate-0 brightness-[1.65]" />
       </button>
@@ -63,7 +63,7 @@ function Light({ label, base, hover, focused, onClick }: LightProps) {
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="group/btn relative block h-3 w-3 outline-none drop-shadow-[0_1px_1px_#00000040]"
+      className="group/btn relative block h-[18px] w-[18px] outline-none drop-shadow-[0_1px_1px_#00000040]"
     >
       <LampImg
         src={base}
@@ -103,7 +103,7 @@ export function Titlebar() {
     <header
       data-tauri-drag-region
       onDoubleClick={handleDoubleClick}
-      className="grid h-12 shrink-0 select-none grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background px-3"
+      className="grid h-8 shrink-0 select-none grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background px-3"
     >
       {/* 注意：data-tauri-drag-region 只对直接带该属性的元素生效，
           子元素必须逐个加；按钮不加，保证可点击 */}
