@@ -63,6 +63,7 @@ function App() {
   useEffect(() => {
     let last = 0;
     let unlisten: (() => void) | undefined;
+    let cancelled = false;
     // 切回前台时强制重绘：Chromium 被遮挡后可能丢合成帧（整窗黑屏），
     // backdrop-filter 重的页面高发，重排一次即可恢复。
     const repaint = () => {
@@ -78,15 +79,21 @@ function App() {
     };
     document.addEventListener("visibilitychange", onVisible);
     window.addEventListener("focus", repaint);
-    getCurrentWindow()
-      .onFocusChanged(({ payload }) => {
-        if (payload) repaint();
-      })
-      .then((u) => {
-        unlisten = u;
-      })
-      .catch((e) => console.error("[window] focus listener failed:", e));
+    // getCurrentWindow 在非 Tauri 环境（纯 vite 预览）会同步抛错，
+    // 必须包住，否则整个 React 树被卸掉白屏。
+    (async () => {
+      try {
+        const win = getCurrentWindow();
+        const u = await win.onFocusChanged(({ payload }) => {
+          if (payload) repaint();
+        });
+        if (!cancelled) unlisten = u;
+      } catch (e) {
+        console.error("[window] focus listener unavailable:", e);
+      }
+    })();
     return () => {
+      cancelled = true;
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("focus", repaint);
       unlisten?.();
