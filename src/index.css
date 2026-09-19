@@ -110,6 +110,61 @@
     display: none;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply text-foreground antialiased;
+    background-color: #f2f2f7;
+    background-image:
+      radial-gradient(
+        600px 400px at 15% 0%,
+        rgb(0 122 255 / 0.06),
+        transparent 70%
+      ),
+      radial-gradient(
+        700px 500px at 90% 10%,
+        rgb(175 82 222 / 0.05),
+        transparent 70%
+      );
+    background-attachment: fixed;
   }
+  .dark body {
+    background-color: #000;
+    background-image: radial-gradient(
+      800px 500px at 50% 0%,
+      rgb(10 132 255 / 0.08),
+      transparent 70%
+    );
+    background-attachment: fixed;
+  }
+}
+
+/* 鼠标跟随高光：Glass.tsx 把坐标写进 --mx/--my，只亮描边一圈 */
+.glass-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: radial-gradient(
+    140px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.9),
+    transparent 65%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.glass-wrap:hover .glass-glow {
+  opacity: 1;
+}
+
+.dark .glass-glow {
+  background: radial-gradient(
+    140px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.45),
+    transparent 65%
+  );
 }

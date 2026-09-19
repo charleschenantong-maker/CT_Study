@@ -1,21 +1,26 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { GlassCard } from "@/components/Glass";
 
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
+>(({ className, children, style, onClick, ...rest }, ref) => (
+  <GlassCard
     ref={ref}
     className={cn(
-      "rounded-xl border bg-card text-card-foreground",
+      "rounded-xl border bg-card/70 text-card-foreground dark:bg-card/50",
       "shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-16px_rgba(0,0,0,0.18)]",
       "dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_16px_40px_-16px_rgba(0,0,0,0.7)]",
       className,
     )}
-    {...props}
-  />
+    style={style}
+    onClick={onClick as unknown as (() => void) | undefined}
+    {...rest}
+  >
+    {children}
+  </GlassCard>
 ));
 Card.displayName = "Card";
 

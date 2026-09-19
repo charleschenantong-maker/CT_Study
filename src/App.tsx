@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { Monitor, Moon, Sun } from "lucide-react";
+import { Monitor, Moon, Settings, Sun } from "lucide-react";
+import { useSettings, type Theme } from "@/settings/useSettings";
+import { SettingsModal } from "@/settings/SettingsModal";
 import { Titlebar } from "@/components/titlebar";
 import { CheckinCard } from "@/components/CheckinCard";
 import { WeeklyCard } from "@/components/WeeklyCard";
@@ -12,8 +14,6 @@ import { nearestExam, upcomingExams } from "@/study/exams";
 import { addDays, weekStart } from "@/study/dates";
 import { usePlanner } from "@/study/usePlanner";
 
-type Theme = "light" | "dark" | "system";
-
 const THEMES: Array<{ v: Theme; Icon: typeof Sun; label: string }> = [
   { v: "light", Icon: Sun, label: "浅色" },
   { v: "dark", Icon: Moon, label: "深色" },
@@ -21,7 +21,8 @@ const THEMES: Array<{ v: Theme; Icon: typeof Sun; label: string }> = [
 ];
 
 function App() {
-  const [theme, setTheme] = useState<Theme>("system");
+  const { theme, setTheme } = useSettings();
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [pinnedExamId, setPinnedExamId] = useState<string | null>(null);
   const p = usePlanner();
 
@@ -129,7 +130,21 @@ function App() {
             <Icon className="size-4" />
           </button>
         ))}
+        <button
+          onClick={() => setSettingsOpen(true)}
+          aria-label="设置"
+          title="设置"
+          className="flex h-7 w-7 items-center justify-center rounded-full transition-colors text-muted-foreground hover:text-foreground"
+        >
+          <Settings className="size-4" />
+        </button>
       </div>
+      <SettingsModal
+        open={settingsOpen}
+        theme={theme}
+        setTheme={setTheme}
+        onClose={() => setSettingsOpen(false)}
+      />
     </div>
   );
 }
