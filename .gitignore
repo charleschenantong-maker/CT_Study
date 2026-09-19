@@ -15,6 +15,7 @@ dist-ssr
 
 # 本地参考素材，不进仓库
 traffic-ref.png
+CT_study.png
 
 # Editor directories and files
 .vscode/*

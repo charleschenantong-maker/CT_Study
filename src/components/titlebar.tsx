@@ -104,7 +104,7 @@ export function Titlebar() {
     <header
       data-tauri-drag-region
       onDoubleClick={handleDoubleClick}
-      className="grid h-8 shrink-0 select-none grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background px-3"
+      className="grid h-12 shrink-0 select-none grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background px-5"
     >
       {/* 注意：data-tauri-drag-region 只对直接带该属性的元素生效，
           子元素必须逐个加；按钮不加，保证可点击 */}
