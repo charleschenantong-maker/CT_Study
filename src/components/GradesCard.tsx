@@ -21,6 +21,7 @@ import { monthStart, shortLabel, todayKey, weekStart } from "@/study/dates";
 import type { GradeRecord } from "@/study/types";
 
 interface Point {
+  id: string;
   date: string;
   pct: number;
   raw: number;
@@ -77,6 +78,10 @@ function GradeForm({ onAdd }: FormProps) {
   }
 
   function submit() {
+    if (raw.trim() === "") {
+      setError("请输入得分");
+      return;
+    }
     const r = Number(raw);
     const m = paper?.maxMark ?? 0;
     if (!subjectId || !paperId || !paper || !date) {
@@ -159,6 +164,7 @@ interface Props {
   today: string;
   onAdd: FormProps["onAdd"];
   onDelete: (id: string) => void;
+  onBulkDelete: (ids: string[]) => void;
 }
 
 type Range = "all" | "today" | "week" | "month";
@@ -172,7 +178,7 @@ const RANGE_LABEL: Record<Range, string> = {
 
 const DELETE_WINDOW_MS = 5 * 60 * 1000;
 
-export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
+export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Props) {
   const [subjectId, setSubjectId] = useState(STUDY_CONFIG.subjects[0]?.id ?? "");
   const [paperId, setPaperId] = useState("");
   const [range, setRange] = useState<Range>("all");
@@ -198,6 +204,7 @@ export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
         .filter((g) => g.subjectId === subjectId && (!paperId || g.paperId === paperId))
         .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.createdAt - b.createdAt))
         .map((g) => ({
+          id: g.id,
           date: shortLabel(g.date),
           pct: Math.round((g.raw / g.max) * 1000) / 10,
           raw: g.raw,
@@ -206,6 +213,19 @@ export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
         })),
     [grades, subjectId, paperId],
   );
+
+  function idsIn(which: Exclude<Range, "all">): string[] {
+    const from = which === "today" ? today : which === "week" ? weekStart(today) : monthStart(today);
+    return grades.filter((g) => g.date >= from).map((g) => g.id);
+  }
+
+  function bulkDelete(which: Exclude<Range, "all">, label: string) {
+    const ids = idsIn(which);
+    if (ids.length === 0) return;
+    if (window.confirm(`确定删除${label}的 ${ids.length} 条成绩？此操作不可恢复。`)) {
+      onBulkDelete(ids);
+    }
+  }
 
   const recent = useMemo(() => {
     const from =
@@ -282,7 +302,24 @@ export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
                     dataKey="pct"
                     stroke="var(--chart-1)"
                     strokeWidth={2}
-                    dot={{ r: 3, fill: "var(--chart-1)" }}
+                    dot={(p: {
+                      cx?: number;
+                      cy?: number;
+                      payload?: Point;
+                    }) => (
+                      <circle
+                        cx={p.cx}
+                        cy={p.cy}
+                        r={5}
+                        fill="var(--chart-1)"
+                        style={{ cursor: "pointer" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (p.payload?.id) setSelectedId(p.payload.id);
+                        }}
+                      />
+                    )}
+                    activeDot={{ r: 5 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -292,18 +329,39 @@ export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
               暂无成绩，先在左侧录入一条
             </p>
           )}
-          <div className="flex gap-1">
-            {(Object.keys(RANGE_LABEL) as Range[]).map((r) => (
-              <Button
-                key={r}
-                size="sm"
-                variant={range === r ? "secondary" : "ghost"}
-                className="h-7 px-2.5 text-xs"
-                onClick={() => setRange(r)}
-              >
-                {RANGE_LABEL[r]}
-              </Button>
-            ))}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex gap-1">
+              {(Object.keys(RANGE_LABEL) as Range[]).map((r) => (
+                <Button
+                  key={r}
+                  size="sm"
+                  variant={range === r ? "secondary" : "ghost"}
+                  className="h-7 px-2.5 text-xs"
+                  onClick={() => setRange(r)}
+                >
+                  {RANGE_LABEL[r]}
+                </Button>
+              ))}
+            </div>
+            <div className="flex gap-1">
+              {(
+                [
+                  ["today", "删今天"],
+                  ["week", "删本周"],
+                  ["month", "删本月"],
+                ] as Array<[Exclude<Range, "all">, string]>
+              ).map(([w, label]) => (
+                <Button
+                  key={w}
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 px-2 text-xs text-muted-foreground hover:text-destructive"
+                  onClick={() => bulkDelete(w, label.replace("删", ""))}
+                >
+                  {label}
+                </Button>
+              ))}
+            </div>
           </div>
           <div className="divide-y divide-border">
             {recent.map((g) => {

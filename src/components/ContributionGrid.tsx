@@ -60,9 +60,9 @@ export function ContributionGrid({
         </div>
       </CardHeader>
       <CardContent className="overflow-x-auto" onMouseLeave={() => setTip(null)}>
-        <div className="flex min-w-[430px] gap-[3px]">
+        <div className="flex gap-[3px]">
           {weeks.map((w, wi) => (
-            <div key={wi} className="flex min-w-0 flex-1 flex-col gap-[3px]">
+            <div key={wi} className="flex flex-col gap-[3px]">
               {w.days.map((d) => (
                 <span
                   key={d.date}
@@ -71,7 +71,7 @@ export function ContributionGrid({
                   }
                   onMouseLeave={() => setTip(null)}
                   className={cn(
-                    "aspect-square w-full rounded-[3px]",
+                    "size-3 rounded-[3px]",
                     levelClass(d.level),
                     d.date === today && "ring-1 ring-black/60 dark:ring-white/70",
                   )}

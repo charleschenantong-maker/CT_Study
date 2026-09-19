@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { Titlebar } from "@/components/titlebar";
 import { CheckinCard } from "@/components/CheckinCard";
-import { StreakCard } from "@/components/StreakCard";
 import { WeeklyCard } from "@/components/WeeklyCard";
 import { XpCard } from "@/components/XpCard";
 import { ContributionGrid } from "@/components/ContributionGrid";
@@ -60,7 +59,14 @@ function App() {
             <p className="px-1 text-xs tabular-nums text-muted-foreground">
               {p.today} · 今日 {p.todayXp} XP
             </p>
-            <CheckinCard doneIds={doneIds} onToggle={p.toggleTask} />
+            <CheckinCard
+              doneIds={doneIds}
+              onToggle={p.toggleTask}
+              streakNow={p.streakNow}
+              streakBest={p.streakBest}
+              repair={p.repair}
+              onRepair={p.repairYesterday}
+            />
             <WeeklyCard quotas={p.quotas} />
             <XpCard
               today={p.todayXp}
@@ -71,25 +77,23 @@ function App() {
           </section>
 
           <section className="min-w-0 flex-1 space-y-4 overflow-y-auto pb-2">
-            <FlipClock exam={target} />
-            <div className="grid items-stretch gap-4 xl:grid-cols-[280px_1fr]">
-              <StreakCard
-                current={p.streakNow}
-                best={p.streakBest}
-                repair={p.repair}
-                onRepair={p.repairYesterday}
-                className="h-full"
-              />
-              <ContributionGrid
-                xpOf={(d) => p.xpMap.get(d) ?? 0}
-                className="h-full"
-              />
+            <div className="flex items-stretch gap-4">
+              <div className="min-w-0 flex-1">
+                <FlipClock exam={target} className="h-full" />
+              </div>
+              <div className="w-[440px] shrink-0">
+                <ContributionGrid
+                  xpOf={(d) => p.xpMap.get(d) ?? 0}
+                  className="h-full"
+                />
+              </div>
             </div>
             <GradesCard
               grades={p.history.grades}
               today={p.today}
               onAdd={p.addGrade}
               onDelete={p.deleteGrade}
+              onBulkDelete={p.deleteGrades}
             />
           </section>
 

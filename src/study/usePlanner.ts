@@ -88,6 +88,15 @@ export function usePlanner() {
     }));
   }
 
+  function deleteGrades(ids: string[]) {
+    if (ids.length === 0) return;
+    const set = new Set(ids);
+    setHistory((prev) => ({
+      ...prev,
+      grades: prev.grades.filter((g) => !set.has(g.id)),
+    }));
+  }
+
   function repairYesterday() {
     const e = repairEligibility(today, history.completions, history.repairs);
     if (!e.eligible) return;
@@ -137,6 +146,7 @@ export function usePlanner() {
     toggleTask,
     addGrade,
     deleteGrade,
+    deleteGrades,
     repairYesterday,
   };
 }

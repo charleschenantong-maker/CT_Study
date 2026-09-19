@@ -8,10 +8,16 @@ import {
 } from "@/components/ui/card";
 import type { ExamDefinition } from "@/study/types";
 
-export function FlipClock({ exam }: { exam: ExamDefinition | undefined }) {
+export function FlipClock({
+  exam,
+  className,
+}: {
+  exam: ExamDefinition | undefined;
+  className?: string;
+}) {
   if (!exam) {
     return (
-      <Card>
+      <Card className={className}>
         <CardHeader>
           <CardTitle>考试倒计时</CardTitle>
         </CardHeader>
@@ -26,7 +32,7 @@ export function FlipClock({ exam }: { exam: ExamDefinition | undefined }) {
 
   const [y, m, d] = exam.date.split("-").map(Number);
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <div className="flex items-baseline justify-between">
           <CardTitle>距离 {exam.name}</CardTitle>
@@ -39,8 +45,8 @@ export function FlipClock({ exam }: { exam: ExamDefinition | undefined }) {
         <FlipClockCountdown
           to={new Date(y, m - 1, d).getTime()}
           labels={["天", "时", "分", "秒"]}
-          labelStyle={{ fontSize: 11, color: "var(--muted-foreground)" }}
-          digitBlockStyle={{ width: 42, height: 62, fontSize: 30 }}
+          labelStyle={{ fontSize: 12, color: "var(--muted-foreground)" }}
+          digitBlockStyle={{ width: 56, height: 76, fontSize: 38 }}
           duration={0.5}
           hideOnComplete={false}
         />
