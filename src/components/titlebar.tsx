@@ -135,7 +135,9 @@ export function Titlebar() {
           onClick={() => safeCall(() => getCurrentWindow().toggleMaximize())}
         />
       </div>
-      <div data-tauri-drag-region />
+      <div data-tauri-drag-region className="text-center text-[13px] font-semibold">
+        Planner
+      </div>
       <div data-tauri-drag-region />
     </header>
   );

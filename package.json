@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroui/react": "^2.8.10",
+    "@leenguyen/react-flip-clock-countdown": "^1.7.2",
     "@radix-ui/react-slot": "^1.3.3",
     "@tailwindcss/vite": "^4.3.3",
     "@tauri-apps/api": "^2.2.0",

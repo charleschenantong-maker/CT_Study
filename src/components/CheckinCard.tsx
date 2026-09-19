@@ -1,22 +1,19 @@
-import { Check, Flame } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { STUDY_CONFIG } from "@/study/config";
 
 interface Props {
-  todayLabel: string;
-  todayXp: number;
   doneIds: Set<string>;
   onToggle: (taskId: string) => void;
 }
 
-export function CheckinCard({ todayLabel, todayXp, doneIds, onToggle }: Props) {
+export function CheckinCard({ doneIds, onToggle }: Props) {
   const tasks = [...STUDY_CONFIG.tasks]
     .filter((t) => t.active !== false)
     .sort((a, b) => Number(b.core ?? false) - Number(a.core ?? false));
@@ -24,16 +21,7 @@ export function CheckinCard({ todayLabel, todayXp, doneIds, onToggle }: Props) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-baseline justify-between">
-          <div>
-            <CardTitle>今日打卡</CardTitle>
-            <CardDescription>{todayLabel}</CardDescription>
-          </div>
-          <div className="flex items-center gap-1 text-[15px] font-bold tabular-nums">
-            <Flame className="size-4 text-ios-orange" />
-            {todayXp} XP
-          </div>
-        </div>
+        <CardTitle>今日打卡</CardTitle>
       </CardHeader>
       <CardContent className="space-y-1">
         {tasks.map((t) => {

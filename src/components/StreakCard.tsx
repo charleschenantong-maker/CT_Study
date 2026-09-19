@@ -13,11 +13,12 @@ interface Props {
   best: number;
   repair: RepairEligibility;
   onRepair: () => void;
+  className?: string;
 }
 
-export function StreakCard({ current, best, repair, onRepair }: Props) {
+export function StreakCard({ current, best, repair, onRepair, className }: Props) {
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>连续打卡</CardTitle>
       </CardHeader>

@@ -23,12 +23,18 @@ function levelClass(level: number) {
   return LEVELS[Math.min(Math.max(level, 0), LEVELS.length - 1)];
 }
 
-export function ContributionGrid({ xpOf }: { xpOf: (date: string) => number }) {
+export function ContributionGrid({
+  xpOf,
+  className,
+}: {
+  xpOf: (date: string) => number;
+  className?: string;
+}) {
   const today = todayKey();
   const weeks = buildGrid(today, WEEKS, xpOf);
 
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <div className="flex items-baseline justify-between">
           <div>

@@ -17,7 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { STUDY_CONFIG, getPaper, getSubject } from "@/study/config";
-import { shortLabel, todayKey } from "@/study/dates";
+import { monthStart, shortLabel, todayKey, weekStart } from "@/study/dates";
 import type { GradeRecord } from "@/study/types";
 
 interface Point {
@@ -38,7 +38,7 @@ function GradeTip(props: {
   return (
     <div className="rounded-xl border bg-popover px-3 py-2 text-xs shadow-lg">
       <p className="font-semibold tabular-nums">
-        {d.raw} / {d.max}（{d.pct}%）
+        {d.raw}分（{d.pct}%）
       </p>
       <p className="text-muted-foreground">{props.label}</p>
       {d.note ? <p className="mt-0.5 text-muted-foreground">{d.note}</p> : null}
@@ -64,32 +64,27 @@ function GradeForm({ onAdd }: FormProps) {
   const paper = getPaper(paperId);
   const [date, setDate] = useState(todayKey());
   const [raw, setRaw] = useState("");
-  const [max, setMax] = useState(paper ? String(paper.maxMark) : "");
-  const [note, setNote] = useState("");
   const [error, setError] = useState("");
 
   function pickSubject(id: string) {
     setSubjectId(id);
     const first = STUDY_CONFIG.papers.find((p) => p.subjectId === id);
     setPaperId(first?.id ?? "");
-    setMax(first ? String(first.maxMark) : "");
   }
 
   function pickPaper(id: string) {
     setPaperId(id);
-    const p = getPaper(id);
-    if (p) setMax(String(p.maxMark));
   }
 
   function submit() {
     const r = Number(raw);
-    const m = Number(max);
-    if (!subjectId || !paperId || !date) {
+    const m = paper?.maxMark ?? 0;
+    if (!subjectId || !paperId || !paper || !date) {
       setError("请完整选择科目、试卷和日期");
       return;
     }
-    if (!Number.isFinite(r) || !Number.isFinite(m) || m <= 0 || r < 0) {
-      setError("分数必须是 ≥ 0 的数字，满分必须 > 0");
+    if (!Number.isFinite(r) || r < 0) {
+      setError("得分必须是 ≥ 0 的数字");
       return;
     }
     if (r > m) {
@@ -97,9 +92,8 @@ function GradeForm({ onAdd }: FormProps) {
       return;
     }
     setError("");
-    onAdd({ date, subjectId, paperId, raw: r, max: m, note: note || undefined });
+    onAdd({ date, subjectId, paperId, raw: r, max: m });
     setRaw("");
-    setNote("");
   }
 
   const field =
@@ -138,15 +132,6 @@ function GradeForm({ onAdd }: FormProps) {
           </select>
         </label>
         <label className="space-y-1 text-xs text-muted-foreground">
-          备注（可选）
-          <input
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="错因 / 心态…"
-            className={field}
-          />
-        </label>
-        <label className="space-y-1 text-xs text-muted-foreground">
           得分
           <input
             type="number"
@@ -157,16 +142,9 @@ function GradeForm({ onAdd }: FormProps) {
             className={field}
           />
         </label>
-        <label className="space-y-1 text-xs text-muted-foreground">
-          满分
-          <input
-            type="number"
-            min={1}
-            value={max}
-            onChange={(e) => setMax(e.target.value)}
-            className={field}
-          />
-        </label>
+        <div className="flex items-end pb-0.5 text-xs tabular-nums text-muted-foreground">
+          满分 {paper ? paper.maxMark : "—"}（预设）
+        </div>
       </div>
       {error ? <p className="text-xs text-destructive">{error}</p> : null}
       <Button size="sm" className="w-full" onClick={submit}>
@@ -178,15 +156,26 @@ function GradeForm({ onAdd }: FormProps) {
 
 interface Props {
   grades: GradeRecord[];
+  today: string;
   onAdd: FormProps["onAdd"];
   onDelete: (id: string) => void;
 }
 
+type Range = "all" | "today" | "week" | "month";
+
+const RANGE_LABEL: Record<Range, string> = {
+  all: "全部",
+  today: "今天",
+  week: "本周",
+  month: "本月",
+};
+
 const DELETE_WINDOW_MS = 5 * 60 * 1000;
 
-export function GradesCard({ grades, onAdd, onDelete }: Props) {
+export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
   const [subjectId, setSubjectId] = useState(STUDY_CONFIG.subjects[0]?.id ?? "");
   const [paperId, setPaperId] = useState("");
+  const [range, setRange] = useState<Range>("all");
 
   const papers = STUDY_CONFIG.papers.filter((p) => p.subjectId === subjectId);
   const points: Point[] = useMemo(
@@ -204,9 +193,20 @@ export function GradesCard({ grades, onAdd, onDelete }: Props) {
     [grades, subjectId, paperId],
   );
 
-  const recent = [...grades]
-    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.createdAt - a.createdAt))
-    .slice(0, 5);
+  const recent = useMemo(() => {
+    const from =
+      range === "today"
+        ? today
+        : range === "week"
+          ? weekStart(today)
+          : range === "month"
+            ? monthStart(today)
+            : "";
+    return [...grades]
+      .filter((g) => !from || g.date >= from)
+      .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.createdAt - a.createdAt))
+      .slice(0, 8);
+  }, [grades, range, today]);
 
   const field =
     "h-8 rounded-lg border border-input bg-card px-2 text-[13px] outline-none focus-visible:ring-2 focus-visible:ring-ring";
@@ -278,23 +278,37 @@ export function GradesCard({ grades, onAdd, onDelete }: Props) {
               暂无成绩，先在左侧录入一条
             </p>
           )}
+          <div className="flex gap-1">
+            {(Object.keys(RANGE_LABEL) as Range[]).map((r) => (
+              <Button
+                key={r}
+                size="sm"
+                variant={range === r ? "secondary" : "ghost"}
+                className="h-7 px-2.5 text-xs"
+                onClick={() => setRange(r)}
+              >
+                {RANGE_LABEL[r]}
+              </Button>
+            ))}
+          </div>
           <div className="divide-y divide-border">
             {recent.map((g) => {
               const deletable = Date.now() - g.createdAt <= DELETE_WINDOW_MS;
+              const pct = Math.round((g.raw / g.max) * 100);
               return (
-                <div key={g.id} className="flex items-center justify-between py-2">
+                <div
+                  key={g.id}
+                  className="group relative flex items-center justify-between py-2"
+                >
                   <div>
                     <p className="text-sm font-medium">
                       {getSubject(g.subjectId)?.name} · {getPaper(g.paperId)?.name}
                     </p>
-                    <p className="text-xs tabular-nums text-muted-foreground">
-                      {g.date}
-                      {g.note ? ` · ${g.note}` : ""}
-                    </p>
+                    <p className="text-xs tabular-nums text-muted-foreground">{g.date}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-[13px] font-semibold tabular-nums">
-                      {g.raw}/{g.max} · {Math.round((g.raw / g.max) * 100)}%
+                      {g.raw}分 · {pct}%
                     </span>
                     {deletable ? (
                       <Button
@@ -308,9 +322,28 @@ export function GradesCard({ grades, onAdd, onDelete }: Props) {
                       </Button>
                     ) : null}
                   </div>
+                  <div className="pointer-events-none absolute right-0 top-full z-50 hidden w-60 group-hover:block">
+                    <div className="rounded-xl border bg-popover p-3 text-xs shadow-lg">
+                      <p className="font-semibold">
+                        {getSubject(g.subjectId)?.name} · {getPaper(g.paperId)?.name}
+                      </p>
+                      <p className="mt-1 tabular-nums text-muted-foreground">
+                        {g.date} · 得分 {g.raw}分 · {pct}%
+                      </p>
+                      <p className="tabular-nums text-muted-foreground">
+                        录入 {new Date(g.createdAt).toLocaleString("zh-CN", { hour12: false })}
+                      </p>
+                      {g.note ? <p className="mt-1">{g.note}</p> : null}
+                    </div>
+                  </div>
                 </div>
               );
             })}
+            {recent.length === 0 ? (
+              <p className="py-6 text-center text-[13px] text-muted-foreground">
+                这个范围暂无记录
+              </p>
+            ) : null}
           </div>
         </div>
       </CardContent>

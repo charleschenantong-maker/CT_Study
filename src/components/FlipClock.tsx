@@ -1,41 +1,14 @@
-import { useEffect, useState } from "react";
+import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
+import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { countdownTo } from "@/study/exams";
 import type { ExamDefinition } from "@/study/types";
 
-function FlipUnit({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <div
-        className="[perspective:200px]"
-        aria-label={`${label} ${value}`}
-        role="timer"
-      >
-        <div
-          key={value}
-          className="flip-tick min-w-[64px] rounded-xl bg-black px-2 py-3 text-center text-4xl font-bold tabular-nums text-white dark:bg-white dark:text-black"
-        >
-          {value}
-        </div>
-      </div>
-      <span className="text-[11px] tabular-nums text-muted-foreground">{label}</span>
-    </div>
-  );
-}
-
 export function FlipClock({ exam }: { exam: ExamDefinition | undefined }) {
-  const [now, setNow] = useState(() => Date.now());
-
-  useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(t);
-  }, []);
-
   if (!exam) {
     return (
       <Card>
@@ -51,7 +24,7 @@ export function FlipClock({ exam }: { exam: ExamDefinition | undefined }) {
     );
   }
 
-  const c = countdownTo(exam, now);
+  const [y, m, d] = exam.date.split("-").map(Number);
   return (
     <Card>
       <CardHeader>
@@ -62,16 +35,15 @@ export function FlipClock({ exam }: { exam: ExamDefinition | undefined }) {
           </span>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="flex items-start justify-center gap-2 sm:gap-3">
-          <FlipUnit value={c.days} label="天" />
-          <span className="pt-3 text-2xl font-bold text-muted-foreground">:</span>
-          <FlipUnit value={c.hours} label="时" />
-          <span className="pt-3 text-2xl font-bold text-muted-foreground">:</span>
-          <FlipUnit value={c.minutes} label="分" />
-          <span className="pt-3 text-2xl font-bold text-muted-foreground">:</span>
-          <FlipUnit value={c.seconds} label="秒" />
-        </div>
+      <CardContent className="flex justify-center overflow-x-auto py-2">
+        <FlipClockCountdown
+          to={new Date(y, m - 1, d).getTime()}
+          labels={["天", "时", "分", "秒"]}
+          labelStyle={{ fontSize: 11, color: "var(--muted-foreground)" }}
+          digitBlockStyle={{ width: 42, height: 62, fontSize: 30 }}
+          duration={0.5}
+          hideOnComplete={false}
+        />
       </CardContent>
     </Card>
   );

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Moon, Sun } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Monitor, Moon, Sun } from "lucide-react";
 import { Titlebar } from "@/components/titlebar";
 import { CheckinCard } from "@/components/CheckinCard";
 import { StreakCard } from "@/components/StreakCard";
@@ -13,14 +12,31 @@ import { ExamSchedule } from "@/components/ExamSchedule";
 import { nearestExam, upcomingExams } from "@/study/exams";
 import { usePlanner } from "@/study/usePlanner";
 
+type Theme = "light" | "dark" | "system";
+
+const THEMES: Array<{ v: Theme; Icon: typeof Sun; label: string }> = [
+  { v: "light", Icon: Sun, label: "浅色" },
+  { v: "dark", Icon: Moon, label: "深色" },
+  { v: "system", Icon: Monitor, label: "跟随系统" },
+];
+
 function App() {
-  const [dark, setDark] = useState(false);
+  const [theme, setTheme] = useState<Theme>("system");
   const [pinnedExamId, setPinnedExamId] = useState<string | null>(null);
   const p = usePlanner();
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-  }, [dark]);
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => {
+      const dark = theme === "dark" || (theme === "system" && mq.matches);
+      document.documentElement.classList.toggle("dark", dark);
+    };
+    apply();
+    if (theme === "system") {
+      mq.addEventListener("change", apply);
+      return () => mq.removeEventListener("change", apply);
+    }
+  }, [theme]);
 
   const doneIds = new Set(
     p.history.completions
@@ -35,22 +51,24 @@ function App() {
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <Titlebar />
-      <header className="flex shrink-0 items-center justify-between border-b border-border px-5 py-2.5">
-        <div>
-          <h1 className="text-[17px] font-bold tracking-tight">Planner</h1>
-          <p className="text-xs tabular-nums text-muted-foreground">
-            {p.today} · 今日 {p.todayXp} XP
-          </p>
+      <header className="flex shrink-0 items-center justify-end border-b border-border px-5 py-2">
+        <div className="flex items-center rounded-full border bg-card p-0.5">
+          {THEMES.map(({ v, Icon, label }) => (
+            <button
+              key={v}
+              onClick={() => setTheme(v)}
+              aria-label={label}
+              title={label}
+              className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
+                theme === v
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Icon className="size-4" />
+            </button>
+          ))}
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          onClick={() => setDark((d) => !d)}
-          aria-label="切换深色模式"
-        >
-          {dark ? <Sun /> : <Moon />}
-        </Button>
       </header>
 
       {!p.loaded ? (
@@ -58,38 +76,37 @@ function App() {
       ) : (
         <main className="flex min-h-0 flex-1 gap-4 p-4">
           <section className="w-[300px] shrink-0 space-y-4 overflow-y-auto pb-2">
-            <CheckinCard
-              todayLabel={p.today}
-              todayXp={p.todayXp}
-              doneIds={doneIds}
-              onToggle={p.toggleTask}
-            />
+            <p className="px-1 text-xs tabular-nums text-muted-foreground">
+              {p.today} · 今日 {p.todayXp} XP
+            </p>
+            <CheckinCard doneIds={doneIds} onToggle={p.toggleTask} />
             <WeeklyCard quotas={p.quotas} />
+            <XpCard
+              today={p.todayXp}
+              week={p.weekXp}
+              month={p.monthXp}
+              total={p.totalXp}
+            />
           </section>
 
           <section className="min-w-0 flex-1 space-y-4 overflow-y-auto pb-2">
             <FlipClock exam={target} />
-            <div className="grid items-start gap-4 xl:grid-cols-5">
-              <div className="space-y-4 xl:col-span-3">
-                <StreakCard
-                  current={p.streakNow}
-                  best={p.streakBest}
-                  repair={p.repair}
-                  onRepair={p.repairYesterday}
-                />
-              </div>
-              <div className="xl:col-span-2">
-                <XpCard
-                  today={p.todayXp}
-                  week={p.weekXp}
-                  month={p.monthXp}
-                  total={p.totalXp}
-                />
-              </div>
+            <div className="grid items-stretch gap-4 xl:grid-cols-[280px_1fr]">
+              <StreakCard
+                current={p.streakNow}
+                best={p.streakBest}
+                repair={p.repair}
+                onRepair={p.repairYesterday}
+                className="h-full"
+              />
+              <ContributionGrid
+                xpOf={(d) => p.xpMap.get(d) ?? 0}
+                className="h-full"
+              />
             </div>
-            <ContributionGrid xpOf={(d) => p.xpMap.get(d) ?? 0} />
             <GradesCard
               grades={p.history.grades}
+              today={p.today}
               onAdd={p.addGrade}
               onDelete={p.deleteGrade}
             />
