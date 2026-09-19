@@ -1,22 +1,32 @@
 /* Weekly quota domain: progress per planned task, derived from completions. */
 
-import { STUDY_CONFIG } from "./config";
 import { addDays, weekStart } from "./dates";
+import { WEEKLY_QUOTAS } from "./planData";
 import type { QuotaProgress, TaskCompletionRecord } from "./types";
 import { fullCompletionsOf } from "./xp";
+
+function completedInWeek(
+  taskId: string,
+  weekMonday: string,
+  completions: TaskCompletionRecord[],
+): number {
+  let completed = 0;
+  for (let i = 0; i < 7; i++) {
+    completed += fullCompletionsOf(completions, taskId, addDays(weekMonday, i)).length;
+  }
+  return completed;
+}
 
 export function quotaProgress(
   taskId: string,
   weekRefKey: string,
   completions: TaskCompletionRecord[],
+  targetOverride?: number,
 ): QuotaProgress {
-  const quota = STUDY_CONFIG.weeklyPlan.find((q) => q.taskId === taskId);
-  const target = quota?.timesPerWeek ?? 0;
   const start = weekStart(weekRefKey);
-  let completed = 0;
-  for (let i = 0; i < 7; i++) {
-    completed += fullCompletionsOf(completions, taskId, addDays(start, i)).length;
-  }
+  const target =
+    targetOverride ?? WEEKLY_QUOTAS[start]?.find((q) => q.taskId === taskId)?.timesPerWeek ?? 0;
+  const completed = completedInWeek(taskId, start, completions);
   return {
     taskId,
     target,
@@ -26,11 +36,22 @@ export function quotaProgress(
   };
 }
 
+/** Quota progress for the week containing weekStartKey, from WEEKLY_QUOTAS. */
+export function quotasForWeek(
+  weekStartKey: string,
+  completions: TaskCompletionRecord[],
+): QuotaProgress[] {
+  const start = weekStart(weekStartKey);
+  const quotas = WEEKLY_QUOTAS[start] ?? [];
+  return quotas.map((q) =>
+    quotaProgress(q.taskId, start, completions, q.timesPerWeek),
+  );
+}
+
+/** Back-compat alias: weekly progress for the week containing weekRefKey. */
 export function allQuotaProgress(
   weekRefKey: string,
   completions: TaskCompletionRecord[],
 ): QuotaProgress[] {
-  return STUDY_CONFIG.weeklyPlan.map((q) =>
-    quotaProgress(q.taskId, weekRefKey, completions),
-  );
+  return quotasForWeek(weekRefKey, completions);
 }

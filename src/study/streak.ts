@@ -1,17 +1,24 @@
 /*
- * Streak domain. A day is COMPLETE when every active core task has a
- * full completion that day (falls back to "any XP" if no core tasks
- * are configured). Repairs only cover the immediately previous missed day.
+ * Streak domain, plan-aware.
+ * - When a DailyPlanEntry exists for the date (via getEntry), the day is
+ *   COMPLETE when every core task in that day's plan has a full completion.
+ * - Dates without a plan fall back to the legacy rule: every active core
+ *   task has a full completion (or "any XP" if no core tasks configured).
+ * Repairs only cover the immediately previous missed day.
  */
 
 import { STUDY_CONFIG, getTask } from "./config";
 import { addDays } from "./dates";
 import type {
+  DailyPlanEntry,
   DayStatus,
   StreakRepairRecord,
   TaskCompletionRecord,
 } from "./types";
 import { fullCompletionsOf, sumXp } from "./xp";
+
+/** Lookup for the daily plan; returns undefined when the date has no plan. */
+export type PlanLookup = (date: string) => DailyPlanEntry | undefined;
 
 export function coreTasks() {
   return STUDY_CONFIG.tasks.filter((t) => t.active !== false && t.core === true);
@@ -25,8 +32,25 @@ export function dayStatus(
   date: string,
   completions: TaskCompletionRecord[],
   repairs: StreakRepairRecord[],
+  getEntry?: PlanLookup,
 ): DayStatus {
   if (repairedDates(repairs).has(date)) return "repaired";
+  const entry = getEntry?.(date);
+  if (entry) {
+    const planCoreTypes = [
+      ...new Set(entry.tasks.map((t) => t.type)),
+    ].filter((id) => {
+      const def = getTask(id);
+      return def !== undefined && def.active !== false && def.core === true;
+    });
+    if (planCoreTypes.length > 0) {
+      const ok = planCoreTypes.every(
+        (id) => fullCompletionsOf(completions, id, date).length > 0,
+      );
+      return ok ? "complete" : "missed";
+    }
+    // Plan exists but lists no core task: fall through to legacy rule.
+  }
   const cores = coreTasks();
   if (cores.length === 0) {
     return sumXp(completions.filter((r) => r.date === date)) > 0
@@ -65,13 +89,14 @@ export function repairEligibility(
   today: string,
   completions: TaskCompletionRecord[],
   repairs: StreakRepairRecord[],
+  getEntry?: PlanLookup,
 ): RepairEligibility {
   const missedDate = addDays(today, -1);
   const cost = STUDY_CONFIG.streakRepairCostXp;
-  if (dayStatus(missedDate, completions, repairs) !== "missed") {
+  if (dayStatus(missedDate, completions, repairs, getEntry) !== "missed") {
     return { eligible: false, missedDate, cost, reason: "昨日未断签，无需修复" };
   }
-  if (dayStatus(today, completions, repairs) !== "complete") {
+  if (dayStatus(today, completions, repairs, getEntry) !== "complete") {
     return { eligible: false, missedDate, cost, reason: "先完成今日全部核心任务" };
   }
   if (additionalXpToday(today, completions) < cost) {
@@ -89,8 +114,9 @@ function isGoodDay(
   date: string,
   completions: TaskCompletionRecord[],
   repairs: StreakRepairRecord[],
+  getEntry?: PlanLookup,
 ): boolean {
-  const s = dayStatus(date, completions, repairs);
+  const s = dayStatus(date, completions, repairs, getEntry);
   return s === "complete" || s === "repaired";
 }
 
@@ -98,10 +124,13 @@ export function currentStreak(
   today: string,
   completions: TaskCompletionRecord[],
   repairs: StreakRepairRecord[],
+  getEntry?: PlanLookup,
 ): number {
-  let day = isGoodDay(today, completions, repairs) ? today : addDays(today, -1);
+  let day = isGoodDay(today, completions, repairs, getEntry)
+    ? today
+    : addDays(today, -1);
   let n = 0;
-  while (isGoodDay(day, completions, repairs)) {
+  while (isGoodDay(day, completions, repairs, getEntry)) {
     n++;
     day = addDays(day, -1);
     if (n > 3650) break;
@@ -113,12 +142,13 @@ export function longestStreak(
   today: string,
   completions: TaskCompletionRecord[],
   repairs: StreakRepairRecord[],
+  getEntry?: PlanLookup,
   lookbackDays = 730,
 ): number {
   let best = 0;
   let run = 0;
   for (let i = lookbackDays; i >= 0; i--) {
-    if (isGoodDay(addDays(today, -i), completions, repairs)) {
+    if (isGoodDay(addDays(today, -i), completions, repairs, getEntry)) {
       run++;
       best = Math.max(best, run);
     } else {

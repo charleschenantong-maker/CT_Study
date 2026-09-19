@@ -48,11 +48,22 @@ export interface ContributionBucket {
   level: number;
 }
 
+export interface DailyTaskRef {
+  type: string;
+  label?: string;
+}
+
+export interface DailyPlanEntry {
+  date: string;
+  dayType: string;
+  tasks: DailyTaskRef[];
+  note?: string;
+}
+
 export interface StudyConfig {
   tasks: StudyTaskDefinition[];
   subjects: SubjectDefinition[];
   papers: PaperDefinition[];
-  weeklyPlan: WeeklyQuota[];
   streakRepairCostXp: number;
   contributionBuckets: ContributionBucket[];
   exams: ExamDefinition[];

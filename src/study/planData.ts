@@ -1,0 +1,771 @@
+/*
+ * Real study-plan data transcribed from the authoritative exports.
+ * - Daily Plan sheet: 2026-09-21 .. 2026-11-16 (57 days).
+ * - Weekly Summary sheet: 9 Monday-start weeks.
+ * Read-only mirror: do not edit the source .txt files; edit here only
+ * if the plan itself changes.
+ */
+
+import type { DailyPlanEntry, WeeklyQuota } from "./types";
+
+/**
+ * Daily plan, one entry per calendar day.
+ * Transcription rule:
+ * - Paper 1-6 non-blank -> { type: '<paper-type-id>' } in column order.
+ *   P SAQ->p-saq, C SAQ->c-saq, B SAQ->b-saq,
+ *   P MCQ->p-mcq, C MCQ->c-mcq, B MCQ->b-mcq.
+ * - BPhO column -> { type: 'bpho', label: <cell text verbatim> }.
+ * - Extra Study column -> { type: 'math', label: <cell text verbatim> }.
+ * - Pre-exam Review column -> { type: 'review', label: <cell text verbatim> }.
+ * - Day Type column -> dayType; Notes column -> note.
+ */
+export const DAILY_PLAN: DailyPlanEntry[] = [
+  {
+    date: "2026-09-21",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2018 S1" },
+    ],
+    note: "Six science papers + BPhO. This is the standard full-study-day structure.",
+  },
+  {
+    date: "2026-09-22",
+    dayType: "School",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-mcq" },
+      { type: "b-saq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "School day; reduced paper count, but BPhO still happens.",
+  },
+  {
+    date: "2026-09-23",
+    dayType: "School",
+    tasks: [
+      { type: "c-saq" },
+      { type: "b-mcq" },
+      { type: "p-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "math", label: "Math P1 full/selective practice" },
+    ],
+    note: "School day.",
+  },
+  {
+    date: "2026-09-24",
+    dayType: "School",
+    tasks: [
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "bpho", label: "BPhO 2018 S2" },
+    ],
+    note: "School day; may become one of the two outing/flex days.",
+  },
+  {
+    date: "2026-09-25",
+    dayType: "School",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "math", label: "Math P5 full/selective practice" },
+    ],
+    note: "School day.",
+  },
+  {
+    date: "2026-09-26",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-09-27",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2019 S1" },
+      { type: "math", label: "Math P1 full/selective practice" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-09-28",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-09-29",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "math", label: "Math P5 full/selective practice" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-09-30",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2019 S2" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-01",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "math", label: "Math P1 full/selective practice" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-02",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-03",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2020 S1" },
+      { type: "math", label: "Math P5 full/selective practice" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-04",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-05",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "math", label: "Math P1 full/selective practice" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-06",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2020 S2" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-07",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "math", label: "Math P5 full/selective practice" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-08",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-09",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2021 S1" },
+      { type: "math", label: "Math P1 selected problems" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-10",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "math", label: "Math P5 selected problems" },
+    ],
+    note: "Full study day: six science papers, all different subject/paper types, plus BPhO.",
+  },
+  {
+    date: "2026-10-11",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-saq" },
+      { type: "c-saq" },
+      { type: "b-saq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "review", label: "English Lit P1 review + Math P1 targeted review" },
+    ],
+    note: "Day before English Lit P1; reduced full-paper load. Reviews are not counted as paper slots.",
+  },
+  {
+    date: "2026-10-12",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO 2021 S2" },
+      { type: "review", label: "English Lit P1 final review; after exam → Math P1 targeted review" },
+    ],
+    note: "Afternoon exam; ~4 h study outside exam.",
+  },
+  {
+    date: "2026-10-13",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO light daily practice" },
+      { type: "review", label: "Math P1 final review; after exam → Physics SAQ targeted review" },
+    ],
+    note: "Afternoon exam.",
+  },
+  {
+    date: "2026-10-14",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO light daily practice" },
+      { type: "review", label: "Physics SAQ final review; after exam → Math P5 targeted review" },
+    ],
+    note: "Afternoon exam.",
+  },
+  {
+    date: "2026-10-15",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO 2022 S1" },
+      { type: "review", label: "Math P5 final review; after exam → Chemistry SAQ targeted review" },
+    ],
+    note: "Afternoon exam.",
+  },
+  {
+    date: "2026-10-16",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO light daily practice" },
+      { type: "review", label: "Chemistry SAQ final review; after exam → Biology SAQ targeted review" },
+    ],
+    note: "Afternoon exam.",
+  },
+  {
+    date: "2026-10-17",
+    dayType: "Full study",
+    tasks: [
+      { type: "b-saq" },
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "Last Biology SAQ full paper; four active paper types remain.",
+  },
+  {
+    date: "2026-10-18",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2022 S2" },
+      { type: "review", label: "Biology SAQ targeted weak-topic / selected-question review" },
+    ],
+    note: "2 days before Biology SAQ: no full Biology SAQ.",
+  },
+  {
+    date: "2026-10-19",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "review", label: "Biology SAQ final review" },
+    ],
+    note: "1 day before Biology SAQ.",
+  },
+  {
+    date: "2026-10-20",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO light daily practice" },
+      { type: "review", label: "Biology SAQ final review" },
+    ],
+    note: "Afternoon Biology SAQ exam.",
+  },
+  {
+    date: "2026-10-21",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2022 IPC" },
+    ],
+    note: "MCQ phase: one of each science MCQ + BPhO.",
+  },
+  {
+    date: "2026-10-22",
+    dayType: "Exam",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "bpho", label: "BPhO light daily practice" },
+      { type: "review", label: "English Lit P2 review" },
+    ],
+    note: "Physics Practical; no dedicated practical review.",
+  },
+  {
+    date: "2026-10-23",
+    dayType: "Exam",
+    tasks: [
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO light daily practice" },
+      { type: "review", label: "English Lit P2 final review" },
+    ],
+    note: "Afternoon English Lit P2 exam.",
+  },
+  {
+    date: "2026-10-24",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2023 SPC" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-10-25",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-10-26",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-10-27",
+    dayType: "Exam",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2023 S1" },
+    ],
+    note: "Chemistry Practical; still keep one of each MCQ if time permits. No practical review.",
+  },
+  {
+    date: "2026-10-28",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-10-29",
+    dayType: "Exam",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO light daily practice" },
+    ],
+    note: "Biology Practical; still keep one of each MCQ if time permits. No practical review.",
+  },
+  {
+    date: "2026-10-30",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2023 S2" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-10-31",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-11-01",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-11-02",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2024 S1" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-11-03",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-11-04",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-11-05",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO 2024 S2" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-11-06",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-11-07",
+    dayType: "Full study",
+    tasks: [
+      { type: "p-mcq" },
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+    ],
+    note: "One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.",
+  },
+  {
+    date: "2026-11-08",
+    dayType: "Full study",
+    tasks: [
+      { type: "c-mcq" },
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "review", label: "Physics MCQ targeted review" },
+    ],
+    note: "Physics MCQ is 2 days away: no full Physics MCQ.",
+  },
+  {
+    date: "2026-11-09",
+    dayType: "Full study",
+    tasks: [
+      { type: "b-mcq" },
+      { type: "bpho", label: "BPhO selected problems" },
+      { type: "review", label: "Physics MCQ final review + Chemistry MCQ targeted review" },
+    ],
+    note: "No full Physics/Chemistry MCQ.",
+  },
+  {
+    date: "2026-11-10",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO light daily practice" },
+      { type: "review", label: "Physics MCQ final review; after exam → Chemistry MCQ targeted review" },
+    ],
+    note: "Afternoon Physics MCQ exam.",
+  },
+  {
+    date: "2026-11-11",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO light daily practice" },
+      { type: "review", label: "Chemistry MCQ final review; after exam → Biology MCQ targeted review" },
+    ],
+    note: "Afternoon Chemistry MCQ exam.",
+  },
+  {
+    date: "2026-11-12",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO light daily practice" },
+      { type: "review", label: "Biology MCQ final review" },
+    ],
+    note: "Afternoon Biology MCQ exam.",
+  },
+  {
+    date: "2026-11-13",
+    dayType: "Full study",
+    tasks: [
+      { type: "bpho", label: "BPhO final review / timed mixed" },
+      { type: "review", label: "BPhO weak topics / error patterns" },
+    ],
+    note: "BPhO is now the only remaining exam.",
+  },
+  {
+    date: "2026-11-14",
+    dayType: "Full study",
+    tasks: [
+      { type: "bpho", label: "BPhO final review / timed mixed" },
+      { type: "review", label: "BPhO targeted final preparation" },
+    ],
+  },
+  {
+    date: "2026-11-15",
+    dayType: "Full study",
+    tasks: [
+      { type: "bpho", label: "BPhO final review / timed mixed" },
+      { type: "review", label: "BPhO light final preparation; finish early" },
+    ],
+  },
+  {
+    date: "2026-11-16",
+    dayType: "Exam",
+    tasks: [
+      { type: "bpho", label: "BPhO warm-up" },
+      { type: "review", label: "BPhO warm-up only" },
+    ],
+    note: "BPhO Round 1.",
+  },
+];
+
+/**
+ * Weekly quotas transcribed from the Weekly Summary sheet.
+ * Key = Monday date (week start). Column mapping:
+ * P SAQ->p-saq, C SAQ->c-saq, B SAQ->b-saq,
+ * P MCQ->p-mcq, C MCQ->c-mcq, B MCQ->b-mcq, BPhO Days->bpho.
+ */
+export const WEEKLY_QUOTAS: Record<string, WeeklyQuota[]> = {
+  "2026-09-21": [
+    { taskId: "p-saq", timesPerWeek: 5 },
+    { taskId: "c-saq", timesPerWeek: 5 },
+    { taskId: "b-saq", timesPerWeek: 5 },
+    { taskId: "p-mcq", timesPerWeek: 5 },
+    { taskId: "c-mcq", timesPerWeek: 5 },
+    { taskId: "b-mcq", timesPerWeek: 5 },
+    { taskId: "bpho", timesPerWeek: 7 },
+  ],
+  "2026-09-28": [
+    { taskId: "p-saq", timesPerWeek: 7 },
+    { taskId: "c-saq", timesPerWeek: 7 },
+    { taskId: "b-saq", timesPerWeek: 7 },
+    { taskId: "p-mcq", timesPerWeek: 7 },
+    { taskId: "c-mcq", timesPerWeek: 7 },
+    { taskId: "b-mcq", timesPerWeek: 7 },
+    { taskId: "bpho", timesPerWeek: 7 },
+  ],
+  "2026-10-05": [
+    { taskId: "p-saq", timesPerWeek: 7 },
+    { taskId: "c-saq", timesPerWeek: 7 },
+    { taskId: "b-saq", timesPerWeek: 7 },
+    { taskId: "p-mcq", timesPerWeek: 6 },
+    { taskId: "c-mcq", timesPerWeek: 6 },
+    { taskId: "b-mcq", timesPerWeek: 6 },
+    { taskId: "bpho", timesPerWeek: 7 },
+  ],
+  "2026-10-12": [
+    { taskId: "p-saq", timesPerWeek: 0 },
+    { taskId: "c-saq", timesPerWeek: 0 },
+    { taskId: "b-saq", timesPerWeek: 1 },
+    { taskId: "p-mcq", timesPerWeek: 2 },
+    { taskId: "c-mcq", timesPerWeek: 2 },
+    { taskId: "b-mcq", timesPerWeek: 2 },
+    { taskId: "bpho", timesPerWeek: 7 },
+  ],
+  "2026-10-19": [
+    { taskId: "p-saq", timesPerWeek: 0 },
+    { taskId: "c-saq", timesPerWeek: 0 },
+    { taskId: "b-saq", timesPerWeek: 0 },
+    { taskId: "p-mcq", timesPerWeek: 5 },
+    { taskId: "c-mcq", timesPerWeek: 4 },
+    { taskId: "b-mcq", timesPerWeek: 5 },
+    { taskId: "bpho", timesPerWeek: 7 },
+  ],
+  "2026-10-26": [
+    { taskId: "p-saq", timesPerWeek: 0 },
+    { taskId: "c-saq", timesPerWeek: 0 },
+    { taskId: "b-saq", timesPerWeek: 0 },
+    { taskId: "p-mcq", timesPerWeek: 7 },
+    { taskId: "c-mcq", timesPerWeek: 7 },
+    { taskId: "b-mcq", timesPerWeek: 7 },
+    { taskId: "bpho", timesPerWeek: 7 },
+  ],
+  "2026-11-02": [
+    { taskId: "p-saq", timesPerWeek: 0 },
+    { taskId: "c-saq", timesPerWeek: 0 },
+    { taskId: "b-saq", timesPerWeek: 0 },
+    { taskId: "p-mcq", timesPerWeek: 6 },
+    { taskId: "c-mcq", timesPerWeek: 7 },
+    { taskId: "b-mcq", timesPerWeek: 7 },
+    { taskId: "bpho", timesPerWeek: 7 },
+  ],
+  "2026-11-09": [
+    { taskId: "p-saq", timesPerWeek: 0 },
+    { taskId: "c-saq", timesPerWeek: 0 },
+    { taskId: "b-saq", timesPerWeek: 0 },
+    { taskId: "p-mcq", timesPerWeek: 0 },
+    { taskId: "c-mcq", timesPerWeek: 0 },
+    { taskId: "b-mcq", timesPerWeek: 1 },
+    { taskId: "bpho", timesPerWeek: 7 },
+  ],
+  "2026-11-16": [
+    { taskId: "p-saq", timesPerWeek: 0 },
+    { taskId: "c-saq", timesPerWeek: 0 },
+    { taskId: "b-saq", timesPerWeek: 0 },
+    { taskId: "p-mcq", timesPerWeek: 0 },
+    { taskId: "c-mcq", timesPerWeek: 0 },
+    { taskId: "b-mcq", timesPerWeek: 0 },
+    { taskId: "bpho", timesPerWeek: 1 },
+  ],
+};

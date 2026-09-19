@@ -6,9 +6,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { STUDY_CONFIG, getTask } from "./config";
 import { monthStart, todayKey, weekStart } from "./dates";
+import { DAILY_PLAN } from "./planData";
 import { loadHistory, saveHistory } from "./store";
 import { currentStreak, longestStreak, repairEligibility } from "./streak";
-import { allQuotaProgress } from "./weekly";
+import { quotasForWeek } from "./weekly";
 import { sumXp, xpByDay, xpOnDay } from "./xp";
 import type {
   GradeRecord,
@@ -20,6 +21,10 @@ const EMPTY: PlannerHistory = { completions: [], grades: [], repairs: [] };
 
 function uid() {
   return crypto.randomUUID();
+}
+
+function findEntry(date: string) {
+  return DAILY_PLAN.find((e) => e.date === date);
 }
 
 export function usePlanner() {
@@ -44,7 +49,7 @@ export function usePlanner() {
     void saveHistory(history).catch((e) => console.error("[store] save failed:", e));
   }, [history, loaded]);
 
-  function toggleTask(taskId: string) {
+  function toggleTask(taskId: string, displayName?: string) {
     const task = getTask(taskId);
     if (!task || task.active === false) return;
     setHistory((prev) => {
@@ -58,7 +63,7 @@ export function usePlanner() {
             {
               id: uid(),
               taskId,
-              taskName: task.name,
+              taskName: displayName ?? task.name,
               date: today,
               xpEarned: task.xp,
               fraction: 1,
@@ -98,7 +103,7 @@ export function usePlanner() {
   }
 
   function repairYesterday() {
-    const e = repairEligibility(today, history.completions, history.repairs);
+    const e = repairEligibility(today, history.completions, history.repairs, findEntry);
     if (!e.eligible) return;
     setHistory((prev) => ({
       ...prev,
@@ -126,10 +131,11 @@ export function usePlanner() {
       weekXp: sumXp(inWeek),
       monthXp: sumXp(inMonth),
       totalXp: sumXp(completions),
-      quotas: allQuotaProgress(today, completions),
-      streakNow: currentStreak(today, completions, repairs),
-      streakBest: longestStreak(today, completions, repairs),
-      repair: repairEligibility(today, completions, repairs),
+      quotas: quotasForWeek(weekStart(today), completions),
+      streakNow: currentStreak(today, completions, repairs, findEntry),
+      streakBest: longestStreak(today, completions, repairs, findEntry),
+      repair: repairEligibility(today, completions, repairs, findEntry),
+      todayPlan: findEntry(today),
       xpMap,
       gradesSorted: [...grades].sort((a, b) =>
         a.date < b.date ? 1 : a.date > b.date ? -1 : b.createdAt - a.createdAt,
