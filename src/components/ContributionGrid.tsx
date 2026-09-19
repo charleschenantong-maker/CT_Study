@@ -37,20 +37,26 @@ export function ContributionGrid({
         <CardDescription>颜色越深投入越多 · 悬浮查看每日投入</CardDescription>
       </CardHeader>
       <CardContent className="overflow-x-auto">
-        <ActivityCalendar
-          data={data}
-          theme={{ light: LIGHT, dark: DARK }}
-          colorScheme={dark ? "dark" : "light"}
-          blockSize={12}
-          blockMargin={3}
-          blockRadius={3}
-          fontSize={12}
-          weekStart={1}
-          labels={{
-            totalCount: "{{count}} XP · 过去一年",
-            legend: { less: "少", more: "多" },
-          }}
-        />
+        {data.length > 0 ? (
+          <ActivityCalendar
+            data={data}
+            theme={{ light: LIGHT, dark: DARK }}
+            colorScheme={dark ? "dark" : "light"}
+            blockSize={12}
+            blockMargin={3}
+            blockRadius={3}
+            fontSize={12}
+            weekStart={1}
+            labels={{
+              totalCount: "{{count}} XP · 过去一年",
+              legend: { less: "少", more: "多" },
+            }}
+          />
+        ) : (
+          <p className="py-8 text-center text-[13px] text-muted-foreground">
+            暂无投入记录，完成一次打卡后这里会点亮
+          </p>
+        )}
       </CardContent>
     </Card>
   );

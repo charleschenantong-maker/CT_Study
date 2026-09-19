@@ -26,6 +26,11 @@ export function WeeklyCard({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        {quotas.length === 0 ? (
+          <p className="py-4 text-center text-[13px] text-muted-foreground">
+            本周计划外，暂无配额
+          </p>
+        ) : null}
         {quotas.map((q) => {
           const task = getTask(q.taskId);
           const pct = q.target > 0 ? Math.min(100, (q.completed / q.target) * 100) : 0;
