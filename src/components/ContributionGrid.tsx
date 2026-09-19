@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { t, type Lang } from "@/settings/i18n";
 import { todayKey } from "@/study/dates";
 import { buildGrid } from "@/study/grid";
 
@@ -30,9 +31,11 @@ interface Tip {
 export function ContributionGrid({
   xpOf,
   className,
+  lang = "zh",
 }: {
   xpOf: (date: string) => number;
   className?: string;
+  lang?: Lang;
 }) {
   const today = todayKey();
   const weeks = buildGrid(today, WEEKS, xpOf);
@@ -43,15 +46,15 @@ export function ContributionGrid({
       <CardHeader>
         <div className="flex items-baseline justify-between">
           <div>
-            <CardTitle>投入日历</CardTitle>
-            <CardDescription>过去 {WEEKS} 周 · 颜色越深投入越多</CardDescription>
+            <CardTitle>{t(lang, "cal.title")}</CardTitle>
+            <CardDescription>{t(lang, "cal.descPrefix")}{WEEKS}{t(lang, "cal.descMid")}</CardDescription>
           </div>
           <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-            少
+            {t(lang, "cal.less")}
             {LEVELS.map((c, i) => (
               <span key={i} className={cn("size-[11px] rounded-[3px]", c)} />
             ))}
-            多
+            {t(lang, "cal.more")}
           </div>
         </div>
       </CardHeader>

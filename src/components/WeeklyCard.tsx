@@ -6,20 +6,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getTask } from "@/study/config";
+import { t, type Lang } from "@/settings/i18n";
 import type { QuotaProgress } from "@/study/types";
 
 export function WeeklyCard({
   quotas,
   weekLabel,
+  lang = "zh",
 }: {
   quotas: QuotaProgress[];
   weekLabel: string;
+  lang?: Lang;
 }) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>
-          本周配额
+          {t(lang, "weekly.title")}
           <span className="ml-2 text-xs font-normal tabular-nums text-muted-foreground">
             {weekLabel}
           </span>
@@ -28,7 +31,7 @@ export function WeeklyCard({
       <CardContent className="space-y-4">
         {quotas.length === 0 ? (
           <p className="py-4 text-center text-[13px] text-muted-foreground">
-            本周计划外，暂无配额
+            {t(lang, "weekly.empty")}
           </p>
         ) : null}
         {quotas.map((q) => {
@@ -41,7 +44,7 @@ export function WeeklyCard({
                   {task?.name ?? q.taskId}
                   {q.done ? (
                     <span className="ml-2 text-xs font-normal text-muted-foreground">
-                      已达标
+                      {t(lang, "weekly.done")}
                     </span>
                   ) : null}
                 </p>
@@ -50,7 +53,7 @@ export function WeeklyCard({
                 </p>
               </div>
               <Progress
-                aria-label={`${task?.name ?? q.taskId} weekly progress`}
+                aria-label={t(lang, "weekly.progressAria").replace("{name}", task?.name ?? q.taskId)}
                 value={pct}
                 color="primary"
                 size="sm"

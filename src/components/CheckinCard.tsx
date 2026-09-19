@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getTask } from "@/study/config";
+import { t, type Lang } from "@/settings/i18n";
 import type { RepairEligibility } from "@/study/streak";
 import type { DailyPlanEntry } from "@/study/types";
 
@@ -19,6 +20,27 @@ interface Props {
   streakBest: number;
   repair: RepairEligibility;
   onRepair: () => void;
+  lang?: Lang;
+}
+
+/** streak.ts 只产出中文 reason（不许动该文件），在此映射到当前语言。 */
+function repairReasonText(reason: string, cost: number, lang: Lang): string {
+  if (
+    reason === "昨日未断签，无需修复" ||
+    reason === "No miss yesterday — no repair needed"
+  ) {
+    return t(lang, "repair.noNeed");
+  }
+  if (
+    reason === "先完成今日全部核心任务" ||
+    reason === "Finish all of today's core tasks first"
+  ) {
+    return t(lang, "repair.finishToday");
+  }
+  if (reason.startsWith("今日额外投入需") || reason.startsWith("Need ")) {
+    return t(lang, "repair.needExtra").replace("{cost}", String(cost));
+  }
+  return reason;
 }
 
 export function CheckinCard({
@@ -30,11 +52,12 @@ export function CheckinCard({
   streakBest,
   repair,
   onRepair,
+  lang = "zh",
 }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>今日打卡</CardTitle>
+        <CardTitle>{t(lang, "checkin.title")}</CardTitle>
         {todayPlan ? (
           <>
             <div className="flex items-center gap-2 pt-1">
@@ -57,7 +80,7 @@ export function CheckinCard({
           </>
         ) : (
           <p className="text-xs text-muted-foreground">
-            计划外日期（{today}）· 显示全部任务
+            {t(lang, "checkin.offPlanPrefix")}{today}{t(lang, "checkin.offPlanSuffix")}
           </p>
         )}
       </CardHeader>
@@ -78,7 +101,7 @@ export function CheckinCard({
                       {entry.label ?? task?.name ?? entry.type}
                       {task?.core ? (
                         <span className="ml-2 rounded-md bg-primary/10 px-1.5 py-0.5 text-[11px] font-semibold text-primary">
-                          核心
+                          {t(lang, "checkin.core")}
                         </span>
                       ) : null}
                     </p>
@@ -93,10 +116,10 @@ export function CheckinCard({
                   >
                     {done ? (
                       <>
-                        <Check /> 已完成
+                        <Check /> {t(lang, "checkin.done")}
                       </>
                     ) : (
-                      "打卡"
+                      t(lang, "checkin.checkin")
                     )}
                   </Button>
                 </div>
@@ -104,7 +127,7 @@ export function CheckinCard({
             })
           : (
             <p className="px-3 py-6 text-center text-[13px] text-muted-foreground">
-              计划外日期（{today}），暂无打卡任务
+              {t(lang, "checkin.offPlanPrefix")}{today}{t(lang, "checkin.offPlanEmpty")}
             </p>
           )}
       </CardContent>
@@ -117,24 +140,24 @@ export function CheckinCard({
           <div>
             <p className="text-3xl font-bold tabular-nums leading-none">
               {streakNow}
-              <span className="ml-1 text-sm font-medium text-muted-foreground">天</span>
+              <span className="ml-1 text-sm font-medium text-muted-foreground">{t(lang, "checkin.days")}</span>
             </p>
             <p className="mt-1 text-xs tabular-nums text-muted-foreground">
-              连续打卡 · 历史最长 {streakBest} 天
+              {t(lang, "checkin.streakPrefix")}{streakBest}{t(lang, "checkin.streakSuffix")}
             </p>
           </div>
         </div>
         {repair.eligible ? (
           <div className="space-y-2 rounded-xl bg-primary/[0.07] p-3">
             <p className="text-[13px]">
-              昨日断签，可用今日额外 {repair.cost} XP 修复
+              {t(lang, "checkin.repairHintPrefix")}{repair.cost}{t(lang, "checkin.repairHintSuffix")}
             </p>
             <Button size="sm" className="w-full" onClick={onRepair}>
-              修复昨日
+              {t(lang, "checkin.repair")}
             </Button>
           </div>
         ) : repair.reason ? (
-          <p className="text-xs text-muted-foreground">{repair.reason}</p>
+          <p className="text-xs text-muted-foreground">{repairReasonText(repair.reason, repair.cost, lang)}</p>
         ) : null}
       </CardContent>
     </Card>

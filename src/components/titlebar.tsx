@@ -7,6 +7,7 @@ import minimizeHover from "@/assets/traffic/minimize-hover.png";
 import maximizeBase from "@/assets/traffic/maximize-base.png";
 import maximizeHover from "@/assets/traffic/maximize-hover.png";
 import unfocused from "@/assets/traffic/unfocused.png";
+import { t, type Lang } from "@/settings/i18n";
 
 async function safeCall(fn: () => Promise<unknown>): Promise<void> {
   try {
@@ -83,7 +84,7 @@ function Light({ label, base, hover, focused, onClick }: LightProps) {
   );
 }
 
-export function Titlebar() {
+export function Titlebar({ lang = "zh" }: { lang?: Lang }) {
   const [focused, setFocused] = useState(true);
 
   useEffect(() => {
@@ -114,21 +115,21 @@ export function Titlebar() {
         className="group/traffic flex items-center gap-[4.5px]"
       >
         <Light
-          label="关闭"
+          label={t(lang, "tb.close")}
           base={closeBase}
           hover={closeHover}
           focused={focused}
           onClick={() => safeCall(() => getCurrentWindow().close())}
         />
         <Light
-          label="最小化"
+          label={t(lang, "tb.min")}
           base={minimizeBase}
           hover={minimizeHover}
           focused={focused}
           onClick={() => safeCall(() => getCurrentWindow().minimize())}
         />
         <Light
-          label="最大化"
+          label={t(lang, "tb.max")}
           base={maximizeBase}
           hover={maximizeHover}
           focused={focused}

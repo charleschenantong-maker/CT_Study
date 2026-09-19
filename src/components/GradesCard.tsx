@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { STUDY_CONFIG, getPaper, getSubject } from "@/study/config";
+import { t, type Lang, type StrKey } from "@/settings/i18n";
 import { monthStart, shortLabel, todayKey, weekStart } from "@/study/dates";
 import type { GradeRecord } from "@/study/types";
 
@@ -33,13 +34,15 @@ function GradeTip(props: {
   active?: boolean;
   payload?: Array<{ payload: Point }>;
   label?: string;
+  lang: Lang;
 }) {
   if (!props.active || !props.payload?.length) return null;
   const d = props.payload[0].payload;
+  const unit = t(props.lang, "grade.scoreUnit");
   return (
     <div className="rounded-xl border bg-popover px-3 py-2 text-xs shadow-lg">
       <p className="font-semibold tabular-nums">
-        {d.raw}分（{d.pct}%）
+        {props.lang === "zh" ? `${d.raw}${unit}（${d.pct}%）` : `${d.raw} ${unit} (${d.pct}%)`}
       </p>
       <p className="text-muted-foreground">{props.label}</p>
       {d.note ? <p className="mt-0.5 text-muted-foreground">{d.note}</p> : null}
@@ -56,9 +59,10 @@ interface FormProps {
     max: number;
     note?: string;
   }) => void;
+  lang: Lang;
 }
 
-function GradeForm({ onAdd }: FormProps) {
+function GradeForm({ onAdd, lang }: FormProps) {
   const [subjectId, setSubjectId] = useState(STUDY_CONFIG.subjects[0]?.id ?? "");
   const papers = STUDY_CONFIG.papers.filter((p) => p.subjectId === subjectId);
   const [paperId, setPaperId] = useState(papers[0]?.id ?? "");
@@ -79,21 +83,25 @@ function GradeForm({ onAdd }: FormProps) {
 
   function submit() {
     if (raw.trim() === "") {
-      setError("请输入得分");
+      setError(t(lang, "grade.errEmpty"));
       return;
     }
     const r = Number(raw);
     const m = paper?.maxMark ?? 0;
     if (!subjectId || !paperId || !paper || !date) {
-      setError("请完整选择科目、试卷和日期");
+      setError(t(lang, "grade.errIncomplete"));
       return;
     }
     if (!Number.isFinite(r) || r < 0) {
-      setError("得分必须是 ≥ 0 的数字");
+      setError(t(lang, "grade.errNumber"));
       return;
     }
     if (r > m) {
-      setError(`得分 ${r} 超过满分 ${m}`);
+      setError(
+        t(lang, "grade.errExceed")
+          .replace("{r}", String(r))
+          .replace("{m}", String(m)),
+      );
       return;
     }
     setError("");
@@ -108,7 +116,7 @@ function GradeForm({ onAdd }: FormProps) {
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <label className="space-y-1 text-xs text-muted-foreground">
-          日期
+          {t(lang, "grade.date")}
           <input
             type="date"
             value={date}
@@ -117,7 +125,7 @@ function GradeForm({ onAdd }: FormProps) {
           />
         </label>
         <label className="space-y-1 text-xs text-muted-foreground">
-          科目
+          {t(lang, "grade.subject")}
           <select value={subjectId} onChange={(e) => pickSubject(e.target.value)} className={field}>
             {STUDY_CONFIG.subjects.map((s) => (
               <option key={s.id} value={s.id}>
@@ -127,7 +135,7 @@ function GradeForm({ onAdd }: FormProps) {
           </select>
         </label>
         <label className="space-y-1 text-xs text-muted-foreground">
-          试卷
+          {t(lang, "grade.paper")}
           <select value={paperId} onChange={(e) => pickPaper(e.target.value)} className={field}>
             {papers.map((p) => (
               <option key={p.id} value={p.id}>
@@ -137,7 +145,7 @@ function GradeForm({ onAdd }: FormProps) {
           </select>
         </label>
         <label className="space-y-1 text-xs text-muted-foreground">
-          得分
+          {t(lang, "grade.score")}
           <input
             type="number"
             min={0}
@@ -148,12 +156,12 @@ function GradeForm({ onAdd }: FormProps) {
           />
         </label>
         <div className="flex items-end pb-0.5 text-xs tabular-nums text-muted-foreground">
-          满分 {paper ? paper.maxMark : "—"}（预设）
+          {t(lang, "grade.maxPrefix")}{paper ? paper.maxMark : "—"}{t(lang, "grade.presetSuffix")}
         </div>
       </div>
       {error ? <p className="text-xs text-destructive">{error}</p> : null}
       <Button size="sm" className="w-full" onClick={submit}>
-        <Plus /> 录入成绩
+        <Plus /> {t(lang, "grade.submit")}
       </Button>
     </div>
   );
@@ -165,20 +173,27 @@ interface Props {
   onAdd: FormProps["onAdd"];
   onDelete: (id: string) => void;
   onBulkDelete: (ids: string[]) => void;
+  lang?: Lang;
 }
 
 type Range = "all" | "today" | "week" | "month";
 
-const RANGE_LABEL: Record<Range, string> = {
-  all: "全部",
-  today: "今天",
-  week: "本周",
-  month: "本月",
+const RANGE_KEYS: Record<Range, StrKey> = {
+  all: "grade.all",
+  today: "grade.rangeToday",
+  week: "grade.rangeWeek",
+  month: "grade.rangeMonth",
+};
+
+const BULK_DEL_KEYS: Record<Exclude<Range, "all">, StrKey> = {
+  today: "grade.delToday",
+  week: "grade.delWeek",
+  month: "grade.delMonth",
 };
 
 const DELETE_WINDOW_MS = 5 * 60 * 1000;
 
-export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Props) {
+export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete, lang = "zh" }: Props) {
   const [subjectId, setSubjectId] = useState(STUDY_CONFIG.subjects[0]?.id ?? "");
   const [paperId, setPaperId] = useState("");
   const [range, setRange] = useState<Range>("all");
@@ -244,10 +259,11 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
     return grades.filter((g) => g.date >= from).map((g) => g.id);
   }
 
-  function bulkDelete(which: Exclude<Range, "all">, label: string) {
+  function bulkDelete(which: Exclude<Range, "all">) {
     const ids = idsIn(which);
     if (ids.length === 0) return;
-    if (window.confirm(`确定删除${label}的 ${ids.length} 条成绩？此操作不可恢复。`)) {
+    const label = t(lang, RANGE_KEYS[which]);
+    if (window.confirm(t(lang, "grade.bulkConfirm").replace("{label}", label).replace("{n}", String(ids.length)))) {
       onBulkDelete(ids);
     }
   }
@@ -273,10 +289,10 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
   return (
     <Card>
       <CardHeader>
-        <CardTitle>成绩追踪</CardTitle>
+        <CardTitle>{t(lang, "grade.title")}</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-6 min-[1300px]:grid-cols-[280px_1fr]">
-        <GradeForm onAdd={onAdd} />
+        <GradeForm onAdd={onAdd} lang={lang} />
         <div className="min-w-0 space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             <select
@@ -294,7 +310,7 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
               ))}
             </select>
             <select value={paperId} onChange={(e) => setPaperId(e.target.value)} className={field}>
-              <option value="">全部试卷</option>
+              <option value="">{t(lang, "grade.allPapers")}</option>
               {papers.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.name}
@@ -321,7 +337,7 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
                     width={38}
                     tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                   />
-                  <Tooltip content={<GradeTip />} />
+                  <Tooltip content={<GradeTip lang={lang} />} />
                   <Line
                     type="monotone"
                     dataKey="pct"
@@ -351,11 +367,11 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
             </div>
           ) : (
             <p className="py-10 text-center text-[13px] text-muted-foreground">
-              暂无成绩，先在左侧录入一条
+              {t(lang, "grade.emptyChart")}
             </p>
           )}
           <Button variant="outline" className="w-full" onClick={openList}>
-            成绩记录
+            {t(lang, "grade.records")}
           </Button>
         </div>
       </CardContent>
@@ -377,14 +393,14 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
                     className="h-8 px-2 text-[13px]"
                     onClick={backToList}
                   >
-                    <ArrowLeft /> 返回列表
+                    <ArrowLeft /> {t(lang, "grade.back")}
                   </Button>
                   <Button
                     size="icon"
                     variant="ghost"
                     className="h-8 w-8 text-muted-foreground"
                     onClick={closeModal}
-                    aria-label="关闭"
+                    aria-label={t(lang, "common.close")}
                   >
                     <X />
                   </Button>
@@ -396,45 +412,45 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
                   </p>
                   <div className="mt-3 space-y-1.5 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">日期</span>
+                      <span className="text-muted-foreground">{t(lang, "grade.detailDate")}</span>
                       <span className="tabular-nums">{selected.date}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">得分</span>
+                      <span className="text-muted-foreground">{t(lang, "grade.detailScore")}</span>
                       <span className="font-semibold tabular-nums">
-                        {selected.raw}分 · {Math.round((selected.raw / selected.max) * 100)}%
+                        {selected.raw}{t(lang, "grade.scoreUnit")} · {Math.round((selected.raw / selected.max) * 100)}%
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">录入时间</span>
+                      <span className="text-muted-foreground">{t(lang, "grade.detailTime")}</span>
                       <span className="tabular-nums">
-                        {new Date(selected.createdAt).toLocaleString("zh-CN", {
+                        {new Date(selected.createdAt).toLocaleString(lang === "zh" ? "zh-CN" : "en-US", {
                           hour12: false,
                         })}
                       </span>
                     </div>
                     {selected.note ? (
                       <div className="flex justify-between gap-4">
-                        <span className="shrink-0 text-muted-foreground">备注</span>
+                        <span className="shrink-0 text-muted-foreground">{t(lang, "grade.detailNote")}</span>
                         <span className="text-right">{selected.note}</span>
                       </div>
                     ) : null}
                   </div>
                   <Button className="mt-4 w-full" onClick={closeModal}>
-                    关闭
+                    {t(lang, "grade.closeBtn")}
                   </Button>
                 </div>
               </div>
             ) : (
               <div className="flex min-h-0 flex-col">
                 <div className="flex items-center justify-between border-b p-4">
-                  <p className="text-[15px] font-semibold">成绩记录</p>
+                  <p className="text-[15px] font-semibold">{t(lang, "grade.records")}</p>
                   <Button
                     size="icon"
                     variant="ghost"
                     className="h-8 w-8 text-muted-foreground"
                     onClick={closeModal}
-                    aria-label="关闭"
+                    aria-label={t(lang, "common.close")}
                   >
                     <X />
                   </Button>
@@ -442,7 +458,7 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
                 <div className="min-h-0 overflow-y-auto p-4">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex gap-1">
-                      {(Object.keys(RANGE_LABEL) as Range[]).map((r) => (
+                      {(Object.keys(RANGE_KEYS) as Range[]).map((r) => (
                         <Button
                           key={r}
                           size="sm"
@@ -450,26 +466,22 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
                           className="h-7 px-2.5 text-xs"
                           onClick={() => setRange(r)}
                         >
-                          {RANGE_LABEL[r]}
+                          {t(lang, RANGE_KEYS[r])}
                         </Button>
                       ))}
                     </div>
                     <div className="flex gap-1">
                       {(
-                        [
-                          ["today", "删今天"],
-                          ["week", "删本周"],
-                          ["month", "删本月"],
-                        ] as Array<[Exclude<Range, "all">, string]>
-                      ).map(([w, label]) => (
+                        Object.keys(BULK_DEL_KEYS) as Array<Exclude<Range, "all">>
+                      ).map((w) => (
                         <Button
                           key={w}
                           size="sm"
                           variant="ghost"
                           className="h-7 px-2 text-xs text-muted-foreground hover:text-destructive"
-                          onClick={() => bulkDelete(w, label.replace("删", ""))}
+                          onClick={() => bulkDelete(w)}
                         >
-                          {label}
+                          {t(lang, BULK_DEL_KEYS[w])}
                         </Button>
                       ))}
                     </div>
@@ -495,7 +507,7 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
                           </div>
                           <div className="flex items-center gap-2">
                             <span className="text-[13px] font-semibold tabular-nums">
-                              {g.raw}分 · {pct}%
+                              {g.raw}{t(lang, "grade.scoreUnit")} · {pct}%
                             </span>
                             {deletable ? (
                               <Button
@@ -506,7 +518,7 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
                                   e.stopPropagation();
                                   onDelete(g.id);
                                 }}
-                                aria-label="删除这条成绩（5分钟内）"
+                                aria-label={t(lang, "grade.delAria")}
                               >
                                 <Trash2 />
                               </Button>
@@ -517,7 +529,7 @@ export function GradesCard({ grades, today, onAdd, onDelete, onBulkDelete }: Pro
                     })}
                     {recent.length === 0 ? (
                       <p className="py-6 text-center text-[13px] text-muted-foreground">
-                        这个范围暂无记录
+                        {t(lang, "grade.emptyRange")}
                       </p>
                     ) : null}
                   </div>
