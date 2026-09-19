@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import {
   CartesianGrid,
@@ -176,6 +176,20 @@ export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
   const [subjectId, setSubjectId] = useState(STUDY_CONFIG.subjects[0]?.id ?? "");
   const [paperId, setPaperId] = useState("");
   const [range, setRange] = useState<Range>("all");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!selectedId) return;
+    const close = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedId(null);
+    };
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, [selectedId]);
+
+  const selected = selectedId
+    ? (grades.find((g) => g.id === selectedId) ?? null)
+    : null;
 
   const papers = STUDY_CONFIG.papers.filter((p) => p.subjectId === subjectId);
   const points: Point[] = useMemo(
@@ -298,7 +312,8 @@ export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
               return (
                 <div
                   key={g.id}
-                  className="group relative flex items-center justify-between py-2"
+                  onClick={() => setSelectedId(g.id)}
+                  className="flex cursor-pointer items-center justify-between py-2"
                 >
                   <div>
                     <p className="text-sm font-medium">
@@ -315,26 +330,15 @@ export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
                         size="icon"
                         variant="ghost"
                         className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                        onClick={() => onDelete(g.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDelete(g.id);
+                        }}
                         aria-label="删除这条成绩（5分钟内）"
                       >
                         <Trash2 />
                       </Button>
                     ) : null}
-                  </div>
-                  <div className="pointer-events-none absolute right-0 top-full z-50 hidden w-60 group-hover:block">
-                    <div className="rounded-xl border bg-popover p-3 text-xs shadow-lg">
-                      <p className="font-semibold">
-                        {getSubject(g.subjectId)?.name} · {getPaper(g.paperId)?.name}
-                      </p>
-                      <p className="mt-1 tabular-nums text-muted-foreground">
-                        {g.date} · 得分 {g.raw}分 · {pct}%
-                      </p>
-                      <p className="tabular-nums text-muted-foreground">
-                        录入 {new Date(g.createdAt).toLocaleString("zh-CN", { hour12: false })}
-                      </p>
-                      {g.note ? <p className="mt-1">{g.note}</p> : null}
-                    </div>
                   </div>
                 </div>
               );
@@ -347,6 +351,51 @@ export function GradesCard({ grades, today, onAdd, onDelete }: Props) {
           </div>
         </div>
       </CardContent>
+      {selected ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={() => setSelectedId(null)}
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl border bg-card p-5 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-[15px] font-semibold">
+              {getSubject(selected.subjectId)?.name} ·{" "}
+              {getPaper(selected.paperId)?.name}
+            </p>
+            <div className="mt-3 space-y-1.5 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">日期</span>
+                <span className="tabular-nums">{selected.date}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">得分</span>
+                <span className="font-semibold tabular-nums">
+                  {selected.raw}分 · {Math.round((selected.raw / selected.max) * 100)}%
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">录入时间</span>
+                <span className="tabular-nums">
+                  {new Date(selected.createdAt).toLocaleString("zh-CN", {
+                    hour12: false,
+                  })}
+                </span>
+              </div>
+              {selected.note ? (
+                <div className="flex justify-between gap-4">
+                  <span className="shrink-0 text-muted-foreground">备注</span>
+                  <span className="text-right">{selected.note}</span>
+                </div>
+              ) : null}
+            </div>
+            <Button className="mt-4 w-full" onClick={() => setSelectedId(null)}>
+              关闭
+            </Button>
+          </div>
+        </div>
+      ) : null}
     </Card>
   );
 }

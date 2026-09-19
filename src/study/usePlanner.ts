@@ -41,7 +41,7 @@ export function usePlanner() {
       skipFirstSave.current = false;
       return;
     }
-    void saveHistory(history);
+    void saveHistory(history).catch((e) => console.error("[store] save failed:", e));
   }, [history, loaded]);
 
   function toggleTask(taskId: string) {

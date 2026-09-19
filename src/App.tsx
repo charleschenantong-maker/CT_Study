@@ -51,25 +51,6 @@ function App() {
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <Titlebar />
-      <header className="flex shrink-0 items-center justify-end border-b border-border px-5 py-2">
-        <div className="flex items-center rounded-full border bg-card p-0.5">
-          {THEMES.map(({ v, Icon, label }) => (
-            <button
-              key={v}
-              onClick={() => setTheme(v)}
-              aria-label={label}
-              title={label}
-              className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
-                theme === v
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Icon className="size-4" />
-            </button>
-          ))}
-        </div>
-      </header>
 
       {!p.loaded ? (
         <p className="p-6 text-sm text-muted-foreground">加载本地数据…</p>
@@ -121,6 +102,24 @@ function App() {
           </aside>
         </main>
       )}
+
+      <div className="fixed bottom-5 right-5 z-50 flex items-center rounded-full border bg-card p-1 shadow-lg">
+        {THEMES.map(({ v, Icon, label }) => (
+          <button
+            key={v}
+            onClick={() => setTheme(v)}
+            aria-label={label}
+            title={label}
+            className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
+              theme === v
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Icon className="size-4" />
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

@@ -24,7 +24,7 @@ export function StreakCard({ current, best, repair, onRepair, className }: Props
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center gap-3">
-          <Flame className="size-8 text-ios-orange" />
+          <Flame className="size-10 text-ios-orange" />
           <div>
             <p className="text-3xl font-bold tabular-nums leading-none">
               {current}

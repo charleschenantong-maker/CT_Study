@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -23,6 +24,13 @@ function levelClass(level: number) {
   return LEVELS[Math.min(Math.max(level, 0), LEVELS.length - 1)];
 }
 
+interface Tip {
+  x: number;
+  y: number;
+  date: string;
+  xp: number;
+}
+
 export function ContributionGrid({
   xpOf,
   className,
@@ -32,6 +40,7 @@ export function ContributionGrid({
 }) {
   const today = todayKey();
   const weeks = buildGrid(today, WEEKS, xpOf);
+  const [tip, setTip] = useState<Tip | null>(null);
 
   return (
     <Card className={className}>
@@ -50,19 +59,21 @@ export function ContributionGrid({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="overflow-x-auto">
-        <div className="flex min-w-max gap-[3px]">
+      <CardContent className="overflow-x-auto" onMouseLeave={() => setTip(null)}>
+        <div className="flex min-w-[430px] gap-[3px]">
           {weeks.map((w, wi) => (
-            <div key={wi} className="flex flex-col gap-[3px]">
+            <div key={wi} className="flex min-w-0 flex-1 flex-col gap-[3px]">
               {w.days.map((d) => (
                 <span
                   key={d.date}
-                  title={`${d.date} · ${d.xp} XP`}
+                  onMouseEnter={(e) =>
+                    setTip({ x: e.clientX, y: e.clientY, date: d.date, xp: d.xp })
+                  }
+                  onMouseLeave={() => setTip(null)}
                   className={cn(
-                    "size-3 rounded-[3px]",
+                    "aspect-square w-full rounded-[3px]",
                     levelClass(d.level),
-                    d.date === today &&
-                      "ring-1 ring-black/60 dark:ring-white/70",
+                    d.date === today && "ring-1 ring-black/60 dark:ring-white/70",
                   )}
                 />
               ))}
@@ -70,6 +81,15 @@ export function ContributionGrid({
           ))}
         </div>
       </CardContent>
+      {tip ? (
+        <div
+          className="pointer-events-none fixed z-50 whitespace-nowrap rounded-lg border bg-popover px-2.5 py-1.5 text-xs shadow-lg"
+          style={{ left: tip.x, top: tip.y - 12, transform: "translate(-50%, -100%)" }}
+        >
+          <span className="tabular-nums text-muted-foreground">{tip.date}</span>{" "}
+          <span className="font-semibold tabular-nums">{tip.xp} XP</span>
+        </div>
+      ) : null}
     </Card>
   );
 }
