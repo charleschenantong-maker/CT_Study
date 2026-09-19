@@ -55,6 +55,16 @@ export interface StudyConfig {
   weeklyPlan: WeeklyQuota[];
   streakRepairCostXp: number;
   contributionBuckets: ContributionBucket[];
+  exams: ExamDefinition[];
+}
+
+/** An upcoming exam. Template data; countdown/schedule render from here. */
+export interface ExamDefinition {
+  id: string;
+  name: string;
+  /** Local YYYY-MM-DD. */
+  date: string;
+  note?: string;
 }
 
 // ---------- HISTORY (append-only) ----------

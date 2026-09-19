@@ -108,3 +108,19 @@
     @apply bg-background text-foreground antialiased;
   }
 }
+
+/* 翻页时钟：数值变化时整牌绕顶部翻下 */
+@keyframes flip-down {
+  0% {
+    transform: rotateX(-88deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+.flip-tick {
+  animation: flip-down 0.28s ease-out;
+  transform-origin: top center;
+  backface-visibility: hidden;
+}

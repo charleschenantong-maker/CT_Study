@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import {
   CartesianGrid,
   Line,
@@ -179,9 +179,12 @@ function GradeForm({ onAdd }: FormProps) {
 interface Props {
   grades: GradeRecord[];
   onAdd: FormProps["onAdd"];
+  onDelete: (id: string) => void;
 }
 
-export function GradesCard({ grades, onAdd }: Props) {
+const DELETE_WINDOW_MS = 5 * 60 * 1000;
+
+export function GradesCard({ grades, onAdd, onDelete }: Props) {
   const [subjectId, setSubjectId] = useState(STUDY_CONFIG.subjects[0]?.id ?? "");
   const [paperId, setPaperId] = useState("");
 
@@ -276,22 +279,38 @@ export function GradesCard({ grades, onAdd }: Props) {
             </p>
           )}
           <div className="divide-y divide-border">
-            {recent.map((g) => (
-              <div key={g.id} className="flex items-center justify-between py-2">
-                <div>
-                  <p className="text-sm font-medium">
-                    {getSubject(g.subjectId)?.name} · {getPaper(g.paperId)?.name}
-                  </p>
-                  <p className="text-xs tabular-nums text-muted-foreground">
-                    {g.date}
-                    {g.note ? ` · ${g.note}` : ""}
-                  </p>
+            {recent.map((g) => {
+              const deletable = Date.now() - g.createdAt <= DELETE_WINDOW_MS;
+              return (
+                <div key={g.id} className="flex items-center justify-between py-2">
+                  <div>
+                    <p className="text-sm font-medium">
+                      {getSubject(g.subjectId)?.name} · {getPaper(g.paperId)?.name}
+                    </p>
+                    <p className="text-xs tabular-nums text-muted-foreground">
+                      {g.date}
+                      {g.note ? ` · ${g.note}` : ""}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[13px] font-semibold tabular-nums">
+                      {g.raw}/{g.max} · {Math.round((g.raw / g.max) * 100)}%
+                    </span>
+                    {deletable ? (
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                        onClick={() => onDelete(g.id)}
+                        aria-label="删除这条成绩（5分钟内）"
+                      >
+                        <Trash2 />
+                      </Button>
+                    ) : null}
+                  </div>
                 </div>
-                <span className="text-[13px] font-semibold tabular-nums">
-                  {g.raw}/{g.max} · {Math.round((g.raw / g.max) * 100)}%
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </CardContent>

@@ -49,6 +49,14 @@ export const STUDY_CONFIG: StudyConfig = {
     { minXp: 41, level: 3 },
     { minXp: 61, level: 4 },
   ],
+
+  exams: [
+    { id: "exam-a", name: "Exam A", date: "2026-10-12" },
+    { id: "exam-b", name: "Exam B", date: "2026-10-20" },
+    { id: "exam-c", name: "Exam C", date: "2026-10-27" },
+    { id: "exam-d", name: "Exam D", date: "2026-11-10" },
+    { id: "exam-e", name: "Exam E", date: "2026-11-18" },
+  ],
 };
 
 export function getTask(id: string) {

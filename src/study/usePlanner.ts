@@ -81,6 +81,13 @@ export function usePlanner() {
     setHistory((prev) => ({ ...prev, grades: [...prev.grades, record] }));
   }
 
+  function deleteGrade(id: string) {
+    setHistory((prev) => ({
+      ...prev,
+      grades: prev.grades.filter((g) => g.id !== id),
+    }));
+  }
+
   function repairYesterday() {
     const e = repairEligibility(today, history.completions, history.repairs);
     if (!e.eligible) return;
@@ -129,6 +136,7 @@ export function usePlanner() {
     ...derived,
     toggleTask,
     addGrade,
+    deleteGrade,
     repairYesterday,
   };
 }
