@@ -1,6 +1,7 @@
-import { useEffect, useRef, type ChangeEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import { Download, Monitor, Moon, Sun, Trash2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LiquidGlass } from "@/components/LiquidGlass";
 import { loadHistory, saveHistory } from "@/study/store";
 import type { PlannerHistory } from "@/study/types";
 import {
@@ -56,7 +57,10 @@ const BG_LABEL_KEYS: Record<string, StrKey> = {
   black: "settings.bgBlack",
 };
 
-const WALLPAPER_MAX_BYTES = 3 * 1024 * 1024;
+const NAV_ITEMS = [
+  ["appearance", "外观"], ["fontSize", "字号"], ["fontFamily", "字体"],
+  ["background", "背景"], ["language", "语言"], ["data", "数据管理"], ["about", "关于"],
+] as const;
 
 function SectionTitle({ children }: { children: ReactNode }) {
   return <p className="text-sm font-semibold tracking-wide">{children}</p>;
@@ -80,6 +84,7 @@ export function SettingsModal({
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const bgFileRef = useRef<HTMLInputElement>(null);
+  const [active, setActive] = useState<(typeof NAV_ITEMS)[number][0]>("appearance");
 
   useEffect(() => {
     if (!open) return;
@@ -162,15 +167,30 @@ export function SettingsModal({
     });
   }
 
+  async function optimizeWallpaper(f: File): Promise<string> {
+    const source = await readFileAsDataURL(f);
+    const image = new Image();
+    image.src = source;
+    await image.decode();
+    const scale = Math.min(1, 1600 / Math.max(image.width, image.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(image.width * scale));
+    canvas.height = Math.max(1, Math.round(image.height * scale));
+    canvas.getContext("2d")?.drawImage(image, 0, 0, canvas.width, canvas.height);
+    let quality = 0.78;
+    let result = canvas.toDataURL("image/jpeg", quality);
+    while (result.length > 2_000_000 && quality > 0.4) {
+      quality -= 0.08;
+      result = canvas.toDataURL("image/jpeg", quality);
+    }
+    return result;
+  }
+
   async function handleWallpaper(e: ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
     if (!f) return;
     try {
-      if (f.size > WALLPAPER_MAX_BYTES) {
-        alert(t(lang, "settings.bgTooLarge"));
-        return;
-      }
-      const dataUrl = await readFileAsDataURL(f);
+      const dataUrl = await optimizeWallpaper(f);
       try {
         setWallpaper(dataUrl);
       } catch {
@@ -195,11 +215,11 @@ export function SettingsModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 p-4 backdrop-blur-md"
       onClick={onClose}
     >
       <div
-        className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-2xl border bg-card shadow-xl"
+        className="flex max-h-[78vh] min-h-[520px] w-full max-w-3xl flex-col rounded-[24px] border border-white/50 bg-white/75 shadow-[0_30px_90px_rgba(15,23,42,0.28)] backdrop-blur-3xl dark:border-white/15 dark:bg-slate-950/75"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b p-4">
@@ -214,8 +234,12 @@ export function SettingsModal({
             <X />
           </Button>
         </div>
-        <div className="min-h-0 space-y-8 overflow-y-auto p-6">
-          <section className="space-y-3">
+        <div className="flex min-h-0 flex-1 overflow-hidden">
+          <nav className="w-44 shrink-0 space-y-1 border-r border-border/60 bg-black/[0.03] p-3 dark:bg-white/[0.03]">
+            {NAV_ITEMS.map(([id, label]) => <button key={id} type="button" onClick={() => setActive(id)} className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${active === id ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-accent hover:text-foreground"}`}>{label}</button>)}
+          </nav>
+          <div className="min-h-0 flex-1 space-y-4 overflow-y-auto bg-gradient-to-b from-white/20 to-white/5 p-5 sm:p-6 dark:from-white/5 dark:to-transparent">
+          <LiquidGlass className={`p-4 ${active === "appearance" ? "" : "hidden"}`}><section className="space-y-3">
             <SectionTitle>{t(lang, "settings.appearance")}</SectionTitle>
             <div className="grid grid-cols-3 gap-2">
               {THEME_OPTIONS.map(({ v, Icon, labelKey }) => (
@@ -230,9 +254,9 @@ export function SettingsModal({
                 </Button>
               ))}
             </div>
-          </section>
+          </section></LiquidGlass>
 
-          <section className="space-y-3">
+          <LiquidGlass className={`p-4 ${active === "fontSize" ? "" : "hidden"}`}><section className="space-y-3">
             <SectionTitle>{t(lang, "settings.fontSize")}</SectionTitle>
             <div className="grid grid-cols-3 gap-2">
               {SIZE_OPTIONS.map(({ v, labelKey }) => (
@@ -246,9 +270,9 @@ export function SettingsModal({
                 </Button>
               ))}
             </div>
-          </section>
+          </section></LiquidGlass>
 
-          <section className="space-y-3">
+          <LiquidGlass className={`p-4 ${active === "fontFamily" ? "" : "hidden"}`}><section className="space-y-3">
             <SectionTitle>{t(lang, "settings.fontFamily")}</SectionTitle>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {FONT_OPTIONS.map((id) => (
@@ -263,9 +287,9 @@ export function SettingsModal({
                 </Button>
               ))}
             </div>
-          </section>
+          </section></LiquidGlass>
 
-          <section className="space-y-3">
+          <LiquidGlass className={`p-4 ${active === "background" ? "" : "hidden"}`}><section className="space-y-3">
             <SectionTitle>{t(lang, "settings.background")}</SectionTitle>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {BG_PRESETS.map((p) => (
@@ -324,9 +348,9 @@ export function SettingsModal({
                 </Button>
               ) : null}
             </div>
-          </section>
+          </section></LiquidGlass>
 
-          <section className="space-y-3">
+          <LiquidGlass className={`p-4 ${active === "language" ? "" : "hidden"}`}><section className="space-y-3">
             <SectionTitle>{t(lang, "settings.language")}</SectionTitle>
             <div className="grid grid-cols-2 gap-2">
               <Button
@@ -344,9 +368,9 @@ export function SettingsModal({
                 English
               </Button>
             </div>
-          </section>
+          </section></LiquidGlass>
 
-          <section className="space-y-3">
+          <LiquidGlass className={`p-4 ${active === "data" ? "" : "hidden"}`}><section className="space-y-3">
             <SectionTitle>{t(lang, "settings.data")}</SectionTitle>
             <div className="grid gap-2">
               <Button variant="outline" className="w-full" onClick={handleExport}>
@@ -374,9 +398,9 @@ export function SettingsModal({
                 <Trash2 /> {t(lang, "settings.clear")}
               </Button>
             </div>
-          </section>
+          </section></LiquidGlass>
 
-          <section className="space-y-1.5">
+          <LiquidGlass className={`p-4 ${active === "about" ? "" : "hidden"}`}><section className="space-y-1.5">
             <SectionTitle>{t(lang, "settings.about")}</SectionTitle>
             <p className="text-[13px] text-muted-foreground">Planner v0.1.0</p>
             <p className="text-[13px] text-muted-foreground">
@@ -385,7 +409,8 @@ export function SettingsModal({
             <p className="text-[13px] text-muted-foreground">
               {t(lang, "settings.aboutXp")}
             </p>
-          </section>
+          </section></LiquidGlass>
+          </div>
         </div>
       </div>
     </div>
