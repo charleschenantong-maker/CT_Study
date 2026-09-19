@@ -13,6 +13,9 @@ dist-ssr
 *.local
 *.tsbuildinfo
 
+# 本地参考素材，不进仓库
+traffic-ref.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

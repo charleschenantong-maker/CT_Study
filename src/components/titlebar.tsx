@@ -11,44 +11,47 @@ async function safeCall(fn: () => Promise<unknown>): Promise<void> {
   }
 }
 
-const SHEEN_ID = "tl-sheen";
-const BLUR_ID = "tl-spec-blur";
+/*
+ * 按 traffic-ref.png 像素测量重建（220px 灯 → 120 坐标系）：
+ * - 灯体：描边环 0.7px + 纵向糖果渐变（剖面实测色）+ 左上镜面高光
+ * - ×：跨度 43%Ø，杆粗 10%Ø，圆头，#991E1C
+ * - −：胶囊宽 44%Ø，粗 11%Ø，#8D5D03
+ * - 绿：圆角方块边长 42%Ø + 右上→左下内嵌斜槽，#237C1C
+ * - 灯间距 4.5px（83/220 实测比）
+ */
 
-/* 符号路径：按 macOS 实测矢量描摹（85.4 坐标系），墨量 × 58% / − 67% */
-function ClosePaths() {
+function CloseGlyph() {
   return (
     <>
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M22.4999 57.7999L57.7999 22.5C59.1999 21.1 61.3999 21.1 62.7999 22.5L62.8999 22.6C64.2999 24 64.2999 26.2 62.8999 27.6L27.5999 62.9C26.1999 64.3 23.9999 64.3 22.5999 62.9L22.4999 62.7999C21.1999 61.3999 21.1999 59.1999 22.4999 57.7999Z"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M27.6 22.4999L62.9 57.7999C64.3 59.1999 64.3 61.3999 62.9 62.7999L62.7999 62.8999C61.3999 64.2999 59.1999 64.2999 57.7999 62.8999L22.5 27.5999C21.1 26.1999 21.1 23.9999 22.5 22.5999L22.6 22.4999C24 21.1999 26.2 21.1999 27.6 22.4999Z"
-      />
+      <line x1="41.6" y1="41.6" x2="78.4" y2="78.4" strokeWidth="12" strokeLinecap="round" />
+      <line x1="78.4" y1="41.6" x2="41.6" y2="78.4" strokeWidth="12" strokeLinecap="round" />
     </>
   );
 }
 
-function MinimizePath() {
+function MinimizeGlyph() {
   return (
-    <path d="M17.8 39.1H67.7C69.6 39.1 71.2 40.7 71.2 42.6V42.7C71.2 44.6 69.6 46.2 67.7 46.2H17.8C15.9 46.2 14.3 44.6 14.3 42.7V42.6C14.3 40.7 15.8 39.1 17.8 39.1Z" />
+    <line x1="33.5" y1="60" x2="86.5" y2="60" strokeWidth="13" strokeLinecap="round" />
   );
 }
 
-function MaximizePaths() {
+function MaximizeGlyph() {
   return (
-    <path d="M31.2 20.8H57.9C61.5 20.8 64.4 23.7 64.4 27.3V54L31.2 20.8ZM54.4 64.5H27.6C24 64.5 21.1 61.6 21.1 58V31.2001L54.4 64.5Z" />
+    <rect
+      x="34.5"
+      y="34.5"
+      width="51"
+      height="51"
+      rx="8"
+      mask="url(#tl-green-slot)"
+    />
   );
 }
 
 type LightTone = "close" | "minimize" | "maximize";
 
 interface ToneSpec {
-  base: string;
-  activeBase: string;
+  fill: string;
   border: string;
   glyphFill: string;
   glyph: ReactNode;
@@ -56,62 +59,72 @@ interface ToneSpec {
 
 const TONES: Record<LightTone, ToneSpec> = {
   close: {
-    base: "#FF5F57",
-    activeBase: "#D14E47",
-    border: "#E0443E",
-    glyphFill: "#8B1A0F",
-    glyph: <ClosePaths />,
+    fill: "url(#tl-g-red)",
+    border: "#652023",
+    glyphFill: "#991E1C",
+    glyph: <CloseGlyph />,
   },
   minimize: {
-    base: "#FEBC2E",
-    activeBase: "#D09A26",
-    border: "#DEA123",
-    glyphFill: "#A87229",
-    glyph: <MinimizePath />,
+    fill: "url(#tl-g-yellow)",
+    border: "#C9A92A",
+    glyphFill: "#8D5D03",
+    glyph: <MinimizeGlyph />,
   },
   maximize: {
-    base: "#28C840",
-    activeBase: "#21A434",
-    border: "#1AAB29",
-    glyphFill: "#286017",
-    glyph: <MaximizePaths />,
+    fill: "url(#tl-g-green)",
+    border: "#58C448",
+    glyphFill: "#237C1C",
+    glyph: <MaximizeGlyph />,
   },
 };
 
 interface OrbProps {
-  base: string;
+  fill: string;
   border: string;
   glyph?: ReactNode;
   glyphFill?: string;
-  flat?: boolean;
+  gloss?: boolean;
+  dimmed?: boolean;
   layerClass?: string;
 }
 
-/** 单颗灯：描边环 + 底色 + 糖果高光 + 镜面点，12px 渲染 */
-function Orb({ base, border, glyph, glyphFill, flat, layerClass }: OrbProps) {
+/** 单颗灯：描边环 + 糖果渐变 + 镜面高光，12px 渲染 */
+function Orb({
+  fill,
+  border,
+  glyph,
+  glyphFill,
+  gloss = true,
+  dimmed,
+  layerClass,
+}: OrbProps) {
   return (
     <svg
-      viewBox="0 0 85.4 85.4"
+      viewBox="0 0 120 120"
       aria-hidden
       className={`absolute inset-0 h-3 w-3${layerClass ? ` ${layerClass}` : ""}`}
     >
-      <circle cx="42.7" cy="42.7" r="42.7" fill={border} />
-      <circle cx="42.7" cy="42.7" r="37.5" fill={base} />
-      {flat ? null : (
-        <>
-          <circle cx="42.7" cy="42.7" r="37.5" fill={`url(#${SHEEN_ID})`} />
-          <ellipse
-            cx="42.7"
-            cy="25"
-            rx="23"
-            ry="9.5"
-            fill="#ffffff"
-            opacity="0.5"
-            filter={`url(#${BLUR_ID})`}
-          />
-        </>
-      )}
-      {glyph ? <g fill={glyphFill}>{glyph}</g> : null}
+      <circle cx="60" cy="60" r="60" fill={border} />
+      <circle cx="60" cy="60" r="53" fill={fill} />
+      {gloss ? (
+        <ellipse
+          cx="36"
+          cy="22"
+          rx="30"
+          ry="22"
+          fill="#ffffff"
+          opacity="0.5"
+          filter="url(#tl-blur)"
+        />
+      ) : null}
+      {glyph ? (
+        <g fill={glyphFill} stroke={glyphFill}>
+          {glyph}
+        </g>
+      ) : null}
+      {dimmed ? (
+        <circle cx="60" cy="60" r="53" fill="#000000" opacity="0.14" />
+      ) : null}
     </svg>
   );
 }
@@ -143,7 +156,7 @@ function Light({
         onClick={onClick}
         className="relative block h-3 w-3 outline-none"
       >
-        <Orb base={unfocusedBase} border={unfocusedBorder} flat />
+        <Orb fill={unfocusedBase} border={unfocusedBorder} gloss={false} />
       </button>
     );
   }
@@ -156,22 +169,23 @@ function Light({
       className="group/btn relative block h-3 w-3 outline-none"
     >
       <Orb
-        base={t.base}
+        fill={t.fill}
         border={t.border}
         layerClass="group-hover/traffic:opacity-0 group-active/btn:opacity-0"
       />
       <Orb
-        base={t.base}
+        fill={t.fill}
         border={t.border}
         glyph={t.glyph}
         glyphFill={t.glyphFill}
         layerClass="opacity-0 group-hover/traffic:opacity-100 group-active/btn:opacity-0"
       />
       <Orb
-        base={t.activeBase}
+        fill={t.fill}
         border={t.border}
         glyph={t.glyph}
         glyphFill={t.glyphFill}
+        dimmed
         layerClass="opacity-0 group-active/btn:opacity-100"
       />
     </button>
@@ -208,35 +222,62 @@ export function Titlebar({ title, dark, onToggleDark }: TitlebarProps) {
       onDoubleClick={handleDoubleClick}
       className="grid h-12 shrink-0 select-none grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background px-3"
     >
-      {/* 共享高光渐变 + 镜面模糊：全文档定义一次 */}
+      {/* 共享渐变 + 模糊 + 绿槽遮罩：全文档定义一次 */}
       <svg width="0" height="0" aria-hidden className="absolute">
         <defs>
-          <linearGradient
-            id={SHEEN_ID}
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="1"
-          >
-            <stop offset="0" stopColor="#ffffff" stopOpacity="0.55" />
-            <stop offset="0.38" stopColor="#ffffff" stopOpacity="0.12" />
-            <stop offset="0.62" stopColor="#ffffff" stopOpacity="0" />
-            <stop offset="1" stopColor="#000000" stopOpacity="0.18" />
+          <linearGradient id="tl-g-red" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#FD8A87" />
+            <stop offset="0.15" stopColor="#FB7470" />
+            <stop offset="0.3" stopColor="#F65C57" />
+            <stop offset="0.48" stopColor="#F1504B" />
+            <stop offset="0.65" stopColor="#EF4E49" />
+            <stop offset="0.8" stopColor="#F25751" />
+            <stop offset="0.92" stopColor="#F9615A" />
+            <stop offset="1" stopColor="#EE5F59" />
           </linearGradient>
-          <filter
-            id={BLUR_ID}
-            x="-50%"
-            y="-50%"
-            width="200%"
-            height="200%"
-          >
-            <feGaussianBlur stdDeviation="5" />
+          <linearGradient id="tl-g-yellow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#FBDD7B" />
+            <stop offset="0.15" stopColor="#FBD65F" />
+            <stop offset="0.3" stopColor="#F9CF4C" />
+            <stop offset="0.48" stopColor="#F7C738" />
+            <stop offset="0.65" stopColor="#F6C636" />
+            <stop offset="0.8" stopColor="#F8CB3E" />
+            <stop offset="0.92" stopColor="#FBD14E" />
+            <stop offset="1" stopColor="#F5C93F" />
+          </linearGradient>
+          <linearGradient id="tl-g-green" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#9EEA8A" />
+            <stop offset="0.15" stopColor="#87E072" />
+            <stop offset="0.3" stopColor="#73D75F" />
+            <stop offset="0.48" stopColor="#62CE4E" />
+            <stop offset="0.62" stopColor="#5ACB47" />
+            <stop offset="0.78" stopColor="#5DD048" />
+            <stop offset="0.9" stopColor="#6BD355" />
+            <stop offset="1" stopColor="#66CC54" />
+          </linearGradient>
+          <filter id="tl-blur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="9" />
           </filter>
+          <mask id="tl-green-slot">
+            <rect x="34.5" y="34.5" width="51" height="51" rx="8" fill="#ffffff" />
+            <line
+              x1="73"
+              y1="47"
+              x2="47"
+              y2="73"
+              stroke="#000000"
+              strokeWidth="10"
+              strokeLinecap="round"
+            />
+          </mask>
         </defs>
       </svg>
       {/* 注意：data-tauri-drag-region 只对直接带该属性的元素生效，
           子元素必须逐个加；按钮及内部符号不加，保证可点击 */}
-      <div data-tauri-drag-region className="group/traffic flex items-center gap-2">
+      <div
+        data-tauri-drag-region
+        className="group/traffic flex items-center gap-[4.5px]"
+      >
         <Light
           label="关闭"
           tone="close"
