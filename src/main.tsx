@@ -129,7 +129,6 @@ mountChrome();
 interface KvBridge {
   snapshot: Record<string, string>;
   save: (k: string, v: string) => void;
-  remove: (k: string) => void;
   flush: () => Promise<void>;
 }
 
@@ -173,9 +172,6 @@ async function initKvBridge(): Promise<KvBridge | null> {
     snapshot,
     save: (k, v) => {
       void store.set(k, v);
-    },
-    remove: (k) => {
-      void store.delete(k);
     },
     flush: () => store.save(),
   };

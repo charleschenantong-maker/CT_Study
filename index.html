@@ -10,9 +10,7 @@
 <style>
     :root{--coal:#11130f;--night:#181b16;--olive:#30362b;--army:#596148;--khaki:#aaa078;--paper:#d8d0b7;--paper2:#c9bea0;--ink:#20231d;--rust:#84392c;--blood:#67271f;--amber:#c29a4b;--green:#3e5d42;--line:rgba(39,42,33,.35);--light:#e4dec8;--side-width:360px;--side-collapsed-width:58px}
     *{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--coal);color:var(--ink);font-family:var(--font-display);line-height:1.42}
-    body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.13;background:repeating-linear-gradient(107deg,transparent 0 91px,#000 92px 93px,transparent 94px 171px),repeating-linear-gradient(8deg,transparent 0 143px,#f0e8c9 144px 145px,transparent 146px 243px)}
     button,input,select{font:inherit}.shell{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) var(--side-width);background:linear-gradient(90deg,var(--paper) 0 calc(100% - var(--side-width)),var(--night) calc(100% - var(--side-width)));transition:none}.main{position:relative;padding:30px 38px 70px;max-width:1500px;width:100%;margin:0 auto;container-type:inline-size;container-name:mainarea;background-color:var(--paper);background-image:radial-gradient(circle at 18% 20%,rgba(69,57,33,.10) 0 1px,transparent 2px),radial-gradient(circle at 78% 74%,rgba(60,49,28,.08) 0 1px,transparent 2px),linear-gradient(115deg,transparent 49.8%,rgba(68,57,37,.05) 50%,transparent 50.2%);background-size:31px 29px,47px 43px,100% 100%}
-    .main:before{content:"FIELD FILE · 2026";position:absolute;right:43px;top:26px;color:rgba(91,43,32,.44);border:3px double currentColor;padding:7px 12px;font:900 11px/1 var(--font-mono);letter-spacing:.12em;transform:rotate(2deg)}
     .side{position:sticky;top:0;height:100vh;overflow:auto;padding:30px 24px 36px;color:var(--light);background-color:var(--night);background-image:linear-gradient(135deg,rgba(255,255,255,.025) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.025) 50%,rgba(255,255,255,.025) 75%,transparent 75%);background-size:12px 12px;border-left:6px solid #0d0f0c}
     .side-toggle{position:sticky;top:0;z-index:8;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 18px;padding:8px 9px;border:1px solid #686d5d;background:#171d16;color:#d8d0b7;cursor:pointer;font:900 9px/1 var(--font-mono);letter-spacing:.07em;text-transform:uppercase}.side-toggle:hover{border-color:var(--amber);color:var(--amber)}.side-toggle-icon{font-size:17px;line-height:1}.side-toggle-label{white-space:nowrap}
     body.side-collapsed .shell{grid-template-columns:minmax(0,1fr) var(--side-collapsed-width);background:linear-gradient(90deg,var(--paper) 0 calc(100% - var(--side-collapsed-width)),var(--night) calc(100% - var(--side-collapsed-width)))}
@@ -25,15 +23,14 @@
     .stage-strip{display:grid;grid-template-columns:repeat(5,1fr);border:2px solid var(--ink);margin-bottom:20px;background:var(--paper2)}.stage{padding:10px 11px;min-height:64px;border-right:1px dashed rgba(31,35,29,.48)}.stage:last-child{border:0}.stage b{display:block;font:900 10px/1.2 var(--font-mono)}.stage span{font-size:10px;color:#626658}.stage.active{background:var(--rust);color:#f5ecd4}.stage.active span{color:#f2dbc7}.stage.done{background:#7e826b;color:#e9e5d6}.stage.done span{color:#dedacb}
     .grid{display:grid;grid-template-columns:minmax(330px,.78fr) minmax(0,1.52fr);gap:15px}.card{padding:21px}.wide{grid-column:1/-1}.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}.card h2{font-size:19px;line-height:1.1;margin:4px 0 0;text-transform:uppercase}.badge{display:inline-block;border:2px solid currentColor;padding:5px 7px;color:var(--rust);font:900 9px/1 var(--font-mono);letter-spacing:.08em;transform:rotate(1deg)}
     .task{display:grid;grid-template-columns:26px 1fr auto;gap:10px;padding:13px 0;border-top:1px dashed rgba(43,45,36,.42)}.task:first-child{border-top:0}.task input{appearance:none;width:20px;height:20px;margin:1px 0 0;border:2px solid var(--olive);background:transparent;display:grid;place-items:center}.task input:checked{background:var(--green)}.task input:checked:after{content:"✓";color:#efe9d8;font-weight:900}.task label{font-weight:750;font-size:13px}.task label span{display:block;color:#65685e;font-size:10px;font-weight:400;margin-top:3px}.task strong{font:900 9px/1.4 var(--font-mono);color:var(--rust);white-space:nowrap}.done-text{text-decoration:line-through;opacity:.58}
-    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.btn{cursor:pointer;border:2px solid var(--ink);background:transparent;color:var(--ink);padding:9px 12px;font:900 10px/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))}.btn:hover{background:var(--amber)}.btn.primary{background:var(--ink);color:var(--light)}.btn.primary:hover{background:var(--rust)}.btn.red{border-color:#a55b4e;color:#db8c7d}.btn:disabled{opacity:.28;cursor:not-allowed}.hint{font-size:10px;color:#62675c;margin:10px 0 0}.alert{border-left:4px solid var(--rust);padding:9px 11px;background:rgba(132,57,44,.10);font-size:10px;margin-top:12px}.success{border-color:var(--green);background:rgba(62,93,66,.13)}
-    .form{display:grid;grid-template-columns:1fr 100px;gap:9px}.field label{display:block;font:900 9px/1 var(--font-mono);letter-spacing:.08em;color:#5f6357;margin-bottom:6px}.field select,.field input{width:100%;border:2px solid #737565;background:#e8e0c8;color:var(--ink);padding:9px}.quote{margin:17px 0 0;padding-top:14px;border-top:1px dashed #777765;font-weight:800;font-size:12px;color:#494c42}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.btn{cursor:pointer;border:2px solid var(--ink);background:transparent;color:var(--ink);padding:9px 12px;font:900 10px/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))}.btn:hover{background:var(--amber)}.btn.primary{background:var(--ink);color:var(--light)}.btn.primary:hover{background:var(--rust)}.btn:disabled{opacity:.28;cursor:not-allowed}.hint{font-size:10px;color:#62675c;margin:10px 0 0}.alert{border-left:4px solid var(--rust);padding:9px 11px;background:rgba(132,57,44,.10);font-size:10px;margin-top:12px}.success{border-color:var(--green);background:rgba(62,93,66,.13)}
     .ledger{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ledger-item{padding:11px;border:1px solid rgba(38,42,33,.42);background:rgba(237,230,208,.32)}.ledger-top{display:flex;justify-content:space-between;gap:8px;font:900 10px/1.2 var(--font-mono)}.bar{height:7px;margin-top:9px;background:#8f8c77;border:1px solid #57594d}.bar i{display:block;height:100%;background:var(--rust)}.ledger-item.complete .bar i{background:var(--green)}.total-row{display:flex;justify-content:space-between;border-top:3px double var(--ink);padding-top:12px;margin-top:12px;font:900 11px/1 var(--font-mono)}
-    .side .kicker{color:var(--amber)}.side h2{font:900 27px/.95 var(--font-display);margin:10px 0 7px;text-transform:uppercase}.side-sub{font-size:10px;color:#9da38f;margin:0 0 18px}.countdown{position:relative;border:1px solid #606554;border-top:5px solid var(--rust);padding:17px 14px;margin-bottom:16px;background:#20241c;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}.next-label{font:800 9px/1.2 var(--font-mono);letter-spacing:.1em;color:#9ba08e}.next-name{font-weight:900;color:#efe8d2;margin:6px 0 12px}.digits{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}.digit{padding:9px 2px;text-align:center;background:#0d0f0c;border:1px solid #494e41}.digit b{display:block;color:#d7b45e;font:900 22px/1 var(--font-mono);font-variant-numeric:tabular-nums}.digit span{font:800 7px/1 var(--font-mono);color:#747b6a;text-transform:uppercase}
+    .side .kicker{color:var(--amber)}.side h2{font:900 27px/.95 var(--font-display);margin:10px 0 7px;text-transform:uppercase}.side-sub{font-size:10px;color:#9da38f;margin:0 0 18px}.countdown{position:relative;border:1px solid #606554;border-top:5px solid var(--rust);padding:17px 14px;margin-bottom:16px;background:#20241c;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}.next-label{font:800 9px/1.2 var(--font-mono);letter-spacing:.1em;color:#9ba08e}.next-name{font-weight:900;color:#efe8d2;margin:6px 0 12px}.digits{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
     .event-list{display:grid;gap:5px}.event{display:grid;grid-template-columns:54px 1fr auto;gap:8px;align-items:center;padding:9px 8px;border-left:3px solid #515646;background:#1e211b;color:#adb19e;font-size:10px}.event>b{color:#ddd6c0;font:900 10px/1 var(--font-mono)}.event.next{border-color:var(--amber);background:#2b3026;color:#f0e9d5}.done-exam{border:1px solid #6f725f;background:transparent;color:#aaa992;padding:4px 5px;font:800 7px/1 var(--font-mono);cursor:pointer}.done-exam:hover{border-color:var(--amber);color:var(--amber)}
     .archive{margin-top:12px;border-top:1px dashed #565b4d;padding-top:10px}.archive summary{cursor:pointer;color:#777e6b;font:800 9px/1.3 var(--font-mono)}.archived-list{display:grid;gap:4px;margin-top:8px}.archived-row{display:flex;justify-content:space-between;gap:8px;align-items:center;color:#6f7565;font-size:9px}.restore{border:0;background:none;color:#9a8060;font-size:9px;cursor:pointer;text-decoration:underline}
     .side-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:20px}.side .btn{border-color:#686d5d;color:#c9c8b8}.side .btn.full{grid-column:1/-1}.file-input{display:none}.save-state{text-align:center;margin-top:9px;color:#686e5f;font:700 8px/1.2 var(--font-mono)}.footer{display:flex;justify-content:space-between;gap:12px;margin-top:20px;color:#64675c;font:700 9px/1.3 var(--font-mono)}.toast{position:fixed;left:50%;bottom:25px;z-index:30;transform:translate(-50%,0);opacity:0;background:#171914;color:#e4dec8;border:2px solid var(--amber);padding:10px 15px;font:800 10px/1 var(--font-mono);pointer-events:none}.toast.show{opacity:1}
     @media(max-width:980px){.shell{display:block;background:var(--paper)}.main{padding:28px 20px 50px}.side{position:relative;height:auto;border:0;border-top:10px solid #0c0e0b}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.stats{grid-template-columns:repeat(2,1fr)}.stage-strip{overflow-x:auto;grid-template-columns:repeat(5,minmax(135px,1fr))}.event-list{grid-template-columns:repeat(2,1fr)}.main:before{display:none}}
-    @media(max-width:620px){h1{font-size:49px}.stats{grid-template-columns:1fr}.ledger{grid-template-columns:1fr 1fr}.form{grid-template-columns:1fr}.event-list{grid-template-columns:1fr}.footer{display:block}.footer span{display:block;margin-top:5px}}
+    @media(max-width:620px){h1{font-size:49px}.stats{grid-template-columns:1fr}.ledger{grid-template-columns:1fr 1fr}.event-list{grid-template-columns:1fr}.footer{display:block}.footer span{display:block;margin-top:5px}}
   </style>
 <style>
     /* WWII / Cold War intelligence dossier layer */
@@ -42,19 +39,15 @@
     .main:before{content:"TOP SECRET · EYES ONLY";color:rgba(113,24,21,.62);border:4px double currentColor;padding:8px 13px;font-family:var(--font-mono);transform:rotate(2.5deg)}
     .main:after{content:"GRID REF 36-S / PACIFIC SECTOR / FILE 07-22";position:absolute;right:38px;bottom:20px;color:rgba(24,32,24,.48);font:700 8px/1 var(--font-mono);letter-spacing:.14em}
     .side{background-color:#10150f;background-image:linear-gradient(rgba(123,147,107,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(123,147,107,.055) 1px,transparent 1px),radial-gradient(circle at 50% 22%,transparent 0 110px,rgba(117,145,101,.09) 111px 112px,transparent 113px);background-size:22px 22px,22px 22px,100% 100%}
-    .kicker,.eyebrow,.stat small,.stat b,.badge,.btn,.ledger-top,.total-row,.next-label,.digit b,.digit span,.save-state{font-family:var(--font-mono)}
+    .kicker,.eyebrow,.stat small,.stat b,.badge,.btn,.ledger-top,.total-row,.next-label,.save-state{font-family:var(--font-mono)}
     h1 span{font-family:var(--font-mono);letter-spacing:.09em}.motto{font-family:var(--font-mono);background:rgba(221,205,165,.68);border:1px solid rgba(28,37,27,.55);border-left:7px solid var(--rust)}.motto small{font-family:var(--font-mono)}
     .redactions{max-width:780px;display:flex;align-items:center;gap:9px;margin:11px 0 0}.redactions i{display:block;height:8px;background:#131812}.redactions i:first-child{width:98px}.redactions i:nth-child(2){width:56px}.redactions span{font:800 8px/1 var(--font-mono);color:#465044;letter-spacing:.12em}
     .stat,.card{background:rgba(210,194,151,.90);box-shadow:5px 6px 0 rgba(31,38,29,.20)}.stat:after,.card:after{content:"// CLASSIFIED";width:auto;height:auto;background:none;color:rgba(110,28,24,.42);font:800 7px/1 var(--font-mono);letter-spacing:.07em;transform:rotate(-2deg)}
-    .card h2{font-family:var(--font-mono);letter-spacing:-.04em}.field select,.field input{background:#dfd0a9}.event{background:#192018}.event.next{background:#273126}.countdown{background:#192018}.digit{background:#090d09}.digit b{color:#bfaa63;text-shadow:0 0 9px rgba(191,170,99,.2)}
-    .undo-alert{display:flex;align-items:center;gap:7px;flex-wrap:wrap;border-color:var(--amber);background:rgba(185,144,67,.13)}.undo-alert span{font-family:var(--font-mono);font-weight:900;color:var(--rust)}.undo-five{margin-left:auto;border:1px solid var(--rust);background:transparent;color:var(--rust);padding:5px 7px;font:900 8px/1 var(--font-mono);cursor:pointer}.undo-five:hover{background:var(--rust);color:var(--light)}
+    .card h2{font-family:var(--font-mono);letter-spacing:-.04em}.event{background:#192018}.event.next{background:#273126}.countdown{background:#192018}
     html,body,button,input,select,option,h1,h2,h3,p,span,strong,small,b,em,label,summary{font-family:var(--font-mono)}
     h1{font-family:var(--font-display);font-stretch:condensed;font-weight:700;letter-spacing:-.045em}h1 span{font-family:var(--font-mono);font-weight:900;letter-spacing:.08em}.side h2,.card h2{font-family:var(--font-mono);font-stretch:normal}
-    .stat b,.digit b,.ledger-top,.total-row,.badge,.stage b,input,select{font-variant-numeric:tabular-nums slashed-zero;font-feature-settings:"tnum" 1,"zero" 1;letter-spacing:.02em}
+    .stat b,.ledger-top,.total-row,.badge,.stage b,input,select{font-variant-numeric:tabular-nums slashed-zero;font-feature-settings:"tnum" 1,"zero" 1;letter-spacing:.02em}
     input::placeholder{font-family:var(--font-mono);color:#77745f}.sfx-on{border-color:var(--amber)!important;color:var(--amber)!important}.sfx-off{opacity:.55}
-    .damage-layer{position:fixed;inset:0;z-index:19;pointer-events:none;overflow:hidden}.bullet{position:absolute;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,#070907 0 10%,#41392b 11% 18%,rgba(20,21,17,.88) 19% 24%,rgba(67,55,37,.36) 25% 33%,transparent 35%);filter:drop-shadow(2px 3px 2px rgba(0,0,0,.6))}.bullet:before,.bullet:after{content:"";position:absolute;left:14px;top:-12px;width:1px;height:54px;background:linear-gradient(transparent,rgba(34,30,23,.7),transparent);transform:rotate(37deg)}.bullet:after{transform:rotate(-51deg)}.bullet-a{left:11px;top:21%}.bullet-b{right:347px;top:68%;transform:scale(.7)}.bullet-c{right:9px;top:42%;transform:scale(.55)}
-    .scorch{position:absolute;width:180px;height:120px;border-radius:50%;background:radial-gradient(ellipse,rgba(20,17,12,.28),rgba(59,40,24,.15) 38%,transparent 70%);mix-blend-mode:multiply;filter:blur(5px)}.scorch-a{left:3%;bottom:-30px;transform:rotate(11deg)}.scorch-b{right:310px;top:-47px;transform:rotate(-18deg)}
-    .slash{position:absolute;height:2px;background:linear-gradient(90deg,transparent,rgba(28,27,21,.56),rgba(230,215,173,.42),transparent);box-shadow:0 2px 0 rgba(33,31,23,.18)}.slash-a{width:250px;left:19%;top:34%;transform:rotate(-7deg)}.slash-b{width:180px;right:18%;top:79%;transform:rotate(13deg)}.slash-c{width:130px;left:43%;top:9%;transform:rotate(-19deg)}
     .main{box-shadow:inset 13px 0 18px rgba(54,37,20,.15),inset -10px 0 15px rgba(37,29,18,.19)}.main>*{position:relative}.main>*:not(.grid):not(.stats):not(.stage-strip){z-index:1}.card:nth-child(2n){clip-path:polygon(0 7px,9px 0,97% 0,100% 11px,100% calc(100% - 8px),98% 100%,9px 100%,0 calc(100% - 12px))}.card:nth-child(3n){background-image:radial-gradient(circle at 93% 11%,rgba(65,40,23,.25) 0 2px,transparent 3px),linear-gradient(97deg,transparent 0 72%,rgba(48,39,25,.07) 72.2%,transparent 72.6%)}.stat:nth-child(2){transform:rotate(-.22deg)}.stat:nth-child(3){transform:rotate(.18deg)}
     .side:after{content:"";position:fixed;right:0;top:0;width:7px;height:100vh;background:repeating-linear-gradient(180deg,#070907 0 28px,#34392f 29px 32px,#090b09 33px 61px);opacity:.8}.countdown:after{content:"SIGNAL VERIFIED";position:absolute;right:9px;top:8px;color:rgba(171,53,42,.52);border:2px solid currentColor;padding:3px 5px;font:800 7px/1 var(--font-mono);transform:rotate(4deg)}
     @media(max-width:980px){.main:after{display:none}}
@@ -87,7 +80,6 @@
     .sc-hi-date{font:800 11px/1.2 var(--font-mono)}.sc-hi-score{font:700 9px/1.3 var(--font-mono);color:#65685e;margin-top:2px}
     .sc-hi-pct{font:900 14px/1 var(--font-mono)}.sc-pct-good{color:var(--green)}.sc-pct-mid{color:var(--amber)}.sc-pct-low{color:var(--rust)}
     .sc-del{background:none;border:none;color:#9a8060;font-size:15px;margin-left:10px;cursor:pointer;padding:2px 4px;line-height:1}.sc-del:hover{color:var(--rust)}
-    .sc-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
     .past-paper-card{container-type:inline-size;container-name:scorecard;overflow:visible}
     /* Permanent two-column score layout: History always stays on the right. */
     .sc-layout{display:grid;grid-template-columns:minmax(0,1.68fr) minmax(150px,.72fr);gap:clamp(9px,1.5cqw,18px);align-items:stretch;width:100%}
@@ -127,31 +119,19 @@
 
     /* Header clock moved into the main command area */
     .command-header{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,360px);gap:28px;align-items:start;margin-bottom:24px}
-    .command-copy{min-width:0}.command-copy .motto,.command-copy .hazard,.command-copy .redactions{max-width:none}
+    .command-copy{min-width:0}
     .main-countdown{margin:0;align-self:start;min-width:0;background:#192018;color:var(--light);box-shadow:5px 6px 0 rgba(31,38,29,.24);z-index:2}
     .main-countdown .next-name{font-size:13px}.main-countdown .digits{grid-template-columns:repeat(4,minmax(0,1fr))}
-    .main-countdown .digit{min-width:0}.main-countdown .digit b{font-size:21px}
+    .main-countdown .digit{min-width:0}
     .main:before{top:auto;right:38px;bottom:20px}.main:after{right:auto;left:38px}
     @container mainarea (max-width:900px){
       .command-header{grid-template-columns:minmax(0,1fr);gap:18px}
       .main-countdown{width:100%;max-width:none}
     }
-    @media(max-width:620px){.command-header{gap:14px}.main-countdown{padding:14px 10px}.main-countdown .digit b{font-size:18px}}
+    @media(max-width:620px){.command-header{gap:14px}.main-countdown{padding:14px 10px}}
   </style>
 <style>
     /* ---- GUNSMOKE ATMOSPHERE LAYER ---- */
-    .vignette-layer{position:fixed;inset:0;z-index:21;pointer-events:none;background:radial-gradient(ellipse at center,transparent 52%,rgba(6,7,5,.16) 82%,rgba(4,5,3,.34) 100%)}
-    .smoke-layer{position:fixed;inset:0;z-index:22;pointer-events:none;overflow:hidden}
-    .smoke-puff{position:absolute;border-radius:50%;filter:blur(22px);background:radial-gradient(circle,rgba(70,68,60,.62) 0%,rgba(70,68,60,.34) 42%,rgba(70,68,60,0) 74%)}
-    .smoke-1{width:600px;height:440px;left:-140px;top:-90px;animation:smokeDriftA 46s ease-in-out infinite alternate}
-    .smoke-2{width:500px;height:400px;right:-160px;top:8%;animation:smokeDriftB 53s ease-in-out infinite alternate}
-    .smoke-3{width:640px;height:480px;left:22%;bottom:-220px;animation:smokeDriftC 60s ease-in-out infinite alternate}
-    .smoke-4{width:420px;height:360px;right:6%;bottom:-170px;animation:smokeDriftA 40s ease-in-out infinite alternate-reverse}
-    .smoke-5{width:380px;height:300px;left:48%;top:-60px;animation:smokeDriftB 49s ease-in-out infinite alternate-reverse}
-    @keyframes smokeDriftA{0%{transform:translate(0,0) scale(1);opacity:.5}50%{transform:translate(9%,7%) scale(1.14);opacity:.72}100%{transform:translate(-6%,11%) scale(1.05);opacity:.56}}
-    @keyframes smokeDriftB{0%{transform:translate(0,0) scale(1);opacity:.44}50%{transform:translate(-11%,5%) scale(1.16);opacity:.66}100%{transform:translate(5%,-7%) scale(1.06);opacity:.5}}
-    @keyframes smokeDriftC{0%{transform:translate(0,0) scale(1);opacity:.48}50%{transform:translate(7%,-9%) scale(1.1);opacity:.68}100%{transform:translate(-7%,4%) scale(1);opacity:.52}}
-    @media(prefers-reduced-motion:reduce){.smoke-puff{animation:none!important}}
   </style>
 <style>
     /* ===== OPERATIONS BOARD UPGRADE · static field modelling ===== */
@@ -173,18 +153,9 @@
     .heat-legend i{display:block;width:11px;height:11px;border:1px solid rgba(24,32,24,.38)}
     .heat-legend .l0{background:#b1a37c}.heat-legend .l1{background:#7d8455}.heat-legend .l2{background:#586440}.heat-legend .l3{background:#3a4c2c}.heat-legend .l4{background:#1e2e1a}
     .heat-legend em{margin-left:auto;font-style:normal;color:#6b6c57;letter-spacing:.06em}
-    .xp-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-    .xp-cell{position:relative;padding:13px 12px;color:#ded3b6;background:linear-gradient(162deg,#252a20 0%,#161a11 58%,#0e120b 100%);border:1px solid #39402f;box-shadow:inset 0 1px 0 rgba(255,255,255,.09),inset 0 -2px 4px rgba(0,0,0,.5)}
-    .xp-cell:before,.xp-cell:after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#9aa089,#43483a 60%,#14180f);top:6px}
-    .xp-cell:before{left:6px}.xp-cell:after{right:6px}
-    .xp-cell small{display:block;font:800 8px/1 var(--font-mono);letter-spacing:.14em;color:#8d9478}
-    .xp-cell b{display:block;margin-top:9px;font:900 26px/1 var(--font-mono);color:#c9ac5e;text-shadow:0 0 10px rgba(201,172,94,.22)}
-    .xp-note{margin:11px 0 0;font-size:10px;line-height:1.5;color:#5d6152}
     /* split-flap metal plates */
-    .countdown .digit{position:relative;background:linear-gradient(180deg,#252a20 0 48%,#0a0d08 52% 100%);border:1px solid #3d4434;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -3px 6px rgba(0,0,0,.55),0 2px 0 rgba(0,0,0,.45)}
     .countdown .digit:before{content:"";position:absolute;left:0;right:0;top:49%;height:2px;background:linear-gradient(90deg,rgba(0,0,0,.2),rgba(0,0,0,.9) 22%,rgba(0,0,0,.9) 78%,rgba(0,0,0,.2));z-index:2}
     .countdown .digit:after{content:"";position:absolute;inset:3px;border:1px solid rgba(255,255,255,.06);pointer-events:none}
-    .countdown .digit b{position:relative;z-index:1}
     /* exam board: set-as-target */
     .event{grid-template-columns:50px 1fr auto auto}
     .pin-exam{border:1px solid #6b7160;background:transparent;color:#99a086;font:800 8px/1 var(--font-mono);letter-spacing:.06em;padding:5px 5px;cursor:pointer;white-space:nowrap}
@@ -193,13 +164,12 @@
     /* card material: rivets */
     .card:before{content:"";position:absolute;left:9px;top:9px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#8d8468,#5c5643 60%,#2a2b22);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
     @media(max-width:980px){.ops-row{grid-template-columns:1fr}.theatre svg{height:128px}}
-    @media(max-width:620px){.xp-grid{grid-template-columns:1fr}.theatre svg{height:104px}}
+    @media(max-width:620px){.theatre svg{height:104px}}
   </style>
 <style>
     /* ===== THREE-COLUMN FIELD DESK FIX =====
        Preserve the original WAR PLAN + countdown header and the original right exam-intel sidebar.
        Only add a new left overview rail and make the central working area read as objects on a desk. */
-    :root{--left-rail:220px}
     html,body{min-width:0}
     .shell{
       grid-template-columns:var(--left-rail) minmax(0,1fr) var(--side-width);
@@ -268,15 +238,12 @@
       box-shadow:inset 0 0 55px rgba(0,0,0,.32),0 12px 24px rgba(34,24,15,.18);
       overflow:hidden;
     }
-    .desk-surface:before{content:"OPERATIONS DESK // PACIFIC SECTOR";position:absolute;right:18px;top:8px;color:rgba(207,188,143,.28);font:900 7px/1 var(--font-mono);letter-spacing:.15em}
-    .desk-surface .theatre{margin-top:4px;box-shadow:0 8px 18px rgba(0,0,0,.32);transform:rotate(-.12deg)}
     .desk-surface .card{box-shadow:0 9px 16px rgba(0,0,0,.26),5px 6px 0 rgba(42,42,33,.13)}
     .desk-surface .card:nth-child(2n){transform:rotate(.08deg)}
     .desk-surface .card:nth-child(3n){transform:rotate(-.07deg)}
     .desk-surface .ops-row,.desk-surface .grid{position:relative;z-index:1}
 
     /* Recover some vertical space without changing the information hierarchy. */
-    .desk-surface .theatre svg{height:128px}
     .desk-surface .ops-row{margin-bottom:13px}
     .desk-surface .card{padding:17px}
     .desk-surface .card-head{margin-bottom:12px}
@@ -284,7 +251,7 @@
 
     @media(max-width:1450px){:root{--left-rail:188px}.left-side{padding-left:10px;padding-right:10px}.left-note{left:10px;right:10px}.left-side .stats{grid-template-columns:1fr}.left-side .stat{padding:7px 8px}.left-side .stat b{font-size:18px}.main{padding-left:20px;padding-right:20px}.command-header{grid-template-columns:minmax(0,1fr) minmax(280px,320px);gap:20px}}
     @media(max-width:1160px){.left-side{display:none}.shell,body.side-collapsed .shell{grid-template-columns:minmax(0,1fr) var(--side-width)}.main{grid-column:1}.side{grid-column:2}.command-header{grid-template-columns:minmax(0,1fr) minmax(270px,310px)}}
-    @media(max-width:980px){.shell,body.side-collapsed .shell{display:block;background:var(--paper)}.main,.side{display:block}.desk-surface{margin:0;padding:12px}.command-header{grid-template-columns:1fr}.desk-surface .theatre svg{height:112px}}
+    @media(max-width:980px){.shell,body.side-collapsed .shell{display:block;background:var(--paper)}.main,.side{display:block}.desk-surface{margin:0;padding:12px}.command-header{grid-template-columns:1fr}}
   </style>
 <style id="desk-paper-refinement">
     /* ===== DESK + SINGLE DAMAGED FIELD SHEET ===== */
@@ -298,9 +265,7 @@
         repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 52px),
         repeating-linear-gradient(7deg,rgba(0,0,0,.12) 0 2px,transparent 2px 9px),
         linear-gradient(90deg,#1b110b 0%,#322117 11%,#25170f 26%,#39251a 43%,#24170f 61%,#3a261b 81%,#1b110b 100%);
-      background-attachment:fixed;
     }
-    body:before{opacity:.045;mix-blend-mode:soft-light}
 
     .shell{
       grid-template-columns:var(--side-width) minmax(0,1fr) var(--side-width);
@@ -314,17 +279,6 @@
       align-items:start;
       position:relative;
       isolation:isolate;
-    }
-    .shell:before{
-      content:"";
-      position:fixed;
-      inset:0;
-      z-index:0;
-      pointer-events:none;
-      background:
-        radial-gradient(ellipse 46% 36% at 50% 1%,rgba(255,238,200,.20),rgba(255,224,167,.075) 42%,transparent 78%),
-        radial-gradient(ellipse at center,transparent 52%,rgba(8,5,3,.20) 100%);
-      filter:blur(5px);
     }
 
     /* Equal permanent side rails. Right rail keeps all original behaviour/content. */
@@ -425,7 +379,6 @@
       box-shadow:none;
       overflow:visible;
     }
-    .desk-surface:before{display:none}
 
     /* Existing modules now read as printed/attached sections on ONE sheet, not separate floating papers. */
     .desk-surface .card{
@@ -434,10 +387,6 @@
       border-color:rgba(54,51,34,.30);
     }
     .desk-surface .card:nth-child(2n),.desk-surface .card:nth-child(3n){transform:none}
-    .desk-surface .theatre{
-      box-shadow:0 5px 10px rgba(40,25,12,.22);
-      transform:rotate(-.08deg);
-    }
 
     /* Preserve the good WAR PLAN + clock composition even though both side rails are now equal width. */
     .command-header{
@@ -450,9 +399,6 @@
     .main-countdown{width:100%;max-width:none}
 
     /* Atmosphere belongs in the room, not as fake damage pasted over the UI. */
-    .damage-layer{display:none}
-    .smoke-layer{opacity:.20}
-    .vignette-layer{z-index:3;opacity:.34;mix-blend-mode:multiply}
 
     @media(max-width:1450px){
       :root{--left-rail:var(--side-width)}
@@ -480,9 +426,7 @@
 <style id="field-desk-v3-performance">
     /* ===== V3: ONE SHEET / FIELD DESK / LOW-GPU ===== */
 
-    /* Kill the expensive atmosphere layers completely. */
-    body:before,.shell:before,.damage-layer,.smoke-layer,.vignette-layer{display:none!important}
-    *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    /* Cheap, rough field-command table. No polished dining-table sheen. */
     .theatre svg [filter]{filter:none!important}
 
     /* Cheap, rough field-command table. No polished dining-table sheen. */
@@ -550,8 +494,7 @@
 
     /* ONE PIECE OF PAPER: central modules are PRINTED ON IT, not separate paper cards. */
     .desk-surface{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important;overflow:visible!important}
-    .desk-surface .card,
-    .desk-surface .stat{
+    .desk-surface .card{
       background:transparent!important;
       background-image:none!important;
       border:0!important;
@@ -562,32 +505,12 @@
       transform:none!important;
       padding:18px 4px 14px!important;
     }
-    .desk-surface .card:before,.desk-surface .card:after,
-    .desk-surface .stat:before,.desk-surface .stat:after{display:none!important}
     .desk-surface .ops-row{gap:24px!important;border-bottom:1px dashed rgba(53,54,40,.38);padding-bottom:18px!important;margin-bottom:18px!important}
     .desk-surface .grid{gap:22px!important}
     .desk-surface .wide{border-top:2px solid rgba(48,52,39,.55)!important}
 
-    /* Printed battlefield image on the same sheet, no blur/drop-shadow. */
-    .desk-surface .theatre{
-      margin:6px 0 18px!important;
-      border:2px solid rgba(33,38,28,.72)!important;
-      box-shadow:none!important;
-      transform:none!important;
-      filter:none!important;
-    }
     .theatre:before{background:repeating-linear-gradient(0deg,rgba(0,0,0,.10) 0 1px,transparent 1px 3px)!important}
 
-    /* Turn the dark XP tiles into printed ledger boxes instead of floating metal. */
-    .xp-cell{
-      background:rgba(69,72,52,.07)!important;
-      color:var(--ink)!important;
-      border:1px solid rgba(56,58,43,.45)!important;
-      box-shadow:none!important;
-    }
-    .xp-cell:before,.xp-cell:after{display:none!important}
-    .xp-cell small{color:#626452!important;font-size:10px!important}
-    .xp-cell b{color:#5f2b23!important;text-shadow:none!important;font-size:28px!important}
 
     /* Larger typography: readable at normal viewing distance. */
     .kicker,.eyebrow{font-size:11px!important;line-height:1.35!important}
@@ -603,13 +526,11 @@
     .task label span{font-size:11px!important;line-height:1.45!important;margin-top:4px!important}
     .task strong{font-size:10px!important}
     .btn{font-size:11px!important;padding:10px 13px!important}
-    .hint,.alert,.quote{font-size:11px!important;line-height:1.5!important}
-    .field label{font-size:10px!important}
-    .field select,.field input,.sc-entry input{font-size:13px!important}
+    .hint,.alert{font-size:11px!important;line-height:1.5!important}
+    .sc-entry input{font-size:13px!important}
     .ledger-top,.total-row{font-size:11px!important}
     .ledger-item .hint{font-size:11px!important}
     .heat-legend{font-size:9px!important}
-    .xp-note{font-size:11px!important}
     .sc-tab,.sc-subtab{font-size:10px!important}
     .sc-name{font-size:14px!important}.sc-best{font-size:10px!important}
     .sc-stat b{font-size:22px!important}.sc-stat small{font-size:9px!important}
@@ -630,7 +551,6 @@
     .side .kicker{font-size:10px!important}
     .side h2{font-size:29px!important}
     .next-label{font-size:10px!important}.next-name{font-size:13px!important}
-    .digit b{font-size:23px!important}.digit span{font-size:8px!important}
     .event{font-size:11px!important;grid-template-columns:56px 1fr auto auto!important;padding:10px 8px!important}
     .event>b{font-size:11px!important}
     .pin-exam,.done-exam{font-size:8px!important}
@@ -641,7 +561,6 @@
     .command-header{grid-template-columns:minmax(0,1fr) minmax(310px,360px)!important;gap:28px!important}
 
     /* No endless compositor animations except a tiny error shake when needed. */
-    .smoke-puff{animation:none!important;filter:none!important}
 
     @media(max-width:1450px){
       .main{margin:14px 12px 24px!important;padding:28px 26px 46px!important}
@@ -674,7 +593,7 @@
       background-repeat:no-repeat!important;
       background-attachment:scroll!important;
     }
-    .shell,.shell:before{background:transparent!important}
+    .shell{background:transparent!important}
 
     /* ONE sheet. Critical: explicitly kill inherited 34px background-size from the old .main rule. */
     .main{
@@ -742,21 +661,13 @@
     .desk-surface .grid{gap:15px!important}
 
     /* Keep sub-panels readable and visually grounded. */
-    .xp-cell{background:rgba(86,88,65,.14)!important;border:1px solid rgba(56,58,43,.52)!important}
     .ledger-item{background:rgba(237,230,208,.26)!important;border:1px solid rgba(38,42,33,.42)!important}
     .sc-stat{background:rgba(237,230,208,.34)!important;border:1px solid var(--line)!important}
     .sc-history{background:rgba(237,230,208,.22)!important;border:1px solid var(--line)!important}
-    .field select,.field input,.sc-entry input{background:#dfd0a9!important;border:2px solid #737565!important}
+    .sc-entry input{background:#dfd0a9!important;border:2px solid #737565!important}
 
-    /* Keep the central battlefield as a framed print on the same sheet. */
-    .desk-surface .theatre{
-      background:#0b0e08!important;
-      border:2px solid rgba(33,38,28,.76)!important;
-      box-shadow:none!important;
-    }
 
     /* No GPU-heavy atmosphere comes back. */
-    .damage-layer,.smoke-layer,.vignette-layer{display:none!important}
     *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
   </style>
 <style id="field-desk-v5-battleworn">
@@ -907,7 +818,6 @@
     .desk-surface .card,
     .left-side .stat,
     .left-side .stage,
-    .xp-cell,
     .ledger-item,
     .sc-stat,
     .sc-history,
@@ -915,8 +825,6 @@
     .sc-subtab,
     .btn,
     .badge,
-    .field input,
-    .field select,
     .sc-entry input,
     .task input,
     .event,
@@ -984,8 +892,7 @@
       border-left-color:#63594c!important;
     }
     .desk-surface .card:nth-of-type(3n),
-    .left-side .stage:nth-child(4n+1),
-    .xp-cell:nth-child(3n){
+    .left-side .stage:nth-child(4n+1){
       border-bottom-color:#3b302a!important;
     }
   </style>
@@ -1535,11 +1442,11 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
 /* T6 修订：按钮进标题行 flex（杜绝溢出）；hidden 收成细条手柄，保证可恢复 */
 .stage-head{display:flex!important;align-items:center;gap:6px!important;min-width:0!important}
 .stage-head>b{flex:1 1 auto!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
-.stage-mode{position:static!important;flex:0 0 auto!important;width:20px;height:20px;border:1px solid currentColor;background:transparent;color:inherit;font:900 9px/1 var(--font-mono);cursor:pointer;opacity:.55;padding:0}
+.stage-mode{position:static!important;flex:0 0 auto!important;width:26px;height:26px;border:1px solid currentColor;background:transparent;color:inherit;font:900 15px/1 var(--font-mono);cursor:pointer;opacity:.6;padding:0}
 .stage-mode:hover{opacity:1}
-.stage-hide{position:static!important;flex:0 0 auto!important;width:20px;height:20px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;opacity:.55;padding:0;display:inline-flex!important;align-items:center;justify-content:center}
+.stage-hide{position:static!important;flex:0 0 auto!important;width:26px;height:26px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;opacity:.55;padding:0;display:inline-flex!important;align-items:center;justify-content:center}
 .stage-hide:hover{opacity:1;color:var(--amber)}
-.stage-hide svg{width:12px;height:12px}
+.stage-hide svg{width:14px;height:14px}
 #stageHiddenList{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;padding-right:2px}
 .stage-modal-head{flex:0 0 auto!important}
 .stage.compact>span{display:none!important}
@@ -1594,7 +1501,7 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
 *::-webkit-scrollbar-track{background:transparent}
 *::-webkit-scrollbar-thumb{background-color:#6f6a55;border:3px solid transparent;border-radius:7px;background-clip:padding-box}
 *::-webkit-scrollbar-thumb:hover{background-color:#8a8468;border-width:2px}
-.side,.countdown,.xp-cell,.event{scrollbar-color:#575d4b transparent}
+.side,.countdown,.event{scrollbar-color:#575d4b transparent}
 .side *::-webkit-scrollbar-thumb,.countdown::-webkit-scrollbar-thumb,.event::-webkit-scrollbar-thumb{background-color:#575d4b}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 /* R3-3: WAR PLAN 主标题与其他英文统一为等宽字体 */
@@ -1621,7 +1528,7 @@ body{
   background-repeat:no-repeat,no-repeat,repeat,repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat!important;
   background-attachment:scroll!important;
 }
-.shell,.shell:before{background:transparent!important}
+.shell{background:transparent!important}
 body.side-collapsed .shell{background:transparent!important;background-image:none!important}
 </style>
 <style id="r3-settings">
@@ -1641,36 +1548,34 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 @media(max-width:760px){.settings-grid{grid-template-columns:1fr}}
 </style>
 <style id="r3-flip">
-/* R3-8: 真翻页时钟 —— 每个数字由上半卡（数字上半）+ 下半卡（数字下半）组成，上活页翻下 0.25s、下活页接上 0.25s；
-   DAYS/HRS/MIN/SEC 标签移到钟体正下方，仍在同一倒计时 section 内 */
-.main-countdown .digits{perspective:500px}
-.main-countdown .digit{position:relative;height:62px;padding:0!important;overflow:visible;background:#0a0d08!important;border:1px solid #3d4434!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -3px 6px rgba(0,0,0,.55),0 2px 0 rgba(0,0,0,.45)!important}
+/* R3-8v2: 真翻页时钟 —— 结构与动画照搬开源模板 @leenguyen/react-flip-clock-countdown (MIT)：
+   静态上半=新值 / 静态下半=旧值 / 单活页（正面旧值、背面新值）绕中缝翻转 0.55s，transitionend 归位同步，
+   静止时活页与静态完全一致（上一版静止盖旧值的 bug 在此结构下不存在）。
+   DAYS/HRS/MIN/SEC 标签在钟体正下方，仍在同一倒计时 section 内 */
+.main-countdown .digits{perspective:200px}
+.main-countdown .digit{position:relative;height:62px;padding:0!important;overflow:visible;background:#0a0d08!important;border:1px solid #3d4434!important;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -3px 6px rgba(0,0,0,.55),0 2px 0 rgba(0,0,0,.45)!important}
 .main-countdown .digit:before{z-index:6!important}
-.main-countdown .flip-half{position:absolute;left:0;width:100%;height:50%;overflow:hidden;margin:0}
-.main-countdown .flip-half span{position:absolute;left:0;width:100%;height:62px;line-height:62px;text-align:center;font-family:var(--font-mono)!important;font-weight:900!important;font-size:32px!important;letter-spacing:.02em;color:#d8bf78;text-shadow:0 0 9px rgba(216,191,120,.25);font-variant-numeric:tabular-nums}
-.main-countdown .flip-top{top:0;background:linear-gradient(180deg,#252a20 0%,#141810 100%);border-radius:2px 2px 0 0}
-.main-countdown .flip-top span{top:0}
-.main-countdown .flip-bottom{bottom:0;background:linear-gradient(180deg,#141810 0%,#0a0d08 100%);border-radius:0 0 2px 2px}
-.main-countdown .flip-bottom span{bottom:0}
-.main-countdown .flip-flap{backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.main-countdown .flip-flap-top{top:0;z-index:3;transform-origin:50% 100%;background:linear-gradient(180deg,#252a20 0%,#141810 100%)}
-.main-countdown .flip-flap-bottom{bottom:0;z-index:4;transform-origin:50% 0%;transform:rotateX(90deg);background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
-.main-countdown .digit.flipping .flip-flap-top{animation:r3FlipTop .25s ease-in forwards}
-.main-countdown .digit.flipping .flip-flap-bottom{animation:r3FlipBottom .25s ease-out .25s forwards}
-@keyframes r3FlipTop{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
-@keyframes r3FlipBottom{from{transform:rotateX(90deg)}to{transform:rotateX(0deg)}}
+.main-countdown .fcc-top,.main-countdown .fcc-bottom{position:absolute;left:0;width:100%;height:50%;overflow:hidden;display:flex;justify-content:center;margin:0}
+.main-countdown .fcc-top{top:0;align-items:flex-end;background:linear-gradient(180deg,#252a20 0%,#141810 100%)}
+.main-countdown .fcc-bottom{bottom:0;align-items:flex-start;background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
+.main-countdown .fcc-top span,.main-countdown .fcc-bottom span,.main-countdown .fcc-face span{display:block;height:62px;line-height:62px;text-align:center;font-family:var(--font-mono)!important;font-weight:900!important;font-size:32px!important;letter-spacing:.02em;color:#d8bf78;text-shadow:0 0 9px rgba(216,191,120,.25);font-variant-numeric:tabular-nums;white-space:nowrap}
+.main-countdown .fcc-leaf{position:absolute;top:0;left:0;width:100%;height:50%;z-index:2;transform-style:preserve-3d;transform-origin:bottom;transform:rotateX(0)}
+.main-countdown .digit.flipping .fcc-leaf{transition:transform .55s ease-in-out;transform:rotateX(-180deg)}
+.main-countdown .fcc-face{position:absolute;left:0;top:0;width:100%;height:100%;display:flex;justify-content:center;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.main-countdown .fcc-front{align-items:flex-end;background:linear-gradient(180deg,#252a20 0%,#141810 100%)}
+.main-countdown .fcc-back{align-items:flex-start;transform:rotateX(-180deg);background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
 .flip-labels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:6px}
 .flip-labels span{text-align:center;font:800 8px/1 var(--font-mono);letter-spacing:.12em;color:#8d9478}
-@media(max-width:620px){.main-countdown .digit{height:52px}.main-countdown .flip-half span{height:52px;line-height:52px;font-size:26px!important}}
-@media(prefers-reduced-motion:reduce){.main-countdown .digit.flipping .flip-flap-top,.main-countdown .digit.flipping .flip-flap-bottom{animation:none!important}}
+@media(max-width:620px){.main-countdown .digit{height:52px}.main-countdown .fcc-top span,.main-countdown .fcc-bottom span,.main-countdown .fcc-face span{height:52px;line-height:52px;font-size:26px!important}}
+@media(prefers-reduced-motion:reduce){.main-countdown .digit.flipping .fcc-leaf{transition:none!important}}
 </style>
 <style id="r3-motion">
 /* R3-9: 全局过渡 —— 可动之处皆有平滑/淡入淡出；减弱动效偏好下全部关闭 */
-.btn,.sc-tab,.sc-subtab,.pin-exam,.done-exam,.stage-mode,.stage-hide,.stage-manage,.undo-five,.restore,#settingsBtn,.side-toggle{transition:color .18s ease,background-color .18s ease,border-color .18s ease,opacity .18s ease,transform .18s ease,box-shadow .18s ease}
+.btn,.sc-tab,.sc-subtab,.pin-exam,.done-exam,.stage-mode,.stage-hide,.stage-manage,.restore,#settingsBtn,.side-toggle{transition:color .18s ease,background-color .18s ease,border-color .18s ease,opacity .18s ease,transform .18s ease,box-shadow .18s ease}
 .btn:hover:not(:disabled),.sc-tab:hover,.sc-subtab:hover{transform:translateY(-1px)}
 .btn:active:not(:disabled){transform:translateY(0)}
-.task input,.field select,.field input,.sc-entry input{transition:border-color .18s ease,box-shadow .18s ease}
-.field select:focus,.field input:focus,.sc-entry input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 2px rgba(185,144,67,.35)}
+.task input,.sc-entry input{transition:border-color .18s ease,box-shadow .18s ease}
+.sc-entry input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 2px rgba(185,144,67,.35)}
 .stage{animation:r3FadeSlide .25s ease}
 .event{animation:r3FadeSlide .25s ease}
 @keyframes r3FadeSlide{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -1681,14 +1586,11 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .toast{transition:opacity .25s ease,transform .25s ease;transform:translate(-50%,6px)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .heat-grid i{transition:background-color .3s ease,box-shadow .3s ease}
-.card,.stat,.ledger-item,.xp-cell,.sc-stat,.countdown,.digit{transition:box-shadow .22s ease,border-color .22s ease}
+.card,.stat,.ledger-item,.sc-stat,.countdown,.digit{transition:box-shadow .22s ease,border-color .22s ease}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div aria-hidden="true" class="damage-layer"><i class="bullet bullet-a"></i><i class="bullet bullet-b"></i><i class="bullet bullet-c"></i><i class="scorch scorch-a"></i><i class="scorch scorch-b"></i><i class="slash slash-a"></i><i class="slash slash-b"></i><i class="slash slash-c"></i></div>
-<div aria-hidden="true" class="vignette-layer"></div>
-<div aria-hidden="true" class="smoke-layer"><i class="smoke-puff smoke-1"></i><i class="smoke-puff smoke-2"></i><i class="smoke-puff smoke-3"></i><i class="smoke-puff smoke-4"></i><i class="smoke-puff smoke-5"></i></div>
 <div class="shell">
 <aside aria-label="战区态势侧栏" class="left-side">
 <div class="left-ribbon">FIELD COMMAND // 06</div>
@@ -1736,10 +1638,10 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 <div class="next-label" id="nextDate">AWAITING ORDERS</div>
 <div class="next-name" id="nextName">—</div>
 <div class="digits">
-<div class="digit" id="flipD" data-v="000"><div class="flip-half flip-top"><span>000</span></div><div class="flip-half flip-bottom"><span>000</span></div><div class="flip-half flip-flap flip-flap-top"><span>000</span></div><div class="flip-half flip-flap flip-flap-bottom"><span>000</span></div></div>
-<div class="digit" id="flipH" data-v="00"><div class="flip-half flip-top"><span>00</span></div><div class="flip-half flip-bottom"><span>00</span></div><div class="flip-half flip-flap flip-flap-top"><span>00</span></div><div class="flip-half flip-flap flip-flap-bottom"><span>00</span></div></div>
-<div class="digit" id="flipM" data-v="00"><div class="flip-half flip-top"><span>00</span></div><div class="flip-half flip-bottom"><span>00</span></div><div class="flip-half flip-flap flip-flap-top"><span>00</span></div><div class="flip-half flip-flap flip-flap-bottom"><span>00</span></div></div>
-<div class="digit" id="flipS" data-v="00"><div class="flip-half flip-top"><span>00</span></div><div class="flip-half flip-bottom"><span>00</span></div><div class="flip-half flip-flap flip-flap-top"><span>00</span></div><div class="flip-half flip-flap flip-flap-bottom"><span>00</span></div></div>
+<div class="digit" id="flipD" data-cur="000"><div class="fcc-top"><span>000</span></div><div class="fcc-bottom"><span>000</span></div><div class="fcc-leaf"><div class="fcc-face fcc-front"><span>000</span></div><div class="fcc-face fcc-back"><span>000</span></div></div></div>
+<div class="digit" id="flipH" data-cur="00"><div class="fcc-top"><span>00</span></div><div class="fcc-bottom"><span>00</span></div><div class="fcc-leaf"><div class="fcc-face fcc-front"><span>00</span></div><div class="fcc-face fcc-back"><span>00</span></div></div></div>
+<div class="digit" id="flipM" data-cur="00"><div class="fcc-top"><span>00</span></div><div class="fcc-bottom"><span>00</span></div><div class="fcc-leaf"><div class="fcc-face fcc-front"><span>00</span></div><div class="fcc-face fcc-back"><span>00</span></div></div></div>
+<div class="digit" id="flipS" data-cur="00"><div class="fcc-top"><span>00</span></div><div class="fcc-bottom"><span>00</span></div><div class="fcc-leaf"><div class="fcc-face fcc-front"><span>00</span></div><div class="fcc-face fcc-back"><span>00</span></div></div></div>
 </div>
 <div class="flip-labels"><span>DAYS</span><span>HRS</span><span>MIN</span><span>SEC</span></div>
 </div>
@@ -1873,11 +1775,6 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
         this.cache[k]=v;
         if(this.bridge){this.bridge.save(k,v);return}
         try{localStorage.setItem(k,v)}catch(e){}
-      },
-      remove(k){
-        delete this.cache[k];
-        if(this.bridge){this.bridge.remove(k);return}
-        try{localStorage.removeItem(k)}catch(e){}
       }
     };
     /* ================= CONFIG LAYER（唯一数据源头） =================
@@ -1887,7 +1784,6 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
     const SCORE={sealBonus:5,weeklyQuota:140,heatWeeks:26,planStart:'2026-09-21'};
     /* 配额 = V2 计划数(planned) + 旧档已做基线(baseline)：导入旧数据时已做部分单独计入总量，
        不占用计划进度（剩余 = 配额 - 当前恒等于计划剩余）。改计划数只改 planned，改基线只改 baseline。 */
-    const LEGACY_BASELINE={'PHYS P2':15,'PHYS P1':4,'CHEM P2':18,'CHEM P1':4,'BIO':11,'M S1':8,'M P1':4};
     const COMPONENTS=[
       {id:'PHYS P2',planned:19,baseline:15},{id:'PHYS P1',planned:38,baseline:4},
       {id:'CHEM P2',planned:19,baseline:18},{id:'CHEM P1',planned:38,baseline:4},
@@ -2058,8 +1954,6 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
        outside 为 both：v2 窗外无计划日时沿旧行为兜底。v2 当天按 sheet 列序出 slots，再跟 bpho/review/extra。 */
     function getActiveTaskIds(key){const dow=new Date(key+'T12:00:00').getDay();if(key>=SCORE.planStart){const both=Object.keys(TASK_DEFS).filter(id=>{const t=TASK_DEFS[id];return t.era==='both'&&t.active(key,dow)});const d=V2_DAYS[key];if(!d)return both;const ids=d.slots.filter(s=>TASK_DEFS[s]&&TASK_DEFS[s].active(key,dow));for(const id of Object.keys(TASK_DEFS)){const t=TASK_DEFS[id];if(t.era==='v2'&&!d.slots.includes(id)&&t.active(key,dow))ids.push(id)}return[...ids,...both]}return Object.keys(TASK_DEFS).filter(id=>{const t=TASK_DEFS[id];return(t.era==='both'||(t.era||'legacy')==='legacy')&&t.active(key,dow)})}
     function getTaskView(id,key){const t=getTask(id);if(!t)return null;return{id,title:resolveField(t.title,key),sub:resolveField(t.sub,key),pts:resolveField(t.pts,key)}}
-    function getTaskPoints(id,key){const t=getTask(id);return t?resolveField(t.pts,key):0}
-    function getComponent(id){return COMPONENTS.find(c=>c.id===id)||null}
     function missionQuotaTotal(){return COMPONENTS.reduce((a,c)=>a+componentQuota(c),0)}
     const stages=[
       {n:1,start:'2026-07-22',end:'2026-08-20',label:'HRK 起跑线',output:49},
@@ -2085,6 +1979,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       ['接敌之刻，计划即变','毛奇'],['接受新知难，摒弃旧念更难','李德哈特'],['人人尽责，方能制胜','纳尔逊'],['有胆便来取','列奥尼达'],['纪律是军队之魂','华盛顿']
     ];
     const blank=()=>({version:3,cycles:Object.fromEntries(COMPONENTS.map(c=>[c.id,0])),checks:{},sealed:{},cycleLog:[],examDone:{},lastCheckin:null,soundOn:true,pinnedExam:null,updated:null});
+    const NZ_FMT=new Intl.DateTimeFormat('en-CA',{timeZone:'Pacific/Auckland',year:'numeric',month:'2-digit',day:'2-digit'});
     let data=null;let todayKey=localDateKey(new Date());let renderedDate=todayKey;let nextExam=null;
     function load(){try{const raw=KV.get(KEY);if(!raw)return blank();return migrateBackup(JSON.parse(raw))}catch(e){return blank()}}
     /* 向后兼容迁移：旧存档（version 2，BIO P1/P2 分立）→ 当前 canonical schema。
@@ -2145,21 +2040,8 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
         sfxTone(ctx,t+0.008,{type:'triangle',f0:2950,f1:2600,g:0.025,dur:0.13,dest:out});
       }
     }
-    function sfxLegacy(kind='click'){
-      if(!data.soundOn)return;
-      try{
-        audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-        const ctx=audioCtx,now=ctx.currentTime,impact=kind==='impact',duration=impact?.17:.05;
-        const master=ctx.createGain();master.gain.setValueAtTime(impact?.17:.095,now);master.gain.exponentialRampToValueAtTime(.0001,now+duration);master.connect(ctx.destination);
-        const osc=ctx.createOscillator();osc.type=impact?'triangle':'square';osc.frequency.setValueAtTime(impact?145:760,now);osc.frequency.exponentialRampToValueAtTime(impact?58:190,now+duration);osc.connect(master);osc.start(now);osc.stop(now+duration);
-        const metal=ctx.createOscillator(),metalGain=ctx.createGain();metal.type='square';metal.frequency.setValueAtTime(impact?980:1450,now);metal.frequency.exponentialRampToValueAtTime(impact?260:480,now+(impact?.075:.038));metalGain.gain.setValueAtTime(impact?.075:.055,now);metalGain.gain.exponentialRampToValueAtTime(.0001,now+(impact?.085:.042));metal.connect(metalGain);metalGain.connect(ctx.destination);metal.start(now);metal.stop(now+(impact?.09:.045));
-        const size=Math.max(1,Math.floor(ctx.sampleRate*(impact?.075:.022))),buffer=ctx.createBuffer(1,size,ctx.sampleRate),channel=buffer.getChannelData(0);for(let i=0;i<size;i++)channel[i]=(Math.random()*2-1)*(1-i/size);
-        const noise=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),noiseGain=ctx.createGain();noise.buffer=buffer;filter.type='bandpass';filter.frequency.value=impact?820:2400;filter.Q.value=impact?1.1:3.2;noiseGain.gain.setValueAtTime(impact?.20:.11,now);noiseGain.gain.exponentialRampToValueAtTime(.0001,now+(impact?.09:.03));noise.connect(filter);filter.connect(noiseGain);noiseGain.connect(ctx.destination);noise.start(now)
-      }catch(e){}
-    }
     function updateSfxToggle(){const btn=document.getElementById('sfxToggle');btn.textContent=data.soundOn?'SFX // ARMED':'SFX // SILENT';btn.classList.toggle('sfx-on',!!data.soundOn);btn.classList.toggle('sfx-off',!data.soundOn);btn.setAttribute('aria-pressed',String(!!data.soundOn))}
-    function localDateKey(d){return new Intl.DateTimeFormat('en-CA',{timeZone:'Pacific/Auckland',year:'numeric',month:'2-digit',day:'2-digit'}).format(d)}
-    function nzNow(){return new Date(new Date().toLocaleString('en-US',{timeZone:'Pacific/Auckland'}))}
+    function localDateKey(d){return NZ_FMT.format(d)}
     function activeStage(key=todayKey){return stages.find(s=>key>=s.start&&key<=s.end)||null}
     function setMotto(){let hash=0;for(const c of todayKey)hash=(hash*31+c.charCodeAt(0))>>>0;const index=hash%mottos.length;const entry=mottos[index];const text=Array.isArray(entry)?entry[0]:entry;const by=Array.isArray(entry)?entry[1]:'';document.getElementById('dailyMotto').innerHTML=text+(by?'<span class="motto-by">—— '+by+'</span>':'');document.getElementById('mottoNo').textContent='INTERCEPTED FIELD DIRECTIVE // '+String(index+1).padStart(2,'0')}
     function taskDefs(key){return getActiveTaskIds(key).map(id=>getTaskView(id,key))}
@@ -2169,7 +2051,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
     function planDayLabel(key){const a='2026-09-21',b='2026-11-16';const dnum=dt=>new Date(dt+'T00:00:00').getTime();if(key<a)return 'T-MINUS '+Math.ceil((dnum(a)-dnum(key))/86400000)+' // 计划 9-21 启动';if(key>b)return 'OVERDUE // 计划已结束';const d=V2_DAYS[key];const n=Math.round((dnum(key)-dnum(a))/86400000)+1;return 'PLAN DAY '+String(n).padStart(2,'0')+'/57'+(d&&d.day?' · '+d.day.toUpperCase():'')}
     /* 简报上下文：V2 当天的 Day Type + Notes（附件逐字），非 V2 日隐藏。 */
     function renderDayContext(){const el=document.getElementById('dayContext');if(!el)return;const d=V2_DAYS[todayKey];const note=V2_NOTES[todayKey];if(!d){el.style.display='none';el.textContent='';return}el.style.display='';el.textContent=d.day+(note?' // '+note:'')}
-    function renderTasks(){todayKey=localDateKey(new Date());const now=nzNow(),list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);document.getElementById('stageBadge').textContent=activeStage()?`STAGE ${activeStage().n}`:'RESERVE';renderDayContext();document.getElementById('taskList').innerHTML=list.map(t=>`<div class="task"><input type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}<span>${t.sub}</span></label><strong>+${t.pts} PT</strong></div>`).join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=el.checked;save();renderTasks()}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
+    function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();document.getElementById('taskList').innerHTML=list.map(t=>`<div class="task"><input type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}<span>${t.sub}</span></label><strong>+${t.pts} PT</strong></div>`).join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=el.checked;save();renderTasks()}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
     /* NZ 时区：9-27 前 NZST(UTC+12)，之后 NZDT(UTC+13)；与 exams 倒计时实例同一规则，唯一出处。 */
     function nzOffset(key){return key<'2026-09-27'?'+12:00':'+13:00'}
     function nzAbbr(key){return key<'2026-09-27'?'NZST':'NZDT'}
@@ -2186,30 +2068,33 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
     function renderStageModal(){const wrap=document.getElementById('stageModal');const list=document.getElementById('stageHiddenList');if(!wrap||!list)return;const hidden=stages.filter(s=>stageMode(s.n)==='hidden');list.innerHTML=hidden.length?hidden.map(s=>`<div class="stage-hidden-row"><span>STAGE ${s.n} // ${s.output} · ${s.label}</span><button type="button" data-show="${s.n}">显示</button></div>`).join(''):'<div class="stage-hidden-empty">暂无隐藏阶段</div>'}
     function openStageModal(){renderStageModal();document.getElementById('stageModal').removeAttribute('hidden')}
     function closeStageModal(){document.getElementById('stageModal').setAttribute('hidden','')}
-    function renderStages(){document.getElementById('stageStrip').innerHTML=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const glyph=mode==='full'?'▾':'▸';return `<div class="stage ${state} ${mode==='compact'?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示">${glyph}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('')}
-    function totalCycles(){return Object.values(data.cycles).reduce((a,b)=>a+Number(b||0),0)}
+    function renderStages(){document.getElementById('stageStrip').innerHTML=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const glyph=mode==='full'?'▼':'▶';return `<div class="stage ${state} ${mode==='compact'?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示">${glyph}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('')}
     function renderLedger(){let total=0;const quota=missionQuotaTotal();document.getElementById('ledger').innerHTML=COMPONENTS.map(c=>{const n=Number(data.cycles[c.id]||0);total+=n;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${c.id}</span><span>${n} / ${componentQuota(c)}</span></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
     function streak(){let cursor=new Date(todayKey+'T12:00:00'),n=0;if(!data.sealed[todayKey])cursor.setDate(cursor.getDate()-1);for(;;){const k=localDateKey(cursor);if(!data.sealed[k])break;n++;cursor.setDate(cursor.getDate()-1)}return n}
     function adherenceStats(){const startKey=stages[0].start;let cursor=new Date(startKey+'T12:00:00');const todayD=new Date(todayKey+'T12:00:00');let held=0,total=0;while(cursor<=todayD){const k=localDateKey(cursor);if(k<todayKey||data.sealed[k]){total++;if(data.sealed[k])held++}cursor.setDate(cursor.getDate()+1)}return {held,total}}
     function renderStats(){document.getElementById('streakStat').textContent=streak();const adh=adherenceStats();document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;renderLedger();renderHeat()}
     function isWithdrawn(e){return !!data.examDone[e.id]||e.key<todayKey}
     function renderEvents(){const active=exams.filter(e=>!isWithdrawn(e)),archived=exams.filter(isWithdrawn);nextExam=active[0]||null;document.getElementById('events').innerHTML=active.map((e,i)=>`<div class="event ${i===0?'next':''}"><b>${fmtShort(e.key)}</b><span>${e.name}</span><button class="pin-exam ${data.pinnedExam===e.id?'pinned':''}" data-exam-pin="${e.id}" title="设为主目标">${data.pinnedExam===e.id?'主目标':'设为目标'}</button><button class="done-exam" data-exam-done="${e.id}" title="确认目标已被肃清">肃清</button></div>`).join('')||'<div class="event next"><b>END</b><span>行动板已无敌对目标</span></div>';document.querySelectorAll('[data-exam-pin]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.examPin;data.pinnedExam=data.pinnedExam===id?null:id;save();renderEvents();tick();toast(data.pinnedExam?'主目标已锁定':'已解除主目标')}));document.querySelectorAll('[data-exam-done]').forEach(btn=>btn.addEventListener('click',()=>{data.examDone[btn.dataset.examDone]=true;save();renderEvents();tick();toast('目标已从行动板撤除')}));document.getElementById('archiveCount').textContent=archived.length;document.getElementById('archivedEvents').innerHTML=archived.map(e=>`<div class="archived-row"><span>${fmtShort(e.key)} · ${e.name}</span><button class="restore" data-exam-restore="${e.id}">重启战区</button></div>`).join('')||'<div class="archived-row">尚无已肃清战区</div>';document.querySelectorAll('[data-exam-restore]').forEach(btn=>btn.addEventListener('click',()=>{delete data.examDone[btn.dataset.examRestore];save();renderEvents();tick();toast('目标已重新列入行动板')}))}
-    /* R3-8: 真翻页驱动 —— 顶半卡切新值、底半卡留旧值，上活页翻下后下活页接上（共 0.5s，对标翻页包节奏） */
+    /* R3-8v2: 开源模板同构驱动（@leenguyen/react-flip-clock-countdown, MIT）——
+       上半静态=新值、下半静态=旧值；活页正面旧值翻下、背面新值接上；transitionend 归位同步 */
+    const FLIP_CALM_MQ=matchMedia('(prefers-reduced-motion: reduce)');
     function flipSet(id,val){
-      const unit=document.getElementById(id);
-      if(!unit)return;
-      const old=unit.dataset.v||val;
-      if(old===val&&unit.dataset.ready)return;
-      const top=unit.querySelector('.flip-top span'),bot=unit.querySelector('.flip-bottom span'),
-            fTop=unit.querySelector('.flip-flap-top span'),fBot=unit.querySelector('.flip-flap-bottom span');
-      unit.dataset.v=val;unit.dataset.ready='1';
-      if(!top||!bot)return;
-      const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(calm){top.textContent=val;bot.textContent=val;if(fTop)fTop.textContent=val;if(fBot)fBot.textContent=val;return}
-      top.textContent=val;bot.textContent=old;fTop.textContent=old;fBot.textContent=val;
-      unit.classList.remove('flipping');void unit.offsetWidth;unit.classList.add('flipping');
-      clearTimeout(unit._flipT);
-      unit._flipT=setTimeout(()=>{bot.textContent=val;unit.classList.remove('flipping')},540);
+      const u=document.getElementById(id);
+      if(!u)return;
+      const cur=u.dataset.cur||val;
+      if(cur===val&&u.dataset.ready)return;
+      const c=u._fcc||(u._fcc={top:u.querySelector('.fcc-top span'),bot:u.querySelector('.fcc-bottom span'),front:u.querySelector('.fcc-front span'),back:u.querySelector('.fcc-back span'),leaf:u.querySelector('.fcc-leaf')});
+      const top=c.top,bot=c.bot,front=c.front,back=c.back,leaf=c.leaf;
+      u.dataset.cur=val;u.dataset.ready='1';
+      if(!top||!leaf)return;
+      const paint=(t,b,f,k)=>{top.textContent=t;bot.textContent=b;front.textContent=f;back.textContent=k};
+      if(FLIP_CALM_MQ.matches){paint(val,val,val,val);u.classList.remove('flipping');return}
+      paint(val,cur,cur,val);
+      const done=()=>{paint(val,val,val,val);u.classList.remove('flipping')};
+      u.classList.remove('flipping');void u.offsetWidth;u.classList.add('flipping');
+      clearTimeout(u._flipT);
+      leaf.addEventListener('transitionend',function h(ev){if(ev.propertyName!=='transform')return;leaf.removeEventListener('transitionend',h);clearTimeout(u._flipT);done()});
+      u._flipT=setTimeout(done,750);
     }
     function tick(){const pin=exams.find(e=>e.id===data.pinnedExam&&!isWithdrawn(e));if(pin)nextExam=pin;if(!nextExam){document.getElementById('nextDate').textContent='THEATRE CLEAR';document.getElementById('nextName').textContent='所有敌对目标均已肃清';flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const diff=nextExam.date-new Date();document.getElementById('nextName').textContent=nextExam.name;if(diff<=0&&nextExam.key===todayKey){document.getElementById('nextDate').textContent='CONTACT TODAY // 等待战果确认';flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const safe=Math.max(0,diff),d=Math.floor(safe/86400000),h=Math.floor(safe%86400000/3600000),m=Math.floor(safe%3600000/60000),s=Math.floor(safe%60000/1000);document.getElementById('nextDate').textContent=fmtShort(nextExam.key)+' // UTC'+nzOffset(nextExam.key)+' '+nzAbbr(nextExam.key)+' · 41°S 174°E';flipSet('flipD',String(d).padStart(3,'0'));flipSet('flipH',String(h).padStart(2,'0'));flipSet('flipM',String(m).padStart(2,'0'));flipSet('flipS',String(s).padStart(2,'0'))}
     function dayXp(key){const c=data.checks[key];if(!c)return 0;let x=0;taskDefs(key).forEach(t=>{if(c[t.id])x+=t.pts});if(data.sealed[key])x+=SCORE.sealBonus;return x}

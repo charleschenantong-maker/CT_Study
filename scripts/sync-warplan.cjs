@@ -17,6 +17,7 @@ function fail(msg) {
   process.exit(1);
 }
 
+if (!fs.existsSync(SRC)) fail("source missing: " + SRC);
 const raw = fs.readFileSync(SRC);
 if (raw[0] === 0xef && raw[1] === 0xbb && raw[2] === 0xbf)
   fail("source has BOM, expected plain UTF-8");
@@ -30,5 +31,8 @@ if (html.includes("SYNCED FROM war-plan")) fail("source looks generated, abort")
 const out = html
   .replace("<head>", "<head>\n" + MARKER)
   .replace("</body>", TAG + "\n</body>");
-fs.writeFileSync(DST, out);
+// 原子写入：先写临时文件再改名，避免崩溃留下半个 index.html
+const tmp = DST + ".tmp";
+fs.writeFileSync(tmp, out);
+fs.renameSync(tmp, DST);
 console.log("sync-warplan: index.html regenerated from war-plan/WAR_PLAN.html");

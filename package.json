@@ -10,7 +10,9 @@
     "tauri": "tauri",
     "sync:warplan": "node scripts/sync-warplan.cjs",
     "predev": "node scripts/sync-warplan.cjs",
-    "prebuild": "node scripts/sync-warplan.cjs"
+    "prebuild": "node scripts/sync-warplan.cjs",
+    "prepreview": "node scripts/sync-warplan.cjs",
+    "pretauri": "node scripts/sync-warplan.cjs"
   },
   "dependencies": {
     "@heroui/react": "^2.8.10",

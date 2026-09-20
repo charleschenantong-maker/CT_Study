@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 /**
@@ -25,19 +24,4 @@ export function minimizeWindow(): Promise<void> {
 
 export function toggleMaximizeWindow(): Promise<void> {
   return safeWindowCall(() => getCurrentWindow().toggleMaximize());
-}
-
-/** 订阅窗口聚焦态（原 Titlebar focused state）。 */
-export function useWindowFocused(): boolean {
-  const [focused, setFocused] = useState(true);
-  useEffect(() => {
-    let unlisten: (() => void) | undefined;
-    void safeWindowCall(async () => {
-      unlisten = await getCurrentWindow().onFocusChanged(({ payload }) =>
-        setFocused(payload),
-      );
-    });
-    return () => unlisten?.();
-  }, []);
-  return focused;
 }
