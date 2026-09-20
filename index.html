@@ -1549,6 +1549,18 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .settings-grid .ledger-item{padding:14px}
 .settings-grid .ledger-top{align-items:center}
 .settings-grid .btn{padding:6px 10px;font-size:9px}
+.left-bottom-row{display:flex;align-items:center;gap:8px;margin:auto 14px 0;min-width:0}
+.left-bottom-row .left-note{position:static!important;flex:1 1 auto;min-width:0;margin:0!important}
+.left-bottom-row .left-foot{flex:0 0 auto;margin:0!important}
+.left-bottom-row .left-foot #settingsBtn{width:34px;height:34px}
+.app-tooltip{position:fixed;z-index:100;max-width:220px;padding:7px 9px;border:1px solid var(--amber);background:#171914;color:#eee5ce;box-shadow:0 5px 14px rgba(0,0,0,.3);font:800 11px/1.25 var(--font-mono);pointer-events:none;white-space:nowrap}
+.app-tooltip[hidden]{display:none}
+body.lights-off:after{content:"";position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.28);pointer-events:none}
+body.lights-off #desk-bg{filter:brightness(.72) saturate(.82)}
+body.lights-off .app-tooltip{background:#0b0d0a}
+/* v1.4: lift secondary copy without collapsing its hierarchy under primary text. */
+.hint,.alert,.task label span,.stat em,.stage span,.event,.side-sub,.left-note,.day-context,.sc-axis-label,.sc-empty,.sc-section-title,.sc-hi-score,.footer,.save-state{font-size:11px!important}
+.stat small,.sc-stat small,.heat-legend,.sc-best,.badge{font-size:10px!important}
 @keyframes r3ViewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(max-width:760px){.settings-grid{grid-template-columns:1fr}}
 </style>
@@ -1604,9 +1616,25 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .sc-history,#stageHiddenList,.stage-modal{contain:content}
 .main-countdown .fcc-leaf{will-change:transform}
 </style>
+<style id="v1-4-responsive-layout">
+/* Keep the three-column 4K composition intact; at compact desktop widths stack the rails into the scroll flow. */
+@media(max-width:1680px){
+  .left-side{display:none!important}
+  .shell,body.side-collapsed .shell{display:block!important;min-height:100vh!important;background:transparent!important;background-image:none!important}
+  .main{display:block!important;grid-column:auto!important;width:auto!important;max-width:none!important;margin:18px 12px 30px!important}
+  .side{display:block!important;position:relative!important;top:auto!important;width:auto!important;min-width:0!important;height:auto!important;min-height:0!important;margin:0!important;padding:26px 24px 36px!important;overflow:visible!important;border-left:0!important;border-top:6px solid #0d0f0c!important}
+  .side .event-list{max-height:420px!important;overflow-y:auto!important}
+  body.side-collapsed .side{height:76px!important;min-height:76px!important;padding:16px 7px 20px!important;overflow:hidden!important;border-top:6px solid #0d0f0c!important}
+}
+@media(max-width:980px){
+  .main{margin:0!important;padding:26px 20px 50px!important}
+  .side{padding:24px 18px 30px!important}
+}
+</style>
 </head>
 <body>
 <div id="desk-bg" aria-hidden="true"></div>
+<div id="appTooltip" class="app-tooltip" role="tooltip" hidden></div>
 <div class="shell">
 <aside aria-label="战区态势侧栏" class="left-side">
 <div class="left-ribbon">FIELD COMMAND // 06</div>
@@ -1625,17 +1653,18 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 </section>
 <div class="left-section-label stage-label-row"><span>CAMPAIGN PHASES</span><button type="button" class="stage-manage" id="stageManageBtn" title="管理隐藏阶段" aria-label="管理隐藏阶段">▦</button></div>
 <section aria-label="五阶段战线" class="stage-strip" id="stageStrip"></section>
-<div class="left-note">
+<div class="left-bottom-row"><div class="left-note">
 <b>FIELD NOTE</b>
 <span id="fieldNoteBody">—</span>
 </div>
 <div class="left-foot"><button type="button" id="settingsBtn" title="设置" aria-label="打开设置"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div>
-</aside>
+ </div></aside>
 <main class="main">
 <section id="settingsView" hidden aria-label="设置">
 <div class="card-head"><div><div class="eyebrow">FIELD CONFIGURATION</div><h2>作战设置</h2></div><button class="btn" id="settingsBack" type="button">返回作战纸</button></div>
 <div class="settings-grid">
 <div class="ledger-item"><div class="ledger-top"><span>SOUND // 音效</span><button class="btn" id="settingsSfx" type="button">切换</button></div><p class="hint">签署战报、跨日轮换时的炮声与卡榫声。</p></div>
+<div class="ledger-item"><div class="ledger-top"><span>LIGHTING // 灯光</span><button class="btn" id="settingsLighting" type="button">灯光开启</button></div><p class="hint">关灯后降低整张作战桌的环境亮度，保留文字与控件对比度。</p></div>
 <div class="ledger-item"><div class="ledger-top"><span>SIDEBAR // 右侧情报栏</span><button class="btn" id="settingsSidebar" type="button">收起 / 展开</button></div><p class="hint">与右侧情报栏顶部的收起按钮联动。</p></div>
 <div class="ledger-item"><div class="ledger-top"><span>STAGES // 阶段显示</span><button class="btn" id="settingsStages" type="button">全部恢复</button></div><p class="hint">清除所有隐藏 / 简洁状态，五个阶段全部展开。</p></div>
 <div class="ledger-item"><div class="ledger-top"><span>ARCHIVE // 档案</span><span><button class="btn" id="settingsExport" type="button">转移</button> <button class="btn" id="settingsImport" type="button">接收</button></span></div><p class="hint">与右侧加密档案同源：作战 + 分数同包。</p></div>
@@ -1980,7 +2009,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       {n:5,start:'2026-09-29',end:'2026-11-18',label:'考试走廊',output:141}
     ];
     const exams=[
-      ['eng-p1','2026-10-12','ENG LIT P1'],['m-p1','2026-10-13','M P1'],['phys-p2','2026-10-14','PHYS P2 / SAQ'],['m-s1','2026-10-15','Mathematics Paper 5'],['chem-p2','2026-10-16','CHEM P2 / SAQ'],['bio-p2','2026-10-20','BIO P2 / SAQ'],['phys-prac','2026-10-22','PHYS PRAC'],['eng-p2','2026-10-23','ENG LIT P2'],['chem-prac','2026-10-27','CHEM PRAC'],['bio-prac','2026-10-29','BIO PRAC'],['phys-p1','2026-11-10','PHYS P1 / MCQ'],['chem-p1','2026-11-11','CHEM P1 / MCQ'],['bio-p1','2026-11-12','BIO P1 / MCQ'],['bpho','2026-11-16','BPhO ROUND 1']
+      ['eng-p1','2026-10-12','ENG LIT P1'],['m-p1','2026-10-13','M P1'],['phys-p2','2026-10-14','PHYS P2 / SAQ'],['m-s1','2026-10-15','M P5'],['chem-p2','2026-10-16','CHEM P2 / SAQ'],['bio-p2','2026-10-20','BIO P2 / SAQ'],['phys-prac','2026-10-22','PHYS PRAC'],['eng-p2','2026-10-23','ENG LIT P2'],['chem-prac','2026-10-27','CHEM PRAC'],['bio-prac','2026-10-29','BIO PRAC'],['phys-p1','2026-11-10','PHYS P1 / MCQ'],['chem-p1','2026-11-11','CHEM P1 / MCQ'],['bio-p1','2026-11-12','BIO P1 / MCQ'],['bpho','2026-11-16','BPhO ROUND 1']
     ].map(x=>({id:x[0],key:x[1],name:x[2],date:new Date(x[1]+'T00:00:00'+nzOffset(x[1]))})).sort((a,b)=>a.date-b.date);
     /* directive 名言库：历史名将/战士/兵书真实可考条目（49 条，11 条存疑已剔除），[中文, 出处] 对。 */
     const mottos=[
@@ -1995,7 +2024,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       ['我必回来','麦克阿瑟'],['老兵不死，只是凋零','麦克阿瑟'],['战争之中，胜利唯一','麦克阿瑟'],
       ['接敌之刻，计划即变','毛奇'],['接受新知难，摒弃旧念更难','李德哈特'],['人人尽责，方能制胜','纳尔逊'],['有胆便来取','列奥尼达'],['纪律是军队之魂','华盛顿']
     ];
-    const blank=()=>({version:3,cycles:Object.fromEntries(COMPONENTS.map(c=>[c.id,0])),checks:{},sealed:{},cycleLog:[],examDone:{},lastCheckin:null,soundOn:true,pinnedExam:null,updated:null});
+    const blank=()=>({version:3,cycles:Object.fromEntries(COMPONENTS.map(c=>[c.id,0])),checks:{},sealed:{},cycleLog:[],examDone:{},lastCheckin:null,soundOn:true,lightsOff:false,pinnedExam:null,updated:null});
     const NZ_FMT=new Intl.DateTimeFormat('en-CA',{timeZone:'Pacific/Auckland',year:'numeric',month:'2-digit',day:'2-digit'});
     let data=null;let todayKey=localDateKey(new Date());let renderedDate=todayKey;let nextExam=null;
     function load(){try{const raw=KV.get(KEY);if(!raw)return blank();return migrateBackup(JSON.parse(raw))}catch(e){return blank()}}
@@ -2013,7 +2042,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       const cycles={};
       for(const c of COMPONENTS)cycles[c.id]=c.id==='BIO'?num(src.BIO)+num(src['BIO P1'])+num(src['BIO P2']):num(src[c.id]);
       for(const k of Object.keys(src))if(!(k in cycles)&&!(k in FOLDED_CYCLES))cycles[k]=src[k];
-      const out={...base,...incoming,version:3,cycles,examDone:(incoming.examDone&&typeof incoming.examDone==='object')?incoming.examDone:{},soundOn:incoming.soundOn===undefined?true:!!incoming.soundOn,pinnedExam:typeof incoming.pinnedExam==='string'&&exams.some(e=>e.id===incoming.pinnedExam)?incoming.pinnedExam:null};
+      const out={...base,...incoming,version:3,cycles,examDone:(incoming.examDone&&typeof incoming.examDone==='object')?incoming.examDone:{},soundOn:incoming.soundOn===undefined?true:!!incoming.soundOn,lightsOff:!!incoming.lightsOff,pinnedExam:typeof incoming.pinnedExam==='string'&&exams.some(e=>e.id===incoming.pinnedExam)?incoming.pinnedExam:null};
       delete out.points;
       return out;
     }
@@ -2058,12 +2087,13 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       }
     }
     function updateSfxToggle(){const btn=document.getElementById('sfxToggle');btn.textContent=data.soundOn?'SFX // ARMED':'SFX // SILENT';btn.classList.toggle('sfx-on',!!data.soundOn);btn.classList.toggle('sfx-off',!data.soundOn);btn.setAttribute('aria-pressed',String(!!data.soundOn))}
+    function updateLightingToggle(){document.body.classList.toggle('lights-off',!!data.lightsOff);const btn=document.getElementById('settingsLighting');if(btn)btn.textContent=data.lightsOff?'灯光关闭':'灯光开启'}
     function localDateKey(d){return NZ_FMT.format(d)}
     function activeStage(key=todayKey){return stages.find(s=>key>=s.start&&key<=s.end)||null}
     function setMotto(){let hash=0;for(const c of todayKey)hash=(hash*31+c.charCodeAt(0))>>>0;const index=hash%mottos.length;const entry=mottos[index];const text=Array.isArray(entry)?entry[0]:entry;const by=Array.isArray(entry)?entry[1]:'';document.getElementById('dailyMotto').innerHTML=text+(by?'<span class="motto-by">—— '+by+'</span>':'');document.getElementById('mottoNo').textContent='INTERCEPTED FIELD DIRECTIVE // '+String(index+1).padStart(2,'0')}
     function taskDefs(key){return getActiveTaskIds(key).map(id=>getTaskView(id,key))}
-    /* FIELD NOTE（产品相关）：下场考试·剩余天数·今日 BPhO。 */
-    function renderLeftNote(){const el=document.getElementById('fieldNoteBody');if(!el)return;const dayTask=V2_DAYS[todayKey]&&V2_DAYS[todayKey].bpho;let bpho=dayTask||null;if(!bpho&&getActiveTaskIds(todayKey).includes('bpho')){const legacy=getTaskView('bpho',todayKey);bpho=legacy?legacy.title:null}if(!nextExam){el.textContent='THEATRE CLEAR'+(bpho?' // BPhO今日：'+bpho:'');return}const days=Math.max(0,Math.ceil((nextExam.date.getTime()-Date.now())/86400000));el.textContent=nextExam.name+' · '+days+'天'+(bpho?' // BPhO今日：'+bpho:'')}
+    /* FIELD NOTE：显示今日尚未领取的行动额度，避免重复倒计时 / BPhO 情报。 */
+    function renderLeftNote(){const el=document.getElementById('fieldNoteBody');if(!el)return;const ids=getActiveTaskIds(todayKey),checks=data.checks[todayKey]||{},remaining=ids.map(id=>getTaskView(id,todayKey)).filter(t=>t&&!checks[t.id]),pts=remaining.reduce((sum,t)=>sum+Number(t.pts||0),0);el.textContent=data.sealed[todayKey]?'REPORT SEALED // 本日战报已归档':remaining.length?`未清 ${remaining.length} 项 · 可取 ${pts} PT`:'全部目标已清 · 等待签署'}
     /* 计划日序号（project 相关，非挂钟展示）：V2 窗内为 PLAN DAY nn/57 + Day Type，否则 T-MINUS/OVERDUE。 */
     function planDayLabel(key){const a='2026-09-21',b='2026-11-16';const dnum=dt=>new Date(dt+'T00:00:00').getTime();if(key<a)return 'T-MINUS '+Math.ceil((dnum(a)-dnum(key))/86400000)+' // 计划 9-21 启动';if(key>b)return 'OVERDUE // 计划已结束';const d=V2_DAYS[key];const n=Math.round((dnum(key)-dnum(a))/86400000)+1;return 'PLAN DAY '+String(n).padStart(2,'0')+'/57'+(d&&d.day?' · '+d.day.toUpperCase():'')}
     /* 简报上下文：V2 当天的 Day Type + Notes（附件逐字），非 V2 日隐藏。 */
@@ -2125,7 +2155,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       const WEEKS=SCORE.heatWeeks,end=weekStart(new Date(todayKey+'T12:00:00')),start=new Date(end);start.setDate(start.getDate()-7*(WEEKS-1));
       const cells=[];let max=1,active=0;
       for(let i=0;i<WEEKS*7;i++){const c=new Date(start);c.setDate(c.getDate()+i);const k=localDateKey(c),v=dayXp(k);if(v>max)max=v;if(v>0)active++;cells.push([k,v,k>todayKey])}
-      grid.innerHTML=cells.map(([k,v,future])=>{const r=v/max;const lv=v<=0?0:r<=.25?1:r<=.5?2:r<=.78?3:4;return `<i class="l${lv}${k===todayKey?' today':''}${future?' future':''}" title="${k} · ${v} PT"></i>`}).join('');
+      grid.innerHTML=cells.map(([k,v,future])=>{const r=v/max;const lv=v<=0?0:r<=.25?1:r<=.5?2:r<=.78?3:4;return `<i class="l${lv}${k===todayKey?' today':''}${future?' future':''}" data-tooltip="${k} · ${v} PT" aria-label="${k} · ${v} PT"></i>`}).join('');
       document.getElementById('heatBadge').textContent=active+' ACTIVE DAYS';
       const ws=localDateKey(weekStart(new Date(todayKey+'T12:00:00'))),mo=todayKey.slice(0,7);
       let wk=0,mn=0,all=0;Object.keys(data.checks).forEach(k=>{const v=dayXp(k);all+=v;if(k>=ws&&k<=todayKey)wk+=v;if(k.slice(0,7)===mo)mn+=v});
@@ -2147,6 +2177,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
     document.getElementById('settingsBtn').addEventListener('click',openSettings);
     document.getElementById('settingsBack').addEventListener('click',closeSettings);
     document.getElementById('settingsSfx').addEventListener('click',()=>{data.soundOn=!data.soundOn;save();updateSfxToggle();syncSettingsLabels();toast(data.soundOn?'音效已开启':'音效已关闭')});
+    document.getElementById('settingsLighting').addEventListener('click',()=>{data.lightsOff=!data.lightsOff;save();updateLightingToggle();toast(data.lightsOff?'已关灯':'灯光已开启')});
     document.getElementById('settingsSidebar').addEventListener('click',()=>setSidebarCollapsed(!document.body.classList.contains('side-collapsed')));
     document.getElementById('settingsStages').addEventListener('click',()=>{stageModes={};try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}renderStages();toast('五个阶段已全部恢复展开')});
     document.getElementById('settingsExport').addEventListener('click',()=>document.getElementById('exportBtn').click());
@@ -2178,7 +2209,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       }
     }catch(err){alert('安全警报：档案校验失败，拒绝接入。')}};reader.readAsText(file);e.target.value=''});
     /* reset（焚毁）入口已移除：数据只能经备份文件管理，此处不再提供一键清空 */
-    function renderAll(){todayKey=localDateKey(new Date());renderedDate=todayKey;setMotto();renderTasks();renderStages();renderStats();renderEvents();updateSfxToggle();tick();renderLeftNote()}
+    function renderAll(){todayKey=localDateKey(new Date());renderedDate=todayKey;setMotto();renderTasks();renderStages();renderStats();renderEvents();updateSfxToggle();updateLightingToggle();tick();renderLeftNote()}
     /* 启动门：KV 快照就绪后才允许任何读取（文件模式等 bridge，浏览器模式直接过）。 */
     ;(async function(){
       await KV.init();
@@ -2235,7 +2266,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       subj.subs.forEach(sb=>{const el=document.createElement('button');el.type='button';el.className='sc-subtab'+(sb.id===scState.sub?' active':'');el.textContent=sb.name;el.onclick=()=>{scState.sub=sb.id;scState.lastSub=scState.lastSub||{};scState.lastSub[scState.subject]=sb.id;scSaveState();scRender()};subtabbar.appendChild(el)});
     }
     /* R3-4: recharts 同族折线逻辑 —— monotone 保单调曲率 + 数据更新时 1s 平滑动画；线色/下方阴影保持原样 */
-    let scPrevPts=null,scChartRaf=0;
+    let scPrevPts=null,scChartRaf=0,scChartScene=null;
     const SC_CHART_ANIM_MS=1000;
     function scEaseOutCubic(t){return 1-Math.pow(1-t,3)}
     function scSmoothLine(pts){
@@ -2261,21 +2292,30 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       const wrap=document.getElementById('scChartWrap');
       if(!wrap)return;
       cancelAnimationFrame(scChartRaf);
-      if(entries.length===0){scPrevPts=null;wrap.innerHTML='<div class="sc-empty">尚无战果记录 — 于下方申报首份战果</div>';return}
+      if(entries.length===0){scPrevPts=null;scChartScene=null;wrap.replaceChildren(Object.assign(document.createElement('div'),{className:'sc-empty',textContent:'尚无战果记录 — 于下方申报首份战果'}));return}
       const W=Math.max(wrap.clientWidth,260),H=190,padLeft=40,padRight=12,padTop=14,padBottom=12;
       const plotW=W-padLeft-padRight,plotH=H-padTop-padBottom;
       const pcts=entries.map(e=>(e.score/e.total)*100),n=entries.length;
       const yFor=p=>padTop+plotH-(p/100)*plotH,xFor=i=>n===1?padLeft+plotW/2:padLeft+(i/(n-1))*plotW;
       const baseY=yFor(0);
       const target=pcts.map((p,i)=>[xFor(i),yFor(p)]);
-      const yTicks=[0,20,40,60,80,100];let gridLines='',yLabels='';
-      yTicks.forEach(t=>{const y=yFor(t);gridLines+=`<line class="sc-grid-line" x1="${padLeft}" y1="${y.toFixed(1)}" x2="${W-padRight}" y2="${y.toFixed(1)}"/>`;yLabels+=`<text x="${padLeft-8}" y="${(y+3.5).toFixed(1)}" text-anchor="end" class="sc-axis-label">${t}</text>`});
-      const skeleton=`<defs><linearGradient id="scGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#84392c" stop-opacity="0.30"/><stop offset="100%" stop-color="#84392c" stop-opacity="0"/></linearGradient></defs>${gridLines}`;
+      const sceneKey=W+'x'+n;
+      if(!scChartScene||scChartScene.key!==sceneKey){
+        const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
+        svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('width',W);svg.setAttribute('height',H);
+        svg.innerHTML='<defs><linearGradient id="scGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#84392c" stop-opacity="0.30"/><stop offset="100%" stop-color="#84392c" stop-opacity="0"/></linearGradient></defs>';
+        const fillPath=document.createElementNS(ns,'path');fillPath.setAttribute('class','sc-chart-fill');fillPath.setAttribute('fill','url(#scGrad)');
+        const linePath=document.createElementNS(ns,'path');linePath.setAttribute('class','sc-chart-line');
+        svg.appendChild(fillPath);svg.appendChild(linePath);
+        const dots=entries.map(()=>{const dot=document.createElementNS(ns,'circle');dot.setAttribute('class','sc-dot');dot.setAttribute('r','4');svg.appendChild(dot);return dot});
+        [0,20,40,60,80,100].forEach(t=>{const y=yFor(t),line=document.createElementNS(ns,'line');line.setAttribute('class','sc-grid-line');line.setAttribute('x1',padLeft);line.setAttribute('y1',y.toFixed(1));line.setAttribute('x2',W-padRight);line.setAttribute('y2',y.toFixed(1));svg.insertBefore(line,fillPath);const label=document.createElementNS(ns,'text');label.setAttribute('x',padLeft-8);label.setAttribute('y',(y+3.5).toFixed(1));label.setAttribute('text-anchor','end');label.setAttribute('class','sc-axis-label');label.textContent=t;svg.appendChild(label)});
+        wrap.replaceChildren(svg);scChartScene={key:sceneKey,fillPath,linePath,dots};
+      }
       const paint=pts=>{
         const line=scSmoothLine(pts);
         const fill=pts.length?line+`L${pts[pts.length-1][0].toFixed(1)},${baseY.toFixed(1)} L${pts[0][0].toFixed(1)},${baseY.toFixed(1)} Z`:'';
-        const dots=pts.map(p=>`<circle class="sc-dot" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="4"/>`).join('');
-        wrap.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${skeleton}<path class="sc-chart-fill" fill="url(#scGrad)" d="${fill}"/><path class="sc-chart-line" d="${line}"/>${dots}${yLabels}</svg>`;
+        scChartScene.fillPath.setAttribute('d',fill);scChartScene.linePath.setAttribute('d',line);
+        pts.forEach((p,i)=>{const e=entries[i],pct=(e.score/e.total*100).toFixed(1),dot=scChartScene.dots[i];dot.setAttribute('cx',p[0].toFixed(1));dot.setAttribute('cy',p[1].toFixed(1));dot.dataset.tooltip=`${e.date} · ${e.score}/${e.total} · ${pct}%`;dot.setAttribute('aria-label',`${e.date} · ${pct}%`)});
       };
       const from=scResamplePrev(scPrevPts,target,baseY);
       scPrevPts=target;
@@ -2423,6 +2463,16 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
     if(directive)ro.observe(directive);
   }
   setTimeout(run,50);
+})();
+</script>
+
+<script id="v1-4-software-tooltip">
+(()=>{
+  const tip=document.getElementById('appTooltip');let target=null;
+  const move=e=>{if(!target)return;const pad=12,w=tip.offsetWidth,h=tip.offsetHeight;tip.style.left=Math.min(innerWidth-w-8,e.clientX+pad)+'px';tip.style.top=Math.min(innerHeight-h-8,e.clientY+pad)+'px'};
+  document.addEventListener('pointerover',e=>{const el=e.target.closest('[data-tooltip]');if(!el)return;target=el;tip.textContent=el.dataset.tooltip;tip.hidden=false;move(e)});
+  document.addEventListener('pointermove',move,{passive:true});
+  document.addEventListener('pointerout',e=>{if(target&&(!e.relatedTarget||!target.contains(e.relatedTarget))){target=null;tip.hidden=true}});
 })();
 </script>
 
