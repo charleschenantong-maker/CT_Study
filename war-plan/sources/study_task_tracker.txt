@@ -1,0 +1,116 @@
+STUDY TASK TRACKER
+Last updated: 2026-09-19
+
+=== A-LEVEL SCIENCE PAST PAPERS ===
+
+Physics
+- Structured / written (问答): 44 papers
+- Multiple choice (选择): 53 papers
+- Total Physics past papers: 97
+
+Chemistry
+- Structured / written (问答): 31 papers
+- Multiple choice (选择): 45 papers
+- Total Chemistry past papers: 76
+
+Biology
+- Total past papers: 99
+- Breakdown not yet specified
+
+Total A-level science past papers currently listed: 272
+
+=== BPhO ===
+- BPhO Round 1: 2026-11-16
+Main BPhO papers
+- 2018: Section 1 + Section 2
+- 2019: Section 1 + Section 2
+- 2020: Section 1 + Section 2
+- 2021: Section 1 + Section 2
+- 2022: Section 1 + Section 2
+- 2023: Section 1 + Section 2
+- 2024: Section 1 + Section 2
+
+Printing note
+- These BPhO 2018-2024 Section 1 / Section 2 materials appear to have been printed twice.
+- Treat the duplicate printouts as duplicates, not extra study tasks.
+
+Additional physics olympiad papers
+- 2022 IPC
+- 2023 SPC
+
+=== TRACKING NOTES ===
+- This file is intended to keep track of useful planning information supplied during this study-planning conversation.
+- New useful quantities, deadlines, priorities, constraints, paper counts, and study rules should be appended/updated here as they are provided.
+
+=== CONSOLIDATED EXAM SCHEDULE ===
+- English Literature Paper 1: 2026-10-12 — Afternoon
+- Mathematics Paper 1: 2026-10-13 — Afternoon
+- Physics SAQ: 2026-10-14 — Afternoon
+- Mathematics Paper 5: 2026-10-15 — Afternoon
+- Chemistry SAQ: 2026-10-16 — Afternoon
+- Biology SAQ: 2026-10-20 — Afternoon
+- Physics practical: 2026-10-22
+- English Literature Paper 2: 2026-10-23 — Afternoon
+- Chemistry practical: 2026-10-27
+- Biology practical: 2026-10-29
+- Physics MCQ: 2026-11-10 — Afternoon
+- Chemistry MCQ: 2026-11-11 — Afternoon
+- Biology MCQ: 2026-11-12 — Afternoon
+
+=== STUDY-PLANNING RULES ===
+- English Literature only needs dedicated revision on the day before each English Literature exam.
+- For non-English written exams, the day before the exam should focus primarily on the exact paper type being sat the next day (e.g. SAQ, MCQ, Mathematics Paper 1 / Paper 5).
+- If there is an exam on a given day and another exam immediately the next day, then after finishing the current day's exam, the remaining study time should be focused on the next day's exam.
+- Morning vs afternoon exam timing matters when constructing the daily schedule.
+- All currently listed non-practical exams above are in the afternoon; practical exam times are currently uncertain.
+- Practical exams do NOT require dedicated full revision days/blocks in the plan.
+- For practical exams, only a brief look/review shortly before the exam is needed.
+
+=== STUDY-CAPACITY / EXAM-RUN-IN RULES ===
+- On any day with an exam, plan for approximately 4 hours of study time outside the exam itself.
+- On a day with no exam, plan for approximately 11 hours of study time.
+- Because the currently listed non-practical exams are in the afternoon, the previous day does NOT need to be dominated by that subject; the morning of the exam can be used for focused final review.
+- In the 3–7 days before an exam, study allocation and past-paper selection should increasingly lean toward the upcoming exam.
+- Past-paper volume should be front-loaded: do more full papers several days before the exam rather than leaving a large number for the final 1–2 days.
+- In the final 1–2 days before an exam, reduce full past-paper volume and shift toward targeted review, corrections, weak topics, formulas/definitions, and selected questions.
+- For an afternoon exam, use the morning mainly for concise, focused review rather than heavy full-paper work.
+- If two written exams are on consecutive days, after finishing the first exam use the remaining study time to pivot toward the next day's paper, while keeping in mind that the next exam is also in the afternoon.
+
+=== PLAN START / AVAILABILITY CONSTRAINTS ===
+- Plan start date: 2026-09-21.
+- School attendance: 2026-09-22 through 2026-09-25 (Tuesday to Friday), so these are school days rather than full study-leave days.
+- Between 2026-09-24 and 2026-10-11, there may be 2 days with substantially reduced study time because of going out / leisure plans.
+- The exact dates of those 2 reduced-study days are not yet fixed; when the final plan is built, preserve flexibility in this window and avoid making every day fully loaded.
+
+=== SUBJECT STRENGTHS / WEAKNESSES / REDUCTION PRIORITY ===
+
+Mathematics
+- Mathematics has past papers available, but it does NOT need a high past-paper volume.
+- Reserve only a modest number of Mathematics past papers for practice; do not make Mathematics past-paper completion a major quota.
+- In the final study plan, Mathematics past papers should be used selectively rather than daily by default.
+
+Chemistry
+- Chemistry SAQ and MCQ are currently both strong, at approximately 90th percentile or above by the user's own assessment.
+- Chemistry is the FIRST subject to trim if the overall plan becomes too crowded.
+- Chemistry MCQ is weaker than Chemistry SAQ and should be preserved as much as possible.
+- Chemistry SAQ is the lowest-priority recurring paper practice among the core science written-paper tasks.
+- If time is tight, Chemistry SAQ does not need to be done every day; a pattern such as 2 days out of every 3 is acceptable.
+- In an extreme scheduling squeeze, Chemistry SAQ volume can be reduced substantially or some planned SAQ papers can be removed.
+- Even when Chemistry work is reduced, keep Chemistry MCQ practice where possible.
+
+Biology
+- Biology is a clear weak point.
+- Biology requires serious revision and should receive relatively high priority in the study plan.
+- Do not treat Biology as a subject to trim early if the schedule is crowded.
+
+Physics
+- Physics SAQ mastery is reasonably good, but not as strong as Chemistry SAQ.
+- Physics SAQ still needs meaningful practice.
+- Physics MCQ also needs practice and should be preserved in the schedule.
+- Physics is not the first subject to cut when the plan is overloaded.
+
+General scheduling priority when overloaded
+- First reduce: Chemistry SAQ volume/frequency.
+- Preserve where possible: Chemistry MCQ, Physics SAQ, Physics MCQ.
+- Protect strongly: Biology revision and Biology paper practice.
+- Mathematics past-paper volume should remain modest by design rather than being cut only as an emergency measure.

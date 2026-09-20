@@ -255,3 +255,26 @@ export function t(lang: Lang, key: StrKey): string {
   const table = STR[lang] as unknown as Record<StrKey, string>;
   return table[key];
 }
+
+/**
+ * streak.ts 只产出中文 reason（不许动该文件），在此映射到当前语言。
+ * 原 CheckinCard.repairReasonText，无 UI。
+ */
+export function repairReasonText(reason: string, cost: number, lang: Lang): string {
+  if (
+    reason === "昨日未断签，无需修复" ||
+    reason === "No miss yesterday — no repair needed"
+  ) {
+    return t(lang, "repair.noNeed");
+  }
+  if (
+    reason === "先完成今日全部核心任务" ||
+    reason === "Finish all of today's core tasks first"
+  ) {
+    return t(lang, "repair.finishToday");
+  }
+  if (reason.startsWith("今日额外投入需") || reason.startsWith("Need ")) {
+    return t(lang, "repair.needExtra").replace("{cost}", String(cost));
+  }
+  return reason;
+}

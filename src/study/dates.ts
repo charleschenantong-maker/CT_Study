@@ -41,3 +41,13 @@ export function shortLabel(key: string): string {
   const d = parseKey(key);
   return `${d.getMonth() + 1}/${d.getDate()}`;
 }
+
+/** Exam label like "5 JAN"（原 ExamSchedule.examLabel，无 UI）。 */
+export function examLabel(key: string): string {
+  const [, m, d] = key.split("-");
+  const months = [
+    "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+    "JUL", "AUG", "SEP", "OCT", "NOV", "DEC",
+  ];
+  return `${Number(d)} ${months[Number(m) - 1]}`;
+}

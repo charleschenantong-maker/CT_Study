@@ -53,6 +53,28 @@ export function bgCssFor(id: string): string {
   return BG_PRESETS.find((p) => p.id === id)?.css ?? BG_PRESETS[0].css;
 }
 
+/** 纯判定：theme + 系统深色偏好 -> 是否深色（原 App.tsx 内联逻辑）。 */
+export function resolveDark(theme: Theme, systemDark: boolean): boolean {
+  return theme === "dark" || (theme === "system" && systemDark);
+}
+
+/** 订阅系统深浅偏好（matchMedia），与 UI 无关。 */
+export function useSystemDark(): boolean {
+  const [dark, setDark] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => setDark(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+  return dark;
+}
+
 function isTheme(v: unknown): v is Theme {
   return v === "light" || v === "dark" || v === "system";
 }

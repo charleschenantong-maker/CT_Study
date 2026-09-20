@@ -160,6 +160,15 @@ export function isDeletable(
   return nowMs - createdAt <= windowMs;
 }
 
+/** 跟随鼠标的 tooltip 摆位：悬停点上方 gap 偏移、水平居中（原 ContributionGrid tip）。 */
+export function placeAboveCursor(
+  x: number,
+  y: number,
+  gap = 12,
+): { left: number; top: number; transform: string } {
+  return { left: x, top: y - gap, transform: "translate(-50%, -100%)" };
+}
+
 // ---------- 滚动数字（appica Countdown segment：0-9 竖条 GPU 位移） ----------
 
 /** 值按 minDigits 补零拆成单个数字字符（与 CountdownSegment minDigits=2 对应）。 */

@@ -4,6 +4,9 @@ import { STUDY_CONFIG } from "./config";
 import { addDays } from "./dates";
 import type { GridCell } from "./types";
 
+/** 日历默认回看周数（原 ContributionGrid.WEEKS）。 */
+export const GRID_WEEKS = 26;
+
 export function levelForXp(xp: number): number {
   let level = 0;
   for (const b of STUDY_CONFIG.contributionBuckets) {

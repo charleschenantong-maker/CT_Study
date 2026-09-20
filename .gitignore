@@ -32,3 +32,6 @@ CT_study.png
 # Tauri
 src-tauri/target/
 src-tauri/gen/
+
+# 本地大型工具，不进仓库
+blender-5.2.2-windows-x64/

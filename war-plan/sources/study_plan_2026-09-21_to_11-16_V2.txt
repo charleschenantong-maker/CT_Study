@@ -1,0 +1,246 @@
+STUDY PLAN V2 — TEXT EXPORT
+Source: study_plan_2026-09-21_to_11-16_V2.xlsx
+Sheet-by-sheet export; dates are rendered as YYYY-MM-DD for readability.
+
+================================================================================
+SHEET: Dashboard
+RANGE: A1:D11
+================================================================================
+Study Plan Dashboard — V2
+Key corrections: BPhO every day; paper slots are real papers only; review exists only in exam run-ins.
+
+KPI	Value		V2 Structure
+Science full papers scheduled	174		• Paper 1–6 = papers only.
+Science papers available	272		• BPhO has its own everyday column and never steals a paper slot.
+Base utilization	0.6397058823529411		• Pre-exam Review is separate and starts only when exams actually approach.
+BPhO days scheduled	57		• Math practice is also separate from the six science paper slots.
+BPhO unique source papers/sections	16 / 16		• The two unknown outing days are handled as exceptions, not baked into every normal day.
+Review used in paper slots	0
+Full study days Sep26–Oct10	6 science papers/day
+
+================================================================================
+SHEET: Daily Plan
+RANGE: A1:M61
+================================================================================
+Study Plan V2 — Six Paper Slots + BPhO Every Day
+Paper slots contain papers only. BPhO is a separate everyday task. Review is a separate field and appears only in exam run-ins.
+
+Date	Day	Day Type	Paper 1	Paper 2	Paper 3	Paper 4	Paper 5	Paper 6	BPhO — Every Day	Pre-exam Review	Extra Study	Notes
+2026-09-21	Mon	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO 2018 S1			Six science papers + BPhO. This is the standard full-study-day structure.
+2026-09-22	Tue	School	P SAQ	C MCQ	B SAQ				BPhO selected problems			School day; reduced paper count, but BPhO still happens.
+2026-09-23	Wed	School	C SAQ	B MCQ	P MCQ				BPhO selected problems		Math P1 full/selective practice	School day.
+2026-09-24	Thu	School	B SAQ	P MCQ	C MCQ				BPhO 2018 S2			School day; may become one of the two outing/flex days.
+2026-09-25	Fri	School	P SAQ	C SAQ	B MCQ				BPhO selected problems		Math P5 full/selective practice	School day.
+2026-09-26	Sat	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems			Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-09-27	Sun	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO 2019 S1		Math P1 full/selective practice	Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-09-28	Mon	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems			Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-09-29	Tue	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems		Math P5 full/selective practice	Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-09-30	Wed	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO 2019 S2			Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-01	Thu	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems		Math P1 full/selective practice	Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-02	Fri	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems			Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-03	Sat	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO 2020 S1		Math P5 full/selective practice	Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-04	Sun	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems			Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-05	Mon	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems		Math P1 full/selective practice	Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-06	Tue	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO 2020 S2			Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-07	Wed	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems		Math P5 full/selective practice	Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-08	Thu	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems			Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-09	Fri	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO 2021 S1		Math P1 selected problems	Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-10	Sat	Full study	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	BPhO selected problems		Math P5 selected problems	Full study day: six science papers, all different subject/paper types, plus BPhO.
+2026-10-11	Sun	Full study	P SAQ	C SAQ	B SAQ				BPhO selected problems	English Lit P1 review + Math P1 targeted review		Day before English Lit P1; reduced full-paper load. Reviews are not counted as paper slots.
+2026-10-12	Mon	Exam							BPhO 2021 S2	English Lit P1 final review; after exam → Math P1 targeted review		Afternoon exam; ~4 h study outside exam.
+2026-10-13	Tue	Exam							BPhO light daily practice	Math P1 final review; after exam → Physics SAQ targeted review		Afternoon exam.
+2026-10-14	Wed	Exam							BPhO light daily practice	Physics SAQ final review; after exam → Math P5 targeted review		Afternoon exam.
+2026-10-15	Thu	Exam							BPhO 2022 S1	Math P5 final review; after exam → Chemistry SAQ targeted review		Afternoon exam.
+2026-10-16	Fri	Exam							BPhO light daily practice	Chemistry SAQ final review; after exam → Biology SAQ targeted review		Afternoon exam.
+2026-10-17	Sat	Full study	B SAQ	P MCQ	C MCQ	B MCQ			BPhO selected problems			Last Biology SAQ full paper; four active paper types remain.
+2026-10-18	Sun	Full study	P MCQ	C MCQ	B MCQ				BPhO 2022 S2	Biology SAQ targeted weak-topic / selected-question review		2 days before Biology SAQ: no full Biology SAQ.
+2026-10-19	Mon	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems	Biology SAQ final review		1 day before Biology SAQ.
+2026-10-20	Tue	Exam							BPhO light daily practice	Biology SAQ final review		Afternoon Biology SAQ exam.
+2026-10-21	Wed	Full study	P MCQ	C MCQ	B MCQ				BPhO 2022 IPC			MCQ phase: one of each science MCQ + BPhO.
+2026-10-22	Thu	Exam	P MCQ						BPhO light daily practice	English Lit P2 review		Physics Practical; no dedicated practical review.
+2026-10-23	Fri	Exam	B MCQ						BPhO light daily practice	English Lit P2 final review		Afternoon English Lit P2 exam.
+2026-10-24	Sat	Full study	P MCQ	C MCQ	B MCQ				BPhO 2023 SPC			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-10-25	Sun	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-10-26	Mon	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-10-27	Tue	Exam	P MCQ	C MCQ	B MCQ				BPhO 2023 S1			Chemistry Practical; still keep one of each MCQ if time permits. No practical review.
+2026-10-28	Wed	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-10-29	Thu	Exam	P MCQ	C MCQ	B MCQ				BPhO light daily practice			Biology Practical; still keep one of each MCQ if time permits. No practical review.
+2026-10-30	Fri	Full study	P MCQ	C MCQ	B MCQ				BPhO 2023 S2			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-10-31	Sat	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-11-01	Sun	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-11-02	Mon	Full study	P MCQ	C MCQ	B MCQ				BPhO 2024 S1			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-11-03	Tue	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-11-04	Wed	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-11-05	Thu	Full study	P MCQ	C MCQ	B MCQ				BPhO 2024 S2			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-11-06	Fri	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-11-07	Sat	Full study	P MCQ	C MCQ	B MCQ				BPhO selected problems			One Physics MCQ + one Chemistry MCQ + one Biology MCQ + BPhO.
+2026-11-08	Sun	Full study	C MCQ	B MCQ					BPhO selected problems	Physics MCQ targeted review		Physics MCQ is 2 days away: no full Physics MCQ.
+2026-11-09	Mon	Full study	B MCQ						BPhO selected problems	Physics MCQ final review + Chemistry MCQ targeted review		No full Physics/Chemistry MCQ.
+2026-11-10	Tue	Exam							BPhO light daily practice	Physics MCQ final review; after exam → Chemistry MCQ targeted review		Afternoon Physics MCQ exam.
+2026-11-11	Wed	Exam							BPhO light daily practice	Chemistry MCQ final review; after exam → Biology MCQ targeted review		Afternoon Chemistry MCQ exam.
+2026-11-12	Thu	Exam							BPhO light daily practice	Biology MCQ final review		Afternoon Biology MCQ exam.
+2026-11-13	Fri	Full study							BPhO final review / timed mixed	BPhO weak topics / error patterns		BPhO is now the only remaining exam.
+2026-11-14	Sat	Full study							BPhO final review / timed mixed	BPhO targeted final preparation
+2026-11-15	Sun	Full study							BPhO final review / timed mixed	BPhO light final preparation; finish early
+2026-11-16	Mon	Exam							BPhO warm-up	BPhO warm-up only		BPhO Round 1.
+
+================================================================================
+SHEET: Task Ledger
+RANGE: A1:F264
+================================================================================
+Task Ledger
+
+================================================================================
+SHEET: Inventory Audit
+RANGE: A1:G18
+================================================================================
+Inventory Reconciliation — V2
+
+Paper Type	Available	Scheduled	Remaining	Scheduled %	Exam	Comment
+Physics SAQ	44	19	25	0.4318181818181818	2026-10-14	High-volume daily practice before exam taper.
+Physics MCQ	53	38	15	0.7169811320754716	2026-11-10	One per full MCQ-phase day until taper.
+Chemistry SAQ	31	19	12	0.6129032258064516	2026-10-16	Still the first thing to cut if overloaded.
+Chemistry MCQ	45	38	7	0.8444444444444444	2026-11-11	Preserved more strongly than Chem SAQ.
+Biology TOTAL	99	60	39	0.6060606060606061	SAQ 10/20; MCQ 11/12	SAQ/MCQ stock split not provided, so Biology is audited combined.
+TOTAL SCIENCE	272	174	98	0.6397058823529411	—	Base plan before two unspecified outing-day overrides.
+
+
+Constraint	Result	Verified Value	Notes
+BPhO scheduled every day	PASS	57	Every calendar day from Sep 21 to Nov 16 has a BPhO task.
+Review used as paper slot	PASS	0	Reviews are in a separate Pre-exam Review column only.
+First review date	PASS	2026-10-11	No ordinary-week review slots before the first exam run-in.
+Full study days Sep 26–Oct 10	PASS	6 science papers/day	One each: P/C/B SAQ + P/C/B MCQ.
+Duplicate science paper type same day	PASS	0	No same subject+paper-type repeated on one day.
+BPhO unique source papers/sections	PASS	16	All printed unique materials appear once; other days use selected problems.
+
+================================================================================
+SHEET: BPhO Daily
+RANGE: A1:D60
+================================================================================
+BPhO — Everyday Task
+
+Date	Day	BPhO Task	Mode
+2026-09-21	Mon	BPhO 2018 S1	Unique source paper/section
+2026-09-22	Tue	BPhO selected problems	Daily selected practice
+2026-09-23	Wed	BPhO selected problems	Daily selected practice
+2026-09-24	Thu	BPhO 2018 S2	Unique source paper/section
+2026-09-25	Fri	BPhO selected problems	Daily selected practice
+2026-09-26	Sat	BPhO selected problems	Daily selected practice
+2026-09-27	Sun	BPhO 2019 S1	Unique source paper/section
+2026-09-28	Mon	BPhO selected problems	Daily selected practice
+2026-09-29	Tue	BPhO selected problems	Daily selected practice
+2026-09-30	Wed	BPhO 2019 S2	Unique source paper/section
+2026-10-01	Thu	BPhO selected problems	Daily selected practice
+2026-10-02	Fri	BPhO selected problems	Daily selected practice
+2026-10-03	Sat	BPhO 2020 S1	Unique source paper/section
+2026-10-04	Sun	BPhO selected problems	Daily selected practice
+2026-10-05	Mon	BPhO selected problems	Daily selected practice
+2026-10-06	Tue	BPhO 2020 S2	Unique source paper/section
+2026-10-07	Wed	BPhO selected problems	Daily selected practice
+2026-10-08	Thu	BPhO selected problems	Daily selected practice
+2026-10-09	Fri	BPhO 2021 S1	Unique source paper/section
+2026-10-10	Sat	BPhO selected problems	Daily selected practice
+2026-10-11	Sun	BPhO selected problems	Daily selected practice
+2026-10-12	Mon	BPhO 2021 S2	Unique source paper/section
+2026-10-13	Tue	BPhO light daily practice	Daily selected practice
+2026-10-14	Wed	BPhO light daily practice	Daily selected practice
+2026-10-15	Thu	BPhO 2022 S1	Unique source paper/section
+2026-10-16	Fri	BPhO light daily practice	Daily selected practice
+2026-10-17	Sat	BPhO selected problems	Daily selected practice
+2026-10-18	Sun	BPhO 2022 S2	Unique source paper/section
+2026-10-19	Mon	BPhO selected problems	Daily selected practice
+2026-10-20	Tue	BPhO light daily practice	Daily selected practice
+2026-10-21	Wed	BPhO 2022 IPC	Unique source paper/section
+2026-10-22	Thu	BPhO light daily practice	Daily selected practice
+2026-10-23	Fri	BPhO light daily practice	Daily selected practice
+2026-10-24	Sat	BPhO 2023 SPC	Unique source paper/section
+2026-10-25	Sun	BPhO selected problems	Daily selected practice
+2026-10-26	Mon	BPhO selected problems	Daily selected practice
+2026-10-27	Tue	BPhO 2023 S1	Unique source paper/section
+2026-10-28	Wed	BPhO selected problems	Daily selected practice
+2026-10-29	Thu	BPhO light daily practice	Daily selected practice
+2026-10-30	Fri	BPhO 2023 S2	Unique source paper/section
+2026-10-31	Sat	BPhO selected problems	Daily selected practice
+2026-11-01	Sun	BPhO selected problems	Daily selected practice
+2026-11-02	Mon	BPhO 2024 S1	Unique source paper/section
+2026-11-03	Tue	BPhO selected problems	Daily selected practice
+2026-11-04	Wed	BPhO selected problems	Daily selected practice
+2026-11-05	Thu	BPhO 2024 S2	Unique source paper/section
+2026-11-06	Fri	BPhO selected problems	Daily selected practice
+2026-11-07	Sat	BPhO selected problems	Daily selected practice
+2026-11-08	Sun	BPhO selected problems	Daily selected practice
+2026-11-09	Mon	BPhO selected problems	Daily selected practice
+2026-11-10	Tue	BPhO light daily practice	Daily selected practice
+2026-11-11	Wed	BPhO light daily practice	Daily selected practice
+2026-11-12	Thu	BPhO light daily practice	Daily selected practice
+2026-11-13	Fri	BPhO final review / timed mixed	Final review
+2026-11-14	Sat	BPhO final review / timed mixed	Final review
+2026-11-15	Sun	BPhO final review / timed mixed	Final review
+2026-11-16	Mon	BPhO warm-up	Daily selected practice
+
+================================================================================
+SHEET: Weekly Summary
+RANGE: A1:J12
+================================================================================
+Weekly Summary — Papers + BPhO Daily Compliance
+
+Week Start	P SAQ	C SAQ	B SAQ	P MCQ	C MCQ	B MCQ	Science Total	BPhO Days	Review Days
+2026-09-21	5	5	5	5	5	5	30	7	0
+2026-09-28	7	7	7	7	7	7	42	7	0
+2026-10-05	7	7	7	6	6	6	39	7	1
+2026-10-12	0	0	1	2	2	2	7	7	6
+2026-10-19	0	0	0	5	4	5	14	7	4
+2026-10-26	0	0	0	7	7	7	21	7	0
+2026-11-02	0	0	0	6	7	7	20	7	1
+2026-11-09	0	0	0	0	0	1	1	7	7
+2026-11-16	0	0	0	0	0	0	0	1	1
+
+================================================================================
+SHEET: Rules & Exams
+RANGE: A1:F31
+================================================================================
+Rules & Exams — V2
+
+Rule	Meaning
+• BPhO is an everyday task from Sep 21 through Nov 16.
+• BPhO is separate from the six paper slots; it never displaces a paper just because BPhO exists.
+• A paper slot must contain a real paper. Do not fill paper slots with review/error-log/content-review tasks.
+• Review only appears in the separate Pre-exam Review field, and only during an exam run-in.
+• Full study days before the first exam chain use six different science papers: P/C/B SAQ + P/C/B MCQ.
+• School days are reduced load; exam days are ~4 h outside the exam.
+• Final 1–2 days before a written paper: stop that paper's full papers and switch to targeted review.
+• Chemistry SAQ remains the first science paper type to cut if a real scheduling squeeze happens.
+• Biology remains protected because it is the weakest science subject.
+• Two outing days may occur Sep 24–Oct 11; use Flex Override and do not create catch-up debt.
+
+
+Exam Schedule
+Date	Exam	Time	Review Rule	Paper Rule	Notes
+2026-10-12	English Literature Paper 1	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-10-13	Mathematics Paper 1	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-10-14	Physics SAQ	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-10-15	Mathematics Paper 5	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-10-16	Chemistry SAQ	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-10-20	Biology SAQ	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-10-22	Physics Practical	Unknown	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type	Practical: no dedicated practical revision
+2026-10-23	English Literature Paper 2	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-10-27	Chemistry Practical	Unknown	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type	Practical: no dedicated practical revision
+2026-10-29	Biology Practical	Unknown	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type	Practical: no dedicated practical revision
+2026-11-10	Physics MCQ	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-11-11	Chemistry MCQ	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-11-12	Biology MCQ	Afternoon	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+2026-11-16	BPhO Round 1	—	Targeted/final review allowed before exam	No last-minute full-paper grind for that paper type
+
+================================================================================
+SHEET: Flex Override
+RANGE: A1:F9
+================================================================================
+Outing-Day Flex Override
+
+Priority	Keep / Cut	Task Type	Reason	BPhO?	Debt Next Day?
+1	KEEP	Biology paper	Biology is the main weak point	KEEP	No
+2	KEEP	Immediate upcoming exam paper	Protect nearest written exam	KEEP	No
+3	KEEP if possible	Physics paper	Physics not first to cut	KEEP	No
+4	KEEP if possible	Chemistry MCQ	Weaker than Chemistry SAQ	KEEP	No
+5	CUT FIRST	Chemistry SAQ	Strongest / lowest-priority recurring paper	KEEP	No
+6	MOVE/CUT	Extra Math task	Do not overload the next day	KEEP	No
