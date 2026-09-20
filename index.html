@@ -12,8 +12,7 @@
     body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.13;background:repeating-linear-gradient(107deg,transparent 0 91px,#000 92px 93px,transparent 94px 171px),repeating-linear-gradient(8deg,transparent 0 143px,#f0e8c9 144px 145px,transparent 146px 243px)}
     button,input,select{font:inherit}.shell{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) var(--side-width);background:linear-gradient(90deg,var(--paper) 0 calc(100% - var(--side-width)),var(--night) calc(100% - var(--side-width)));transition:none}.main{position:relative;padding:30px 38px 70px;max-width:1500px;width:100%;margin:0 auto;container-type:inline-size;container-name:mainarea;background-color:var(--paper);background-image:radial-gradient(circle at 18% 20%,rgba(69,57,33,.10) 0 1px,transparent 2px),radial-gradient(circle at 78% 74%,rgba(60,49,28,.08) 0 1px,transparent 2px),linear-gradient(115deg,transparent 49.8%,rgba(68,57,37,.05) 50%,transparent 50.2%);background-size:31px 29px,47px 43px,100% 100%}
     .main:before{content:"FIELD FILE · 2026";position:absolute;right:43px;top:26px;color:rgba(91,43,32,.44);border:3px double currentColor;padding:7px 12px;font:900 11px/1 var(--font-mono);letter-spacing:.12em;transform:rotate(2deg)}
-    .side{position:sticky;top:0;height:100vh;overflow:auto;scrollbar-width:none;-ms-overflow-style:none;padding:30px 24px 36px;color:var(--light);background-color:var(--night);background-image:linear-gradient(135deg,rgba(255,255,255,.025) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.025) 50%,rgba(255,255,255,.025) 75%,transparent 75%);background-size:12px 12px;border-left:6px solid #0d0f0c}
-    .side::-webkit-scrollbar{display:none}
+    .side{position:sticky;top:0;height:100vh;overflow:auto;padding:30px 24px 36px;color:var(--light);background-color:var(--night);background-image:linear-gradient(135deg,rgba(255,255,255,.025) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.025) 50%,rgba(255,255,255,.025) 75%,transparent 75%);background-size:12px 12px;border-left:6px solid #0d0f0c}
     .side-toggle{position:sticky;top:0;z-index:8;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 18px;padding:8px 9px;border:1px solid #686d5d;background:#171d16;color:#d8d0b7;cursor:pointer;font:900 9px/1 var(--font-mono);letter-spacing:.07em;text-transform:uppercase}.side-toggle:hover{border-color:var(--amber);color:var(--amber)}.side-toggle-icon{font-size:17px;line-height:1}.side-toggle-label{white-space:nowrap}
     body.side-collapsed .shell{grid-template-columns:minmax(0,1fr) var(--side-collapsed-width);background:linear-gradient(90deg,var(--paper) 0 calc(100% - var(--side-collapsed-width)),var(--night) calc(100% - var(--side-collapsed-width)))}
     body.side-collapsed .side{padding:16px 7px 20px;overflow:hidden}
@@ -62,7 +61,7 @@
 <style>
     /* ---- SCORE TRACKER MODULE (grafted into Past Paper 归档 card) ---- */
     @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
-    .sc-tabbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:7px;padding-bottom:2px;margin-bottom:9px;overflow:visible}.sc-tabbar::-webkit-scrollbar{display:none}
+    .sc-tabbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:7px;padding-bottom:2px;margin-bottom:9px;overflow:visible}
     .sc-subtabbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px;margin-bottom:15px}
     .sc-tab,.sc-subtab{cursor:pointer;min-width:0;border:2px solid var(--ink);background:transparent;color:var(--ink);padding:7px 10px;font:900 9px/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));white-space:nowrap}
     .sc-tab:hover,.sc-subtab:hover{background:var(--amber)}.sc-tab.active{background:var(--ink);color:var(--light)}
@@ -94,8 +93,7 @@
     .sc-main-panel,.sc-history-panel{min-width:0;max-width:100%;overflow:visible}
     .sc-history-panel{display:flex;flex-direction:column;min-width:0;border-left:1px dashed rgba(43,45,36,.42);padding-left:clamp(8px,1.25cqw,15px)}
     .sc-main-panel .sc-section-title:first-of-type,.sc-history-panel .sc-section-title{margin-top:0}
-    .sc-history{flex:1;min-width:0;min-height:360px;max-height:540px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none}
-    .sc-history::-webkit-scrollbar{display:none}
+    .sc-history{flex:1;min-width:0;min-height:360px;max-height:540px;overflow-y:auto;overflow-x:hidden}
     .sc-history-item{min-width:0;gap:6px;flex-wrap:wrap}
     .sc-history-item>div:first-child{min-width:0;flex:1 1 78px}
     .sc-history-item>div:last-child{min-width:0;flex:0 1 auto;margin-left:auto}
@@ -1538,13 +1536,18 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
 .stage-head>b{flex:1 1 auto!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
 .stage-mode{position:static!important;flex:0 0 auto!important;width:20px;height:20px;border:1px solid currentColor;background:transparent;color:inherit;font:900 9px/1 var(--font-mono);cursor:pointer;opacity:.55;padding:0}
 .stage-mode:hover{opacity:1}
+.stage-hide{position:static!important;flex:0 0 auto!important;width:20px;height:20px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;opacity:.55;padding:0;display:inline-flex!important;align-items:center;justify-content:center}
+.stage-hide:hover{opacity:1;color:var(--amber)}
+.stage-hide svg{width:12px;height:12px}
+#stageHiddenList{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;padding-right:2px}
+.stage-modal-head{flex:0 0 auto!important}
 .stage.compact>span{display:none!important}
 .stage-label-row{display:flex!important;align-items:center;justify-content:space-between!important;gap:6px!important}
 .stage-manage{flex:0 0 auto!important;border:1px solid currentColor!important;background:transparent!important;color:inherit!important;font-size:10px!important;line-height:1!important;padding:3px 6px!important;cursor:pointer!important;opacity:.7!important}
 .stage-manage:hover{opacity:1!important}
 .stage-modal-wrap{position:fixed!important;inset:0!important;z-index:60!important;display:flex!important;align-items:center!important;justify-content:center!important;background:rgba(8,10,7,.62)!important}
 .stage-modal-wrap[hidden]{display:none!important}
-.stage-modal{width:min(420px,calc(100vw - 48px))!important;max-height:70vh!important;overflow-y:auto!important;background:#c9b98b!important;border:2px solid #34392f!important;box-shadow:0 14px 30px rgba(0,0,0,.45)!important;padding:16px 18px!important;color:#20231d!important}
+.stage-modal{width:min(420px,calc(100vw - 48px))!important;height:min(480px,72vh)!important;max-height:72vh!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;background:#c9b98b!important;border:2px solid #34392f!important;box-shadow:0 14px 30px rgba(0,0,0,.45)!important;padding:16px 18px!important;color:#20231d!important}
 .stage-modal-head{display:flex!important;align-items:center!important;justify-content:space-between!important;margin-bottom:10px!important}
 .stage-modal-head b{font:900 11px/1 var(--font-mono)!important;letter-spacing:.1em!important}
 .stage-modal-head button{border:1px solid currentColor!important;background:transparent!important;color:inherit!important;cursor:pointer!important;padding:3px 8px!important}
@@ -1583,6 +1586,103 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
   .main{padding:20px 14px 40px!important}
 }
 </style>
+<style id="r3-scrollbars">
+/* R3-2: 全局可见的主题细滚动条（纸面区深橄榄 / 侧栏暗夜各自适配） */
+*{scrollbar-width:thin;scrollbar-color:#6f6a55 transparent}
+*::-webkit-scrollbar{width:10px;height:10px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{background-color:#6f6a55;border:3px solid transparent;border-radius:7px;background-clip:padding-box}
+*::-webkit-scrollbar-thumb:hover{background-color:#8a8468;border-width:2px}
+.side,.countdown,.xp-cell,.event{scrollbar-color:#575d4b transparent}
+.side *::-webkit-scrollbar-thumb,.countdown::-webkit-scrollbar-thumb,.event::-webkit-scrollbar-thumb{background-color:#575d4b}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+/* R3-3: WAR PLAN 主标题与其他英文统一为等宽字体 */
+h1{font-family:var(--font-mono)!important;font-stretch:normal!important;letter-spacing:-.02em!important}
+h1 span{font-family:var(--font-mono)!important}
+</style>
+<style id="r3-wood">
+/* R3-5: 中央纸张下方换成粗糙老木桌。木纹为内联 SVG 噪声木纹（离线可用、随单文件/exe 走，无外部依赖）。
+   .shell 本身透明，木桌只透出在中间纸张四周；左右侧栏自带不透明底，不受影响。 */
+html{background:#100d08!important}
+body{
+  background-color:#231a10!important;
+  background-image:
+    radial-gradient(ellipse 72% 26% at 50% -2%,rgba(255,228,172,.12) 0%,rgba(255,220,160,.04) 42%,transparent 68%),
+    linear-gradient(90deg,rgba(0,0,0,.42),transparent 12%,transparent 88%,rgba(0,0,0,.42)),
+    repeating-linear-gradient(180deg,transparent 0 129px,rgba(0,0,0,.55) 129px 132px,rgba(255,235,190,.06) 132px 134px,transparent 134px 264px),
+    linear-gradient(180deg,rgba(255,230,180,.05) 0 64px,transparent 64px 132px,rgba(0,0,0,.14) 132px 134px,rgba(255,230,180,.03) 134px 198px,transparent 198px 264px,rgba(0,0,0,.12) 264px 266px,rgba(255,230,180,.04) 266px 330px,transparent 330px 396px,rgba(0,0,0,.10) 396px 398px,rgba(255,230,180,.03) 398px 420px),
+    radial-gradient(ellipse 9% 4% at 23% 31%,rgba(12,7,3,.5),transparent 70%),
+    radial-gradient(ellipse 7% 3% at 71% 68%,rgba(12,7,3,.45),transparent 70%),
+    radial-gradient(ellipse 5% 2.5% at 58% 12%,rgba(10,6,3,.4),transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.16' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.11 0 0 0 0 0.06 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='420' height='420' fill='%232e2113'/%3E%3Crect width='420' height='420' filter='url(%23n)'/%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23f)' opacity='0.5'/%3E%3C/svg%3E"),
+    linear-gradient(180deg,#2c2012 0%,#251a0f 55%,#1b130b 100%)!important;
+  background-size:100% 100%,100% 100%,100% 264px,100% 420px,100% 100%,100% 100%,100% 100%,420px 420px,100% 100%!important;
+  background-repeat:no-repeat,no-repeat,repeat,repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat!important;
+  background-attachment:scroll!important;
+}
+.shell,.shell:before{background:transparent!important}
+body.side-collapsed .shell{background:transparent!important;background-image:none!important}
+</style>
+<style id="r3-settings">
+/* R3-7: 左栏右下角设置按钮 + 纸面设置界面 */
+.left-foot{display:flex!important;justify-content:flex-end!important;margin:8px 14px 0!important}
+#settingsBtn{width:30px;height:30px;border:1px solid #5b604f;background:#11150f;color:#b99043;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:.8}
+#settingsBtn:hover{opacity:1;border-color:var(--amber);color:var(--amber)}
+#settingsBtn svg{width:16px;height:16px}
+#settingsView{position:relative;z-index:2}
+#settingsView:not([hidden]){animation:r3ViewIn .28s ease}
+.main.settings-open .command-header,.main.settings-open .directive-motto,.main.settings-open>.redactions,.main.settings-open>.hazard,.main.settings-open .desk-surface,.main.settings-open .footer{display:none!important}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 6px}
+.settings-grid .ledger-item{padding:14px}
+.settings-grid .ledger-top{align-items:center}
+.settings-grid .btn{padding:6px 10px;font-size:9px}
+@keyframes r3ViewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:760px){.settings-grid{grid-template-columns:1fr}}
+</style>
+<style id="r3-flip">
+/* R3-8: 真翻页时钟 —— 每个数字由上半卡（数字上半）+ 下半卡（数字下半）组成，上活页翻下 0.25s、下活页接上 0.25s；
+   DAYS/HRS/MIN/SEC 标签移到钟体正下方，仍在同一倒计时 section 内 */
+.main-countdown .digits{perspective:500px}
+.main-countdown .digit{position:relative;height:62px;padding:0!important;overflow:visible;background:#0a0d08!important;border:1px solid #3d4434!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -3px 6px rgba(0,0,0,.55),0 2px 0 rgba(0,0,0,.45)!important}
+.main-countdown .digit:before{z-index:6!important}
+.main-countdown .flip-half{position:absolute;left:0;width:100%;height:50%;overflow:hidden;margin:0}
+.main-countdown .flip-half span{position:absolute;left:0;width:100%;height:62px;line-height:62px;text-align:center;font-family:var(--font-mono)!important;font-weight:900!important;font-size:32px!important;letter-spacing:.02em;color:#d8bf78;text-shadow:0 0 9px rgba(216,191,120,.25);font-variant-numeric:tabular-nums}
+.main-countdown .flip-top{top:0;background:linear-gradient(180deg,#252a20 0%,#141810 100%);border-radius:2px 2px 0 0}
+.main-countdown .flip-top span{top:0}
+.main-countdown .flip-bottom{bottom:0;background:linear-gradient(180deg,#141810 0%,#0a0d08 100%);border-radius:0 0 2px 2px}
+.main-countdown .flip-bottom span{bottom:0}
+.main-countdown .flip-flap{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.main-countdown .flip-flap-top{top:0;z-index:3;transform-origin:50% 100%;background:linear-gradient(180deg,#252a20 0%,#141810 100%)}
+.main-countdown .flip-flap-bottom{bottom:0;z-index:4;transform-origin:50% 0%;transform:rotateX(90deg);background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
+.main-countdown .digit.flipping .flip-flap-top{animation:r3FlipTop .25s ease-in forwards}
+.main-countdown .digit.flipping .flip-flap-bottom{animation:r3FlipBottom .25s ease-out .25s forwards}
+@keyframes r3FlipTop{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
+@keyframes r3FlipBottom{from{transform:rotateX(90deg)}to{transform:rotateX(0deg)}}
+.flip-labels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:6px}
+.flip-labels span{text-align:center;font:800 8px/1 var(--font-mono);letter-spacing:.12em;color:#8d9478}
+@media(max-width:620px){.main-countdown .digit{height:52px}.main-countdown .flip-half span{height:52px;line-height:52px;font-size:26px!important}}
+@media(prefers-reduced-motion:reduce){.main-countdown .digit.flipping .flip-flap-top,.main-countdown .digit.flipping .flip-flap-bottom{animation:none!important}}
+</style>
+<style id="r3-motion">
+/* R3-9: 全局过渡 —— 可动之处皆有平滑/淡入淡出；减弱动效偏好下全部关闭 */
+.btn,.sc-tab,.sc-subtab,.pin-exam,.done-exam,.stage-mode,.stage-hide,.stage-manage,.undo-five,.restore,#settingsBtn,.side-toggle{transition:color .18s ease,background-color .18s ease,border-color .18s ease,opacity .18s ease,transform .18s ease,box-shadow .18s ease}
+.btn:hover:not(:disabled),.sc-tab:hover,.sc-subtab:hover{transform:translateY(-1px)}
+.btn:active:not(:disabled){transform:translateY(0)}
+.task input,.field select,.field input,.sc-entry input{transition:border-color .18s ease,box-shadow .18s ease}
+.field select:focus,.field input:focus,.sc-entry input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 2px rgba(185,144,67,.35)}
+.stage{animation:r3FadeSlide .25s ease}
+.event{animation:r3FadeSlide .25s ease}
+@keyframes r3FadeSlide{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.stage-modal-wrap{animation:r3Fade .22s ease}
+@keyframes r3Fade{from{opacity:0}to{opacity:1}}
+.stage-modal{animation:r3Pop .24s ease}
+@keyframes r3Pop{from{opacity:0;transform:scale(.97) translateY(6px)}to{opacity:1;transform:none}}
+.toast{transition:opacity .25s ease,transform .25s ease;transform:translate(-50%,6px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.heat-grid i{transition:background-color .3s ease,box-shadow .3s ease}
+.card,.stat,.ledger-item,.xp-cell,.sc-stat,.countdown,.digit{transition:box-shadow .22s ease,border-color .22s ease}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
 <div aria-hidden="true" class="damage-layer"><i class="bullet bullet-a"></i><i class="bullet bullet-b"></i><i class="bullet bullet-c"></i><i class="scorch scorch-a"></i><i class="scorch scorch-b"></i><i class="slash slash-a"></i><i class="slash slash-b"></i><i class="slash slash-c"></i></div>
@@ -1610,8 +1710,19 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
 <b>FIELD NOTE</b>
 <span id="fieldNoteBody">—</span>
 </div>
+<div class="left-foot"><button type="button" id="settingsBtn" title="设置" aria-label="打开设置"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div>
 </aside>
 <main class="main">
+<section id="settingsView" hidden aria-label="设置">
+<div class="card-head"><div><div class="eyebrow">FIELD CONFIGURATION</div><h2>作战设置</h2></div><button class="btn" id="settingsBack" type="button">返回作战纸</button></div>
+<div class="settings-grid">
+<div class="ledger-item"><div class="ledger-top"><span>SOUND // 音效</span><button class="btn" id="settingsSfx" type="button">切换</button></div><p class="hint">签署战报、跨日轮换时的炮声与卡榫声。</p></div>
+<div class="ledger-item"><div class="ledger-top"><span>SIDEBAR // 右侧情报栏</span><button class="btn" id="settingsSidebar" type="button">收起 / 展开</button></div><p class="hint">与右侧情报栏顶部的收起按钮联动。</p></div>
+<div class="ledger-item"><div class="ledger-top"><span>STAGES // 阶段显示</span><button class="btn" id="settingsStages" type="button">全部恢复</button></div><p class="hint">清除所有隐藏 / 简洁状态，五个阶段全部展开。</p></div>
+<div class="ledger-item"><div class="ledger-top"><span>ARCHIVE // 档案</span><span><button class="btn" id="settingsExport" type="button">转移</button> <button class="btn" id="settingsImport" type="button">接收</button></span></div><p class="hint">与右侧加密档案同源：作战 + 分数同包。</p></div>
+</div>
+<p class="hint">WAR PLAN R3 · 单文件作战纸 · 设置即时生效并随档案保存。</p>
+</section>
 <div class="command-header">
 <div class="command-copy">
 <div class="kicker">CIE AS + OLYMPIAD · OPERATION 22 JUL — 18 NOV 2026</div>
@@ -1624,11 +1735,12 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
 <div class="next-label" id="nextDate">AWAITING ORDERS</div>
 <div class="next-name" id="nextName">—</div>
 <div class="digits">
-<div class="digit"><b id="cdD">000</b><span>DAYS</span></div>
-<div class="digit"><b id="cdH">00</b><span>HRS</span></div>
-<div class="digit"><b id="cdM">00</b><span>MIN</span></div>
-<div class="digit"><b id="cdS">00</b><span>SEC</span></div>
+<div class="digit" id="flipD" data-v="000"><div class="flip-half flip-top"><span>000</span></div><div class="flip-half flip-bottom"><span>000</span></div><div class="flip-half flip-flap flip-flap-top"><span>000</span></div><div class="flip-half flip-flap flip-flap-bottom"><span>000</span></div></div>
+<div class="digit" id="flipH" data-v="00"><div class="flip-half flip-top"><span>00</span></div><div class="flip-half flip-bottom"><span>00</span></div><div class="flip-half flip-flap flip-flap-top"><span>00</span></div><div class="flip-half flip-flap flip-flap-bottom"><span>00</span></div></div>
+<div class="digit" id="flipM" data-v="00"><div class="flip-half flip-top"><span>00</span></div><div class="flip-half flip-bottom"><span>00</span></div><div class="flip-half flip-flap flip-flap-top"><span>00</span></div><div class="flip-half flip-flap flip-flap-bottom"><span>00</span></div></div>
+<div class="digit" id="flipS" data-v="00"><div class="flip-half flip-top"><span>00</span></div><div class="flip-half flip-bottom"><span>00</span></div><div class="flip-half flip-flap flip-flap-top"><span>00</span></div><div class="flip-half flip-flap flip-flap-bottom"><span>00</span></div></div>
 </div>
+<div class="flip-labels"><span>DAYS</span><span>HRS</span><span>MIN</span><span>SEC</span></div>
 </div>
 </div><div class="motto directive-motto">
 <small id="mottoNo">INTERCEPTED FIELD DIRECTIVE</small>
@@ -1694,12 +1806,6 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
 <button class="btn primary" id="scAddBtn" type="submit">确认入档</button>
 </form>
 <div class="sc-form-error" id="scFormError"></div>
-<div class="sc-section-title">情报备份</div>
-<div class="sc-actions">
-<button class="btn" id="scExportBtn" type="button">转移分数档案</button>
-<button class="btn" id="scImportBtn" type="button">接收分数档案</button>
-<input accept="application/json" id="scImportFile" style="display:none" type="file"/>
-</div>
 </div>
 <aside class="sc-history-panel">
 <div class="sc-section-title">战果履历</div>
@@ -2008,7 +2114,7 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
       label.textContent=collapsed?'展开情报':'收起情报';
       if(persist)try{KV.set(SIDE_COLLAPSE_KEY,collapsed?'1':'0')}catch(e){}
       cancelAnimationFrame(setSidebarCollapsed._timer);
-      setSidebarCollapsed._timer=requestAnimationFrame(()=>{const k=scKey(scState.subject,scState.sub);scDrawChart(scCache[k]||[])});
+      setSidebarCollapsed._timer=requestAnimationFrame(()=>{const k=scKey(scState.subject,scState.sub);scDrawChart(scCache[k]||[],false)});
     }
 
     let audioCtx=null;
@@ -2072,11 +2178,14 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
     let stageModes={};
     function loadStageModes(){try{const raw=KV.get(STAGE_MODES_KEY);const p=raw?JSON.parse(raw):null;return p&&typeof p==='object'?p:{}}catch(e){return{}}}
     function stageMode(n){return stageModes[n]==='compact'?'compact':stageModes[n]==='hidden'?'hidden':'full'}
-    function cycleStageMode(n){stageModes[n]=stageMode(n)==='full'?'compact':stageMode(n)==='compact'?'hidden':'full';try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}renderStages()}
+    function cycleStageMode(n){stageModes[n]=stageMode(n)==='full'?'compact':'full';try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}renderStages()}
+    /* 独立隐藏按钮：eye-off 图标来自 Feather Icons (MIT)，只负责隐藏，不参与展开/简洁切换 */
+    const STAGE_EYE_OFF='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    function hideStage(n){stageModes[n]='hidden';try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}renderStages();toast('STAGE '+n+' 已隐藏，可经 ▦ 恢复')}
     function renderStageModal(){const wrap=document.getElementById('stageModal');const list=document.getElementById('stageHiddenList');if(!wrap||!list)return;const hidden=stages.filter(s=>stageMode(s.n)==='hidden');list.innerHTML=hidden.length?hidden.map(s=>`<div class="stage-hidden-row"><span>STAGE ${s.n} // ${s.output} · ${s.label}</span><button type="button" data-show="${s.n}">显示</button></div>`).join(''):'<div class="stage-hidden-empty">暂无隐藏阶段</div>'}
     function openStageModal(){renderStageModal();document.getElementById('stageModal').removeAttribute('hidden')}
     function closeStageModal(){document.getElementById('stageModal').setAttribute('hidden','')}
-    function renderStages(){document.getElementById('stageStrip').innerHTML=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const glyph=mode==='full'?'▾':'▸';return `<div class="stage ${state} ${mode==='compact'?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode" data-stage="${s.n}" title="切换显示：展开/简洁/隐藏" aria-label="切换阶段显示">${glyph}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('')}
+    function renderStages(){document.getElementById('stageStrip').innerHTML=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const glyph=mode==='full'?'▾':'▸';return `<div class="stage ${state} ${mode==='compact'?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示">${glyph}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('')}
     function totalCycles(){return Object.values(data.cycles).reduce((a,b)=>a+Number(b||0),0)}
     function renderLedger(){let total=0;const quota=missionQuotaTotal();document.getElementById('ledger').innerHTML=COMPONENTS.map(c=>{const n=Number(data.cycles[c.id]||0);total+=n;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${c.id}</span><span>${n} / ${componentQuota(c)}</span></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
     function streak(){let cursor=new Date(todayKey+'T12:00:00'),n=0;if(!data.sealed[todayKey])cursor.setDate(cursor.getDate()-1);for(;;){const k=localDateKey(cursor);if(!data.sealed[k])break;n++;cursor.setDate(cursor.getDate()-1)}return n}
@@ -2084,7 +2193,24 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
     function renderStats(){document.getElementById('streakStat').textContent=streak();const adh=adherenceStats();document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;renderLedger();renderHeat()}
     function isWithdrawn(e){return !!data.examDone[e.id]||e.key<todayKey}
     function renderEvents(){const active=exams.filter(e=>!isWithdrawn(e)),archived=exams.filter(isWithdrawn);nextExam=active[0]||null;document.getElementById('events').innerHTML=active.map((e,i)=>`<div class="event ${i===0?'next':''}"><b>${fmtShort(e.key)}</b><span>${e.name}</span><button class="pin-exam ${data.pinnedExam===e.id?'pinned':''}" data-exam-pin="${e.id}" title="设为主目标">${data.pinnedExam===e.id?'主目标':'设为目标'}</button><button class="done-exam" data-exam-done="${e.id}" title="确认目标已被肃清">肃清</button></div>`).join('')||'<div class="event next"><b>END</b><span>行动板已无敌对目标</span></div>';document.querySelectorAll('[data-exam-pin]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.examPin;data.pinnedExam=data.pinnedExam===id?null:id;save();renderEvents();tick();toast(data.pinnedExam?'主目标已锁定':'已解除主目标')}));document.querySelectorAll('[data-exam-done]').forEach(btn=>btn.addEventListener('click',()=>{data.examDone[btn.dataset.examDone]=true;save();renderEvents();tick();toast('目标已从行动板撤除')}));document.getElementById('archiveCount').textContent=archived.length;document.getElementById('archivedEvents').innerHTML=archived.map(e=>`<div class="archived-row"><span>${fmtShort(e.key)} · ${e.name}</span><button class="restore" data-exam-restore="${e.id}">重启战区</button></div>`).join('')||'<div class="archived-row">尚无已肃清战区</div>';document.querySelectorAll('[data-exam-restore]').forEach(btn=>btn.addEventListener('click',()=>{delete data.examDone[btn.dataset.examRestore];save();renderEvents();tick();toast('目标已重新列入行动板')}))}
-    function tick(){const pin=exams.find(e=>e.id===data.pinnedExam&&!isWithdrawn(e));if(pin)nextExam=pin;if(!nextExam){document.getElementById('nextDate').textContent='THEATRE CLEAR';document.getElementById('nextName').textContent='所有敌对目标均已肃清';['cdD','cdH','cdM','cdS'].forEach(id=>document.getElementById(id).textContent='00');return}const diff=nextExam.date-new Date();document.getElementById('nextName').textContent=nextExam.name;if(diff<=0&&nextExam.key===todayKey){document.getElementById('nextDate').textContent='CONTACT TODAY // 等待战果确认';['cdD','cdH','cdM','cdS'].forEach(id=>document.getElementById(id).textContent='00');return}const safe=Math.max(0,diff),d=Math.floor(safe/86400000),h=Math.floor(safe%86400000/3600000),m=Math.floor(safe%3600000/60000),s=Math.floor(safe%60000/1000);document.getElementById('nextDate').textContent=fmtShort(nextExam.key)+' 00:00 // UTC'+nzOffset(nextExam.key)+' '+nzAbbr(nextExam.key)+' · 41°S 174°E';document.getElementById('cdD').textContent=String(d).padStart(3,'0');document.getElementById('cdH').textContent=String(h).padStart(2,'0');document.getElementById('cdM').textContent=String(m).padStart(2,'0');document.getElementById('cdS').textContent=String(s).padStart(2,'0')}
+    /* R3-8: 真翻页驱动 —— 顶半卡切新值、底半卡留旧值，上活页翻下后下活页接上（共 0.5s，对标翻页包节奏） */
+    function flipSet(id,val){
+      const unit=document.getElementById(id);
+      if(!unit)return;
+      const old=unit.dataset.v||val;
+      if(old===val&&unit.dataset.ready)return;
+      const top=unit.querySelector('.flip-top span'),bot=unit.querySelector('.flip-bottom span'),
+            fTop=unit.querySelector('.flip-flap-top span'),fBot=unit.querySelector('.flip-flap-bottom span');
+      unit.dataset.v=val;unit.dataset.ready='1';
+      if(!top||!bot)return;
+      const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(calm){top.textContent=val;bot.textContent=val;if(fTop)fTop.textContent=val;if(fBot)fBot.textContent=val;return}
+      top.textContent=val;bot.textContent=old;fTop.textContent=old;fBot.textContent=val;
+      unit.classList.remove('flipping');void unit.offsetWidth;unit.classList.add('flipping');
+      clearTimeout(unit._flipT);
+      unit._flipT=setTimeout(()=>{bot.textContent=val;unit.classList.remove('flipping')},540);
+    }
+    function tick(){const pin=exams.find(e=>e.id===data.pinnedExam&&!isWithdrawn(e));if(pin)nextExam=pin;if(!nextExam){document.getElementById('nextDate').textContent='THEATRE CLEAR';document.getElementById('nextName').textContent='所有敌对目标均已肃清';flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const diff=nextExam.date-new Date();document.getElementById('nextName').textContent=nextExam.name;if(diff<=0&&nextExam.key===todayKey){document.getElementById('nextDate').textContent='CONTACT TODAY // 等待战果确认';flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const safe=Math.max(0,diff),d=Math.floor(safe/86400000),h=Math.floor(safe%86400000/3600000),m=Math.floor(safe%3600000/60000),s=Math.floor(safe%60000/1000);document.getElementById('nextDate').textContent=fmtShort(nextExam.key)+' // UTC'+nzOffset(nextExam.key)+' '+nzAbbr(nextExam.key)+' · 41°S 174°E';flipSet('flipD',String(d).padStart(3,'0'));flipSet('flipH',String(h).padStart(2,'0'));flipSet('flipM',String(m).padStart(2,'0'));flipSet('flipS',String(s).padStart(2,'0'))}
     function dayXp(key){const c=data.checks[key];if(!c)return 0;let x=0;taskDefs(key).forEach(t=>{if(c[t.id])x+=t.pts});if(data.sealed[key])x+=SCORE.sealBonus;return x}
     function weekStart(d){const c=new Date(d);c.setDate(c.getDate()-((c.getDay()+6)%7));return c}
     function renderHeat(){
@@ -2105,17 +2231,45 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
     function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700)}
     document.addEventListener('pointerdown',e=>{const btn=e.target.closest('button');if(!btn)return;playSfx(btn.id==='sealDay'?'impact':(btn.id==='scAddBtn'||btn.hasAttribute('data-exam-done')||btn.hasAttribute('data-exam-pin'))?'breech':'click')});
     document.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"],select'))playSfx('click')});
-    document.getElementById('stageStrip').addEventListener('click',e=>{const b=e.target.closest('.stage-mode');if(!b)return;cycleStageMode(Number(b.dataset.stage))});
+    document.getElementById('stageStrip').addEventListener('click',e=>{const h=e.target.closest('.stage-hide');if(h){hideStage(Number(h.dataset.hide));return}const b=e.target.closest('.stage-mode');if(!b)return;cycleStageMode(Number(b.dataset.stage))});
     document.getElementById('stageManageBtn').addEventListener('click',openStageModal);
+    /* R3-7: 设置界面 — 纸面内容整体替换 */
+    function openSettings(){document.querySelector('.main').classList.add('settings-open');document.getElementById('settingsView').removeAttribute('hidden');syncSettingsLabels()}
+    function closeSettings(){document.querySelector('.main').classList.remove('settings-open');document.getElementById('settingsView').setAttribute('hidden','')}
+    function syncSettingsLabels(){const s=document.getElementById('settingsSfx');if(s)s.textContent=data.soundOn?'SFX // 开':'SFX // 关'}
+    document.getElementById('settingsBtn').addEventListener('click',openSettings);
+    document.getElementById('settingsBack').addEventListener('click',closeSettings);
+    document.getElementById('settingsSfx').addEventListener('click',()=>{data.soundOn=!data.soundOn;save();updateSfxToggle();syncSettingsLabels();toast(data.soundOn?'音效已开启':'音效已关闭')});
+    document.getElementById('settingsSidebar').addEventListener('click',()=>setSidebarCollapsed(!document.body.classList.contains('side-collapsed')));
+    document.getElementById('settingsStages').addEventListener('click',()=>{stageModes={};try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}renderStages();toast('五个阶段已全部恢复展开')});
+    document.getElementById('settingsExport').addEventListener('click',()=>document.getElementById('exportBtn').click());
+    document.getElementById('settingsImport').addEventListener('click',()=>document.getElementById('importBtn').click());
     document.getElementById('stageModalClose').addEventListener('click',closeStageModal);
     document.getElementById('stageModal').addEventListener('click',e=>{const show=e.target.closest('[data-show]');if(show){const n=Number(show.dataset.show);delete stageModes[n];try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(err){}renderStages();renderStageModal();return}if(e.target.id==='stageModal')closeStageModal()});
     document.getElementById('sideCollapseBtn').addEventListener('click',()=>setSidebarCollapsed(!document.body.classList.contains('side-collapsed')));
     document.getElementById('sfxToggle').addEventListener('click',()=>{data.soundOn=!data.soundOn;save();updateSfxToggle();if(data.soundOn)playSfx('impact')});
     document.getElementById('sealDay').addEventListener('click',()=>{const list=taskDefs(todayKey),checks=data.checks[todayKey]||{};if(!list.every(t=>checks[t.id]))return;data.sealed[todayKey]=true;save();renderTasks();toast('司令部已接收当日战报')});
     document.getElementById('undoSeal').addEventListener('click',()=>{if(!data.sealed[todayKey])return;data.sealed[todayKey]=false;save();renderTasks();toast('当日战报已从档案室撤回')});
-    document.getElementById('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Charles_War_Plan_Field_File_'+todayKey+'.json';a.click();URL.revokeObjectURL(a.href);toast('加密档案已转移至外部保险库')});
+    /* R3-6: 统一加密档案 —— 作战数据 + 分数存档同包转移/接收（为 exe 独立容器准备：单文件即全部档案）。
+       分数日常经 KV 永久保存：Tauri 下写入应用目录 war-plan.json，浏览器下为 localStorage。 */
+    function collectScoreSlots(){const scores={};try{SC_SUBJECTS.forEach(s=>s.subs.forEach(sb=>{const k=scKey(s.id,sb.id),raw=KV.get(k);if(raw)scores[k]=JSON.parse(raw)}))}catch(e){}return scores}
+    function buildFieldArchive(){return {format:'charles-war-plan-bundle',bundle:1,version:3,exportedAt:new Date().toISOString(),warplan:JSON.parse(JSON.stringify(data)),scores:collectScoreSlots(),scState:scState}}
+    function restoreScoreSlots(scores){const keys=Object.keys(scores||{}).filter(k=>k.startsWith('scoretracker:'));keys.forEach(k=>{try{KV.set(k,JSON.stringify(scores[k]))}catch(e){}});return keys.length}
+    document.getElementById('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(buildFieldArchive(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Charles_War_Plan_Field_File_'+todayKey+'.json';a.click();URL.revokeObjectURL(a.href);toast('加密档案（含分数存档）已转移至外部保险库')});
     document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());
-    document.getElementById('importFile').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const incoming=JSON.parse(reader.result);data=migrateBackup(incoming);save();renderAll();toast('外部军情档案已接入指挥系统')}catch(err){alert('安全警报：档案校验失败，拒绝接入。')}};reader.readAsText(file);e.target.value=''});
+    document.getElementById('importFile').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{
+      const incoming=JSON.parse(reader.result);
+      if(incoming&&incoming.bundle===1&&incoming.warplan){
+        data=migrateBackup(incoming.warplan);
+        const n=restoreScoreSlots(incoming.scores);
+        if(incoming.scState&&typeof incoming.scState==='object'){try{KV.set(SC_STATE_KEY,JSON.stringify(incoming.scState))}catch(err){}scState=scLoadState()}
+        scCache={};save();renderAll();scRender();toast('加密档案已接入（含 '+n+' 个战区分数存档）');
+      }else if(incoming&&typeof incoming==='object'&&Object.keys(incoming).some(k=>k.startsWith('scoretracker:'))){
+        const n=restoreScoreSlots(incoming);scCache={};scRender();toast('旧版分数档案已接入，恢复 '+n+' 个战区');
+      }else{
+        data=migrateBackup(incoming);save();renderAll();toast('外部军情档案已接入指挥系统');
+      }
+    }catch(err){alert('安全警报：档案校验失败，拒绝接入。')}};reader.readAsText(file);e.target.value=''});
     /* reset（焚毁）入口已移除：数据只能经备份文件管理，此处不再提供一键清空 */
     function renderAll(){todayKey=localDateKey(new Date());renderedDate=todayKey;setMotto();renderTasks();renderStages();renderStats();renderEvents();updateSfxToggle();tick();renderLeftNote()}
     /* 启动门：KV 快照就绪后才允许任何读取（文件模式等 bridge，浏览器模式直接过）。 */
@@ -2173,20 +2327,61 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
       const subj=SC_SUBJECTS.find(s=>s.id===scState.subject);
       subj.subs.forEach(sb=>{const el=document.createElement('button');el.type='button';el.className='sc-subtab'+(sb.id===scState.sub?' active':'');el.textContent=sb.name;el.onclick=()=>{scState.sub=sb.id;scState.lastSub=scState.lastSub||{};scState.lastSub[scState.subject]=sb.id;scSaveState();scRender()};subtabbar.appendChild(el)});
     }
-    function scDrawChart(entries){
+    /* R3-4: recharts 同族折线逻辑 —— monotone 保单调曲率 + 数据更新时 1s 平滑动画；线色/下方阴影保持原样 */
+    let scPrevPts=null,scChartRaf=0;
+    const SC_CHART_ANIM_MS=1000;
+    function scEaseOutCubic(t){return 1-Math.pow(1-t,3)}
+    function scSmoothLine(pts){
+      if(pts.length===0)return '';
+      if(pts.length===1){const p=pts[0];return `M${p[0].toFixed(1)},${p[1].toFixed(1)}`}
+      let d=`M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+      for(let i=0;i<pts.length-1;i++){
+        const p0=pts[Math.max(0,i-1)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(pts.length-1,i+2)];
+        const c1x=p1[0]+(p2[0]-p0[0])/6;let c1y=p1[1]+(p2[1]-p0[1])/6;
+        const c2x=p2[0]-(p3[0]-p1[0])/6;let c2y=p2[1]-(p3[1]-p1[1])/6;
+        const loY=Math.min(p1[1],p2[1]),hiY=Math.max(p1[1],p2[1]);
+        c1y=Math.min(hiY,Math.max(loY,c1y));c2y=Math.min(hiY,Math.max(loY,c2y));
+        d+=`C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+      }
+      return d;
+    }
+    function scResamplePrev(from,to,baseY){
+      if(!from||!from.length)return to.map(p=>[p[0],baseY]);
+      if(from.length===to.length)return from.map(p=>p.slice());
+      return to.map((p,i)=>{const q=from[Math.round(i*(from.length-1)/(to.length-1))];return q?q.slice():p.slice()});
+    }
+    function scDrawChart(entries,animate=true){
       const wrap=document.getElementById('scChartWrap');
-      if(entries.length===0){wrap.innerHTML='<div class="sc-empty">尚无战果记录 — 于下方申报首份战果</div>';return}
+      if(!wrap)return;
+      cancelAnimationFrame(scChartRaf);
+      if(entries.length===0){scPrevPts=null;wrap.innerHTML='<div class="sc-empty">尚无战果记录 — 于下方申报首份战果</div>';return}
       const W=Math.max(wrap.clientWidth,260),H=190,padLeft=40,padRight=12,padTop=14,padBottom=12;
       const plotW=W-padLeft-padRight,plotH=H-padTop-padBottom;
       const pcts=entries.map(e=>(e.score/e.total)*100),n=entries.length;
       const yFor=p=>padTop+plotH-(p/100)*plotH,xFor=i=>n===1?padLeft+plotW/2:padLeft+(i/(n-1))*plotW;
+      const baseY=yFor(0);
+      const target=pcts.map((p,i)=>[xFor(i),yFor(p)]);
       const yTicks=[0,20,40,60,80,100];let gridLines='',yLabels='';
       yTicks.forEach(t=>{const y=yFor(t);gridLines+=`<line class="sc-grid-line" x1="${padLeft}" y1="${y.toFixed(1)}" x2="${W-padRight}" y2="${y.toFixed(1)}"/>`;yLabels+=`<text x="${padLeft-8}" y="${(y+3.5).toFixed(1)}" text-anchor="end" class="sc-axis-label">${t}</text>`});
-      let path='',points=[];
-      entries.forEach((e,i)=>{const x=xFor(i),y=yFor(pcts[i]);points.push([x,y]);path+=(i===0?'M':'L')+x.toFixed(1)+','+y.toFixed(1)+' '});
-      let fillPath=path+`L${xFor(n-1).toFixed(1)},${yFor(0).toFixed(1)} L${xFor(0).toFixed(1)},${yFor(0).toFixed(1)} Z`;
-      let dots=points.map(([x,y])=>`<circle class="sc-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4"/>`).join('');
-      wrap.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><defs><linearGradient id="scGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#84392c" stop-opacity="0.30"/><stop offset="100%" stop-color="#84392c" stop-opacity="0"/></linearGradient></defs>${gridLines}<path class="sc-chart-fill" fill="url(#scGrad)" d="${fillPath}"/><path class="sc-chart-line" d="${path}"/>${dots}${yLabels}</svg>`;
+      const skeleton=`<defs><linearGradient id="scGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#84392c" stop-opacity="0.30"/><stop offset="100%" stop-color="#84392c" stop-opacity="0"/></linearGradient></defs>${gridLines}`;
+      const paint=pts=>{
+        const line=scSmoothLine(pts);
+        const fill=pts.length?line+`L${pts[pts.length-1][0].toFixed(1)},${baseY.toFixed(1)} L${pts[0][0].toFixed(1)},${baseY.toFixed(1)} Z`:'';
+        const dots=pts.map(p=>`<circle class="sc-dot" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="4"/>`).join('');
+        wrap.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${skeleton}<path class="sc-chart-fill" fill="url(#scGrad)" d="${fill}"/><path class="sc-chart-line" d="${line}"/>${dots}${yLabels}</svg>`;
+      };
+      const from=scResamplePrev(scPrevPts,target,baseY);
+      scPrevPts=target;
+      const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(!animate||calm||target.length<=1){paint(target);return}
+      const t0=performance.now();
+      paint(from);
+      const step=now=>{
+        const t=Math.min(1,(now-t0)/SC_CHART_ANIM_MS),e=scEaseOutCubic(t);
+        paint(target.map((p,i)=>[p[0],from[i][1]+(p[1]-from[i][1])*e]));
+        if(t<1)scChartRaf=requestAnimationFrame(step);
+      };
+      scChartRaf=requestAnimationFrame(step);
     }
     const SC_UNDO_WINDOW_MS=3*60*1000;
     function scRenderHistory(entries){
@@ -2256,24 +2451,12 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
     const scResponsiveCard=document.querySelector('.past-paper-card');
     function scSyncResponsiveLayout(){
       clearTimeout(scSyncResponsiveLayout._timer);
-      scSyncResponsiveLayout._timer=setTimeout(()=>scDrawChart(scCache[scKey(scState.subject,scState.sub)]||[]),90);
+      scSyncResponsiveLayout._timer=setTimeout(()=>scDrawChart(scCache[scKey(scState.subject,scState.sub)]||[],false),90);
     }
     if('ResizeObserver' in window&&scResponsiveCard)new ResizeObserver(scSyncResponsiveLayout).observe(scResponsiveCard);
     let scResizeTimer=null;
     window.addEventListener('resize',()=>{clearTimeout(scResizeTimer);scResizeTimer=setTimeout(scSyncResponsiveLayout,120)});
     setInterval(()=>{const k=scKey(scState.subject,scState.sub);if(scCache[k])scRenderHistory(scCache[k])},15000);
-    document.getElementById('scExportBtn').addEventListener('click',()=>{
-      const backup={};SC_SUBJECTS.forEach(s=>s.subs.forEach(sb=>{const k=scKey(s.id,sb.id),raw=KV.get(k);if(raw)backup[k]=JSON.parse(raw)}));
-      const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-      a.href=url;a.download='score_tracker_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);toast('分数档案已转移至外部保险库');
-    });
-    document.getElementById('scImportBtn').addEventListener('click',()=>document.getElementById('scImportFile').click());
-    document.getElementById('scImportFile').addEventListener('change',(ev)=>{
-      const file=ev.target.files[0];if(!file)return;
-      const reader=new FileReader();
-      reader.onload=async()=>{try{const backup=JSON.parse(reader.result);const keys=Object.keys(backup).filter(k=>k.startsWith('scoretracker:'));if(keys.length===0){alert('这份档案未侦测到可识别的战果记录。');return}keys.forEach(k=>KV.set(k,JSON.stringify(backup[k])));scCache={};scRender();toast('分数档案已接入指挥系统');alert('接入成功，已恢复 '+keys.length+' 个战区的战果记录。')}catch(e){alert('接入失败：档案格式无法识别。')}ev.target.value=''};
-      reader.readAsText(file);
-    });
   })();
   </script>
 
