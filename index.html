@@ -1162,6 +1162,7 @@
   }
 </style>
 
+
 <style id="field-desk-v15-heat-right">
   /* V15: use the space released to the RIGHT of the shifted countdown for a compact heat map. */
   @media(min-width:981px){
@@ -1556,14 +1557,14 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .main-countdown .digit{position:relative;height:62px;padding:0!important;overflow:visible;background:#0a0d08!important;border:1px solid #3d4434!important;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -3px 6px rgba(0,0,0,.55),0 2px 0 rgba(0,0,0,.45)!important}
 .main-countdown .digit:before{z-index:6!important}
 .main-countdown .fcc-top,.main-countdown .fcc-bottom{position:absolute;left:0;width:100%;height:50%;overflow:hidden;display:flex;justify-content:center;margin:0}
-.main-countdown .fcc-top{top:0;align-items:flex-end;background:linear-gradient(180deg,#252a20 0%,#141810 100%)}
-.main-countdown .fcc-bottom{bottom:0;align-items:flex-start;background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
+.main-countdown .fcc-top{top:0;align-items:flex-start;background:linear-gradient(180deg,#252a20 0%,#141810 100%)}
+.main-countdown .fcc-bottom{bottom:0;align-items:flex-end;background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
 .main-countdown .fcc-top span,.main-countdown .fcc-bottom span,.main-countdown .fcc-face span{display:block;height:62px;line-height:62px;text-align:center;font-family:var(--font-mono)!important;font-weight:900!important;font-size:32px!important;letter-spacing:.02em;color:#d8bf78;text-shadow:0 0 9px rgba(216,191,120,.25);font-variant-numeric:tabular-nums;white-space:nowrap}
 .main-countdown .fcc-leaf{position:absolute;top:0;left:0;width:100%;height:50%;z-index:2;transform-style:preserve-3d;transform-origin:bottom;transform:rotateX(0)}
 .main-countdown .digit.flipping .fcc-leaf{transition:transform .55s ease-in-out;transform:rotateX(-180deg)}
 .main-countdown .fcc-face{position:absolute;left:0;top:0;width:100%;height:100%;display:flex;justify-content:center;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.main-countdown .fcc-front{align-items:flex-end;background:linear-gradient(180deg,#252a20 0%,#141810 100%)}
-.main-countdown .fcc-back{align-items:flex-start;transform:rotateX(-180deg);background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
+.main-countdown .fcc-front{align-items:flex-start;background:linear-gradient(180deg,#252a20 0%,#141810 100%)}
+.main-countdown .fcc-back{align-items:flex-end;transform:rotateX(-180deg);background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
 .flip-labels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:6px}
 .flip-labels span{text-align:center;font:800 8px/1 var(--font-mono);letter-spacing:.12em;color:#8d9478}
 @media(max-width:620px){.main-countdown .digit{height:52px}.main-countdown .fcc-top span,.main-countdown .fcc-bottom span,.main-countdown .fcc-face span{height:52px;line-height:52px;font-size:26px!important}}
@@ -1588,6 +1589,10 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .heat-grid i{transition:background-color .3s ease,box-shadow .3s ease}
 .card,.stat,.ledger-item,.sc-stat,.countdown,.digit{transition:box-shadow .22s ease,border-color .22s ease}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+<style id="r4-fixed-desk-scroll">
+  /* Keep the original timber material; only its scroll behavior changes. */
+  html,body{background-attachment:fixed!important}
 </style>
 </head>
 <body>
@@ -2078,25 +2083,29 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
     /* R3-8v2: 开源模板同构驱动（@leenguyen/react-flip-clock-countdown, MIT）——
        上半静态=新值、下半静态=旧值；活页正面旧值翻下、背面新值接上；transitionend 归位同步 */
     const FLIP_CALM_MQ=matchMedia('(prefers-reduced-motion: reduce)');
+    function setText(el,value){if(el.textContent!==value)el.textContent=value}
     function flipSet(id,val){
       const u=document.getElementById(id);
       if(!u)return;
       const cur=u.dataset.cur||val;
       if(cur===val&&u.dataset.ready)return;
+      if(u._finishFlip)u._finishFlip();
       const c=u._fcc||(u._fcc={top:u.querySelector('.fcc-top span'),bot:u.querySelector('.fcc-bottom span'),front:u.querySelector('.fcc-front span'),back:u.querySelector('.fcc-back span'),leaf:u.querySelector('.fcc-leaf')});
       const top=c.top,bot=c.bot,front=c.front,back=c.back,leaf=c.leaf;
       u.dataset.cur=val;u.dataset.ready='1';
       if(!top||!leaf)return;
-      const paint=(t,b,f,k)=>{top.textContent=t;bot.textContent=b;front.textContent=f;back.textContent=k};
+      const paint=(t,b,f,k)=>{setText(top,t);setText(bot,b);setText(front,f);setText(back,k)};
       if(FLIP_CALM_MQ.matches){paint(val,val,val,val);u.classList.remove('flipping');return}
       paint(val,cur,cur,val);
-      const done=()=>{paint(val,val,val,val);u.classList.remove('flipping')};
+      const onEnd=ev=>{if(ev.propertyName==='transform')done()};
+      const done=()=>{clearTimeout(u._flipT);leaf.removeEventListener('transitionend',onEnd);u._finishFlip=null;paint(val,val,val,val);u.classList.remove('flipping')};
+      u._finishFlip=done;
       u.classList.remove('flipping');void u.offsetWidth;u.classList.add('flipping');
       clearTimeout(u._flipT);
-      leaf.addEventListener('transitionend',function h(ev){if(ev.propertyName!=='transform')return;leaf.removeEventListener('transitionend',h);clearTimeout(u._flipT);done()});
+      leaf.addEventListener('transitionend',onEnd);
       u._flipT=setTimeout(done,750);
     }
-    function tick(){const pin=exams.find(e=>e.id===data.pinnedExam&&!isWithdrawn(e));if(pin)nextExam=pin;if(!nextExam){document.getElementById('nextDate').textContent='THEATRE CLEAR';document.getElementById('nextName').textContent='所有敌对目标均已肃清';flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const diff=nextExam.date-new Date();document.getElementById('nextName').textContent=nextExam.name;if(diff<=0&&nextExam.key===todayKey){document.getElementById('nextDate').textContent='CONTACT TODAY // 等待战果确认';flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const safe=Math.max(0,diff),d=Math.floor(safe/86400000),h=Math.floor(safe%86400000/3600000),m=Math.floor(safe%3600000/60000),s=Math.floor(safe%60000/1000);document.getElementById('nextDate').textContent=fmtShort(nextExam.key)+' // UTC'+nzOffset(nextExam.key)+' '+nzAbbr(nextExam.key)+' · 41°S 174°E';flipSet('flipD',String(d).padStart(3,'0'));flipSet('flipH',String(h).padStart(2,'0'));flipSet('flipM',String(m).padStart(2,'0'));flipSet('flipS',String(s).padStart(2,'0'))}
+    function tick(){const pin=exams.find(e=>e.id===data.pinnedExam&&!isWithdrawn(e));if(pin)nextExam=pin;if(!nextExam){setText(document.getElementById('nextDate'),'THEATRE CLEAR');setText(document.getElementById('nextName'),'所有敌对目标均已肃清');flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const diff=nextExam.date-new Date();setText(document.getElementById('nextName'),nextExam.name);if(diff<=0&&nextExam.key===todayKey){setText(document.getElementById('nextDate'),'CONTACT TODAY // 等待战果确认');flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const safe=Math.max(0,diff),d=Math.floor(safe/86400000),h=Math.floor(safe%86400000/3600000),m=Math.floor(safe%3600000/60000),s=Math.floor(safe%60000/1000);setText(document.getElementById('nextDate'),fmtShort(nextExam.key)+' // UTC'+nzOffset(nextExam.key)+' '+nzAbbr(nextExam.key)+' · 41°S 174°E');flipSet('flipD',String(d).padStart(3,'0'));flipSet('flipH',String(h).padStart(2,'0'));flipSet('flipM',String(m).padStart(2,'0'));flipSet('flipS',String(s).padStart(2,'0'))}
     function dayXp(key){const c=data.checks[key];if(!c)return 0;let x=0;taskDefs(key).forEach(t=>{if(c[t.id])x+=t.pts});if(data.sealed[key])x+=SCORE.sealBonus;return x}
     function weekStart(d){const c=new Date(d);c.setDate(c.getDate()-((c.getDay()+6)%7));return c}
     function renderHeat(){
