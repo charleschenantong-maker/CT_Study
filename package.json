@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "sync:warplan": "node scripts/sync-warplan.cjs",
+    "predev": "node scripts/sync-warplan.cjs",
+    "prebuild": "node scripts/sync-warplan.cjs"
   },
   "dependencies": {
     "@heroui/react": "^2.8.10",

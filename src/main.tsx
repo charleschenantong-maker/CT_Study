@@ -103,15 +103,20 @@ function mountChrome(): void {
   document.body.prepend(bar);
 
   // GMN syncTrafficLights：失焦时两层全切 unfocused，聚焦时恢复。
-  void getCurrentWindow()
-    .onFocusChanged(({ payload }) => {
-      for (const { img, lamp, isHover } of layers) {
-        img.src = payload ? (isHover ? lamp.hover : lamp.base) : unfocusedSvg;
-      }
-    })
-    .catch(() => {
-      // 纯 vite 预览无 Tauri：保持聚焦态灯
-    });
+  // 非 Tauri 浏览器里 getCurrentWindow 会同步抛错，用 try 包住（Tauri 内走原逻辑）。
+  try {
+    void getCurrentWindow()
+      .onFocusChanged(({ payload }) => {
+        for (const { img, lamp, isHover } of layers) {
+          img.src = payload ? (isHover ? lamp.hover : lamp.base) : unfocusedSvg;
+        }
+      })
+      .catch(() => {
+        // 纯 vite 预览无 Tauri：保持聚焦态灯
+      });
+  } catch {
+    // 非 Tauri 浏览器：bridge 不可用，保持聚焦态灯
+  }
 }
 
 mountChrome();
