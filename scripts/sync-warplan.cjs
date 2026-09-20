@@ -11,6 +11,10 @@ const DST = path.join(ROOT, "index.html");
 const TAG = '<script type="module" src="/src/main.tsx"></script>';
 const MARKER =
   "<!-- SYNCED FROM war-plan/WAR_PLAN.html — DO NOT EDIT DIRECTLY, run npm run sync:warplan -->";
+// 木纹 turbulence 砖：源文件内联 data-uri（单文件预览自包含）；应用入口改走 public/ 下的
+// 预渲染 PNG（像素级一致，已验证），避免每帧重跑 SVG 滤镜。PNG 由仓库文件提供，不在这里生成。
+const TILE_RE = /url\("data:image\/svg\+xml,%3Csvg[\s\S]*?%3C\/svg%3E"\)/g;
+const TILE_FILE = 'url("/war-plan-assets/wood-tile.png")';
 
 function fail(msg) {
   console.error("sync-warplan: " + msg);
@@ -27,9 +31,14 @@ if (count(html, "</body>") !== 1) fail("expected exactly one </body>");
 if (count(html, "<head>") !== 1) fail("expected exactly one <head>");
 if (html.includes(TAG)) fail("source already contains main.tsx tag");
 if (html.includes("SYNCED FROM war-plan")) fail("source looks generated, abort");
+const tileHits = html.match(TILE_RE) || [];
+if (tileHits.length !== 1) fail("expected exactly one svg tile uri, found " + tileHits.length);
+const tileFile = path.join(ROOT, "public", "war-plan-assets", "wood-tile.png");
+if (!fs.existsSync(tileFile)) fail("tile png missing: " + tileFile);
 
 const out = html
   .replace("<head>", "<head>\n" + MARKER)
+  .replace(TILE_RE, TILE_FILE)
   .replace("</body>", TAG + "\n</body>");
 // 原子写入：先写临时文件再改名，避免崩溃留下半个 index.html
 const tmp = DST + ".tmp";

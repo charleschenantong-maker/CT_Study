@@ -1515,6 +1515,10 @@ h1 span{font-family:var(--font-mono)!important}
 html{background:#100d08!important}
 body{
   background-color:#231a10!important;
+  background-image:linear-gradient(180deg,#2c2012,#1b130b)!important;
+}
+#desk-bg{position:fixed;inset:0;z-index:0;transform:translateZ(0);
+  background-color:#231a10!important;
   background-image:
     radial-gradient(ellipse 72% 26% at 50% -2%,rgba(255,228,172,.12) 0%,rgba(255,220,160,.04) 42%,transparent 68%),
     linear-gradient(90deg,rgba(0,0,0,.42),transparent 12%,transparent 88%,rgba(0,0,0,.42)),
@@ -1523,7 +1527,7 @@ body{
     radial-gradient(ellipse 9% 4% at 23% 31%,rgba(12,7,3,.5),transparent 70%),
     radial-gradient(ellipse 7% 3% at 71% 68%,rgba(12,7,3,.45),transparent 70%),
     radial-gradient(ellipse 5% 2.5% at 58% 12%,rgba(10,6,3,.4),transparent 70%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.16' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.11 0 0 0 0 0.06 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='420' height='420' fill='%232e2113'/%3E%3Crect width='420' height='420' filter='url(%23n)'/%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23f)' opacity='0.5'/%3E%3C/svg%3E"),
+    url("/war-plan-assets/wood-tile.png"),
     linear-gradient(180deg,#2c2012 0%,#251a0f 55%,#1b130b 100%)!important;
   background-size:100% 100%,100% 100%,100% 264px,100% 420px,100% 100%,100% 100%,100% 100%,420px 420px,100% 100%!important;
   background-repeat:no-repeat,no-repeat,repeat,repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat!important;
@@ -1594,8 +1598,15 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
   /* Keep the original timber material; only its scroll behavior changes. */
   html,body{background-attachment:fixed!important}
 </style>
+<style id="r3-perf-contain">
+/* R3-perf-contain: paint containment only — zero visual change. content-visibility intentionally NOT used:
+   fullPage capture proved it can paint blank placeholders (same sizes, empty content). */
+.sc-history,#stageHiddenList,.stage-modal{contain:content}
+.main-countdown .fcc-leaf{will-change:transform}
+</style>
 </head>
 <body>
+<div id="desk-bg" aria-hidden="true"></div>
 <div class="shell">
 <aside aria-label="战区态势侧栏" class="left-side">
 <div class="left-ribbon">FIELD COMMAND // 06</div>
@@ -1787,6 +1798,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
        业务/渲染/统计函数只许经由下面的 resolver 读取，不许再 hard-code 具体名称与数值。
        改名/改分/改规则：只改对应配置项，不碰任何函数逻辑。 */
     const SCORE={sealBonus:5,weeklyQuota:140,heatWeeks:26,planStart:'2026-09-21'};
+    let DATA_VERSION=0;const _activeIdsCache=new Map();const _dayXpCache=new Map();let _streakCacheKey=null,_streakCacheVal=0;let _adhCacheKey=null,_adhCacheVal=null;
     /* 配额 = V2 计划数(planned) + 旧档已做基线(baseline)：导入旧数据时已做部分单独计入总量，
        不占用计划进度（剩余 = 配额 - 当前恒等于计划剩余）。改计划数只改 planned，改基线只改 baseline。 */
     const COMPONENTS=[
@@ -1957,7 +1969,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
     function getTask(id){return TASK_DEFS[id]||null}
     /* era 门控：planStart 之前只出 legacy 任务（含 outside），之后只出 v2 任务；
        outside 为 both：v2 窗外无计划日时沿旧行为兜底。v2 当天按 sheet 列序出 slots，再跟 bpho/review/extra。 */
-    function getActiveTaskIds(key){const dow=new Date(key+'T12:00:00').getDay();if(key>=SCORE.planStart){const both=Object.keys(TASK_DEFS).filter(id=>{const t=TASK_DEFS[id];return t.era==='both'&&t.active(key,dow)});const d=V2_DAYS[key];if(!d)return both;const ids=d.slots.filter(s=>TASK_DEFS[s]&&TASK_DEFS[s].active(key,dow));for(const id of Object.keys(TASK_DEFS)){const t=TASK_DEFS[id];if(t.era==='v2'&&!d.slots.includes(id)&&t.active(key,dow))ids.push(id)}return[...ids,...both]}return Object.keys(TASK_DEFS).filter(id=>{const t=TASK_DEFS[id];return(t.era==='both'||(t.era||'legacy')==='legacy')&&t.active(key,dow)})}
+    function getActiveTaskIds(key){const _ck=key+'|'+DATA_VERSION;const _h=_activeIdsCache.get(_ck);if(_h!==undefined)return _h;const dow=new Date(key+'T12:00:00').getDay();if(key>=SCORE.planStart){const both=Object.keys(TASK_DEFS).filter(id=>{const t=TASK_DEFS[id];return t.era==='both'&&t.active(key,dow)});const d=V2_DAYS[key];if(!d){_activeIdsCache.set(_ck,both);return both}const ids=d.slots.filter(s=>TASK_DEFS[s]&&TASK_DEFS[s].active(key,dow));for(const id of Object.keys(TASK_DEFS)){const t=TASK_DEFS[id];if(t.era==='v2'&&!d.slots.includes(id)&&t.active(key,dow))ids.push(id)}const _r=[...ids,...both];_activeIdsCache.set(_ck,_r);return _r}const _r2=Object.keys(TASK_DEFS).filter(id=>{const t=TASK_DEFS[id];return(t.era==='both'||(t.era||'legacy')==='legacy')&&t.active(key,dow)});_activeIdsCache.set(_ck,_r2);return _r2}
     function getTaskView(id,key){const t=getTask(id);if(!t)return null;return{id,title:resolveField(t.title,key),sub:resolveField(t.sub,key),pts:resolveField(t.pts,key)}}
     function missionQuotaTotal(){return COMPONENTS.reduce((a,c)=>a+componentQuota(c),0)}
     const stages=[
@@ -2005,7 +2017,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       delete out.points;
       return out;
     }
-    function save(){data.updated=new Date().toISOString();KV.set(KEY,JSON.stringify(data));document.getElementById('saveState').textContent='VAULT SEALED // '+new Date().toLocaleTimeString('zh-CN');renderStats()}
+    function save(){data.updated=new Date().toISOString();KV.set(KEY,JSON.stringify(data));DATA_VERSION++;document.getElementById('saveState').textContent='VAULT SEALED // '+new Date().toLocaleTimeString('zh-CN');renderStats()}
     function setSidebarCollapsed(collapsed,persist=true){
       document.body.classList.toggle('side-collapsed',collapsed);
       const btn=document.getElementById('sideCollapseBtn'),icon=btn.querySelector('.side-toggle-icon'),label=btn.querySelector('.side-toggle-label');
@@ -2075,8 +2087,8 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
     function closeStageModal(){document.getElementById('stageModal').setAttribute('hidden','')}
     function renderStages(){document.getElementById('stageStrip').innerHTML=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const glyph=mode==='full'?'▼':'▶';return `<div class="stage ${state} ${mode==='compact'?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示">${glyph}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('')}
     function renderLedger(){let total=0;const quota=missionQuotaTotal();document.getElementById('ledger').innerHTML=COMPONENTS.map(c=>{const n=Number(data.cycles[c.id]||0);total+=n;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${c.id}</span><span>${n} / ${componentQuota(c)}</span></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
-    function streak(){let cursor=new Date(todayKey+'T12:00:00'),n=0;if(!data.sealed[todayKey])cursor.setDate(cursor.getDate()-1);for(;;){const k=localDateKey(cursor);if(!data.sealed[k])break;n++;cursor.setDate(cursor.getDate()-1)}return n}
-    function adherenceStats(){const startKey=stages[0].start;let cursor=new Date(startKey+'T12:00:00');const todayD=new Date(todayKey+'T12:00:00');let held=0,total=0;while(cursor<=todayD){const k=localDateKey(cursor);if(k<todayKey||data.sealed[k]){total++;if(data.sealed[k])held++}cursor.setDate(cursor.getDate()+1)}return {held,total}}
+    function streak(){const _ck=todayKey+'|'+DATA_VERSION;if(_streakCacheKey===_ck)return _streakCacheVal;let cursor=new Date(todayKey+'T12:00:00'),n=0;if(!data.sealed[todayKey])cursor.setDate(cursor.getDate()-1);for(;;){const k=localDateKey(cursor);if(!data.sealed[k])break;n++;cursor.setDate(cursor.getDate()-1)}_streakCacheKey=_ck;_streakCacheVal=n;return n}
+    function adherenceStats(){const _ck=todayKey+'|'+DATA_VERSION;if(_adhCacheKey===_ck)return _adhCacheVal;const startKey=stages[0].start;let cursor=new Date(startKey+'T12:00:00');const todayD=new Date(todayKey+'T12:00:00');let held=0,total=0;while(cursor<=todayD){const k=localDateKey(cursor);if(k<todayKey||data.sealed[k]){total++;if(data.sealed[k])held++}cursor.setDate(cursor.getDate()+1)}const _r={held,total};_adhCacheKey=_ck;_adhCacheVal=_r;return _r}
     function renderStats(){document.getElementById('streakStat').textContent=streak();const adh=adherenceStats();document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;renderLedger();renderHeat()}
     function isWithdrawn(e){return !!data.examDone[e.id]||e.key<todayKey}
     function renderEvents(){const active=exams.filter(e=>!isWithdrawn(e)),archived=exams.filter(isWithdrawn);nextExam=active[0]||null;document.getElementById('events').innerHTML=active.map((e,i)=>`<div class="event ${i===0?'next':''}"><b>${fmtShort(e.key)}</b><span>${e.name}</span><button class="pin-exam ${data.pinnedExam===e.id?'pinned':''}" data-exam-pin="${e.id}" title="设为主目标">${data.pinnedExam===e.id?'主目标':'设为目标'}</button><button class="done-exam" data-exam-done="${e.id}" title="确认目标已被肃清">肃清</button></div>`).join('')||'<div class="event next"><b>END</b><span>行动板已无敌对目标</span></div>';document.querySelectorAll('[data-exam-pin]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.examPin;data.pinnedExam=data.pinnedExam===id?null:id;save();renderEvents();tick();toast(data.pinnedExam?'主目标已锁定':'已解除主目标')}));document.querySelectorAll('[data-exam-done]').forEach(btn=>btn.addEventListener('click',()=>{data.examDone[btn.dataset.examDone]=true;save();renderEvents();tick();toast('目标已从行动板撤除')}));document.getElementById('archiveCount').textContent=archived.length;document.getElementById('archivedEvents').innerHTML=archived.map(e=>`<div class="archived-row"><span>${fmtShort(e.key)} · ${e.name}</span><button class="restore" data-exam-restore="${e.id}">重启战区</button></div>`).join('')||'<div class="archived-row">尚无已肃清战区</div>';document.querySelectorAll('[data-exam-restore]').forEach(btn=>btn.addEventListener('click',()=>{delete data.examDone[btn.dataset.examRestore];save();renderEvents();tick();toast('目标已重新列入行动板')}))}
@@ -2106,7 +2118,7 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
       u._flipT=setTimeout(done,750);
     }
     function tick(){const pin=exams.find(e=>e.id===data.pinnedExam&&!isWithdrawn(e));if(pin)nextExam=pin;if(!nextExam){setText(document.getElementById('nextDate'),'THEATRE CLEAR');setText(document.getElementById('nextName'),'所有敌对目标均已肃清');flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const diff=nextExam.date-new Date();setText(document.getElementById('nextName'),nextExam.name);if(diff<=0&&nextExam.key===todayKey){setText(document.getElementById('nextDate'),'CONTACT TODAY // 等待战果确认');flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const safe=Math.max(0,diff),d=Math.floor(safe/86400000),h=Math.floor(safe%86400000/3600000),m=Math.floor(safe%3600000/60000),s=Math.floor(safe%60000/1000);setText(document.getElementById('nextDate'),fmtShort(nextExam.key)+' // UTC'+nzOffset(nextExam.key)+' '+nzAbbr(nextExam.key)+' · 41°S 174°E');flipSet('flipD',String(d).padStart(3,'0'));flipSet('flipH',String(h).padStart(2,'0'));flipSet('flipM',String(m).padStart(2,'0'));flipSet('flipS',String(s).padStart(2,'0'))}
-    function dayXp(key){const c=data.checks[key];if(!c)return 0;let x=0;taskDefs(key).forEach(t=>{if(c[t.id])x+=t.pts});if(data.sealed[key])x+=SCORE.sealBonus;return x}
+    function dayXp(key){const _ck=key+'|'+DATA_VERSION;const _h=_dayXpCache.get(_ck);if(_h!==undefined)return _h;const c=data.checks[key];if(!c){_dayXpCache.set(_ck,0);return 0}let x=0;taskDefs(key).forEach(t=>{if(c[t.id])x+=t.pts});if(data.sealed[key])x+=SCORE.sealBonus;_dayXpCache.set(_ck,x);return x}
     function weekStart(d){const c=new Date(d);c.setDate(c.getDate()-((c.getDay()+6)%7));return c}
     function renderHeat(){
       const grid=document.getElementById('heatGrid');if(!grid)return;
