@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import { Download, Monitor, Moon, Sun, Trash2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LiquidGlass } from "@/components/LiquidGlass";
 import { loadHistory, saveHistory } from "@/study/store";
 import type { PlannerHistory } from "@/study/types";
 import {
@@ -248,7 +247,7 @@ export function SettingsModal({
             {NAV_ITEMS.map(([id, label]) => <button key={id} type="button" onClick={() => setActive(id)} className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${active === id ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-accent hover:text-foreground"}`}>{label}</button>)}
           </nav>
           <div className="min-h-0 flex-1 space-y-4 overflow-y-auto bg-gradient-to-b from-white/20 to-white/5 p-5 sm:p-6 dark:from-white/5 dark:to-transparent">
-          <LiquidGlass className={`p-4 ${active === "appearance" ? "" : "hidden"}`}><section className="space-y-3">
+          <section className={active === "appearance" ? "space-y-3" : "hidden"}>
             <SectionTitle>{t(lang, "settings.appearance")}</SectionTitle>
             <div className="grid grid-cols-3 gap-2">
               {THEME_OPTIONS.map(({ v, Icon, labelKey }) => (
@@ -263,9 +262,9 @@ export function SettingsModal({
                 </Button>
               ))}
             </div>
-          </section></LiquidGlass>
+          </section>
 
-          <LiquidGlass className={`p-4 ${active === "fontSize" ? "" : "hidden"}`}><section className="space-y-3">
+          <section className={active === "fontSize" ? "space-y-3" : "hidden"}>
             <SectionTitle>{t(lang, "settings.fontSize")}</SectionTitle>
             <div className="grid grid-cols-3 gap-2">
               {SIZE_OPTIONS.map(({ v, labelKey }) => (
@@ -279,9 +278,9 @@ export function SettingsModal({
                 </Button>
               ))}
             </div>
-          </section></LiquidGlass>
+          </section>
 
-          <LiquidGlass className={`p-4 ${active === "fontFamily" ? "" : "hidden"}`}><section className="space-y-3">
+          <section className={active === "fontFamily" ? "space-y-3" : "hidden"}>
             <SectionTitle>{t(lang, "settings.fontFamily")}</SectionTitle>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {FONT_OPTIONS.map((id) => (
@@ -296,9 +295,9 @@ export function SettingsModal({
                 </Button>
               ))}
             </div>
-          </section></LiquidGlass>
+          </section>
 
-          <LiquidGlass className={`p-4 ${active === "background" ? "" : "hidden"}`}><section className="space-y-3">
+          <section className={active === "background" ? "space-y-3" : "hidden"}>
             <SectionTitle>{t(lang, "settings.background")}</SectionTitle>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {BG_PRESETS.map((p) => (
@@ -357,9 +356,9 @@ export function SettingsModal({
                 </Button>
               ) : null}
             </div>
-          </section></LiquidGlass>
+          </section>
 
-          <LiquidGlass className={`p-4 ${active === "language" ? "" : "hidden"}`}><section className="space-y-3">
+          <section className={active === "language" ? "space-y-3" : "hidden"}>
             <SectionTitle>{t(lang, "settings.language")}</SectionTitle>
             <div className="grid grid-cols-2 gap-2">
               <Button
@@ -377,9 +376,9 @@ export function SettingsModal({
                 English
               </Button>
             </div>
-          </section></LiquidGlass>
+          </section>
 
-          <LiquidGlass className={`p-4 ${active === "data" ? "" : "hidden"}`}><section className="space-y-3">
+          <section className={active === "data" ? "space-y-3" : "hidden"}>
             <SectionTitle>{t(lang, "settings.data")}</SectionTitle>
             <div className="grid gap-2">
               <Button variant="outline" className="w-full" onClick={handleExport}>
@@ -407,9 +406,9 @@ export function SettingsModal({
                 <Trash2 /> {t(lang, "settings.clear")}
               </Button>
             </div>
-          </section></LiquidGlass>
+          </section>
 
-          <LiquidGlass className={`p-4 ${active === "about" ? "" : "hidden"}`}><section className="space-y-1.5">
+          <section className={active === "about" ? "space-y-1.5" : "hidden"}>
             <SectionTitle>{t(lang, "settings.about")}</SectionTitle>
             <p className="text-[13px] text-muted-foreground">Planner v0.1.0</p>
             <p className="text-[13px] text-muted-foreground">
@@ -418,7 +417,7 @@ export function SettingsModal({
             <p className="text-[13px] text-muted-foreground">
               {t(lang, "settings.aboutXp")}
             </p>
-          </section></LiquidGlass>
+          </section>
           </div>
         </div>
       </div>
