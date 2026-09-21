@@ -1,6 +1,6 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { Store } from "@tauri-apps/plugin-store";
 import { closeWindow, minimizeWindow, toggleMaximizeWindow } from "./lib/window";
+import { installKvBridge } from "./lib/kv-bridge";
 import closePng from "./assets/traffic-gmn/close.png";
 import closeHoverPng from "./assets/traffic-gmn/close-hover.png";
 import minimizePng from "./assets/traffic-gmn/minimize.png";
@@ -120,61 +120,4 @@ function mountChrome(): void {
 }
 
 mountChrome();
-
-/* ============ KV 文件桥 ============
-   Tauri 下：用户数据落在应用数据目录的 war-plan.json（人类可读的文件夹文件），
-   页面启动前由 bridge 预加载整表快照；首次运行自动把 WebView localStorage 整体迁入文件并清空，
-   此后 localStorage 不再作为数据源。纯浏览器下 bridge 为 null，页面沿用 localStorage。 */
-
-interface KvBridge {
-  snapshot: Record<string, string>;
-  save: (k: string, v: string) => void;
-  flush: () => Promise<void>;
-}
-
-declare global {
-  interface Window {
-    __kvBridgeReady: Promise<KvBridge | null>;
-  }
-}
-
-const STORE_FILE = "war-plan.json";
-
-function isTauri(): boolean {
-  return (
-    typeof (window as unknown as { __TAURI_INTERNALS__?: unknown })
-      .__TAURI_INTERNALS__ !== "undefined"
-  );
-}
-
-async function initKvBridge(): Promise<KvBridge | null> {
-  if (!isTauri()) return null;
-  const store = await Store.load(STORE_FILE, { autoSave: 100 });
-  if ((await store.length()) === 0) {
-    const stash: Array<[string, string]> = [];
-    for (let i = 0; i < window.localStorage.length; i++) {
-      const k = window.localStorage.key(i);
-      if (k === null) continue;
-      const v = window.localStorage.getItem(k);
-      if (v !== null) stash.push([k, v]);
-    }
-    for (const [k, v] of stash) {
-      await store.set(k, v);
-      window.localStorage.removeItem(k);
-    }
-    if (stash.length > 0) await store.save();
-  }
-  const snapshot: Record<string, string> = {};
-  for (const [k, v] of await store.entries<string>()) {
-    if (typeof v === "string") snapshot[k] = v;
-  }
-  return {
-    snapshot,
-    save: (k, v) => {
-      void store.set(k, v);
-    },
-    flush: () => store.save(),
-  };
-}
-
-window.__kvBridgeReady = initKvBridge().catch(() => null);
+installKvBridge();
