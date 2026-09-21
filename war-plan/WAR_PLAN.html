@@ -1786,12 +1786,18 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 </style>
 <style id="v173-3-fixed">
 /* v1.7.3-3: 简报锁 7 任务高，折线图锁高（宽自适应）；矮任务日不再塌 */
-#taskList{min-height:377px}
+#taskList{height:377px;min-height:377px;overflow:hidden}
+#taskList .task-row{display:contents}
+#taskList .task-row .task{border-top:0}
+.task-div-v{display:none}
 .sc-chart-wrap{flex:none!important}
 @media(max-width:1680px) and (min-width:1281px){.desk-surface .sc-chart-wrap{height:258px!important}}
 @media(max-width:1280px){
-  #taskList{min-height:215px}
+  #taskList{height:377px;min-height:377px}
   .desk-surface .sc-chart-wrap{height:232px!important}
+}
+@media(max-width:980px){
+  #taskList{height:215px;min-height:215px}
 }
 </style>
 <style id="v162-btn-chamfer">
@@ -1847,12 +1853,14 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
   .side .event .done-exam{grid-area:done!important;justify-self:end!important;white-space:nowrap!important;min-width:0!important;flex:0 0 auto!important}
   .side .event .ev-d{display:none!important}
   .side .event .ev-d-full{display:inline!important}
-  /* 2a. 每日行动简报一行两个任务：竖向虚线隔开（奇数项右虚线），保留原有顶部分隔线逻辑 */
-  #taskList{display:grid!important;grid-template-columns:1fr 1fr!important;gap:0!important}
-  #taskList .task{min-width:0!important;border-top:0!important}
-  #taskList .task:nth-child(n+3){border-top:1px dashed rgba(43,45,36,.42)!important}
-  #taskList .task:nth-child(odd):not(:last-child){border-right:1px dashed rgba(43,45,36,.42)!important;padding-right:12px!important}
-  #taskList .task:nth-child(even){padding-left:12px!important}
+  /* 2a. 每日行动简报：按实际任务数分成两列，行容器负责横线，简报容器负责唯一竖线 */
+  #taskList{position:relative!important;display:block!important}
+  #taskList .task-row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:0!important;border-bottom:1px dashed rgba(43,45,36,.42)!important}
+  #taskList .task-row:last-child{border-bottom:0!important}
+  #taskList .task{min-width:0!important;border:0!important}
+  #taskList .task:first-child{padding-right:12px!important}
+  #taskList .task:last-child{padding-left:12px!important}
+  .task-div-v{display:block;position:absolute;top:0;bottom:0;left:50%;width:0;border-left:1px dashed rgba(43,45,36,.42);pointer-events:none}
   /* 2b. 战果履历与另两个形态一致：恢复两列 */
   .sc-layout{grid-template-columns:minmax(0,1.68fr) minmax(150px,.72fr)!important}
   .sc-history-panel{border-left:1px dashed rgba(43,45,36,.42)!important;border-top:0!important;padding-left:clamp(8px,1.25cqw,15px)!important;padding-top:0!important}
@@ -1869,6 +1877,10 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 }
 /* ≤980 履历保持小屏 320 上限（盖掉上面的 560） */
 @media(max-width:980px){.past-paper-card .sc-history{height:320px!important;max-height:320px!important;min-height:0!important;flex:none!important}}
+.sc-history-panel .sc-history{margin-top:0!important}
+.sc-history-panel{position:relative;min-height:0}
+.sc-history-panel>.sc-section-title{position:static;margin:0 0 9px}
+.sc-history-panel>.sc-history{flex:1 1 auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding-top:0}
 </style>
  </head>
 <body>
@@ -1886,7 +1898,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 <div class="stat"><small>INTEL // STREAK</small><b id="streakStat">0</b><em>连续坚守日</em></div>
 <div class="stat"><small>INTEL // ADHERENCE</small><b id="adherenceStat">0/0</b><em>坚守天数 / 执行天数</em></div>
 <div class="stat fire-stat"><small>FIRE // TODAY</small><b id="xpToday">0</b><em>今日投入 PT</em></div>
-<div class="stat fire-stat"><small>FIRE // THIS WEEK</small><b id="xpWeek">0</b><em>周配额 140 PT · <span id="xpQuota">0%</span></em></div>
+<div class="stat fire-stat"><small>FIRE // THIS WEEK</small><b id="xpWeek">0</b><em>周配额 <span id="xpQuotaMax">140</span> PT · <span id="xpQuota">0%</span></em></div>
 <div class="stat fire-stat"><small>FIRE // THIS MONTH</small><b id="xpMonth">0</b><em>本月投入 PT</em></div>
 <div class="stat fire-stat"><small>FIRE // TOTAL</small><b id="xpAll">0</b><em>累计投入 PT</em></div>
 </section>
@@ -1968,7 +1980,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 <div class="compact-summary-stat"><small>INTEL // STREAK</small><b id="compactStreakStat">0</b><em>连续坚守日</em></div>
 <div class="compact-summary-stat"><small>INTEL // ADHERENCE</small><b id="compactAdherenceStat">0/0</b><em>坚守天数 / 执行天数</em></div>
 <div class="compact-summary-stat"><small>FIRE // TODAY</small><b id="compactXpToday">0</b><em>今日投入 PT</em></div>
-<div class="compact-summary-stat"><small>FIRE // THIS WEEK</small><b id="compactXpWeek">0</b><em>周配额 140 PT · <span id="compactXpQuota">0%</span></em></div>
+<div class="compact-summary-stat"><small>FIRE // THIS WEEK</small><b id="compactXpWeek">0</b><em>周配额 <span id="compactXpQuotaMax">140</span> PT · <span id="compactXpQuota">0%</span></em></div>
 <div class="compact-summary-stat"><small>FIRE // THIS MONTH</small><b id="compactXpMonth">0</b><em>本月投入 PT</em></div>
 <div class="compact-summary-stat"><small>FIRE // TOTAL</small><b id="compactXpAll">0</b><em>累计投入 PT</em></div>
 </div>
@@ -2343,7 +2355,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
     /* Bullet image placed into the checkbox: png (user attachment) with svg placeholder fallback. */
     const TASK_BULLET='<img class="task-bullet" src="./war-plan-assets/bullet.png" onerror="this.onerror=null;this.src=\'./war-plan-assets/bullet.svg\'" alt="" aria-hidden="true">';
     function taskImpact(taskId){const row=document.getElementById('t-'+taskId)?.closest('.task');if(!row)return;row.classList.remove('task-impacting');void row.offsetWidth;row.classList.add('task-impacting');window.setTimeout(()=>row.classList.remove('task-impacting'),780)}
-    function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();document.getElementById('taskList').innerHTML=list.map(t=>`<div class="task ${checks[t.id]?'task-complete':''}"><input class="v150-task-input" type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}</label><strong>+${t.pts} PT</strong>${checks[t.id]?TASK_BULLET:''}</div>`).join('')+((list.length%2===1)?'<div class="task task-phantom" aria-hidden="true"></div>':[]);document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{const completed=el.checked;data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=completed;save();renderTasks();if(completed)taskImpact(el.dataset.task)}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
+    function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();const taskMarkup=t=>`<div class="task ${checks[t.id]?'task-complete':''}"><input class="v150-task-input" type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}</label><strong>+${t.pts} PT</strong>${checks[t.id]?TASK_BULLET:''}</div>`;const rows=[];for(let i=0;i<list.length;i+=2){rows.push(`<div class="task-row">${taskMarkup(list[i])}${list[i+1]?taskMarkup(list[i+1]):'<div class="task task-phantom" aria-hidden="true"></div>'}</div>`)}document.getElementById('taskList').innerHTML=(rows.length?'<div class="task-div-v" aria-hidden="true"></div>':'')+rows.join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{const completed=el.checked;data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=completed;save();renderTasks();if(completed)taskImpact(el.dataset.task)}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
     /* NZ 时区：9-27 前 NZST(UTC+12)，之后 NZDT(UTC+13)；与 exams 倒计时实例同一规则，唯一出处。 */
     function nzOffset(key){return key<'2026-09-27'?'+12:00':'+13:00'}
     function nzAbbr(key){return key<'2026-09-27'?'NZST':'NZDT'}
@@ -2406,6 +2418,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
       u._flipT=setTimeout(done,750);
     }
     function tick(){const pin=exams.find(e=>e.id===data.pinnedExam&&!isWithdrawn(e));if(pin)nextExam=pin;if(!nextExam){setText(document.getElementById('nextDate'),'THEATRE CLEAR');setText(document.getElementById('nextName'),'所有敌对目标均已肃清');flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const diff=nextExam.date-new Date();setText(document.getElementById('nextName'),nextExam.name);if(diff<=0&&nextExam.key===todayKey){setText(document.getElementById('nextDate'),'CONTACT TODAY // 等待战果确认');flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const safe=Math.max(0,diff),d=Math.floor(safe/86400000),h=Math.floor(safe%86400000/3600000),m=Math.floor(safe%3600000/60000),s=Math.floor(safe%60000/1000);setText(document.getElementById('nextDate'),fmtShort(nextExam.key)+' // UTC'+nzOffset(nextExam.key)+' '+nzAbbr(nextExam.key)+' · 41°S 174°E');flipSet('flipD',String(d).padStart(3,'0'));flipSet('flipH',String(h).padStart(2,'0'));flipSet('flipM',String(m).padStart(2,'0'));flipSet('flipS',String(s).padStart(2,'0'))}
+    function weeklyQuota(){const ws=weekStart(new Date(todayKey+'T12:00:00'));let q=0;for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(d.getDate()+i);q+=taskDefs(localDateKey(d)).reduce((s,t)=>s+Number(t.pts||0),0)}return q}
     function dayXp(key){const _ck=key+'|'+DATA_VERSION;const _h=_dayXpCache.get(_ck);if(_h!==undefined)return _h;const c=data.checks[key];if(!c){_dayXpCache.set(_ck,0);return 0}let x=0;taskDefs(key).forEach(t=>{if(c[t.id])x+=t.pts});if(data.sealed[key])x+=SCORE.sealBonus;_dayXpCache.set(_ck,x);return x}
     function weekStart(d){const c=new Date(d);c.setDate(c.getDate()-((c.getDay()+6)%7));return c}
     function renderHeat(){
@@ -2421,8 +2434,8 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
       document.getElementById('xpWeek').textContent=wk;
       document.getElementById('xpMonth').textContent=mn;
       document.getElementById('xpAll').textContent=all;
-      document.getElementById('xpQuota').textContent=Math.round(wk/Math.max(1,SCORE.weeklyQuota)*100)+'%';
-      [['compactXpToday',dayXp(todayKey)],['compactXpWeek',wk],['compactXpMonth',mn],['compactXpAll',all],['compactXpQuota',Math.round(wk/Math.max(1,SCORE.weeklyQuota)*100)+'%']].forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=value});
+      document.getElementById('xpQuota').textContent=Math.round(wk/Math.max(1,weeklyQuota())*100)+'%';document.getElementById('xpQuotaMax').textContent=weeklyQuota();
+      [['compactXpToday',dayXp(todayKey)],['compactXpWeek',wk],['compactXpMonth',mn],['compactXpAll',all],['compactXpQuota',Math.round(wk/Math.max(1,weeklyQuota())*100)+'%']].forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=value});document.getElementById('compactXpQuotaMax').textContent=weeklyQuota();
     }
     function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700)}
     document.addEventListener('pointerdown',e=>{const btn=e.target.closest('button');if(!btn||btn.disabled||btn.closest('#tauri-chrome'))return;playSfx(btn.id==='sealDay'?'impact':(btn.id==='scAddBtn'||btn.hasAttribute('data-exam-done')||btn.hasAttribute('data-exam-pin'))?'breech':'click')});
