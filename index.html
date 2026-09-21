@@ -2,26 +2,27 @@
 
 <html lang="zh-CN">
 <head>
+<!-- SYNCED FROM war-plan/WAR_PLAN.html — DO NOT EDIT DIRECTLY, run npm run sync:warplan -->
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Charles · War Plan 军需处</title>
-<link href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzExMTMwZiIvPgogIDxwYXRoIGQ9Ik03IDUgTDIzLjUgNSBMMjUuNSA4LjUgTDI0IDEyIEwyNiAxNS41IEwyMy41IDE4LjUgTDI1IDIyIEwyMi41IDI1LjUgTDI0IDI3IEw3IDI3IFoiCiAgICAgICAgZmlsbD0iI2Q4ZDBiNyIgc3Ryb2tlPSIjOGE3ZjVjIiBzdHJva2Utd2lkdGg9IjAuNiIvPgogIDxwYXRoIGQ9Ik05IDkgTDIwIDkiIHN0cm9rZT0iIzhhN2Y1YyIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjU1Ii8+CiAgPHBhdGggZD0iTTkgMTMgTDIxIDEzIiBzdHJva2U9IiM4YTdmNWMiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC41NSIvPgogIDxwYXRoIGQ9Ik05IDE3IEwxOCAxNyIgc3Ryb2tlPSIjOGE3ZjVjIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNTUiLz4KICA8cGF0aCBkPSJNMTggNCBMMjcgMTUgTDIxLjUgMTUuNSBMMjMuNSAyMCBMMTUuNSAxMi41IEwyMCAxMiBaIgogICAgICAgIGZpbGw9IiM2NzI3MWYiIG9wYWNpdHk9IjAuODgiLz4KICA8cGF0aCBkPSJNMTggNCBMMjcgMTUgTDIxLjUgMTUuNSBMMjMuNSAyMCBMMTUuNSAxMi41IEwyMCAxMiBaIgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzIwMjMxZCIgc3Ryb2tlLXdpZHRoPSIwLjYiIG9wYWNpdHk9IjAuNSIvPgo8L3N2Zz4=" rel="icon" type="image/svg+xml"/>
+<link rel="icon" type="image/png" href="/war-plan-assets/app-icon.png"/>
 <style>
     :root{--coal:#11130f;--night:#181b16;--olive:#30362b;--army:#596148;--khaki:#aaa078;--paper:#d8d0b7;--paper2:#c9bea0;--ink:#20231d;--rust:#84392c;--blood:#67271f;--amber:#c29a4b;--green:#3e5d42;--line:rgba(39,42,33,.35);--light:#e4dec8;--side-width:360px;--side-collapsed-width:58px}
     *{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--coal);color:var(--ink);font-family:var(--font-display);line-height:1.42}
     button,input,select{font:inherit}.shell{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) var(--side-width);background:linear-gradient(90deg,var(--paper) 0 calc(100% - var(--side-width)),var(--night) calc(100% - var(--side-width)));transition:none}.main{position:relative;padding:30px 38px 70px;max-width:1500px;width:100%;margin:0 auto;container-type:inline-size;container-name:mainarea;background-color:var(--paper);background-image:radial-gradient(circle at 18% 20%,rgba(69,57,33,.10) 0 1px,transparent 2px),radial-gradient(circle at 78% 74%,rgba(60,49,28,.08) 0 1px,transparent 2px),linear-gradient(115deg,transparent 49.8%,rgba(68,57,37,.05) 50%,transparent 50.2%);background-size:31px 29px,47px 43px,100% 100%}
     .side{position:sticky;top:0;height:100vh;overflow:auto;padding:30px 24px 36px;color:var(--light);background-color:var(--night);background-image:linear-gradient(135deg,rgba(255,255,255,.025) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.025) 50%,rgba(255,255,255,.025) 75%,transparent 75%);background-size:12px 12px;border-left:6px solid #0d0f0c}
-    .side-toggle{position:sticky;top:0;z-index:8;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 18px;padding:8px 9px;border:1px solid #686d5d;background:#171d16;color:#d8d0b7;cursor:pointer;font:900 9px/1 var(--font-mono);letter-spacing:.07em;text-transform:uppercase}.side-toggle:hover{border-color:var(--amber);color:var(--amber)}.side-toggle-icon{font-size:17px;line-height:1}.side-toggle-label{white-space:nowrap}
+    .side-toggle{position:sticky;top:0;z-index:8;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 18px;padding:8px 9px;border:1px solid #686d5d;background:#171d16;color:#d8d0b7;cursor:pointer;font:900 9px/1 var(--font-mono);letter-spacing:.07em;text-transform:uppercase}.side-toggle:hover{border-color:var(--amber);color:var(--amber)}.side-toggle-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex:0 0 auto;font-size:0;line-height:0;transform:none}.side-toggle-label{white-space:nowrap}
     body.side-collapsed .shell{grid-template-columns:minmax(0,1fr) var(--side-collapsed-width);background:linear-gradient(90deg,var(--paper) 0 calc(100% - var(--side-collapsed-width)),var(--night) calc(100% - var(--side-collapsed-width)))}
     body.side-collapsed .side{padding:16px 7px 20px;overflow:hidden}
     body.side-collapsed .side>:not(.side-toggle){display:none!important}
-    body.side-collapsed .side-toggle{height:44px;padding:6px 2px;margin:0}.side-collapsed .side-toggle-label{display:none}.side-collapsed .side-toggle-icon{font-size:22px}
+    body.side-collapsed .side-toggle{height:44px;padding:6px 2px;margin:0}.side-collapsed .side-toggle-label{display:none}
 
     .kicker,.eyebrow{font:800 10px/1.2 var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rust)}h1{font:950 clamp(42px,6vw,76px)/.84 var(--font-display);letter-spacing:-.055em;margin:13px 0 17px;text-transform:uppercase}h1 span{display:block;font-size:.66em;color:var(--rust);letter-spacing:.01em;margin-top:10px}.motto{position:relative;max-width:780px;padding:14px 18px 13px 22px;background:rgba(242,235,211,.45);border-left:5px solid var(--rust);font-size:14px;clip-path:polygon(0 0,98.8% 0,100% 18%,99% 100%,1% 97%)}.motto small{display:block;color:var(--rust);font:800 9px/1 var(--font-mono);letter-spacing:.15em;margin-bottom:7px}.motto strong{font-weight:800}.hazard{height:10px;max-width:780px;margin:20px 0 0;background:repeating-linear-gradient(-45deg,var(--ink) 0 10px,var(--amber) 10px 20px);opacity:.84}
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0 18px}.stat,.card{position:relative;background:rgba(222,214,190,.82);border:1px solid var(--line);box-shadow:5px 6px 0 rgba(42,42,33,.16);clip-path:polygon(0 0,97% 0,100% 9px,100% 100%,12px 100%,0 calc(100% - 10px))}.stat{padding:16px 18px;border-top:4px solid var(--olive)}.stat:after,.card:after{content:"";position:absolute;right:9px;top:9px;width:24px;height:2px;background:rgba(101,39,31,.35);transform:rotate(-19deg)}.stat small{font:900 9px/1.2 var(--font-mono);letter-spacing:.1em;color:#555b4e}.stat b{display:block;font:900 34px/1 var(--font-mono);margin:8px 0 4px}.stat em{font-style:normal;font-size:10px;color:#5c6055}
     .stage-strip{display:grid;grid-template-columns:repeat(5,1fr);border:2px solid var(--ink);margin-bottom:20px;background:var(--paper2)}.stage{padding:10px 11px;min-height:64px;border-right:1px dashed rgba(31,35,29,.48)}.stage:last-child{border:0}.stage b{display:block;font:900 10px/1.2 var(--font-mono)}.stage span{font-size:10px;color:#626658}.stage.active{background:var(--rust);color:#f5ecd4}.stage.active span{color:#f2dbc7}.stage.done{background:#7e826b;color:#e9e5d6}.stage.done span{color:#dedacb}
     .grid{display:grid;grid-template-columns:minmax(330px,.78fr) minmax(0,1.52fr);gap:15px}.card{padding:21px}.wide{grid-column:1/-1}.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}.card h2{font-size:19px;line-height:1.1;margin:4px 0 0;text-transform:uppercase}.badge{display:inline-block;border:2px solid currentColor;padding:5px 7px;color:var(--rust);font:900 9px/1 var(--font-mono);letter-spacing:.08em;transform:rotate(1deg)}
-    .task{display:grid;grid-template-columns:26px 1fr auto;gap:10px;padding:13px 0;border-top:1px dashed rgba(43,45,36,.42)}.task:first-child{border-top:0}.task input{appearance:none;width:20px;height:20px;margin:1px 0 0;border:2px solid var(--olive);background:transparent;display:grid;place-items:center}.task input:checked{background:var(--green)}.task input:checked:after{content:"✓";color:#efe9d8;font-weight:900}.task label{font-weight:750;font-size:13px}.task label span{display:block;color:#65685e;font-size:10px;font-weight:400;margin-top:3px}.task strong{font:900 9px/1.4 var(--font-mono);color:var(--rust);white-space:nowrap}.done-text{text-decoration:line-through;opacity:.58}
+    .task{display:grid;grid-template-columns:26px 1fr auto;gap:10px;padding:13px 0;border-top:1px dashed rgba(43,45,36,.42)}.task:first-child{border-top:0}.task input{appearance:none;width:20px;height:20px;margin:1px 0 0;border:2px solid var(--olive);background:transparent;display:grid;place-items:center}.task input:checked{background:transparent}.task input:checked:after{content:"✓";color:#efe9d8;font-weight:900}.task label{font-weight:750;font-size:13px}.task label span{display:block;color:#65685e;font-size:10px;font-weight:400;margin-top:3px}.task strong{font:900 9px/1.4 var(--font-mono);color:var(--rust);white-space:nowrap}.done-text{text-decoration:line-through;opacity:.58}
     .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.btn{cursor:pointer;border:2px solid var(--ink);background:transparent;color:var(--ink);padding:9px 12px;font:900 10px/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))}.btn:hover{background:var(--amber)}.btn.primary{background:var(--ink);color:var(--light)}.btn.primary:hover{background:var(--rust)}.btn:disabled{opacity:.28;cursor:not-allowed}.hint{font-size:10px;color:#62675c;margin:10px 0 0}.alert{border-left:4px solid var(--rust);padding:9px 11px;background:rgba(132,57,44,.10);font-size:10px;margin-top:12px}.success{border-color:var(--green);background:rgba(62,93,66,.13)}
     .ledger{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ledger-item{padding:11px;border:1px solid rgba(38,42,33,.42);background:rgba(237,230,208,.32)}.ledger-top{display:flex;justify-content:space-between;gap:8px;font:900 10px/1.2 var(--font-mono)}.bar{height:7px;margin-top:9px;background:#8f8c77;border:1px solid #57594d}.bar i{display:block;height:100%;background:var(--rust)}.ledger-item.complete .bar i{background:var(--green)}.total-row{display:flex;justify-content:space-between;border-top:3px double var(--ink);padding-top:12px;margin-top:12px;font:900 11px/1 var(--font-mono)}
     .side .kicker{color:var(--amber)}.side h2{font:900 27px/.95 var(--font-display);margin:10px 0 7px;text-transform:uppercase}.side-sub{font-size:10px;color:#9da38f;margin:0 0 18px}.countdown{position:relative;border:1px solid #606554;border-top:5px solid var(--rust);padding:17px 14px;margin-bottom:16px;background:#20241c;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}.next-label{font:800 9px/1.2 var(--font-mono);letter-spacing:.1em;color:#9ba08e}.next-name{font-weight:900;color:#efe8d2;margin:6px 0 12px}.digits{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
@@ -54,17 +55,21 @@
 <style>
     /* ---- SCORE TRACKER MODULE (grafted into Past Paper 归档 card) ---- */
     @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
-    .sc-tabbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:7px;padding-bottom:2px;margin-bottom:9px;overflow:visible}
-    .sc-subtabbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px;margin-bottom:15px}
-    .sc-tab,.sc-subtab{cursor:pointer;min-width:0;border:2px solid var(--ink);background:transparent;color:var(--ink);padding:7px 10px;font:900 9px/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));white-space:nowrap}
+    .sc-select-box{border:2px solid var(--ink);margin-bottom:10px;background:rgba(237,230,208,.4)}
+    .sc-tabbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:0;padding:0;margin:0;overflow:visible}
+    .sc-subtabbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:0;margin:0}
+    .sc-tab,.sc-subtab{cursor:pointer;min-width:0;border:0;border-right:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 10px;font:900 9px/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;clip-path:none;border-radius:0;white-space:nowrap}
+    .sc-tabbar .sc-tab{border-bottom:1px solid var(--line)}
+    .sc-select-box .sc-tab:last-child,.sc-select-box .sc-subtab:last-child{border-right:0}
     .sc-tab:hover,.sc-subtab:hover{background:var(--amber)}.sc-tab.active{background:var(--ink);color:var(--light)}
     .sc-subtab{text-align:center;opacity:.82}.sc-subtab.active{background:var(--rust);color:var(--light);opacity:1}
-    .sc-toprow{display:flex;justify-content:space-between;align-items:baseline;margin:0 1px 10px}.sc-name{font:900 13px/1.15 var(--font-mono);text-transform:uppercase;letter-spacing:.02em}.sc-best{font:800 9px/1 var(--font-mono);color:#5f6357}
-    .sc-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
-    .sc-stat{text-align:center;padding:9px 4px;border:1px solid var(--line);background:rgba(237,230,208,.4)}
-    .sc-stat b{display:block;font:900 20px/1 var(--font-mono);margin-bottom:4px}
+    .sc-toprow{display:none}.sc-name{font:900 13px/1.15 var(--font-mono);text-transform:uppercase;letter-spacing:.02em}.sc-best{font:800 9px/1 var(--font-mono);color:#5f6357}
+    .sc-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:10px;border:2px solid var(--ink);background:rgba(237,230,208,.4)}
+    .sc-stat{text-align:center;padding:6px 4px;border:0;border-right:1px solid var(--line);background:transparent}
+    .sc-stat:last-child{border-right:0}
+    .sc-stat b{display:block;font:900 18px/1 var(--font-mono);margin-bottom:4px}
     .sc-stat small{font:800 8px/1 var(--font-mono);letter-spacing:.06em;color:#5f6357}
-    .sc-chart-wrap{position:relative;width:100%;height:190px;margin-bottom:15px}.sc-chart-wrap svg{width:100%;height:100%;overflow:visible}
+    .sc-chart-wrap{position:relative;width:100%;height:220px;flex:1;margin-bottom:12px}.sc-chart-wrap svg{width:100%;height:100%;overflow:visible}
     .sc-grid-line{stroke:rgba(23,32,24,.15);stroke-width:1}.sc-axis-label{font-size:9px;fill:#5f6357;font-weight:700;font-family:var(--font-mono)}
     .sc-chart-line{fill:none;stroke:var(--rust);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
     .sc-chart-fill{opacity:.85}.sc-dot{fill:var(--rust);stroke:var(--paper);stroke-width:1.6}
@@ -83,9 +88,11 @@
     /* Permanent two-column score layout: History always stays on the right. */
     .sc-layout{display:grid;grid-template-columns:minmax(0,1.68fr) minmax(150px,.72fr);gap:clamp(9px,1.5cqw,18px);align-items:stretch;width:100%}
     .sc-main-panel,.sc-history-panel{min-width:0;max-width:100%;overflow:visible}
+    .sc-main-panel{display:flex;flex-direction:column;min-height:0}
     .sc-history-panel{display:flex;flex-direction:column;min-width:0;border-left:1px dashed rgba(43,45,36,.42);padding-left:clamp(8px,1.25cqw,15px)}
     .sc-main-panel .sc-section-title:first-of-type,.sc-history-panel .sc-section-title{margin-top:0}
-    .sc-history{flex:1;min-width:0;min-height:360px;max-height:540px;overflow-y:auto;overflow-x:hidden}
+    .sc-history{flex:1;min-width:0;min-height:420px;max-height:560px;overflow-y:auto;overflow-x:hidden}
+    .desk-surface .grid{align-items:stretch}
     .sc-history-item{min-width:0;gap:6px;flex-wrap:wrap}
     .sc-history-item>div:first-child{min-width:0;flex:1 1 78px}
     .sc-history-item>div:last-child{min-width:0;flex:0 1 auto;margin-left:auto}
@@ -100,10 +107,10 @@
       .sc-history-item{padding:8px 7px}
       .sc-hi-date{font-size:9px}.sc-hi-score{font-size:8px}.sc-hi-pct{font-size:12px}
       .sc-del{margin-left:3px}
-      .sc-tabbar{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
-      .sc-subtabbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+      .sc-tabbar{grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+      .sc-subtabbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
       .sc-tab,.sc-subtab{padding:7px 4px;font-size:8px}
-      .sc-stat-row{gap:5px}.sc-stat{padding:8px 2px}.sc-stat b{font-size:17px}
+      .sc-stat-row{gap:0}.sc-stat{padding:6px 2px}.sc-stat b{font-size:17px}
     }
     @container scorecard (max-width:560px){
       .sc-layout{grid-template-columns:minmax(0,1.9fr) minmax(112px,.58fr);gap:7px}
@@ -111,8 +118,8 @@
       .sc-history-item{display:block;padding:7px 5px}
       .sc-history-item>div:last-child{margin-top:5px;justify-content:space-between!important}
       .sc-hi-date{font-size:8px}.sc-hi-pct{font-size:11px}
-      .sc-tabbar{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .sc-subtabbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .sc-tabbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+      .sc-subtabbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
       .sc-entry{gap:5px}.sc-entry input{padding:7px 5px;font-size:10px}
     }
 
@@ -144,7 +151,7 @@
     .heat-grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,12px);grid-auto-columns:12px;gap:3px;min-width:max-content}
     .heat-grid i{display:block;width:12px;height:12px;border:1px solid rgba(24,32,24,.38);background:#b1a37c;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
     .heat-grid i.l1{background:#7d8455}.heat-grid i.l2{background:#586440}.heat-grid i.l3{background:#3a4c2c}.heat-grid i.l4{background:#1e2e1a}
-    .heat-grid i.future{background:repeating-linear-gradient(45deg,#b7ab88 0 3px,#a99c78 3px 6px);opacity:.5}
+    .heat-grid i.future{background:repeating-linear-gradient(45deg,#8a7c58 0 3px,#6f6350 3px 6px);opacity:.85;border-color:rgba(24,32,24,.55)}
     .heat-grid i.today{animation:todayPulse 2.2s ease-out infinite}
     @keyframes todayPulse{0%{box-shadow:0 0 0 0 rgba(132,57,44,.55)}70%{box-shadow:0 0 0 5px rgba(132,57,44,0)}100%{box-shadow:0 0 0 0 rgba(132,57,44,0)}}
     @media(prefers-reduced-motion:reduce){.heat-grid i.today{animation:none;box-shadow:0 0 0 2px rgba(132,57,44,.6)}}
@@ -246,7 +253,7 @@
     .desk-surface .ops-row{margin-bottom:13px}
     .desk-surface .card{padding:17px}
     .desk-surface .card-head{margin-bottom:12px}
-    .desk-surface .sc-chart-wrap{height:160px}
+    .desk-surface .sc-chart-wrap{height:220px}
 
     @media(max-width:1450px){:root{--left-rail:188px}.left-side{padding-left:10px;padding-right:10px}.left-note{left:10px;right:10px}.left-side .stats{grid-template-columns:1fr}.left-side .stat{padding:7px 8px}.left-side .stat b{font-size:18px}.main{padding-left:20px;padding-right:20px}.command-header{grid-template-columns:minmax(0,1fr) minmax(280px,320px);gap:20px}}
     @media(max-width:1160px){.left-side{display:none}.shell,body.side-collapsed .shell{grid-template-columns:minmax(0,1fr) var(--side-width)}.main{grid-column:1}.side{grid-column:2}.command-header{grid-template-columns:minmax(0,1fr) minmax(270px,310px)}}
@@ -1133,11 +1140,11 @@
     width:auto!important;
     max-width:none!important;
     min-height:2.6em!important;
-    display:flex!important;
+    display:block!important;
     align-items:center!important;
     padding:0!important;
     font-size:16px!important;
-    line-height:1.32!important;
+    line-height:2.1!important;
     -webkit-line-clamp:unset!important;
     overflow:hidden!important;
   }
@@ -1145,7 +1152,7 @@
   @media(max-width:980px){
     .directive-motto{width:100%!important;margin-left:0!important;margin-right:0!important}
     .directive-visual,.directive-theatre,.directive-theatre svg{height:68px!important;min-height:68px!important}
-    .directive-visual>#dailyMotto{font-size:15px!important;left:14px!important;right:14px!important}
+    .directive-visual>#dailyMotto{font-size:15px!important;left:14px!important;right:14px!important;display:block!important;line-height:2.1!important}
   }
 </style>
 
@@ -1442,7 +1449,7 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
 /* T6 修订：按钮进标题行 flex（杜绝溢出）；hidden 收成细条手柄，保证可恢复 */
 .stage-head{display:flex!important;align-items:center;gap:6px!important;min-width:0!important}
 .stage-head>b{flex:1 1 auto!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
-.stage-mode{position:static!important;flex:0 0 auto!important;width:26px;height:26px;border:1px solid currentColor;background:transparent;color:inherit;font:900 15px/1 var(--font-mono);cursor:pointer;opacity:.6;padding:0}
+.stage-mode{position:static!important;flex:0 0 auto!important;width:26px;height:26px;border:1px solid currentColor;background:transparent;color:inherit;font-size:0;line-height:0;cursor:pointer;opacity:.6;padding:0;display:inline-flex!important;align-items:center;justify-content:center}
 .stage-mode:hover{opacity:1}
 .stage-hide{position:static!important;flex:0 0 auto!important;width:26px;height:26px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;opacity:.55;padding:0;display:inline-flex!important;align-items:center;justify-content:center}
 .stage-hide:hover{opacity:1;color:var(--amber)}
@@ -1471,7 +1478,7 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
 /* T8 修订：引文排版（大引号开篇 + 出处弱化随行，中文走华文中宋体系，两行均衡） */
 .directive-visual>#dailyMotto{font-family:var(--font-mono);text-wrap:balance}
 .directive-visual>#dailyMotto:before{content:'\201C';font-size:2.2em;line-height:.8;margin-right:.16em;color:#bd9648;opacity:.85}
-.motto-by{font-size:.62em;letter-spacing:.1em;opacity:.68;margin-left:.8em;white-space:nowrap}
+.motto-by{font-size:.62em;letter-spacing:.1em;opacity:.68;margin-left:.8em;white-space:nowrap;display:block;text-align:right;margin-top:2px}
 </style>
 <style id="round2-responsive">
 /* 小窗口自适应：≤1280px 中央单列、heat 卡取消绝对定位，杜绝重叠与横向溢出 */
@@ -1526,7 +1533,7 @@ body{
     radial-gradient(ellipse 9% 4% at 23% 31%,rgba(12,7,3,.5),transparent 70%),
     radial-gradient(ellipse 7% 3% at 71% 68%,rgba(12,7,3,.45),transparent 70%),
     radial-gradient(ellipse 5% 2.5% at 58% 12%,rgba(10,6,3,.4),transparent 70%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.16' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.11 0 0 0 0 0.06 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='420' height='420' fill='%232e2113'/%3E%3Crect width='420' height='420' filter='url(%23n)'/%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23f)' opacity='0.5'/%3E%3C/svg%3E"),
+    url("/war-plan-assets/wood-tile.png"),
     linear-gradient(180deg,#2c2012 0%,#251a0f 55%,#1b130b 100%)!important;
   background-size:100% 100%,100% 100%,100% 264px,100% 420px,100% 100%,100% 100%,100% 100%,420px 420px,100% 100%!important;
   background-repeat:no-repeat,no-repeat,repeat,repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat!important;
@@ -1564,18 +1571,30 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 @keyframes r3ViewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(max-width:760px){.settings-grid{grid-template-columns:1fr}}
 </style>
+<style id="module1-left-rail-type">
+/* 模块一左侧边栏可读性：只放大极小字（font-size/line-height），不碰 grid 列数/padding/min-height/ellipsis */
+.left-side .stat small{font-size:10px!important}
+.left-side .stat b{font-size:22px!important}
+.left-side .stats.left-six-stats .stat b{font-size:22px!important}
+.left-side .stat em{font-size:10px!important}
+.left-side .stage b{font-size:10px!important}
+.left-side .stage span{font-size:10px!important;line-height:1.4!important}
+.left-side .left-head p{font-size:11px!important}
+.left-side .left-note{font-size:11px!important}
+.left-section-label{font-size:9px!important}
+</style>
 <style id="r3-flip">
 /* R3-8v2: 真翻页时钟 —— 结构与动画照搬开源模板 @leenguyen/react-flip-clock-countdown (MIT)：
    静态上半=新值 / 静态下半=旧值 / 单活页（正面旧值、背面新值）绕中缝翻转 0.55s，transitionend 归位同步，
    静止时活页与静态完全一致（上一版静止盖旧值的 bug 在此结构下不存在）。
    DAYS/HRS/MIN/SEC 标签在钟体正下方，仍在同一倒计时 section 内 */
 .main-countdown .digits{perspective:200px}
-.main-countdown .digit{position:relative;height:62px;padding:0!important;overflow:visible;background:#0a0d08!important;border:1px solid #3d4434!important;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -3px 6px rgba(0,0,0,.55),0 2px 0 rgba(0,0,0,.45)!important}
+.main-countdown .digit{position:relative;height:74px;transform-origin:50% 50%;padding:0!important;overflow:visible;background:#0a0d08!important;border:1px solid #3d4434!important;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -3px 6px rgba(0,0,0,.55),0 2px 0 rgba(0,0,0,.45)!important}
 .main-countdown .digit:before{z-index:6!important}
 .main-countdown .fcc-top,.main-countdown .fcc-bottom{position:absolute;left:0;width:100%;height:50%;overflow:hidden;display:flex;justify-content:center;margin:0}
 .main-countdown .fcc-top{top:0;align-items:flex-start;background:linear-gradient(180deg,#252a20 0%,#141810 100%)}
 .main-countdown .fcc-bottom{bottom:0;align-items:flex-end;background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
-.main-countdown .fcc-top span,.main-countdown .fcc-bottom span,.main-countdown .fcc-face span{display:block;height:62px;line-height:62px;text-align:center;font-family:var(--font-mono)!important;font-weight:900!important;font-size:32px!important;letter-spacing:.02em;color:#d8bf78;text-shadow:0 0 9px rgba(216,191,120,.25);font-variant-numeric:tabular-nums;white-space:nowrap}
+.main-countdown .fcc-top span,.main-countdown .fcc-bottom span,.main-countdown .fcc-face span{display:block;height:74px;line-height:74px;text-align:center;font-family:var(--font-mono)!important;font-weight:900!important;font-size:38px!important;letter-spacing:.02em;color:#d8bf78;text-shadow:0 0 9px rgba(216,191,120,.25);font-variant-numeric:tabular-nums;white-space:nowrap}
 .main-countdown .fcc-leaf{position:absolute;top:0;left:0;width:100%;height:50%;z-index:2;transform-style:preserve-3d;transform-origin:bottom;transform:rotateX(0)}
 .main-countdown .digit.flipping .fcc-leaf{transition:transform .55s ease-in-out;transform:rotateX(-180deg)}
 .main-countdown .fcc-face{position:absolute;left:0;top:0;width:100%;height:100%;display:flex;justify-content:center;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
@@ -1583,7 +1602,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .main-countdown .fcc-back{align-items:flex-end;transform:rotateX(-180deg);background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
 .flip-labels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:6px}
 .flip-labels span{text-align:center;font:800 8px/1 var(--font-mono);letter-spacing:.12em;color:#8d9478}
-@media(max-width:620px){.main-countdown .digit{height:52px}.main-countdown .fcc-top span,.main-countdown .fcc-bottom span,.main-countdown .fcc-face span{height:52px;line-height:52px;font-size:26px!important}}
+@media(max-width:620px){.main-countdown .digit{height:62px}.main-countdown .fcc-top span,.main-countdown .fcc-bottom span,.main-countdown .fcc-face span{height:62px;line-height:62px;font-size:31px!important}}
 @media(prefers-reduced-motion:reduce){.main-countdown .digit.flipping .fcc-leaf{transition:none!important}}
 </style>
 <style id="r3-motion">
@@ -1617,8 +1636,12 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .main-countdown .fcc-leaf{will-change:transform}
 </style>
 <style id="v1-4-responsive-layout">
-/* Keep the three-column 4K composition intact; at compact desktop widths stack the rails into the scroll flow. */
-@media(max-width:1680px){
+/* Widescreen: keep left rail + centered paper + right rail; compress padding/gap in 1161-1680px, stack below 1160px. */
+@media(max-width:1680px) and (min-width:1161px){
+  .main{width:calc(100% - 76px)!important;max-width:1780px!important;margin:26px auto 44px!important;padding:34px 34px 52px!important}
+  .command-header{gap:20px!important}
+}
+@media(max-width:1160px){
   .left-side{display:none!important}
   .shell,body.side-collapsed .shell{display:block!important;min-height:100vh!important;background:transparent!important;background-image:none!important}
   .main{display:block!important;grid-column:auto!important;width:auto!important;max-width:none!important;margin:18px 12px 30px!important}
@@ -1632,20 +1655,16 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 }
 </style>
 <style id="v150-task-impact">
-/* v1.5: completion feedback is a small 45-degree projectile, not a check glyph. */
+/* v1.5: completion feedback is a bullet image placed into the checkbox, not a check glyph. */
 .task{position:relative}
+.task input.v150-task-input:checked{background:transparent;border-color:var(--olive)}
 .task input.v150-task-input:checked:after{content:none!important}
-.task-bullet{position:absolute;left:7px;top:0;width:24px;height:24px;opacity:0;pointer-events:none;color:var(--rust);transform:translate(-4px,-5px) rotate(-45deg) scale(.55)}
-.task-bullet svg{display:block;width:100%;height:100%;fill:currentColor;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.1}
-.task-impacting .task-bullet{animation:v150BulletDrop .72s cubic-bezier(.22,.72,.32,1) both}
-@keyframes v150BulletDrop{0%{opacity:0;transform:translate(-3px,-7px) rotate(-45deg) scale(.55)}28%{opacity:1;transform:translate(-10px,-1px) rotate(-45deg) scale(1)}100%{opacity:0;transform:translate(-20px,12px) rotate(-45deg) scale(.78)}}
-@media(prefers-reduced-motion:reduce){.task-impacting .task-bullet{animation:none;opacity:1;transform:translate(-8px,-1px) rotate(-45deg) scale(.8)}}
+.task-bullet{position:absolute;left:2px;top:-4px;width:30px;height:30px;object-fit:contain;overflow:visible;opacity:1;transform:rotate(-38deg);pointer-events:none}
 </style>
 <style id="v151-compact-layout">
-/* v1.5.1: restore the v1.4 compact rail flow. The real left rail stays hidden;
-   its data is rendered as a paper summary in the central work sheet. */
+/* v1.5.1: compact rail summary shows only when the real left rail is hidden (<=1160px). */
 .compact-command-card{display:none}
-@media(max-width:1680px){
+@media(max-width:1160px){
   .compact-command-card{display:block;margin:0 0 15px;padding:17px;position:relative;background:rgba(210,194,151,.9);border:1px solid var(--line);box-shadow:0 9px 16px rgba(0,0,0,.26),5px 6px 0 rgba(42,42,33,.13);clip-path:polygon(0 0,97% 0,100% 9px,100% 100%,12px 100%,0 calc(100% - 10px))}
   .compact-command-card:before{content:"";position:absolute;left:9px;top:9px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#8d8468,#5c5643 60%,#2a2b22);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
   .compact-command-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
@@ -1667,9 +1686,8 @@ body.lights-off .app-tooltip{background:#0b0d0a}
   .compact-summary-stages .stage-mode,.compact-summary-stages .stage-hide{display:none}
   .compact-summary-note{display:flex;align-items:center;gap:9px;padding:9px 10px;border-left:3px solid var(--amber);background:rgba(17,21,15,.1);color:#5c6055;font-size:11px;line-height:1.4}
   .compact-summary-note b{color:#7a5d22;font:900 8px/1 var(--font-mono);letter-spacing:.1em}
-  .side-toggle-icon{display:inline-block;width:1em;height:1em;line-height:1;transform:rotate(0deg);transform-origin:50% 50%;transition:transform .22s ease}
-  body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
-  .side-collapsed .side-toggle-icon{font-size:17px!important}
+  .side-toggle-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex:0 0 auto;line-height:0;font-size:0;transform:none}
+  body.side-collapsed .side-toggle-icon{transform:none}
   .grid{align-items:stretch!important;grid-auto-rows:max-content}
   .grid>.card:first-child,.grid>.past-paper-card{align-self:stretch!important}
   .past-paper-card .sc-layout{height:100%;min-height:0}
@@ -1681,7 +1699,18 @@ body.lights-off .app-tooltip{background:#0b0d0a}
   .compact-summary-stages{grid-template-columns:repeat(5,minmax(135px,1fr))}
 }
 @media(max-width:620px){.compact-summary-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(prefers-reduced-motion:reduce){.side-toggle-icon{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.chev-icon{transition:none!important}}
+</style>
+<style id="chev-toggle">
+/* 展开/收起统一 chevron：手写开源形（stroke currentColor），左右栏共用 .chev-icon。
+   图标盒 14x14 恒定，旋转只动 transform（绕内部固定点），不换 glyph、不换 font-size。 */
+.chev-icon{width:14px;height:14px;display:inline-block;flex:0 0 auto;transform-origin:50% 50%;transition:transform .22s ease}
+.stage-mode .chev-icon{transform:rotate(0deg)}
+.stage-mode.is-collapsed .chev-icon{transform:rotate(-90deg)}
+.side-toggle{min-height:34px}
+.side-toggle .chev-icon{transform:rotate(0deg)}
+body.side-collapsed .side-toggle .chev-icon{transform:rotate(-90deg)}
+@media(prefers-reduced-motion:reduce){.chev-icon{transition:none!important}}
 </style>
 </head>
 <body>
@@ -1725,7 +1754,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 </section>
 <div class="command-header">
 <div class="command-copy">
-<div class="kicker">CIE AS + OLYMPIAD · OPERATION 22 JUL — 18 NOV 2026</div>
+<div class="kicker">ACADEMIC FIELD MANUAL · ENDURING STUDY OPERATION</div>
 <h1>WAR PLAN<span>军需处</span></h1>
 
 
@@ -1768,7 +1797,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 </figure>
 <strong id="dailyMotto">等待接收司令部密电。</strong>
 </div>
-</div><div class="redactions"><i></i><i></i><span>DECLASSIFIED 22 JUL 2026</span></div><div class="hazard"></div>
+</div><div class="redactions"><i></i><i></i><span>DECLASSIFIED // OPEN STUDY FILE</span></div><div class="hazard"></div>
 <div class="desk-surface">
 <section class="ops-row">
 <div class="card heat-card">
@@ -1802,8 +1831,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 <div class="card-head"><div><div class="eyebrow">INTELLIGENCE INTAKE</div><h2>Past Paper 归档</h2></div><span class="badge" id="scBadge">LOG</span></div>
 <div class="sc-layout">
 <div class="sc-main-panel">
-<div class="sc-tabbar" id="scTabbar"></div>
-<div class="sc-subtabbar" id="scSubtabbar"></div>
+<div class="sc-select-box"><div class="sc-tabbar" id="scTabbar"></div><div class="sc-subtabbar" id="scSubtabbar"></div></div>
 <div class="sc-toprow"><span class="sc-name" id="scModName"></span><span class="sc-best" id="scModBest"></span></div>
 <div class="sc-stat-row">
 <div class="sc-stat"><b id="scStatLatest">–</b><small>LATEST</small></div>
@@ -1839,10 +1867,10 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 </section>
 </div>
 </div>
-<div class="footer"><span>CHARLES · CIE AS + OLYMPIAD WAR PLAN</span><span>ONE COMPLETED PROJECT = ONE CHECK-IN</span></div>
+<div class="footer"><span>CHARLES · ENDURING STUDY OPERATION</span><span>ONE COMPLETED PROJECT = ONE CHECK-IN</span></div>
  </main>
 <aside class="side">
-<button aria-expanded="true" class="side-toggle" id="sideCollapseBtn" title="收起考试情报" type="button"><span class="side-toggle-icon">▼</span><span class="side-toggle-label">收起情报</span></button>
+<button aria-expanded="true" class="side-toggle" id="sideCollapseBtn" title="收起考试情报" type="button"><span class="side-toggle-icon"><svg class="chev-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7.5 L10 12.5 L15 7.5"/></svg></span><span class="side-toggle-label">收起情报</span></button>
 <div class="kicker">SITUATION ROOM // LIVE</div><h2>考试情报</h2><p class="side-sub">目标完成后从行动板撤出。右上角时钟自动锁定下一份档案。</p>
 <div class="event-list" id="events"></div>
 <details class="archive" id="archive"><summary>已肃清战区 <span id="archiveCount">0</span> 处</summary><div class="archived-list" id="archivedEvents"></div></details>
@@ -2108,10 +2136,9 @@ body.lights-off .app-tooltip{background:#0b0d0a}
     function save(){data.updated=new Date().toISOString();KV.set(KEY,JSON.stringify(data));DATA_VERSION++;document.getElementById('saveState').textContent='VAULT SEALED // '+new Date().toLocaleTimeString('zh-CN');renderStats();renderLeftNote()}
     function setSidebarCollapsed(collapsed,persist=true){
       document.body.classList.toggle('side-collapsed',collapsed);
-      const btn=document.getElementById('sideCollapseBtn'),icon=btn.querySelector('.side-toggle-icon'),label=btn.querySelector('.side-toggle-label');
+      const btn=document.getElementById('sideCollapseBtn'),label=btn.querySelector('.side-toggle-label');
       btn.setAttribute('aria-expanded',String(!collapsed));
       btn.title=collapsed?'展开考试情报':'收起考试情报';
-       icon.textContent='▼';
       label.textContent=collapsed?'展开情报':'收起情报';
       if(persist)try{KV.set(SIDE_COLLAPSE_KEY,collapsed?'1':'0')}catch(e){}
       cancelAnimationFrame(setSidebarCollapsed._timer);
@@ -2154,13 +2181,13 @@ body.lights-off .app-tooltip{background:#0b0d0a}
     /* FIELD NOTE：显示今日尚未领取的行动额度，避免重复倒计时 / BPhO 情报。 */
     function renderLeftNote(){const ids=getActiveTaskIds(todayKey),checks=data.checks[todayKey]||{},remaining=ids.map(id=>getTaskView(id,todayKey)).filter(t=>t&&!checks[t.id]),pts=remaining.reduce((sum,t)=>sum+Number(t.pts||0),0),text=data.sealed[todayKey]?'REPORT SEALED // 本日战报已归档':remaining.length?`未清 ${remaining.length} 项 · 可取 ${pts} PT`:'全部目标已清 · 等待签署';['fieldNoteBody','compactFieldNoteBody'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=text})}
     /* 计划日序号（project 相关，非挂钟展示）：V2 窗内为 PLAN DAY nn/57 + Day Type，否则 T-MINUS/OVERDUE。 */
-    function planDayLabel(key){const a='2026-09-21',b='2026-11-16';const dnum=dt=>new Date(dt+'T00:00:00').getTime();if(key<a)return 'T-MINUS '+Math.ceil((dnum(a)-dnum(key))/86400000)+' // 计划 9-21 启动';if(key>b)return 'OVERDUE // 计划已结束';const d=V2_DAYS[key];const n=Math.round((dnum(key)-dnum(a))/86400000)+1;return 'PLAN DAY '+String(n).padStart(2,'0')+'/57'+(d&&d.day?' · '+d.day.toUpperCase():'')}
+    function planDayLabel(key){const a='2026-09-21',b='2026-11-16';const dnum=dt=>new Date(dt+'T00:00:00').getTime();if(key<a)return 'T-MINUS '+Math.ceil((dnum(a)-dnum(key))/86400000)+' // 计划 9-21 启动';if(key>b)return 'OVERDUE // 计划已结束';const d=V2_DAYS[key];const n=Math.round((dnum(key)-dnum(a))/86400000)+1;return 'PLAN DAY '+String(n).padStart(2,'0')+(d&&d.day?' · '+d.day.toUpperCase():'')}
     /* 简报上下文：V2 当天的 Day Type + Notes（附件逐字），非 V2 日隐藏。 */
     function renderDayContext(){const el=document.getElementById('dayContext');if(!el)return;el.style.display='none';el.textContent=''}
-    /* 45-degree projectile silhouette: pointed nose, jacket, and casing rim. */
-    const TASK_BULLET='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 16 7v10.2q0 2-2 2h-4q-2 0-2-2V7z"/><path d="M8 16.8h8v2.1H8z" fill="none"/></svg>';
+    /* Bullet image placed into the checkbox: png (user attachment) with svg placeholder fallback. */
+    const TASK_BULLET='<img class="task-bullet" src="/war-plan-assets/bullet.png" onerror="this.onerror=null;this.src=\'/war-plan-assets/bullet.svg\'" alt="" aria-hidden="true">';
     function taskImpact(taskId){const row=document.getElementById('t-'+taskId)?.closest('.task');if(!row)return;row.classList.remove('task-impacting');void row.offsetWidth;row.classList.add('task-impacting');window.setTimeout(()=>row.classList.remove('task-impacting'),780)}
-    function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();document.getElementById('taskList').innerHTML=list.map(t=>`<div class="task ${checks[t.id]?'task-complete':''}"><input class="v150-task-input" type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}</label><strong>+${t.pts} PT</strong>${checks[t.id]?`<span class="task-bullet" aria-hidden="true">${TASK_BULLET}</span>`:''}</div>`).join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{const completed=el.checked;data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=completed;save();renderTasks();if(completed)taskImpact(el.dataset.task)}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
+    function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();document.getElementById('taskList').innerHTML=list.map(t=>`<div class="task ${checks[t.id]?'task-complete':''}"><input class="v150-task-input" type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}</label><strong>+${t.pts} PT</strong>${checks[t.id]?TASK_BULLET:''}</div>`).join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{const completed=el.checked;data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=completed;save();renderTasks();if(completed)taskImpact(el.dataset.task)}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
     /* NZ 时区：9-27 前 NZST(UTC+12)，之后 NZDT(UTC+13)；与 exams 倒计时实例同一规则，唯一出处。 */
     function nzOffset(key){return key<'2026-09-27'?'+12:00':'+13:00'}
     function nzAbbr(key){return key<'2026-09-27'?'NZST':'NZDT'}
@@ -2171,13 +2198,15 @@ body.lights-off .app-tooltip{background:#0b0d0a}
     function loadStageModes(){try{const raw=KV.get(STAGE_MODES_KEY);const p=raw?JSON.parse(raw):null;return p&&typeof p==='object'?p:{}}catch(e){return{}}}
     function stageMode(n){return stageModes[n]==='compact'?'compact':stageModes[n]==='hidden'?'hidden':'full'}
     function cycleStageMode(n){stageModes[n]=stageMode(n)==='full'?'compact':'full';try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}renderStages()}
+    /* 展开/收起统一 chevron：手写开源形（stroke currentColor），展开朝下 / 收起朝右，只转 transform */
+    const STAGE_CHEV='<svg class="chev-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7.5 L10 12.5 L15 7.5"/></svg>';
     /* 独立隐藏按钮：eye-off 图标来自 Feather Icons (MIT)，只负责隐藏，不参与展开/简洁切换 */
     const STAGE_EYE_OFF='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
     function hideStage(n){stageModes[n]='hidden';try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}renderStages();toast('STAGE '+n+' 已隐藏，可经 ▦ 恢复')}
     function renderStageModal(){const wrap=document.getElementById('stageModal');const list=document.getElementById('stageHiddenList');if(!wrap||!list)return;const hidden=stages.filter(s=>stageMode(s.n)==='hidden');list.innerHTML=hidden.length?hidden.map(s=>`<div class="stage-hidden-row"><span>STAGE ${s.n} // ${s.output} · ${s.label}</span><button type="button" data-show="${s.n}">显示</button></div>`).join(''):'<div class="stage-hidden-empty">暂无隐藏阶段</div>'}
     function openStageModal(){renderStageModal();document.getElementById('stageModal').removeAttribute('hidden')}
     function closeStageModal(){document.getElementById('stageModal').setAttribute('hidden','')}
-    function renderStages(){const html=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const glyph=mode==='full'?'▼':'▶';return `<div class="stage ${state} ${mode==='compact'?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示">${glyph}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('');document.getElementById('stageStrip').innerHTML=html;const compact=document.getElementById('compactStageStrip');if(compact)compact.innerHTML=html}
+    function renderStages(){const html=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const collapsed=mode==='compact';return `<div class="stage ${state} ${collapsed?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode${collapsed?' is-collapsed':''}" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示" aria-expanded="${collapsed?'false':'true'}">${STAGE_CHEV}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('');document.getElementById('stageStrip').innerHTML=html;const compact=document.getElementById('compactStageStrip');if(compact)compact.innerHTML=html}
     const COMPONENT_LABELS={'PHYS P2':'PHY P2','PHYS P1':'PHY P1','M S1':'MATH S1','M P1':'MATH P1'};
     function renderLedger(){let total=0;const quota=missionQuotaTotal();document.getElementById('ledger').innerHTML=COMPONENTS.map(c=>{const n=Number(data.cycles[c.id]||0);total+=n;const label=COMPONENT_LABELS[c.id]||c.id;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${label}</span><span>${n} / ${componentQuota(c)}</span></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
     function streak(){const _ck=todayKey+'|'+DATA_VERSION;if(_streakCacheKey===_ck)return _streakCacheVal;let cursor=new Date(todayKey+'T12:00:00'),n=0;if(!data.sealed[todayKey])cursor.setDate(cursor.getDate()-1);for(;;){const k=localDateKey(cursor);if(!data.sealed[k])break;n++;cursor.setDate(cursor.getDate()-1)}_streakCacheKey=_ck;_streakCacheVal=n;return n}
@@ -2540,5 +2569,6 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 })();
 </script>
 
+<script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
