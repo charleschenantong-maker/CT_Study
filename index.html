@@ -6,7 +6,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Charles · War Plan 军需处</title>
-<link rel="icon" type="image/png" href="/war-plan-assets/app-icon.png"/>
+<link rel="icon" type="image/png" href="./war-plan-assets/app-icon.png"/>
 <style>
     :root{--coal:#11130f;--night:#181b16;--olive:#30362b;--army:#596148;--khaki:#aaa078;--paper:#d8d0b7;--paper2:#c9bea0;--ink:#20231d;--rust:#84392c;--blood:#67271f;--amber:#c29a4b;--green:#3e5d42;--line:rgba(39,42,33,.35);--light:#e4dec8;--side-width:360px;--side-collapsed-width:58px}
     *{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--coal);color:var(--ink);font-family:var(--font-display);line-height:1.42}
@@ -151,7 +151,7 @@
     .heat-grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,12px);grid-auto-columns:12px;gap:3px;min-width:max-content}
     .heat-grid i{display:block;width:12px;height:12px;border:1px solid rgba(24,32,24,.38);background:#b1a37c;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
     .heat-grid i.l1{background:#7d8455}.heat-grid i.l2{background:#586440}.heat-grid i.l3{background:#3a4c2c}.heat-grid i.l4{background:#1e2e1a}
-    .heat-grid i.future{background:repeating-linear-gradient(45deg,#8a7c58 0 3px,#6f6350 3px 6px);opacity:.85;border-color:rgba(24,32,24,.55)}
+    .heat-grid i.future{background:repeating-linear-gradient(45deg,#9d9070 0 3px,#877a5e 3px 6px);opacity:.68;border-color:rgba(24,32,24,.45)}
     .heat-grid i.today{animation:todayPulse 2.2s ease-out infinite}
     @keyframes todayPulse{0%{box-shadow:0 0 0 0 rgba(132,57,44,.55)}70%{box-shadow:0 0 0 5px rgba(132,57,44,0)}100%{box-shadow:0 0 0 0 rgba(132,57,44,0)}}
     @media(prefers-reduced-motion:reduce){.heat-grid i.today{animation:none;box-shadow:0 0 0 2px rgba(132,57,44,.6)}}
@@ -1125,34 +1125,46 @@
   }
 
   /* A real two-line text-height field, not the previous one-line-looking strip. */
-  .directive-visual,
+  .directive-visual{
+    min-height:72px!important;
+    height:auto!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+  }
   .directive-theatre,
   .directive-theatre svg{
     height:72px!important;
     min-height:72px!important;
   }
   .directive-visual>#dailyMotto{
-    left:16px!important;
-    right:16px!important;
-    top:0!important;
-    bottom:0!important;
+    position:relative!important;
+    left:auto!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:auto!important;
     transform:none!important;
     width:auto!important;
     max-width:none!important;
-    min-height:2.6em!important;
-    display:block!important;
-    align-items:center!important;
-    padding:0!important;
+    min-height:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    margin:0 16px!important;
+    padding:10px 0!important;
     font-size:16px!important;
-    line-height:2.1!important;
+    line-height:1.5!important;
+    white-space:normal!important;
     -webkit-line-clamp:unset!important;
-    overflow:hidden!important;
+    line-clamp:unset!important;
+    overflow:visible!important;
   }
 
   @media(max-width:980px){
     .directive-motto{width:100%!important;margin-left:0!important;margin-right:0!important}
-    .directive-visual,.directive-theatre,.directive-theatre svg{height:68px!important;min-height:68px!important}
-    .directive-visual>#dailyMotto{font-size:15px!important;left:14px!important;right:14px!important;display:block!important;line-height:2.1!important}
+    .directive-visual{min-height:68px!important;height:auto!important;display:flex!important;flex-direction:column!important;justify-content:center!important}
+    .directive-theatre,.directive-theatre svg{height:68px!important;min-height:68px!important}
+    .directive-visual>#dailyMotto{position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;margin:0 14px!important;font-size:15px!important;max-width:none!important;display:flex!important;flex-direction:column!important;justify-content:center!important;line-height:1.5!important;padding:10px 0!important;white-space:normal!important;-webkit-line-clamp:unset!important;line-clamp:unset!important;overflow:visible!important}
   }
 </style>
 
@@ -1478,7 +1490,7 @@ body.side-collapsed .shell{background-color:transparent!important;background-ima
 /* T8 修订：引文排版（大引号开篇 + 出处弱化随行，中文走华文中宋体系，两行均衡） */
 .directive-visual>#dailyMotto{font-family:var(--font-mono);text-wrap:balance}
 .directive-visual>#dailyMotto:before{content:'\201C';font-size:2.2em;line-height:.8;margin-right:.16em;color:#bd9648;opacity:.85}
-.motto-by{font-size:.62em;letter-spacing:.1em;opacity:.68;margin-left:.8em;white-space:nowrap;display:block;text-align:right;margin-top:2px}
+.motto-by{font-size:.62em;letter-spacing:.1em;opacity:.68;margin-left:.8em;white-space:nowrap;display:block;text-align:right;margin-top:4px}
 </style>
 <style id="round2-responsive">
 /* 小窗口自适应：≤1280px 中央单列、heat 卡取消绝对定位，杜绝重叠与横向溢出 */
@@ -1636,12 +1648,8 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .main-countdown .fcc-leaf{will-change:transform}
 </style>
 <style id="v1-4-responsive-layout">
-/* Widescreen: keep left rail + centered paper + right rail; compress padding/gap in 1161-1680px, stack below 1160px. */
-@media(max-width:1680px) and (min-width:1161px){
-  .main{width:calc(100% - 76px)!important;max-width:1780px!important;margin:26px auto 44px!important;padding:34px 34px 52px!important}
-  .command-header{gap:20px!important}
-}
-@media(max-width:1160px){
+/* Keep the three-column 4K composition intact; at compact desktop widths stack the rails into the scroll flow. */
+@media(max-width:1680px){
   .left-side{display:none!important}
   .shell,body.side-collapsed .shell{display:block!important;min-height:100vh!important;background:transparent!important;background-image:none!important}
   .main{display:block!important;grid-column:auto!important;width:auto!important;max-width:none!important;margin:18px 12px 30px!important}
@@ -1662,9 +1670,10 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .task-bullet{position:absolute;left:2px;top:-4px;width:30px;height:30px;object-fit:contain;overflow:visible;opacity:1;transform:rotate(-38deg);pointer-events:none}
 </style>
 <style id="v151-compact-layout">
-/* v1.5.1: compact rail summary shows only when the real left rail is hidden (<=1160px). */
+/* v1.5.1: restore the v1.4 compact rail flow. The real left rail stays hidden;
+   its data is rendered as a paper summary in the central work sheet. */
 .compact-command-card{display:none}
-@media(max-width:1160px){
+@media(max-width:1680px){
   .compact-command-card{display:block;margin:0 0 15px;padding:17px;position:relative;background:rgba(210,194,151,.9);border:1px solid var(--line);box-shadow:0 9px 16px rgba(0,0,0,.26),5px 6px 0 rgba(42,42,33,.13);clip-path:polygon(0 0,97% 0,100% 9px,100% 100%,12px 100%,0 calc(100% - 10px))}
   .compact-command-card:before{content:"";position:absolute;left:9px;top:9px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#8d8468,#5c5643 60%,#2a2b22);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
   .compact-command-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
@@ -1711,6 +1720,22 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .side-toggle .chev-icon{transform:rotate(0deg)}
 body.side-collapsed .side-toggle .chev-icon{transform:rotate(-90deg)}
 @media(prefers-reduced-motion:reduce){.chev-icon{transition:none!important}}
+</style>
+<style id="v162-sector-bottom">
+/* v1.6.2-3: past-paper 右列下缘与左卡按钮行齐平 —— 只调右侧，左侧不动。
+   左卡底部 = .actions(#sealDay/#undoSeal)+.alert + 卡 padding 18px，不碰。
+   右侧 .sc-entry 加下距 12px，.sc-history-panel 加底内距 2px；
+   .sc-history min/max (420px/560px) 保持不动。 */
+.past-paper-card .sc-entry{margin-bottom:12px}
+.past-paper-card .sc-history-panel{padding-bottom:2px}
+</style>
+<style id="v162-btn-chamfer">
+/* v1.6.2-4: 只有操作类按钮保留基类斜切；选项格/小手柄保持方形无裁角。
+   操作按钮重申基类 polygon（与 .btn 基类同值，防级联丢失，视觉不变）；
+   .sc-tab/.sc-subtab（选项格）与 .pin-exam/.done-exam/.stage-mode/.stage-hide（小手柄）显式方形。 */
+.past-paper-card .sc-entry .btn,.actions .btn,.side-actions .btn{clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))}
+.sc-tab,.sc-subtab{clip-path:none}
+.pin-exam,.done-exam,.stage-mode,.stage-hide{clip-path:none}
 </style>
 </head>
 <body>
@@ -2185,7 +2210,7 @@ body.side-collapsed .side-toggle .chev-icon{transform:rotate(-90deg)}
     /* 简报上下文：V2 当天的 Day Type + Notes（附件逐字），非 V2 日隐藏。 */
     function renderDayContext(){const el=document.getElementById('dayContext');if(!el)return;el.style.display='none';el.textContent=''}
     /* Bullet image placed into the checkbox: png (user attachment) with svg placeholder fallback. */
-    const TASK_BULLET='<img class="task-bullet" src="/war-plan-assets/bullet.png" onerror="this.onerror=null;this.src=\'/war-plan-assets/bullet.svg\'" alt="" aria-hidden="true">';
+    const TASK_BULLET='<img class="task-bullet" src="./war-plan-assets/bullet.png" onerror="this.onerror=null;this.src=\'./war-plan-assets/bullet.svg\'" alt="" aria-hidden="true">';
     function taskImpact(taskId){const row=document.getElementById('t-'+taskId)?.closest('.task');if(!row)return;row.classList.remove('task-impacting');void row.offsetWidth;row.classList.add('task-impacting');window.setTimeout(()=>row.classList.remove('task-impacting'),780)}
     function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();document.getElementById('taskList').innerHTML=list.map(t=>`<div class="task ${checks[t.id]?'task-complete':''}"><input class="v150-task-input" type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}</label><strong>+${t.pts} PT</strong>${checks[t.id]?TASK_BULLET:''}</div>`).join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{const completed=el.checked;data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=completed;save();renderTasks();if(completed)taskImpact(el.dataset.task)}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
     /* NZ 时区：9-27 前 NZST(UTC+12)，之后 NZDT(UTC+13)；与 exams 倒计时实例同一规则，唯一出处。 */
