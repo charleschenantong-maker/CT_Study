@@ -2,7 +2,6 @@
 
 <html lang="zh-CN">
 <head>
-<!-- SYNCED FROM war-plan/WAR_PLAN.html — DO NOT EDIT DIRECTLY, run npm run sync:warplan -->
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Charles · War Plan 军需处</title>
@@ -1527,7 +1526,7 @@ body{
     radial-gradient(ellipse 9% 4% at 23% 31%,rgba(12,7,3,.5),transparent 70%),
     radial-gradient(ellipse 7% 3% at 71% 68%,rgba(12,7,3,.45),transparent 70%),
     radial-gradient(ellipse 5% 2.5% at 58% 12%,rgba(10,6,3,.4),transparent 70%),
-    url("/war-plan-assets/wood-tile.png"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.16' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.11 0 0 0 0 0.06 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='420' height='420' fill='%232e2113'/%3E%3Crect width='420' height='420' filter='url(%23n)'/%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23f)' opacity='0.5'/%3E%3C/svg%3E"),
     linear-gradient(180deg,#2c2012 0%,#251a0f 55%,#1b130b 100%)!important;
   background-size:100% 100%,100% 100%,100% 264px,100% 420px,100% 100%,100% 100%,100% 100%,420px 420px,100% 100%!important;
   background-repeat:no-repeat,no-repeat,repeat,repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat!important;
@@ -1555,18 +1554,9 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .left-bottom-row .left-foot #settingsBtn{width:34px;height:34px}
 .app-tooltip{position:fixed;z-index:100;max-width:220px;padding:7px 9px;border:1px solid var(--amber);background:#171914;color:#eee5ce;box-shadow:0 5px 14px rgba(0,0,0,.3);font:800 11px/1.25 var(--font-mono);pointer-events:none;white-space:nowrap}
 .app-tooltip[hidden]{display:none}
-/* v1.5 midnight lighting: blacken the desk only; the paper and controls keep their
-   contrast, with a warm overhead pool suggesting a lamp just outside the frame. */
-body.lights-off{background:#020302!important}
-body.lights-off #desk-bg{
-  filter:none;
-  background-color:#020302!important;
-  background-image:
-    radial-gradient(ellipse 42% 22% at 50% 0%,rgba(255,211,126,.22),rgba(255,182,74,.08) 38%,transparent 78%),
-    radial-gradient(ellipse 76% 58% at 50% 30%,rgba(255,190,94,.08),transparent 72%),
-    linear-gradient(180deg,#080804 0%,#020302 58%,#000 100%)!important;
-}
-body.lights-off .main{box-shadow:0 0 70px rgba(255,190,94,.16),0 18px 28px rgba(0,0,0,.72)!important}
+/* v1.4 lighting: dim the entire desk while preserving the paper's normal contrast. */
+body.lights-off:after{content:"";position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.28);pointer-events:none}
+body.lights-off #desk-bg{filter:brightness(.72) saturate(.82)}
 body.lights-off .app-tooltip{background:#0b0d0a}
 /* v1.4: lift secondary copy without collapsing its hierarchy under primary text. */
 .hint,.alert,.task label span,.stat em,.stage span,.event,.side-sub,.left-note,.day-context,.sc-axis-label,.sc-empty,.sc-section-title,.sc-hi-score,.footer,.save-state{font-size:11px!important}
@@ -1651,33 +1641,46 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 @keyframes v150BulletDrop{0%{opacity:0;transform:translate(-3px,-7px) rotate(-45deg) scale(.55)}28%{opacity:1;transform:translate(-10px,-1px) rotate(-45deg) scale(1)}100%{opacity:0;transform:translate(-20px,12px) rotate(-45deg) scale(.78)}}
 @media(prefers-reduced-motion:reduce){.task-impacting .task-bullet{animation:none;opacity:1;transform:translate(-8px,-1px) rotate(-45deg) scale(.8)}}
 </style>
-<style id="v150-compact-layout">
-/* v1.5 compact flow: keep the original rail in the document and move that one
-   rail above the work cards when the desktop columns no longer fit. */
+<style id="v151-compact-layout">
+/* v1.5.1: restore the v1.4 compact rail flow. The real left rail stays hidden;
+   its data is rendered as a paper summary in the central work sheet. */
+.compact-command-card{display:none}
 @media(max-width:1680px){
-  .shell,body.side-collapsed .shell{display:flex!important;flex-direction:column!important;min-height:100vh!important;background:transparent!important;background-image:none!important}
-  .left-side{display:block!important;order:0;position:relative!important;top:auto!important;width:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;margin:0 12px 18px!important;padding:18px!important;border-right:0!important;border-bottom:6px solid #0d0f0c!important}
-  .left-side .left-head p{max-width:60ch}
-  .left-side .stage-strip{grid-template-columns:repeat(5,minmax(135px,1fr));overflow-x:auto}
-  .left-bottom-row{margin:14px 0 0!important}
-  .main{order:1;grid-column:auto!important;width:auto!important;max-width:none!important;margin:0 12px 30px!important}
-  .side{order:2;grid-column:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;flex:0 0 auto!important;margin:0!important;padding:26px 24px 36px!important;overflow:visible!important;border-left:0!important;border-top:6px solid #0d0f0c!important}
-  .side .event-list{height:auto!important;max-height:none!important;flex:0 0 auto!important}
+  .compact-command-card{display:block;margin:0 0 15px;padding:17px;position:relative;background:rgba(210,194,151,.9);border:1px solid var(--line);box-shadow:0 9px 16px rgba(0,0,0,.26),5px 6px 0 rgba(42,42,33,.13);clip-path:polygon(0 0,97% 0,100% 9px,100% 100%,12px 100%,0 calc(100% - 10px))}
+  .compact-command-card:before{content:"";position:absolute;left:9px;top:9px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#8d8468,#5c5643 60%,#2a2b22);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+  .compact-command-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
+  .compact-command-head h2{font-size:19px;line-height:1.1;margin:4px 0 0;text-transform:uppercase}
+  .compact-summary-stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;margin:0 0 14px}
+  .compact-summary-stat{min-width:0;padding:10px 9px 9px;background:rgba(222,214,190,.56);border:1px solid rgba(39,42,33,.35);border-top:3px solid var(--olive);box-shadow:3px 4px 0 rgba(42,42,33,.12)}
+  .compact-summary-stat small{display:block;font:900 8px/1.2 var(--font-mono);letter-spacing:.06em;color:#555b4e}
+  .compact-summary-stat b{display:block;margin:6px 0 3px;color:#4b3d23;font:900 22px/1 var(--font-mono)}
+  .compact-summary-stat em{font-style:normal;font-size:10px;color:#5c6055;line-height:1.2}
+  .compact-summary-label{display:block;margin:0 0 7px;color:#555b4e;font:900 8px/1 var(--font-mono);letter-spacing:.13em}
+  .compact-summary-stages{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:0;border:2px solid var(--ink);margin:0 0 12px;background:var(--paper2);overflow-x:auto}
+  .compact-summary-stages .stage{min-width:0;padding:10px 11px;min-height:64px;border-right:1px dashed rgba(31,35,29,.48);background:transparent;color:var(--ink)}
+  .compact-summary-stages .stage:last-child{border-right:0}
+  .compact-summary-stages .stage b{display:block;font:900 10px/1.2 var(--font-mono);color:inherit}
+  .compact-summary-stages .stage span{font-size:10px;color:#626658;line-height:1.25}
+  .compact-summary-stages .stage.active{background:var(--rust);color:#f5ecd4}.compact-summary-stages .stage.active span{color:#f2dbc7}
+  .compact-summary-stages .stage.done{background:#7e826b;color:#e9e5d6}.compact-summary-stages .stage.done span{color:#dedacb}
+  .compact-summary-stages .stage-head{display:flex;align-items:center;justify-content:space-between;gap:5px}
+  .compact-summary-stages .stage-mode,.compact-summary-stages .stage-hide{display:none}
+  .compact-summary-note{display:flex;align-items:center;gap:9px;padding:9px 10px;border-left:3px solid var(--amber);background:rgba(17,21,15,.1);color:#5c6055;font-size:11px;line-height:1.4}
+  .compact-summary-note b{color:#7a5d22;font:900 8px/1 var(--font-mono);letter-spacing:.1em}
+  .side-toggle-icon{display:inline-block;width:1em;height:1em;line-height:1;transform:rotate(0deg);transform-origin:50% 50%;transition:transform .22s ease}
+  body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
+  .side-collapsed .side-toggle-icon{font-size:17px!important}
   .grid{align-items:stretch!important;grid-auto-rows:max-content}
   .grid>.card:first-child,.grid>.past-paper-card{align-self:stretch!important}
   .past-paper-card .sc-layout{height:100%;min-height:0}
   .past-paper-card .sc-history{min-height:0}
-  #dayContext{display:none!important}
 }
 @media(max-width:980px){
-  .left-side{margin:0!important;padding:18px 20px!important}
-  .main{margin:0!important;padding:26px 20px 50px!important}
-  .side{padding:24px 18px 30px!important}
+  .compact-command-card{margin:0 0 15px;padding:14px}
+  .compact-summary-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .compact-summary-stages{grid-template-columns:repeat(5,minmax(135px,1fr))}
 }
-/* One down-facing triangle; compact collapse rotates the same glyph 90 degrees. */
-.side-toggle-icon{display:inline-block;width:1em;height:1em;line-height:1;transform:rotate(0deg);transform-origin:50% 50%;transition:transform .22s ease}
-body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
-.side-collapsed .side-toggle-icon{font-size:17px!important}
+@media(max-width:620px){.compact-summary-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){.side-toggle-icon{transition:none!important}}
 </style>
 </head>
@@ -1774,6 +1777,20 @@ body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
 <div class="heat-legend"><span>轻</span><i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><span>重</span><em>色深 = 当日投入战功越多</em></div>
 </div>
 
+</section>
+<section aria-label="战区态势摘要" class="compact-command-card">
+<div class="compact-command-head"><div><div class="eyebrow">TACTICAL OVERVIEW // PAPER SUMMARY</div><h2>战区态势</h2></div><span class="badge">FIELD NOTE</span></div>
+<div class="compact-summary-stats">
+<div class="compact-summary-stat"><small>INTEL // STREAK</small><b id="compactStreakStat">0</b><em>连续坚守日</em></div>
+<div class="compact-summary-stat"><small>INTEL // ADHERENCE</small><b id="compactAdherenceStat">0/0</b><em>坚守天数 / 执行天数</em></div>
+<div class="compact-summary-stat"><small>FIRE // TODAY</small><b id="compactXpToday">0</b><em>今日投入 PT</em></div>
+<div class="compact-summary-stat"><small>FIRE // THIS WEEK</small><b id="compactXpWeek">0</b><em>周配额 140 PT · <span id="compactXpQuota">0%</span></em></div>
+<div class="compact-summary-stat"><small>FIRE // THIS MONTH</small><b id="compactXpMonth">0</b><em>本月投入 PT</em></div>
+<div class="compact-summary-stat"><small>FIRE // TOTAL</small><b id="compactXpAll">0</b><em>累计投入 PT</em></div>
+</div>
+<span class="compact-summary-label">CAMPAIGN PHASES</span>
+<section aria-label="五阶段战线摘要" class="compact-summary-stages" id="compactStageStrip"></section>
+<div class="compact-summary-note"><b>FIELD NOTE</b><span id="compactFieldNoteBody">—</span></div>
 </section>
 <div class="grid">
 <section class="card">
@@ -2088,7 +2105,7 @@ body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
       delete out.points;
       return out;
     }
-    function save(){data.updated=new Date().toISOString();KV.set(KEY,JSON.stringify(data));DATA_VERSION++;document.getElementById('saveState').textContent='VAULT SEALED // '+new Date().toLocaleTimeString('zh-CN');renderStats()}
+    function save(){data.updated=new Date().toISOString();KV.set(KEY,JSON.stringify(data));DATA_VERSION++;document.getElementById('saveState').textContent='VAULT SEALED // '+new Date().toLocaleTimeString('zh-CN');renderStats();renderLeftNote()}
     function setSidebarCollapsed(collapsed,persist=true){
       document.body.classList.toggle('side-collapsed',collapsed);
       const btn=document.getElementById('sideCollapseBtn'),icon=btn.querySelector('.side-toggle-icon'),label=btn.querySelector('.side-toggle-label');
@@ -2135,7 +2152,7 @@ body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
     function setMotto(){let hash=0;for(const c of todayKey)hash=(hash*31+c.charCodeAt(0))>>>0;const index=hash%mottos.length;const entry=mottos[index];const text=Array.isArray(entry)?entry[0]:entry;const by=Array.isArray(entry)?entry[1]:'';document.getElementById('dailyMotto').innerHTML=text+(by?'<span class="motto-by">—— '+by+'</span>':'');document.getElementById('mottoNo').textContent='INTERCEPTED FIELD DIRECTIVE // '+String(index+1).padStart(2,'0')}
     function taskDefs(key){return getActiveTaskIds(key).map(id=>getTaskView(id,key))}
     /* FIELD NOTE：显示今日尚未领取的行动额度，避免重复倒计时 / BPhO 情报。 */
-    function renderLeftNote(){const el=document.getElementById('fieldNoteBody');if(!el)return;const ids=getActiveTaskIds(todayKey),checks=data.checks[todayKey]||{},remaining=ids.map(id=>getTaskView(id,todayKey)).filter(t=>t&&!checks[t.id]),pts=remaining.reduce((sum,t)=>sum+Number(t.pts||0),0);el.textContent=data.sealed[todayKey]?'REPORT SEALED // 本日战报已归档':remaining.length?`未清 ${remaining.length} 项 · 可取 ${pts} PT`:'全部目标已清 · 等待签署'}
+    function renderLeftNote(){const ids=getActiveTaskIds(todayKey),checks=data.checks[todayKey]||{},remaining=ids.map(id=>getTaskView(id,todayKey)).filter(t=>t&&!checks[t.id]),pts=remaining.reduce((sum,t)=>sum+Number(t.pts||0),0),text=data.sealed[todayKey]?'REPORT SEALED // 本日战报已归档':remaining.length?`未清 ${remaining.length} 项 · 可取 ${pts} PT`:'全部目标已清 · 等待签署';['fieldNoteBody','compactFieldNoteBody'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=text})}
     /* 计划日序号（project 相关，非挂钟展示）：V2 窗内为 PLAN DAY nn/57 + Day Type，否则 T-MINUS/OVERDUE。 */
     function planDayLabel(key){const a='2026-09-21',b='2026-11-16';const dnum=dt=>new Date(dt+'T00:00:00').getTime();if(key<a)return 'T-MINUS '+Math.ceil((dnum(a)-dnum(key))/86400000)+' // 计划 9-21 启动';if(key>b)return 'OVERDUE // 计划已结束';const d=V2_DAYS[key];const n=Math.round((dnum(key)-dnum(a))/86400000)+1;return 'PLAN DAY '+String(n).padStart(2,'0')+'/57'+(d&&d.day?' · '+d.day.toUpperCase():'')}
     /* 简报上下文：V2 当天的 Day Type + Notes（附件逐字），非 V2 日隐藏。 */
@@ -2160,12 +2177,12 @@ body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
     function renderStageModal(){const wrap=document.getElementById('stageModal');const list=document.getElementById('stageHiddenList');if(!wrap||!list)return;const hidden=stages.filter(s=>stageMode(s.n)==='hidden');list.innerHTML=hidden.length?hidden.map(s=>`<div class="stage-hidden-row"><span>STAGE ${s.n} // ${s.output} · ${s.label}</span><button type="button" data-show="${s.n}">显示</button></div>`).join(''):'<div class="stage-hidden-empty">暂无隐藏阶段</div>'}
     function openStageModal(){renderStageModal();document.getElementById('stageModal').removeAttribute('hidden')}
     function closeStageModal(){document.getElementById('stageModal').setAttribute('hidden','')}
-    function renderStages(){document.getElementById('stageStrip').innerHTML=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const glyph=mode==='full'?'▼':'▶';return `<div class="stage ${state} ${mode==='compact'?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示">${glyph}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('')}
+    function renderStages(){const html=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const glyph=mode==='full'?'▼':'▶';return `<div class="stage ${state} ${mode==='compact'?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示">${glyph}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('');document.getElementById('stageStrip').innerHTML=html;const compact=document.getElementById('compactStageStrip');if(compact)compact.innerHTML=html}
     const COMPONENT_LABELS={'PHYS P2':'PHY P2','PHYS P1':'PHY P1','M S1':'MATH S1','M P1':'MATH P1'};
     function renderLedger(){let total=0;const quota=missionQuotaTotal();document.getElementById('ledger').innerHTML=COMPONENTS.map(c=>{const n=Number(data.cycles[c.id]||0);total+=n;const label=COMPONENT_LABELS[c.id]||c.id;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${label}</span><span>${n} / ${componentQuota(c)}</span></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
     function streak(){const _ck=todayKey+'|'+DATA_VERSION;if(_streakCacheKey===_ck)return _streakCacheVal;let cursor=new Date(todayKey+'T12:00:00'),n=0;if(!data.sealed[todayKey])cursor.setDate(cursor.getDate()-1);for(;;){const k=localDateKey(cursor);if(!data.sealed[k])break;n++;cursor.setDate(cursor.getDate()-1)}_streakCacheKey=_ck;_streakCacheVal=n;return n}
     function adherenceStats(){const _ck=todayKey+'|'+DATA_VERSION;if(_adhCacheKey===_ck)return _adhCacheVal;const startKey=stages[0].start;let cursor=new Date(startKey+'T12:00:00');const todayD=new Date(todayKey+'T12:00:00');let held=0,total=0;while(cursor<=todayD){const k=localDateKey(cursor);if(k<todayKey||data.sealed[k]){total++;if(data.sealed[k])held++}cursor.setDate(cursor.getDate()+1)}const _r={held,total};_adhCacheKey=_ck;_adhCacheVal=_r;return _r}
-    function renderStats(){document.getElementById('streakStat').textContent=streak();const adh=adherenceStats();document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;renderLedger();renderHeat()}
+    function renderStats(){const st=streak(),adh=adherenceStats();document.getElementById('streakStat').textContent=st;document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;const compactStreak=document.getElementById('compactStreakStat'),compactAdherence=document.getElementById('compactAdherenceStat');if(compactStreak)compactStreak.textContent=st;if(compactAdherence)compactAdherence.textContent=adh.held+'/'+adh.total;renderLedger();renderHeat()}
     function isWithdrawn(e){return !!data.examDone[e.id]||e.key<todayKey}
     function renderEvents(){const active=exams.filter(e=>!isWithdrawn(e)),archived=exams.filter(isWithdrawn);nextExam=active[0]||null;document.getElementById('events').innerHTML=active.map((e,i)=>`<div class="event ${i===0?'next':''}"><b>${fmtShort(e.key)}</b><span>${e.name}</span><button class="pin-exam ${data.pinnedExam===e.id?'pinned':''}" data-exam-pin="${e.id}" title="设为主目标">${data.pinnedExam===e.id?'主目标':'设为目标'}</button><button class="done-exam" data-exam-done="${e.id}" title="确认目标已被肃清">肃清</button></div>`).join('')||'<div class="event next"><b>END</b><span>行动板已无敌对目标</span></div>';document.querySelectorAll('[data-exam-pin]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.examPin;data.pinnedExam=data.pinnedExam===id?null:id;save();renderEvents();tick();toast(data.pinnedExam?'主目标已锁定':'已解除主目标')}));document.querySelectorAll('[data-exam-done]').forEach(btn=>btn.addEventListener('click',()=>{data.examDone[btn.dataset.examDone]=true;save();renderEvents();tick();toast('目标已从行动板撤除')}));document.getElementById('archiveCount').textContent=archived.length;document.getElementById('archivedEvents').innerHTML=archived.map(e=>`<div class="archived-row"><span>${fmtShort(e.key)} · ${e.name}</span><button class="restore" data-exam-restore="${e.id}">重启战区</button></div>`).join('')||'<div class="archived-row">尚无已肃清战区</div>';document.querySelectorAll('[data-exam-restore]').forEach(btn=>btn.addEventListener('click',()=>{delete data.examDone[btn.dataset.examRestore];save();renderEvents();tick();toast('目标已重新列入行动板')}))}
     /* R3-8v2: 开源模板同构驱动（@leenguyen/react-flip-clock-countdown, MIT）——
@@ -2210,6 +2227,7 @@ body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
       document.getElementById('xpMonth').textContent=mn;
       document.getElementById('xpAll').textContent=all;
       document.getElementById('xpQuota').textContent=Math.round(wk/Math.max(1,SCORE.weeklyQuota)*100)+'%';
+      [['compactXpToday',dayXp(todayKey)],['compactXpWeek',wk],['compactXpMonth',mn],['compactXpAll',all],['compactXpQuota',Math.round(wk/Math.max(1,SCORE.weeklyQuota)*100)+'%']].forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=value});
     }
     function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700)}
     document.addEventListener('pointerdown',e=>{const btn=e.target.closest('button');if(!btn)return;playSfx(btn.id==='sealDay'?'impact':(btn.id==='scAddBtn'||btn.hasAttribute('data-exam-done')||btn.hasAttribute('data-exam-pin'))?'breech':'click')});
@@ -2522,6 +2540,5 @@ body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
 })();
 </script>
 
-<script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
