@@ -1554,8 +1554,18 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .left-bottom-row .left-foot #settingsBtn{width:34px;height:34px}
 .app-tooltip{position:fixed;z-index:100;max-width:220px;padding:7px 9px;border:1px solid var(--amber);background:#171914;color:#eee5ce;box-shadow:0 5px 14px rgba(0,0,0,.3);font:800 11px/1.25 var(--font-mono);pointer-events:none;white-space:nowrap}
 .app-tooltip[hidden]{display:none}
-body.lights-off:after{content:"";position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.28);pointer-events:none}
-body.lights-off #desk-bg{filter:brightness(.72) saturate(.82)}
+/* v1.5 midnight lighting: blacken the desk only; the paper and controls keep their
+   contrast, with a warm overhead pool suggesting a lamp just outside the frame. */
+body.lights-off{background:#020302!important}
+body.lights-off #desk-bg{
+  filter:none;
+  background-color:#020302!important;
+  background-image:
+    radial-gradient(ellipse 42% 22% at 50% 0%,rgba(255,211,126,.22),rgba(255,182,74,.08) 38%,transparent 78%),
+    radial-gradient(ellipse 76% 58% at 50% 30%,rgba(255,190,94,.08),transparent 72%),
+    linear-gradient(180deg,#080804 0%,#020302 58%,#000 100%)!important;
+}
+body.lights-off .main{box-shadow:0 0 70px rgba(255,190,94,.16),0 18px 28px rgba(0,0,0,.72)!important}
 body.lights-off .app-tooltip{background:#0b0d0a}
 /* v1.4: lift secondary copy without collapsing its hierarchy under primary text. */
 .hint,.alert,.task label span,.stat em,.stage span,.event,.side-sub,.left-note,.day-context,.sc-axis-label,.sc-empty,.sc-section-title,.sc-hi-score,.footer,.save-state{font-size:11px!important}
@@ -1629,6 +1639,45 @@ body.lights-off .app-tooltip{background:#0b0d0a}
   .main{margin:0!important;padding:26px 20px 50px!important}
   .side{padding:24px 18px 30px!important}
 }
+</style>
+<style id="v150-task-impact">
+/* v1.5: completion feedback is a small 45-degree projectile, not a check glyph. */
+.task{position:relative}
+.task input.v150-task-input:checked:after{content:none!important}
+.task-bullet{position:absolute;left:7px;top:0;width:24px;height:24px;opacity:0;pointer-events:none;color:var(--rust);transform:translate(-4px,-5px) rotate(-45deg) scale(.55)}
+.task-bullet svg{display:block;width:100%;height:100%;fill:currentColor;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.1}
+.task-impacting .task-bullet{animation:v150BulletDrop .72s cubic-bezier(.22,.72,.32,1) both}
+@keyframes v150BulletDrop{0%{opacity:0;transform:translate(-3px,-7px) rotate(-45deg) scale(.55)}28%{opacity:1;transform:translate(-10px,-1px) rotate(-45deg) scale(1)}100%{opacity:0;transform:translate(-20px,12px) rotate(-45deg) scale(.78)}}
+@media(prefers-reduced-motion:reduce){.task-impacting .task-bullet{animation:none;opacity:1;transform:translate(-8px,-1px) rotate(-45deg) scale(.8)}}
+</style>
+<style id="v150-compact-layout">
+/* v1.5 compact flow: keep the original rail in the document and move that one
+   rail above the work cards when the desktop columns no longer fit. */
+@media(max-width:1680px){
+  .shell,body.side-collapsed .shell{display:flex!important;flex-direction:column!important;min-height:100vh!important;background:transparent!important;background-image:none!important}
+  .left-side{display:block!important;order:0;position:relative!important;top:auto!important;width:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;margin:0 12px 18px!important;padding:18px!important;border-right:0!important;border-bottom:6px solid #0d0f0c!important}
+  .left-side .left-head p{max-width:60ch}
+  .left-side .stage-strip{grid-template-columns:repeat(5,minmax(135px,1fr));overflow-x:auto}
+  .left-bottom-row{margin:14px 0 0!important}
+  .main{order:1;grid-column:auto!important;width:auto!important;max-width:none!important;margin:0 12px 30px!important}
+  .side{order:2;grid-column:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;flex:0 0 auto!important;margin:0!important;padding:26px 24px 36px!important;overflow:visible!important;border-left:0!important;border-top:6px solid #0d0f0c!important}
+  .side .event-list{height:auto!important;max-height:none!important;flex:0 0 auto!important}
+  .grid{align-items:stretch!important;grid-auto-rows:max-content}
+  .grid>.card:first-child,.grid>.past-paper-card{align-self:stretch!important}
+  .past-paper-card .sc-layout{height:100%;min-height:0}
+  .past-paper-card .sc-history{min-height:0}
+  #dayContext{display:none!important}
+}
+@media(max-width:980px){
+  .left-side{margin:0!important;padding:18px 20px!important}
+  .main{margin:0!important;padding:26px 20px 50px!important}
+  .side{padding:24px 18px 30px!important}
+}
+/* One down-facing triangle; compact collapse rotates the same glyph 90 degrees. */
+.side-toggle-icon{display:inline-block;width:1em;height:1em;line-height:1;transform:rotate(0deg);transform-origin:50% 50%;transition:transform .22s ease}
+body.side-collapsed .side-toggle-icon{transform:rotate(-90deg)}
+.side-collapsed .side-toggle-icon{font-size:17px!important}
+@media(prefers-reduced-motion:reduce){.side-toggle-icon{transition:none!important}}
 </style>
 </head>
 <body>
@@ -1730,7 +1779,6 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 <div class="card-head"><div><div class="eyebrow" id="todayDate">TODAY</div><h2>每日行动简报</h2></div><span class="badge" id="stageBadge">STAGE</span></div>
 <div class="day-context" id="dayContext" style="display:none"></div><div id="taskList"></div><div id="dayMessage"></div>
 <div class="actions"><button class="btn primary" id="sealDay">签署当日战报</button><button class="btn" id="undoSeal">撤回战报</button></div>
-<p class="hint">全线目标肃清后方可签署战报。军情档案仅封存于本机。</p>
 </section>
 <section class="card past-paper-card">
 <div class="card-head"><div><div class="eyebrow">INTELLIGENCE INTAKE</div><h2>Past Paper 归档</h2></div><span class="badge" id="scBadge">LOG</span></div>
@@ -1774,9 +1822,9 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 </div>
 </div>
 <div class="footer"><span>CHARLES · CIE AS + OLYMPIAD WAR PLAN</span><span>ONE COMPLETED PROJECT = ONE CHECK-IN</span></div>
-</main>
+ </main>
 <aside class="side">
-<button aria-expanded="true" class="side-toggle" id="sideCollapseBtn" title="收起考试情报" type="button"><span class="side-toggle-icon">›</span><span class="side-toggle-label">收起情报</span></button>
+<button aria-expanded="true" class="side-toggle" id="sideCollapseBtn" title="收起考试情报" type="button"><span class="side-toggle-icon">▼</span><span class="side-toggle-label">收起情报</span></button>
 <div class="kicker">SITUATION ROOM // LIVE</div><h2>考试情报</h2><p class="side-sub">目标完成后从行动板撤出。右上角时钟自动锁定下一份档案。</p>
 <div class="event-list" id="events"></div>
 <details class="archive" id="archive"><summary>已肃清战区 <span id="archiveCount">0</span> 处</summary><div class="archived-list" id="archivedEvents"></div></details>
@@ -1974,8 +2022,8 @@ body.lights-off .app-tooltip{background:#0b0d0a}
       paper:{title:'肃清今日指定 Past Paper',sub:'每拿下一份目标，立即向军需处申报战果。',pts:10,active:k=>k<='2026-11-12'},
       schoolwork:{title:'后方补给：Schoolwork · 1h',sub:'完成校内补给，不得侵占主攻时段。',pts:6,active:(k,dow)=>k<='2026-09-10'&&[1,2,3,4].includes(dow)},
       nzmo:{title:'NZMO 特别行动 · 75m',sub:'仅于 Mon / Wed / Sun 部署兵力。',pts:12,active:(k,dow)=>k<'2026-09-01'&&[1,3,0].includes(dow)},
-      mathclass:{title:'MATHS CLASS 联合作战',sub:'Tue / Thu / Sat 取代 NZMO 阵位。',pts:10,active:(k,dow)=>k<'2026-09-01'&&[2,4,6].includes(dow)},
-      physicsclass:{title:'PHYSICS CLASS 固定驻防',sub:'Friday class 不替代每日 BMO 火力。',pts:10,active:(k,dow)=>dow===5&&k<'2026-11-13'},
+      mathclass:{title:'MATH CLASS 联合作战',sub:'Tue / Thu / Sat 取代 NZMO 阵位。',pts:10,active:(k,dow)=>k<'2026-09-01'&&[2,4,6].includes(dow)},
+      physicsclass:{title:'PHY CLASS 固定驻防',sub:'Friday class 不替代每日 BMO 火力。',pts:10,active:(k,dow)=>dow===5&&k<'2026-11-13'},
       bmo:{title:'主攻目标：BMO 核心数学 · 1h',sub:'每个工作日固定部署，不得挪作他用。',pts:14,active:(k,dow)=>k>='2026-09-01'&&k<'2026-11-13'&&[1,2,3,4,5].includes(dow)},
       bmoclass:{title:'BMO 周末课业 · 2h',sub:'周六固定驻防，衔接工作日火力。',pts:16,active:(k,dow)=>k>='2026-09-01'&&k<'2026-11-13'&&dow===6},
       bphoclass:{title:'BPhO 周末课业 · 2h',sub:'周日固定驻防，10 月下旬前持续开班。',pts:16,active:(k,dow)=>k>='2026-09-01'&&k<'2026-11-13'&&dow===0},
@@ -1983,12 +2031,12 @@ body.lights-off .app-tooltip{background:#0b0d0a}
       audit:{title:'SUNDAY 战损审计',sub:'上报失守目标、欠缺工时与反攻日期。',pts:10,era:'both',active:(k,dow)=>dow===0&&(k<SCORE.planStart||!V2_DAYS[k])},
       sprint:{title:'OLYMPIAD 决战动员',sub:'BPhO 终极备战 + BMO 冲刺全力部署。',pts:25,active:k=>k>='2026-11-13'&&k<='2026-11-15'},
       outside:{title:'预备役整编',sub:'正式行动期：22 Jul — 18 Nov 2026。',pts:5,era:'both',active:k=>!activeStage(k)},
-      'p-saq':{title:'P SAQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('p-saq')},
-      'c-saq':{title:'C SAQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('c-saq')},
-      'b-saq':{title:'B SAQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('b-saq')},
-      'p-mcq':{title:'P MCQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('p-mcq')},
-      'c-mcq':{title:'C MCQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('c-mcq')},
-      'b-mcq':{title:'B MCQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('b-mcq')},
+      'p-saq':{title:'PHY SAQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('p-saq')},
+      'c-saq':{title:'CHEM SAQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('c-saq')},
+      'b-saq':{title:'BIO SAQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('b-saq')},
+      'p-mcq':{title:'PHY MCQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('p-mcq')},
+      'c-mcq':{title:'CHEM MCQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('c-mcq')},
+      'b-mcq':{title:'BIO MCQ',sub:SLOT_SUB,pts:10,era:'v2',active:k=>daySlots(k).includes('b-mcq')},
       bpho2:{title:k=>V2_DAYS[k].bpho,sub:k=>BPHO_SUB[bphoMode(V2_DAYS[k].bpho)],pts:k=>BPHO_PTS[bphoMode(V2_DAYS[k].bpho)],era:'v2',active:k=>!!(V2_DAYS[k]&&V2_DAYS[k].bpho)},
       review:{title:'考前 Review',sub:k=>V2_DAYS[k].review,pts:6,era:'v2',active:k=>!!(V2_DAYS[k]&&V2_DAYS[k].review)},
       extra:{title:'Extra Study',sub:k=>V2_DAYS[k].extra,pts:k=>extraPts(V2_DAYS[k].extra),era:'v2',active:k=>!!(V2_DAYS[k]&&V2_DAYS[k].extra)}
@@ -2008,20 +2056,14 @@ body.lights-off .app-tooltip{background:#0b0d0a}
       {n:5,start:'2026-09-29',end:'2026-11-18',label:'考试走廊',output:141}
     ];
     const exams=[
-      ['eng-p1','2026-10-12','ENG LIT P1'],['m-p1','2026-10-13','M P1'],['phys-p2','2026-10-14','PHYS P2 / SAQ'],['m-s1','2026-10-15','M P5'],['chem-p2','2026-10-16','CHEM P2 / SAQ'],['bio-p2','2026-10-20','BIO P2 / SAQ'],['phys-prac','2026-10-22','PHYS PRAC'],['eng-p2','2026-10-23','ENG LIT P2'],['chem-prac','2026-10-27','CHEM PRAC'],['bio-prac','2026-10-29','BIO PRAC'],['phys-p1','2026-11-10','PHYS P1 / MCQ'],['chem-p1','2026-11-11','CHEM P1 / MCQ'],['bio-p1','2026-11-12','BIO P1 / MCQ'],['bpho','2026-11-16','BPhO ROUND 1']
+      ['eng-p1','2026-10-12','ENG LIT P1'],['m-p1','2026-10-13','MATH P1'],['phys-p2','2026-10-14','PHY P2 / SAQ'],['m-s1','2026-10-15','M P5'],['chem-p2','2026-10-16','CHEM P2 / SAQ'],['bio-p2','2026-10-20','BIO P2 / SAQ'],['phys-prac','2026-10-22','PHY PRAC'],['eng-p2','2026-10-23','ENG LIT P2'],['chem-prac','2026-10-27','CHEM PRAC'],['bio-prac','2026-10-29','BIO PRAC'],['phys-p1','2026-11-10','PHY P1 / MCQ'],['chem-p1','2026-11-11','CHEM P1 / MCQ'],['bio-p1','2026-11-12','BIO P1 / MCQ'],['bpho','2026-11-16','BPhO ROUND 1']
     ].map(x=>({id:x[0],key:x[1],name:x[2],date:new Date(x[1]+'T00:00:00'+nzOffset(x[1]))})).sort((a,b)=>a.date-b.date);
-    /* directive 名言库：历史名将/战士/兵书真实可考条目（49 条，11 条存疑已剔除），[中文, 出处] 对。 */
+    /* directive 名言库：保留中文作者的中文原句；外国作者使用可核实的英文原句。
+       归属优先采用原典、演讲或出版物，避免把网络励志改写当作名言。 */
     const mottos=[
-      ['知彼知己，百战不殆','孙子《孙子兵法》'],['先胜而后战，谋定而动','孙子《孙子兵法》'],['兵者诡道，善用策略','孙子《孙子兵法》'],['不战屈人，善之善者','孙子《孙子兵法》'],['知可战否者胜','孙子《孙子兵法》'],['兵贵神速，速战速决','孙子《孙子兵法》'],['三思而行，谋定后动','孙子《孙子兵法》'],['攻其不备，出其不意','孙子《孙子兵法》'],
-      ['战争是政治的延续','克劳塞维茨《战争论》'],['大道至简，行之维艰','克劳塞维茨《战争论》'],['战争充满不确定性','克劳塞维茨《战争论》'],['欲享和平，先备战','韦格蒂乌斯《论军事》'],['蠢者字典才有不可能','拿破仑'],['一枚勋带，激战到底','拿破仑'],
-      ['立行拙计胜拖延妙计','巴顿'],['兵器可战，人方能胜','巴顿'],['多坚持一分钟即勇','巴顿'],['迎难而上，品胜之喜','巴顿'],['人云亦云，必有人未思','巴顿'],['指明目标，放手去做','巴顿'],['要么带头，要么跟上','巴顿'],
-      ['永不言弃，绝不退缩','丘吉尔'],['绝不投降，死战到底','丘吉尔'],['成功不可保，唯可配之','丘吉尔'],
-      ['今日胜昨日，明日胜他人','宫本武藏《五轮书》'],['久学方成，坚持即胜','宫本武藏《五轮书》'],['登顶之路，不止一条','宫本武藏《五轮书》'],['无用之事，切莫为','宫本武藏《独行道》'],['做过之事，莫后悔','宫本武藏《独行道》'],['目观无形，心察本质','宫本武藏《五轮书》'],
-      ['多流汗少流血，多用脑','隆美尔'],['多一发子弹者胜','隆美尔'],['生死危机，破固化思维','隆美尔'],['无利之战，切莫打','隆美尔'],['肯试者，无不可能','亚历山大大帝'],
-      ['我来，我见，我征服','凯撒'],['经验是最好的老师','凯撒'],['骰已掷下，破釜沉舟','凯撒'],
-      ['计划易废，谋划为要','艾森豪威尔'],['让他人心甘情愿去做','艾森豪威尔'],['唯亲历者，方知厌战','艾森豪威尔'],
-      ['我必回来','麦克阿瑟'],['老兵不死，只是凋零','麦克阿瑟'],['战争之中，胜利唯一','麦克阿瑟'],
-      ['接敌之刻，计划即变','毛奇'],['接受新知难，摒弃旧念更难','李德哈特'],['人人尽责，方能制胜','纳尔逊'],['有胆便来取','列奥尼达'],['纪律是军队之魂','华盛顿']
+      ['知彼知己，百战不殆','孙子《孙子兵法》'],['故上兵伐谋，其次伐交，其次伐兵，其下攻城','孙子《孙子兵法》'],['兵无常势，水无常形','孙子《孙子兵法》'],['胜兵先胜而后求战，败兵先战而后求胜','孙子《孙子兵法》'],['善战者，求之于势，不责于人','孙子《孙子兵法》'],['以正合，以奇胜','孙子《孙子兵法》'],['攻其无备，出其不意','孙子《孙子兵法》'],['兵贵胜，不贵久','孙子《孙子兵法》'],['先为不可胜，以待敌之可胜','孙子《孙子兵法》'],['计利以听，乃为之势，以佐其外','孙子《孙子兵法》'],
+      ['千里之行，始于足下','老子《道德经》'],['合抱之木，生于毫末','老子《道德经》'],['慎终如始，则无败事','老子《道德经》'],['学而时习之，不亦说乎','孔子《论语》'],['工欲善其事，必先利其器','孔子《论语》'],['人无远虑，必有近忧','孔子《论语》'],['见贤思齐焉，见不贤而内自省也','孔子《论语》'],['读书有三到，谓心到、眼到、口到','朱熹《训学斋规》'],
+      ["The impediment to action advances action. What stands in the way becomes the way.",'Marcus Aurelius, Meditations 5.20'],["You have power over your mind—not outside events. Realize this, and you will find strength.",'Marcus Aurelius, Meditations 12.36'],["Men are disturbed not by things, but by the views which they take of things.",'Epictetus, Enchiridion 5'],["Plans are worthless, but planning is everything.",'Dwight D. Eisenhower, 1957 address'],["We shall fight on the beaches.",'Winston Churchill, 1940 speech'],["Never in the field of human conflict was so much owed by so many to so few.",'Winston Churchill, 1940 speech'],["The only way to do great work is to love what you do.",'Steve Jobs, Stanford commencement 2005'],["Stay hungry. Stay foolish.",'Steve Jobs, Stanford commencement 2005'],["The best way out is always through.",'Robert Frost, A Servant to Servants'],["Nothing in life is to be feared, it is only to be understood.",'Marie Curie'],["Chance favors only the prepared mind.",'Louis Pasteur, 1854 lecture'],["If I have seen further it is by standing on the shoulders of giants.",'Isaac Newton, 1676 letter'],["The most difficult thing is the decision to act, the rest is merely tenacity.",'Amelia Earhart'],["Life is either a daring adventure or nothing at all.",'Helen Keller, The Open Door'],["All we have to decide is what to do with the time that is given us.",'J. R. R. Tolkien, The Fellowship of the Ring'],["Not all those who wander are lost.",'J. R. R. Tolkien, The Fellowship of the Ring'],["Do. Or do not. There is no try.",'Yoda, The Empire Strikes Back'],["The readiness is all.",'William Shakespeare, Hamlet'],["Our doubts are traitors, and make us lose the good we oft might win.",'William Shakespeare, Measure for Measure'],["They can because they think they can.",'Virgil, Aeneid'],["Today is victory over yourself of yesterday; tomorrow is your victory over lesser men.",'Miyamoto Musashi, The Book of Five Rings'],["Do nothing which is of no use.",'Miyamoto Musashi, Dokkōdō'],["A pint of sweat saves a gallon of blood.",'George S. Patton'],["The will to win means nothing if you do not have the will to prepare.",'Juma Ikangaa'],["The future belongs to those who believe in the beauty of their dreams.",'Eleanor Roosevelt'],["You may encounter many defeats, but you must not be defeated.",'Maya Angelou, Letter to My Daughter']
     ];
     const blank=()=>({version:3,cycles:Object.fromEntries(COMPONENTS.map(c=>[c.id,0])),checks:{},sealed:{},cycleLog:[],examDone:{},lastCheckin:null,soundOn:true,lightsOff:false,pinnedExam:null,updated:null});
     const NZ_FMT=new Intl.DateTimeFormat('en-CA',{timeZone:'Pacific/Auckland',year:'numeric',month:'2-digit',day:'2-digit'});
@@ -2051,7 +2093,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
       const btn=document.getElementById('sideCollapseBtn'),icon=btn.querySelector('.side-toggle-icon'),label=btn.querySelector('.side-toggle-label');
       btn.setAttribute('aria-expanded',String(!collapsed));
       btn.title=collapsed?'展开考试情报':'收起考试情报';
-      icon.textContent=collapsed?'‹':'›';
+       icon.textContent='▼';
       label.textContent=collapsed?'展开情报':'收起情报';
       if(persist)try{KV.set(SIDE_COLLAPSE_KEY,collapsed?'1':'0')}catch(e){}
       cancelAnimationFrame(setSidebarCollapsed._timer);
@@ -2096,8 +2138,11 @@ body.lights-off .app-tooltip{background:#0b0d0a}
     /* 计划日序号（project 相关，非挂钟展示）：V2 窗内为 PLAN DAY nn/57 + Day Type，否则 T-MINUS/OVERDUE。 */
     function planDayLabel(key){const a='2026-09-21',b='2026-11-16';const dnum=dt=>new Date(dt+'T00:00:00').getTime();if(key<a)return 'T-MINUS '+Math.ceil((dnum(a)-dnum(key))/86400000)+' // 计划 9-21 启动';if(key>b)return 'OVERDUE // 计划已结束';const d=V2_DAYS[key];const n=Math.round((dnum(key)-dnum(a))/86400000)+1;return 'PLAN DAY '+String(n).padStart(2,'0')+'/57'+(d&&d.day?' · '+d.day.toUpperCase():'')}
     /* 简报上下文：V2 当天的 Day Type + Notes（附件逐字），非 V2 日隐藏。 */
-    function renderDayContext(){const el=document.getElementById('dayContext');if(!el)return;const d=V2_DAYS[todayKey];const note=V2_NOTES[todayKey];if(!d){el.style.display='none';el.textContent='';return}el.style.display='';el.textContent=d.day+(note?' // '+note:'')}
-    function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();document.getElementById('taskList').innerHTML=list.map(t=>`<div class="task"><input type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}<span>${t.sub}</span></label><strong>+${t.pts} PT</strong></div>`).join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=el.checked;save();renderTasks()}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
+    function renderDayContext(){const el=document.getElementById('dayContext');if(!el)return;el.style.display='none';el.textContent=''}
+    /* 45-degree projectile silhouette: pointed nose, jacket, and casing rim. */
+    const TASK_BULLET='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 16 7v10.2q0 2-2 2h-4q-2 0-2-2V7z"/><path d="M8 16.8h8v2.1H8z" fill="none"/></svg>';
+    function taskImpact(taskId){const row=document.getElementById('t-'+taskId)?.closest('.task');if(!row)return;row.classList.remove('task-impacting');void row.offsetWidth;row.classList.add('task-impacting');window.setTimeout(()=>row.classList.remove('task-impacting'),780)}
+    function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();document.getElementById('taskList').innerHTML=list.map(t=>`<div class="task ${checks[t.id]?'task-complete':''}"><input class="v150-task-input" type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}</label><strong>+${t.pts} PT</strong>${checks[t.id]?`<span class="task-bullet" aria-hidden="true">${TASK_BULLET}</span>`:''}</div>`).join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{const completed=el.checked;data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=completed;save();renderTasks();if(completed)taskImpact(el.dataset.task)}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
     /* NZ 时区：9-27 前 NZST(UTC+12)，之后 NZDT(UTC+13)；与 exams 倒计时实例同一规则，唯一出处。 */
     function nzOffset(key){return key<'2026-09-27'?'+12:00':'+13:00'}
     function nzAbbr(key){return key<'2026-09-27'?'NZST':'NZDT'}
@@ -2115,7 +2160,8 @@ body.lights-off .app-tooltip{background:#0b0d0a}
     function openStageModal(){renderStageModal();document.getElementById('stageModal').removeAttribute('hidden')}
     function closeStageModal(){document.getElementById('stageModal').setAttribute('hidden','')}
     function renderStages(){document.getElementById('stageStrip').innerHTML=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const glyph=mode==='full'?'▼':'▶';return `<div class="stage ${state} ${mode==='compact'?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示">${glyph}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('')}
-    function renderLedger(){let total=0;const quota=missionQuotaTotal();document.getElementById('ledger').innerHTML=COMPONENTS.map(c=>{const n=Number(data.cycles[c.id]||0);total+=n;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${c.id}</span><span>${n} / ${componentQuota(c)}</span></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
+    const COMPONENT_LABELS={'PHYS P2':'PHY P2','PHYS P1':'PHY P1','M S1':'MATH S1','M P1':'MATH P1'};
+    function renderLedger(){let total=0;const quota=missionQuotaTotal();document.getElementById('ledger').innerHTML=COMPONENTS.map(c=>{const n=Number(data.cycles[c.id]||0);total+=n;const label=COMPONENT_LABELS[c.id]||c.id;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${label}</span><span>${n} / ${componentQuota(c)}</span></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
     function streak(){const _ck=todayKey+'|'+DATA_VERSION;if(_streakCacheKey===_ck)return _streakCacheVal;let cursor=new Date(todayKey+'T12:00:00'),n=0;if(!data.sealed[todayKey])cursor.setDate(cursor.getDate()-1);for(;;){const k=localDateKey(cursor);if(!data.sealed[k])break;n++;cursor.setDate(cursor.getDate()-1)}_streakCacheKey=_ck;_streakCacheVal=n;return n}
     function adherenceStats(){const _ck=todayKey+'|'+DATA_VERSION;if(_adhCacheKey===_ck)return _adhCacheVal;const startKey=stages[0].start;let cursor=new Date(startKey+'T12:00:00');const todayD=new Date(todayKey+'T12:00:00');let held=0,total=0;while(cursor<=todayD){const k=localDateKey(cursor);if(k<todayKey||data.sealed[k]){total++;if(data.sealed[k])held++}cursor.setDate(cursor.getDate()+1)}const _r={held,total};_adhCacheKey=_ck;_adhCacheVal=_r;return _r}
     function renderStats(){document.getElementById('streakStat').textContent=streak();const adh=adherenceStats();document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;renderLedger();renderHeat()}
@@ -2226,7 +2272,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
       {id:'phy',name:'PHY',subs:[{id:'mcq',name:'MCQ P1',total:40},{id:'saq',name:'SAQ P2',total:60},{id:'p4',name:'SAQ P4',total:100},{id:'p5',name:'SAQ P5',total:30}]},
       {id:'chem',name:'CHEM',subs:[{id:'mcq',name:'MCQ P1',total:40},{id:'saq',name:'SAQ P2',total:60},{id:'p4',name:'SAQ P4',total:100},{id:'p5',name:'SAQ P5',total:30}]},
       {id:'bio',name:'BIO',subs:[{id:'mcq',name:'MCQ P1',total:40},{id:'saq',name:'SAQ P2',total:60},{id:'p4',name:'SAQ P4',total:100},{id:'p5',name:'SAQ P5',total:30}]},
-      {id:'math',name:'Math',subs:[{id:'pure1',name:'P1',total:75},{id:'stats1',name:'S1',total:50},{id:'p3',name:'P3',total:75},{id:'s2',name:'S2',total:50}]},
+      {id:'math',name:'MATH',subs:[{id:'pure1',name:'P1',total:75},{id:'stats1',name:'S1',total:50},{id:'p3',name:'P3',total:75},{id:'s2',name:'S2',total:50}]},
       {id:'fm',name:'FM',subs:[{id:'p1',name:'P1',total:75},{id:'p2',name:'P2',total:75},{id:'p3',name:'P3',total:50},{id:'p4',name:'P4',total:50}]},
     ];
     const SC_STATE_KEY='charles-war-plan-sc-state';
