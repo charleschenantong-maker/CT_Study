@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Charles · War Plan 军需处</title>
-<link rel="icon" type="image/png" href="./war-plan-assets/app-icon.png"/>
+<link rel="icon" type="image/png" href="./war-plan-assets/app-icon.png?v=1.6.3"/>
 <style>
     :root{--coal:#11130f;--night:#181b16;--olive:#30362b;--army:#596148;--khaki:#aaa078;--paper:#d8d0b7;--paper2:#c9bea0;--ink:#20231d;--rust:#84392c;--blood:#67271f;--amber:#c29a4b;--green:#3e5d42;--line:rgba(39,42,33,.35);--light:#e4dec8;--side-width:360px;--side-collapsed-width:58px}
     *{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--coal);color:var(--ink);font-family:var(--font-display);line-height:1.42}
@@ -151,7 +151,7 @@
     .heat-grid i{display:block;width:12px;height:12px;border:1px solid rgba(24,32,24,.38);background:#b1a37c;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
     .heat-grid i.l1{background:#7d8455}.heat-grid i.l2{background:#586440}.heat-grid i.l3{background:#3a4c2c}.heat-grid i.l4{background:#1e2e1a}
     .heat-grid i.future{background:repeating-linear-gradient(45deg,#9d9070 0 3px,#877a5e 3px 6px);opacity:.68;border-color:rgba(24,32,24,.45)}
-    .heat-grid i.today{animation:todayPulse 2.2s ease-out infinite}
+    .heat-grid i.today{animation:none;box-shadow:0 0 0 2px rgba(132,57,44,.6)}/* v1.7.0: 无限脉冲在 display 切换（设置返回）时必然重播造成闪 —— 改静态描边，与减弱动效分支同式 */
     @keyframes todayPulse{0%{box-shadow:0 0 0 0 rgba(132,57,44,.55)}70%{box-shadow:0 0 0 5px rgba(132,57,44,0)}100%{box-shadow:0 0 0 0 rgba(132,57,44,0)}}
     @media(prefers-reduced-motion:reduce){.heat-grid i.today{animation:none;box-shadow:0 0 0 2px rgba(132,57,44,.6)}}
     .heat-legend{display:flex;align-items:center;gap:6px;margin-top:12px;font:800 8px/1 var(--font-mono);letter-spacing:.12em;color:#4d5344}
@@ -1623,7 +1623,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .btn:active:not(:disabled){transform:translateY(0)}
 .task input,.sc-entry input{transition:border-color .18s ease,box-shadow .18s ease}
 .sc-entry input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 2px rgba(185,144,67,.35)}
-.stage{animation:r3FadeSlide .25s ease}
+.stage{animation:none}/* v1.7.0: 阶段切换 renderStages 重建 DOM 会重播入场动画造成整组闪 —— 直接取消，chevron 平滑旋转是 transition 不受影响 */
 .event{animation:r3FadeSlide .25s ease}
 @keyframes r3FadeSlide{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .stage-modal-wrap{animation:r3Fade .22s ease}
@@ -1666,7 +1666,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .task{position:relative}
 .task input.v150-task-input:checked{background:transparent;border-color:var(--olive)}
 .task input.v150-task-input:checked:after{content:none!important}
-.task-bullet{position:absolute;left:2px;top:-4px;width:30px;height:30px;object-fit:contain;overflow:visible;opacity:1;transform:rotate(-38deg);pointer-events:none}
+.task-bullet{position:absolute;left:-1px;top:8px;width:30px;height:30px;object-fit:contain;overflow:visible;opacity:1;transform:none;pointer-events:none}
 </style>
 <style id="v151-compact-layout">
 /* v1.5.1: restore the v1.4 compact rail flow. The real left rail stays hidden;
@@ -1723,10 +1723,34 @@ body.side-collapsed .side-toggle .chev-icon{transform:rotate(-90deg)}
 <style id="v162-sector-bottom">
 /* v1.6.2-3: past-paper 右列下缘与左卡按钮行齐平 —— 只调右侧，左侧不动。
    左卡底部 = .actions(#sealDay/#undoSeal)+.alert + 卡 padding 18px，不碰。
-   右侧 .sc-entry 加下距 12px，.sc-history-panel 加底内距 2px；
-   .sc-history min/max (420px/560px) 保持不动。 */
-.past-paper-card .sc-entry{margin-bottom:12px}
-.past-paper-card .sc-history-panel{padding-bottom:2px}
+   落到白线：entry 用 margin-top:auto 钉死 main 列底（不再是“移不下去”），
+   chart 用 flex:1 吸掉中间空隙；history 用 flex:1 吸满右列；
+   两列内容底边 flush，离卡底都是卡自身 padding，距离统一。 */
+.past-paper-card .sc-chart-wrap{flex:1 1 auto;min-height:180px}
+.past-paper-card .sc-entry{position:relative;margin-top:auto;margin-bottom:0}
+.past-paper-card .sc-form-error{position:absolute;top:100%;left:0;right:0;margin:2px 0 0;min-height:0}
+.past-paper-card .sc-history{flex:1}
+</style>
+<style id="v163-align-allwidths">
+/* v1.6.3: 两卡底部对齐不依赖 1680 断点 —— 大屏(>1680)同样生效，只动右侧。
+   grid 拉伸两卡等高；sc-layout 高度吃满卡；chart/entry 用 flex+auto margin 吸掉富余；
+   左卡（行动简报）零改动。 */
+.desk-surface .grid{align-items:stretch}
+.past-paper-card{align-self:stretch;display:flex;flex-direction:column}
+.past-paper-card .sc-layout{flex:1;min-height:0;height:auto}
+/* 左卡只钉按钮到底，不动内部间距：行高由右卡定义时，签署/撤回按钮才下来与白线齐平 */
+.desk-surface .grid > .card:first-child{display:flex;flex-direction:column}
+.desk-surface .grid > .card:first-child .actions{margin-top:auto}
+@media(min-width:981px){.past-paper-card .sc-history{max-height:none}}
+/* v1.7.0: 大屏永久抑制右侧滚动条（列表仍可滚轮滚动）+ 收起态贴边 + 设置返回防闪 */
+@media(min-width:1161px){
+  .side,.side .event-list{scrollbar-width:none!important}
+  .side::-webkit-scrollbar,.side .event-list::-webkit-scrollbar{display:none!important}
+  html{scrollbar-width:none!important}
+  html::-webkit-scrollbar{display:none!important}
+  body.side-collapsed .side:after{display:none!important}
+}
+body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:none!important;transition:none!important}
 </style>
 <style id="v162-btn-chamfer">
 /* v1.6.2-4: 只有操作类按钮保留基类斜切；选项格/小手柄保持方形无裁角。
@@ -1735,6 +1759,8 @@ body.side-collapsed .side-toggle .chev-icon{transform:rotate(-90deg)}
 .past-paper-card .sc-entry .btn,.actions .btn,.side-actions .btn{clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))}
 .sc-tab,.sc-subtab{clip-path:none}
 .pin-exam,.done-exam,.stage-mode,.stage-hide{clip-path:none}
+/* v1.6.3: past-paper 两个长方形模块各切两个角（右上+左下，与确认入档同式）。只切外框，不动内格。 */
+.sc-select-box,.sc-stat-row{clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
 </style>
 </head>
 <body>
@@ -2283,13 +2309,13 @@ body.side-collapsed .side-toggle .chev-icon{transform:rotate(-90deg)}
       [['compactXpToday',dayXp(todayKey)],['compactXpWeek',wk],['compactXpMonth',mn],['compactXpAll',all],['compactXpQuota',Math.round(wk/Math.max(1,SCORE.weeklyQuota)*100)+'%']].forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=value});
     }
     function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700)}
-    document.addEventListener('pointerdown',e=>{const btn=e.target.closest('button');if(!btn)return;playSfx(btn.id==='sealDay'?'impact':(btn.id==='scAddBtn'||btn.hasAttribute('data-exam-done')||btn.hasAttribute('data-exam-pin'))?'breech':'click')});
+    document.addEventListener('pointerdown',e=>{const btn=e.target.closest('button');if(!btn||btn.closest('#tauri-chrome'))return;playSfx(btn.id==='sealDay'?'impact':(btn.id==='scAddBtn'||btn.hasAttribute('data-exam-done')||btn.hasAttribute('data-exam-pin'))?'breech':'click')});
     document.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"],select'))playSfx('click')});
     document.getElementById('stageStrip').addEventListener('click',e=>{const h=e.target.closest('.stage-hide');if(h){hideStage(Number(h.dataset.hide));return}const b=e.target.closest('.stage-mode');if(!b)return;cycleStageMode(Number(b.dataset.stage))});
     document.getElementById('stageManageBtn').addEventListener('click',openStageModal);
     /* R3-7: 设置界面 — 纸面内容整体替换 */
     function openSettings(){document.querySelector('.main').classList.add('settings-open');document.getElementById('settingsView').removeAttribute('hidden');syncSettingsLabels()}
-    function closeSettings(){document.querySelector('.main').classList.remove('settings-open');document.getElementById('settingsView').setAttribute('hidden','')}
+    function closeSettings(){document.querySelector('.main').classList.remove('settings-open');document.getElementById('settingsView').setAttribute('hidden','');document.body.classList.add('view-switch');setTimeout(()=>document.body.classList.remove('view-switch'),350)}
     function syncSettingsLabels(){const s=document.getElementById('settingsSfx');if(s)s.textContent=data.soundOn?'SFX // 开':'SFX // 关'}
     document.getElementById('settingsBtn').addEventListener('click',openSettings);
     document.getElementById('settingsBack').addEventListener('click',closeSettings);
