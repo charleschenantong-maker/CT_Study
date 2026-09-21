@@ -2390,7 +2390,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
     function renderLedger(){let total=0;const quota=missionQuotaTotal();COMPONENTS.forEach(c=>{total+=Number(data.cycles[c.id]||0)});document.getElementById('ledger').innerHTML=COMPONENTS.filter(c=>!ledgerHidden.includes(c.id)).map(c=>{const n=Number(data.cycles[c.id]||0);const label=COMPONENT_LABELS[c.id]||c.id;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${label}</span><span>${n} / ${componentQuota(c)}</span><button type="button" class="ledger-hide" data-ledger-hide="${c.id}" title="隐藏该档案" aria-label="隐藏档案 ${label}">${STAGE_EYE_OFF}</button></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';const _lhc=document.getElementById('ledgerHiddenCount');if(_lhc)_lhc.textContent=ledgerHidden.length;document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
     function streak(){const _ck=todayKey+'|'+DATA_VERSION;if(_streakCacheKey===_ck)return _streakCacheVal;let cursor=new Date(todayKey+'T12:00:00'),n=0;if(!data.sealed[todayKey])cursor.setDate(cursor.getDate()-1);for(;;){const k=localDateKey(cursor);if(!data.sealed[k])break;n++;cursor.setDate(cursor.getDate()-1)}_streakCacheKey=_ck;_streakCacheVal=n;return n}
     function adherenceStats(){const _ck=todayKey+'|'+DATA_VERSION;if(_adhCacheKey===_ck)return _adhCacheVal;const startKey=stages[0].start;let cursor=new Date(startKey+'T12:00:00');const todayD=new Date(todayKey+'T12:00:00');let held=0,total=0;while(cursor<=todayD){const k=localDateKey(cursor);if(k<todayKey||data.sealed[k]){total++;if(data.sealed[k])held++}cursor.setDate(cursor.getDate()+1)}const _r={held,total};_adhCacheKey=_ck;_adhCacheVal=_r;return _r}
-    function renderStats(){const st=streak(),adh=adherenceStats();document.getElementById('streakStat').textContent=st;document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;const compactStreak=document.getElementById('compactStreakStat'),compactAdherence=document.getElementById('compactAdherenceStat');if(compactStreak)compactStreak.textContent=st;if(compactAdherence)compactAdherence.textContent=adh.held+'/'+adh.total;renderLedger();renderHeat()}
+    function renderStats(skipHeat=false){const st=streak(),adh=adherenceStats();document.getElementById('streakStat').textContent=st;document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;const compactStreak=document.getElementById('compactStreakStat'),compactAdherence=document.getElementById('compactAdherenceStat');if(compactStreak)compactStreak.textContent=st;if(compactAdherence)compactAdherence.textContent=adh.held+'/'+adh.total;renderLedger();if(!skipHeat)renderHeat()}
     function isWithdrawn(e){return !!data.examDone[e.id]||e.key<todayKey}
     function renderEvents(){const active=exams.filter(e=>!isWithdrawn(e)),archived=exams.filter(isWithdrawn);nextExam=active[0]||null;document.getElementById('events').innerHTML=active.map((e,i)=>`<div class="event ${i===0?'next':''}"><b><span class="ev-d">${fmtShort(e.key)}</span><span class="ev-d-full">${fmtFull(e.key)}</span></b><span>${e.name}</span><button class="pin-exam ${data.pinnedExam===e.id?'pinned':''}" data-exam-pin="${e.id}" title="设为主目标">${data.pinnedExam===e.id?'主目标':'设为目标'}</button><button class="done-exam" data-exam-done="${e.id}" title="确认目标已被肃清">肃清</button></div>`).join('')||'<div class="event next"><b>END</b><span>行动板已无敌对目标</span></div>';document.querySelectorAll('[data-exam-pin]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.examPin;data.pinnedExam=data.pinnedExam===id?null:id;save();renderEvents();tick();toast(data.pinnedExam?'主目标已锁定':'已解除主目标')}));document.querySelectorAll('[data-exam-done]').forEach(btn=>btn.addEventListener('click',()=>{data.examDone[btn.dataset.examDone]=true;save();renderEvents();tick();toast('目标已从行动板撤除')}));document.getElementById('archiveCount').textContent=archived.length;document.getElementById('archivedEvents').innerHTML=archived.map(e=>`<div class="archived-row"><span>${fmtShort(e.key)} · ${e.name}</span><button class="restore" data-exam-restore="${e.id}">重启战区</button></div>`).join('')||'<div class="archived-row">尚无已肃清战区</div>';document.querySelectorAll('[data-exam-restore]').forEach(btn=>btn.addEventListener('click',()=>{delete data.examDone[btn.dataset.examRestore];save();renderEvents();tick();toast('目标已重新列入行动板')}))}
     /* R3-8v2: 开源模板同构驱动（@leenguyen/react-flip-clock-countdown, MIT）——
@@ -2493,7 +2493,8 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
       }
     }catch(err){alert('安全警报：档案校验失败，拒绝接入。')}};reader.readAsText(file);e.target.value=''});
     /* reset（焚毁）入口已移除：数据只能经备份文件管理，此处不再提供一键清空 */
-    function renderAll(){todayKey=localDateKey(new Date());renderedDate=todayKey;setMotto();renderTasks();renderStages();renderStats();renderEvents();updateSfxToggle();updateLightingToggle();tick();renderLeftNote()}
+    function renderAll(deferHeavy=false){todayKey=localDateKey(new Date());renderedDate=todayKey;setMotto();renderTasks();renderStages();renderStats(deferHeavy);renderEvents();updateSfxToggle();updateLightingToggle();tick();renderLeftNote()}
+    function finishStartup(){const run=()=>{renderHeat();scStartupReady=true;scRender()};if('requestIdleCallback'in window)window.requestIdleCallback(run,{timeout:250});else requestAnimationFrame(()=>setTimeout(run,0))}
     /* 启动门：KV 快照就绪后才允许任何读取（文件模式等 bridge，浏览器模式直接过）。 */
     ;(async function(){
       await KV.init();
@@ -2501,8 +2502,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
       scState=scLoadState();
       stageModes=loadStageModes();
       setSidebarCollapsed(KV.get(SIDE_COLLAPSE_KEY)==='1',false);
-      renderAll();setInterval(()=>{const liveDate=localDateKey(new Date());if(liveDate!==renderedDate){renderAll();playSfx('impact');toast('MIDNIGHT ROTATION // 新一日军令已下达');return}tick()},1000);
-      scRender();
+      renderAll(true);finishStartup();setInterval(()=>{const liveDate=localDateKey(new Date());if(liveDate!==renderedDate){renderAll();playSfx('impact');toast('MIDNIGHT ROTATION // 新一日军令已下达');return}tick()},1000);
       window.addEventListener('beforeunload',()=>{if(KV.bridge)void KV.bridge.flush()});
     })();
 
@@ -2533,7 +2533,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};const APP_VERSION='v1.7.2';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.7.2';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
@@ -2681,6 +2681,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
     });
     const scResponsiveCard=document.querySelector('.past-paper-card');
     function scSyncResponsiveLayout(){
+      if(!scStartupReady)return;
       clearTimeout(scSyncResponsiveLayout._timer);
       scSyncResponsiveLayout._timer=setTimeout(()=>scDrawChart(scCache[scKey(scState.subject,scState.sub)]||[],false),90);
     }
@@ -2706,12 +2707,6 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
     const cd=document.querySelector('.main-countdown');
     if(cd)new ResizeObserver(sync).observe(cd);
   }
-})();
-</script>
-
-<script id="field-desk-v15-heat-relocate">
-(()=>{
-  // Heat card is part of the command header in the source markup.
 })();
 </script>
 
