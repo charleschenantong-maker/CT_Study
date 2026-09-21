@@ -6,7 +6,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Charles · War Plan 军需处</title>
-<link rel="icon" type="image/png" href="./war-plan-assets/app-icon.png?v=1.6.3"/>
+<link rel="icon" type="image/svg+xml" href="./war-plan-assets/app-icon.svg"/>
 <style>
     :root{--coal:#11130f;--night:#181b16;--olive:#30362b;--army:#596148;--khaki:#aaa078;--paper:#d8d0b7;--paper2:#c9bea0;--ink:#20231d;--rust:#84392c;--blood:#67271f;--amber:#c29a4b;--green:#3e5d42;--line:rgba(39,42,33,.35);--light:#e4dec8;--side-width:360px;--side-collapsed-width:58px}
     *{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--coal);color:var(--ink);font-family:var(--font-display);line-height:1.42}
@@ -49,7 +49,7 @@
     .stat b,.ledger-top,.total-row,.badge,.stage b,input,select{font-variant-numeric:tabular-nums slashed-zero;font-feature-settings:"tnum" 1,"zero" 1;letter-spacing:.02em}
     input::placeholder{font-family:var(--font-mono);color:#77745f}.sfx-on{border-color:var(--amber)!important;color:var(--amber)!important}.sfx-off{opacity:.55}
     .main{box-shadow:inset 13px 0 18px rgba(54,37,20,.15),inset -10px 0 15px rgba(37,29,18,.19)}.main>*{position:relative}.main>*:not(.grid):not(.stats):not(.stage-strip){z-index:1}.card:nth-child(2n){clip-path:polygon(0 7px,9px 0,97% 0,100% 11px,100% calc(100% - 8px),98% 100%,9px 100%,0 calc(100% - 12px))}.card:nth-child(3n){background-image:radial-gradient(circle at 93% 11%,rgba(65,40,23,.25) 0 2px,transparent 3px),linear-gradient(97deg,transparent 0 72%,rgba(48,39,25,.07) 72.2%,transparent 72.6%)}.stat:nth-child(2){transform:rotate(-.22deg)}.stat:nth-child(3){transform:rotate(.18deg)}
-    .side:after{content:"";position:fixed;right:0;top:0;width:7px;height:100vh;background:repeating-linear-gradient(180deg,#070907 0 28px,#34392f 29px 32px,#090b09 33px 61px);opacity:.8}.countdown:after{content:"SIGNAL VERIFIED";position:absolute;right:9px;top:8px;color:rgba(171,53,42,.52);border:2px solid currentColor;padding:3px 5px;font:800 7px/1 var(--font-mono);transform:rotate(4deg)}
+    .side:after{display:none!important}.countdown:after{content:"SIGNAL VERIFIED";position:absolute;right:9px;top:8px;color:rgba(171,53,42,.52);border:2px solid currentColor;padding:3px 5px;font:800 7px/1 var(--font-mono);transform:rotate(4deg)}
     @media(max-width:980px){.main:after{display:none}}
   </style>
 <style>
@@ -1625,7 +1625,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .task input,.sc-entry input{transition:border-color .18s ease,box-shadow .18s ease}
 .sc-entry input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 2px rgba(185,144,67,.35)}
 .stage{animation:none}/* v1.7.0: 阶段切换 renderStages 重建 DOM 会重播入场动画造成整组闪 —— 直接取消，chevron 平滑旋转是 transition 不受影响 */
-.event{animation:r3FadeSlide .25s ease}
+    .event{animation:none}
 @keyframes r3FadeSlide{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .stage-modal-wrap{animation:r3Fade .22s ease}
 @keyframes r3Fade{from{opacity:0}to{opacity:1}}
@@ -1822,6 +1822,11 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 </div>
 <div class="flip-labels"><span>DAYS</span><span>HRS</span><span>MIN</span><span>SEC</span></div>
 </div>
+<div class="card heat-card header-heat-card">
+<div class="card-head"><div><div class="eyebrow">SUSTAINED FIRE // LAST 26 WEEKS</div><h2>火力投入</h2></div><span class="badge" id="heatBadge">0 ACTIVE DAYS</span></div>
+<div class="heat-wrap"><div class="heat-grid" id="heatGrid"></div></div>
+<div class="heat-legend"><span>轻</span><i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><span>重</span><em>色深 = 当日投入战功越多</em></div>
+</div>
 </div><div class="motto directive-motto">
 <small id="mottoNo">INTERCEPTED FIELD DIRECTIVE</small>
 <div class="directive-visual">
@@ -1850,14 +1855,6 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 </div>
 </div><div class="redactions"><i></i><i></i><span>DECLASSIFIED // OPEN STUDY FILE</span></div><div class="hazard"></div>
 <div class="desk-surface">
-<section class="ops-row">
-<div class="card heat-card">
-<div class="card-head"><div><div class="eyebrow">SUSTAINED FIRE // LAST 26 WEEKS</div><h2>火力投入日历</h2></div><span class="badge" id="heatBadge">0 ACTIVE DAYS</span></div>
-<div class="heat-wrap"><div class="heat-grid" id="heatGrid"></div></div>
-<div class="heat-legend"><span>轻</span><i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><span>重</span><em>色深 = 当日投入战功越多</em></div>
-</div>
-
-</section>
 <section aria-label="战区态势摘要" class="compact-command-card">
 <div class="compact-command-head"><div><div class="eyebrow">TACTICAL OVERVIEW // PAPER SUMMARY</div><h2>战区态势</h2></div><span class="badge">FIELD NOTE</span></div>
 <div class="compact-summary-stats">
@@ -2316,7 +2313,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
     document.getElementById('stageManageBtn').addEventListener('click',openStageModal);
     /* R3-7: 设置界面 — 纸面内容整体替换 */
     function openSettings(){document.querySelector('.main').classList.add('settings-open');document.getElementById('settingsView').removeAttribute('hidden');syncSettingsLabels()}
-    function closeSettings(){document.querySelector('.main').classList.remove('settings-open');document.getElementById('settingsView').setAttribute('hidden','');document.body.classList.add('view-switch');setTimeout(()=>document.body.classList.remove('view-switch'),350)}
+    function closeSettings(){document.body.classList.add('view-switch');document.querySelector('.main').classList.remove('settings-open');document.getElementById('settingsView').setAttribute('hidden','');requestAnimationFrame(()=>setTimeout(()=>document.body.classList.remove('view-switch'),350))}
     function syncSettingsLabels(){const s=document.getElementById('settingsSfx');if(s)s.textContent=data.soundOn?'SFX // 开':'SFX // 关'}
     document.getElementById('settingsBtn').addEventListener('click',openSettings);
     document.getElementById('settingsBack').addEventListener('click',closeSettings);
@@ -2571,15 +2568,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 
 <script id="field-desk-v15-heat-relocate">
 (()=>{
-  const heat=document.querySelector('.heat-card');
-  const header=document.querySelector('.command-header');
-  if(!heat||!header)return;
-  heat.classList.add('header-heat-card');
-  const title=heat.querySelector('h2');
-  if(title)title.textContent='火力投入';
-  const oldRow=heat.closest('.ops-row');
-  header.appendChild(heat);
-  if(oldRow && oldRow.children.length===0) oldRow.remove();
+  // Heat card is part of the command header in the source markup.
 })();
 </script>
 
@@ -2599,14 +2588,6 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
   const run=()=>requestAnimationFrame(syncHeatHeight);
   addEventListener('load',run);
   addEventListener('resize',run);
-  if('ResizeObserver' in window){
-    const ro=new ResizeObserver(run);
-    const header=document.querySelector('.command-header');
-    const directive=document.querySelector('.directive-motto');
-    if(header)ro.observe(header);
-    if(directive)ro.observe(directive);
-  }
-  setTimeout(run,50);
 })();
 </script>
 
