@@ -1801,6 +1801,9 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
   .side .event .ev-d-full{display:inline}
   .side-actions{grid-template-columns:repeat(3,minmax(0,1fr)) auto}
   .side .side-actions .btn.full{grid-column:auto}
+  .archive .archived-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .archive .archived-row{flex-wrap:wrap;gap:4px;min-width:0}
+  .archive .archived-row>span{min-width:0;overflow-wrap:anywhere}
   /* 小窗收起情报：操作行（转移/接收/SFX/设置）不许被收起，收起态高度放开 */
   body.side-collapsed .side>:not(.side-toggle):not(.side-actions){display:none!important}
   body.side-collapsed .side>.side-actions{display:grid!important}
@@ -1837,10 +1840,12 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
   /* 2c. dossier 与考试情报一行三个（覆盖4列/2列旧规则） */
   .ledger{grid-template-columns:repeat(3,minmax(0,1fr))!important}
   .side .event-list{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .archive .archived-list{grid-template-columns:repeat(3,minmax(0,1fr))!important}
 }
 @media(max-width:620px){
   .ledger{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .side .event-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .archive .archived-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
 </style>
  </head>
@@ -1945,7 +1950,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 <div class="compact-summary-stat"><small>FIRE // THIS MONTH</small><b id="compactXpMonth">0</b><em>本月投入 PT</em></div>
 <div class="compact-summary-stat"><small>FIRE // TOTAL</small><b id="compactXpAll">0</b><em>累计投入 PT</em></div>
 </div>
-<span class="compact-summary-label">CAMPAIGN PHASES</span>
+<div class="stage-label-row"><span class="compact-summary-label">CAMPAIGN PHASES</span><button type="button" class="stage-manage" id="compactStageManageBtn" title="管理隐藏阶段" aria-label="管理隐藏阶段">▦</button></div>
 <section aria-label="五阶段战线摘要" class="compact-summary-stages" id="compactStageStrip"></section>
 <div class="compact-summary-note"><b>FIELD NOTE</b><span id="compactFieldNoteBody">—</span></div>
 </section>
@@ -2400,7 +2405,9 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
     document.addEventListener('pointerdown',e=>{const btn=e.target.closest('button');if(!btn||btn.closest('#tauri-chrome'))return;playSfx(btn.id==='sealDay'?'impact':(btn.id==='scAddBtn'||btn.hasAttribute('data-exam-done')||btn.hasAttribute('data-exam-pin'))?'breech':'click')});
     document.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"],select'))playSfx('click')});
     document.getElementById('stageStrip').addEventListener('click',e=>{const h=e.target.closest('.stage-hide');if(h){hideStage(Number(h.dataset.hide));return}const b=e.target.closest('.stage-mode');if(!b)return;cycleStageMode(Number(b.dataset.stage))});
+    document.getElementById('compactStageStrip').addEventListener('click',e=>{const h=e.target.closest('.stage-hide');if(h){hideStage(Number(h.dataset.hide));return}const b=e.target.closest('.stage-mode');if(!b)return;cycleStageMode(Number(b.dataset.stage))});
     document.getElementById('stageManageBtn').addEventListener('click',openStageModal);
+    document.getElementById('compactStageManageBtn').addEventListener('click',openStageModal);
     document.getElementById('ledger').addEventListener('click',e=>{const h=e.target.closest('[data-ledger-hide]');if(!h)return;hideLedger(h.dataset.ledgerHide)});
     document.getElementById('ledgerManageBtn').addEventListener('click',openLedgerModal);
     /* R3-7: 设置界面 — 纸面内容整体替换 */
