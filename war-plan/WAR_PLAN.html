@@ -1644,8 +1644,8 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .main-countdown .fcc-leaf{will-change:transform}
 </style>
 <style id="v1-4-responsive-layout">
-/* Keep the three-column 4K composition intact; at compact desktop widths stack the rails into the scroll flow. */
-@media(max-width:1680px){
+/* Keep the three-column 4K composition intact; switch to State 2 at ≤2090px (where countdown reaches WAR PLAN) */
+@media(max-width:2090px){
   .left-side{display:none!important}
   .shell,body.side-collapsed .shell{display:block!important;min-height:100vh!important;background:transparent!important;background-image:none!important}
   .main{display:block!important;grid-column:auto!important;width:auto!important;max-width:none!important;margin:18px 12px 30px!important}
@@ -1653,6 +1653,11 @@ body.lights-off .app-tooltip{background:#0b0d0a}
   .side .event-list{max-height:420px!important;overflow-y:auto!important}
   body.side-collapsed .side{height:76px!important;min-height:76px!important;padding:16px 7px 20px!important;overflow:hidden!important;border-top:6px solid #0d0f0c!important}
 }
+body.state-force-state2 .left-side{display:none!important}
+body.state-force-state2 .compact-command-card{display:block!important}
+body.state-force-state2 .shell,body.state-force-state2.side-collapsed .shell{display:block!important;min-height:100vh!important;background:transparent!important;background-image:none!important}
+body.state-force-state2 .main{display:block!important;grid-column:auto!important;width:auto!important;max-width:none!important;margin:18px 12px 30px!important}
+body.state-force-state2 .side{display:block!important;position:relative!important;top:auto!important;width:auto!important;min-width:0!important;height:auto!important;min-height:0!important;margin:0!important;padding:26px 24px 36px!important;overflow:visible!important;border-left:0!important;border-top:6px solid #0d0f0c!important}
 @media(max-width:980px){
   .main{margin:0!important;padding:26px 20px 50px!important}
   .side{padding:24px 18px 30px!important}
@@ -1669,7 +1674,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 /* v1.5.1: restore the v1.4 compact rail flow. The real left rail stays hidden;
    its data is rendered as a paper summary in the central work sheet. */
 .compact-command-card{display:none}
-@media(max-width:1680px){
+@media(max-width:2090px){
   .compact-command-card{display:block;margin:0 0 15px;padding:17px;position:relative;background:rgba(210,194,151,.9);border:1px solid var(--line);box-shadow:0 9px 16px rgba(0,0,0,.26),5px 6px 0 rgba(42,42,33,.13);clip-path:polygon(0 0,97% 0,100% 9px,100% 100%,12px 100%,0 calc(100% - 10px))}
   .compact-command-card:before{content:"";position:absolute;left:9px;top:9px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#8d8468,#5c5643 60%,#2a2b22);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
   .compact-command-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
@@ -1774,12 +1779,15 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 .compact-summary-stages .stage-mode{display:none!important}
 </style>
 <style id="v172-m980">
-/* ≤1260 切换 State 2：倒计时与 WAR PLAN 达最小空隙时切换单列，heat 取消绝对定位 */
+/* ≤1260 切换 State 3：倒计时与 WAR PLAN 达最小空隙时切换单列，heat 取消绝对定位 */
 @media(max-width:1260px){
   .command-header{grid-template-columns:minmax(0,1fr)!important;gap:14px!important}
   .main-countdown{width:100%!important;max-width:620px!important;transform:none!important}
   .command-header>.header-heat-card{position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
 }
+body.state-header-stacked .command-header{grid-template-columns:minmax(0,1fr)!important;gap:14px!important}
+body.state-header-stacked .main-countdown{width:100%!important;max-width:620px!important;transform:none!important}
+body.state-header-stacked .command-header>.header-heat-card{position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
 /* 奇数任务按 n+1 画 grid：补一个隐形格，虚线不断不悬空（桌面隐藏） */
 .task-phantom{display:none!important}
 @media(max-width:1280px){.task-phantom{display:block!important;visibility:hidden!important;min-height:0!important}}
@@ -1793,7 +1801,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 #taskList .task-row .task{border-top:0}
 .task-div-v{display:none}
 .sc-chart-wrap{flex:none!important}
-@media(max-width:1680px) and (min-width:1281px){.desk-surface .sc-chart-wrap{height:258px!important}}
+@media(max-width:2090px) and (min-width:1281px){.desk-surface .sc-chart-wrap{height:258px!important}}
 @media(max-width:1280px){
   #taskList{height:377px;min-height:377px}
   .desk-surface .sc-chart-wrap{height:232px!important}
@@ -1813,8 +1821,8 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 .sc-select-box,.sc-stat-row{clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
 </style>
 <style id="v172-small">
-/* v1.7.2 小窗 ≤1680px：heat 卡变宽/倒计时右边界左移/field note 隐藏/纵表转 4 列横表/操作钮一行 */
-@media(max-width:1680px){
+/* v1.7.2 小窗 ≤2090px：heat 卡变宽/倒计时右边界左移/field note 隐藏/纵表转 4 列横表/操作钮一行 */
+@media(max-width:2090px){
   .compact-summary-note{display:none}
   .side .event-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:none}
   .side .event{grid-template-columns:max-content minmax(0,1fr) auto auto!important;grid-template-areas:"date name pin done";align-items:center;column-gap:8px;min-width:0;overflow:hidden}
@@ -2696,12 +2704,37 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 
 <script id="field-desk-v11-directive-width-sync">
 (()=>{
+  const checkCollision=()=>{
+    const h1=document.querySelector('.command-copy h1');
+    const cd=document.querySelector('.main-countdown');
+    if(!h1||!cd)return;
+    const range=document.createRange();
+    if(h1.childNodes.length>0){range.selectNodeContents(h1.childNodes[0]);}else{range.selectNodeContents(h1);}
+    const textRight=range.getBoundingClientRect().right;
+    const cdLeft=cd.getBoundingClientRect().left;
+    if(cdLeft<=textRight+12){
+      const leftSide=document.querySelector('.left-side');
+      if(leftSide&&window.getComputedStyle(leftSide).display!=='none'){
+        document.body.classList.add('state-force-state2');
+      }else{
+        document.body.classList.add('state-header-stacked');
+      }
+    }else{
+      if(window.innerWidth>2090){
+        document.body.classList.remove('state-force-state2');
+      }
+      if(window.innerWidth>1260){
+        document.body.classList.remove('state-header-stacked');
+      }
+    }
+  };
   const sync=()=>{
     const cd=document.querySelector('.main-countdown');
     if(!cd)return;
     const w=cd.getBoundingClientRect().width;
     document.documentElement.style.setProperty('--directive-countdown-cut',w+'px');
     document.documentElement.style.setProperty('--directive-alignment-cut',(w*(window.innerWidth<=1280?1.7:1.3))+'px');
+    checkCollision();
   };
   sync();
   window.addEventListener('resize',sync,{passive:true});
