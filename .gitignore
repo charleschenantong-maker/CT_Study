@@ -13,9 +13,10 @@ dist-ssr
 *.local
 *.tsbuildinfo
 
-# 本地参考素材，不进仓库
+# 本地参考素材与导出档案，不进仓库
 traffic-ref.png
 CT_study.png
+Charles_War_Plan_Field_File_*.json
 
 # Editor directories and files
 .vscode/*

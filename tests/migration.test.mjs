@@ -28,7 +28,6 @@ function blank() {
     examDone: {},
     lastCheckin: null,
     soundOn: true,
-    lightsOff: false,
     pinnedExam: null,
     updated: null
   };
@@ -59,12 +58,12 @@ function migrateBackup(incoming) {
     cycles,
     examDone: (incoming.examDone && typeof incoming.examDone === 'object') ? incoming.examDone : {},
     soundOn: incoming.soundOn === undefined ? true : !!incoming.soundOn,
-    lightsOff: !!incoming.lightsOff,
     pinnedExam: typeof incoming.pinnedExam === 'string' && VALID_EXAM_IDS.includes(incoming.pinnedExam)
       ? incoming.pinnedExam
       : null
   };
   delete out.points;
+  delete out.lightsOff;
   return out;
 }
 
@@ -75,6 +74,7 @@ test('migrateBackup: initializes empty state cleanly', () => {
   assert.equal(migrated.cycles['PHYS P1'], 0);
   assert.equal(migrated.cycles['BIO'], 0);
   assert.equal(migrated.pinnedExam, null);
+  assert.equal(migrated.lightsOff, undefined);
 });
 
 test('migrateBackup: folds BIO P1 and BIO P2 into canonical BIO without loss', () => {
@@ -124,3 +124,41 @@ test('migrateBackup: rejects corrupted or malformed archives', () => {
   assert.throws(() => migrateBackup({}), /bad backup/);
   assert.throws(() => migrateBackup({ cycles: "not an object" }), /bad backup/);
 });
+
+test('migrateBackup: purges legacy lightsOff attribute', () => {
+  const legacyWithLights = {
+    cycles: {},
+    lightsOff: true
+  };
+  const migrated = migrateBackup(legacyWithLights);
+  assert.equal(migrated.lightsOff, undefined);
+});
+
+test('archive bundle: contains all customization fields', () => {
+  const sampleData = blank();
+  const sampleScores = { 'scoretracker:phy:saq': [{ id: 1, date: '2026-09-22', score: 55, total: 60, createdAt: 1 }] };
+  const sampleScState = { subject: 'phy', sub: 'saq', lastSub: { phy: 'saq' } };
+  const sampleStageModes = { 1: 'compact', 2: 'hidden' };
+  const sampleLedgerHidden = ['PHYS P2'];
+  const sampleSideCollapsed = true;
+
+  const bundle = {
+    format: 'charles-war-plan-bundle',
+    bundle: 1,
+    version: 3,
+    exportedAt: new Date().toISOString(),
+    warplan: sampleData,
+    scores: sampleScores,
+    scState: sampleScState,
+    stageModes: sampleStageModes,
+    ledgerHidden: sampleLedgerHidden,
+    sideCollapsed: sampleSideCollapsed
+  };
+
+  assert.equal(bundle.bundle, 1);
+  assert.deepEqual(bundle.stageModes, { 1: 'compact', 2: 'hidden' });
+  assert.deepEqual(bundle.ledgerHidden, ['PHYS P2']);
+  assert.equal(bundle.sideCollapsed, true);
+  assert.equal(bundle.warplan.lightsOff, undefined);
+});
+

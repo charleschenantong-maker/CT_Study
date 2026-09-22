@@ -1570,10 +1570,6 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .left-bottom-row .left-foot #settingsBtn{width:34px;height:34px}
 .app-tooltip{position:fixed;z-index:100;max-width:220px;padding:7px 9px;border:1px solid var(--amber);background:#171914;color:#eee5ce;box-shadow:0 5px 14px rgba(0,0,0,.3);font:800 11px/1.25 var(--font-mono);pointer-events:none;white-space:nowrap}
 .app-tooltip[hidden]{display:none}
-/* v1.4 lighting: dim the entire desk while preserving the paper's normal contrast. */
-body.lights-off:after{content:"";position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.28);pointer-events:none}
-body.lights-off #desk-bg{filter:brightness(.72) saturate(.82)}
-body.lights-off .app-tooltip{background:#0b0d0a}
 /* v1.4: lift secondary copy without collapsing its hierarchy under primary text. */
 .hint,.alert,.task label span,.stat em,.stage span,.event,.side-sub,.left-note,.day-context,.sc-axis-label,.sc-empty,.sc-section-title,.sc-hi-score,.footer,.save-state{font-size:11px!important}
 .stat small,.sc-stat small,.heat-legend,.sc-best,.badge{font-size:10px!important}
@@ -1771,11 +1767,10 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 /* 空态占位：阶段全藏时不塌，军事口吻 */
 .stage-empty{border-style:dashed!important;opacity:.8}
 #stageStrip .stage-empty{min-height:425px!important}
-.compact-summary-stages .stage-empty{grid-column:1/-1;min-height:86px}
-/* 履历溢出 click-to-scroll（全局）：平时锁定条隐藏，点 section 解锁滚轮，点别处锁回 */
-.past-paper-card .sc-history{overflow:hidden!important;scrollbar-width:none!important}
-.past-paper-card .sc-history::-webkit-scrollbar{display:none!important}
-.past-paper-card .sc-history.scroll-armed{overflow-y:auto!important;cursor:ns-resize}
+/* 履历滚动：超出预设高时自然滚动，永久隐藏滚动条 */
+.past-paper-card .sc-history{overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:none!important;-ms-overflow-style:none!important}
+.past-paper-card .sc-history::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+.past-paper-card .sc-history.scroll-armed{overflow-y:auto!important}
 /* 紧凑条（形态2/3）去缩小钮：只留隐藏 */
 .compact-summary-stages .stage-mode{display:none!important}
 </style>
@@ -1886,12 +1881,37 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
   .side .event-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .archive .archived-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
-/* ≤980 履历保持小屏 320 上限（盖掉上面的 560） */
-@media(max-width:980px){.past-paper-card .sc-history{height:320px!important;max-height:320px!important;min-height:0!important;flex:none!important}}
+/* 履历全局锁死预设高（桌面 420px，≤980 小屏 320px），多成绩内部滚动，禁止向下撑高卡片导致行动简报下移 */
+.past-paper-card .sc-history,
+.sc-history-panel>.sc-history{
+  flex:none!important;
+  height:420px!important;
+  min-height:420px!important;
+  max-height:420px!important;
+  margin:0!important;
+  padding-top:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  scrollbar-width:none!important;
+  -ms-overflow-style:none!important;
+}
+.past-paper-card .sc-history::-webkit-scrollbar,
+.sc-history-panel>.sc-history::-webkit-scrollbar{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+}
+@media(max-width:980px){
+  .past-paper-card .sc-history,
+  .sc-history-panel>.sc-history{
+    height:320px!important;
+    min-height:320px!important;
+    max-height:320px!important;
+  }
+}
 .sc-history-panel .sc-history{margin-top:0!important}
 .sc-history-panel{position:relative;min-height:0}
 .sc-history-panel>.sc-section-title{position:static;margin:0 0 9px}
-.sc-history-panel>.sc-history{flex:1 1 auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding-top:0}
 </style>
  </head>
 <body>
@@ -1926,7 +1946,6 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 <div class="card-head"><div><div class="eyebrow">FIELD CONFIGURATION</div><h2>作战设置</h2></div><button class="btn" id="settingsBack" type="button">返回作战纸</button></div>
 <div class="settings-grid">
 <div class="ledger-item"><div class="ledger-top"><span>SOUND // 音效</span><button class="btn" id="settingsSfx" type="button">切换</button></div><p class="hint">签署战报、跨日轮换时的炮声与卡榫声。</p></div>
-<div class="ledger-item"><div class="ledger-top"><span>LIGHTING // 灯光</span><button class="btn" id="settingsLighting" type="button">灯光开启</button></div><p class="hint">关灯后降低整张作战桌的环境亮度，保留文字与控件对比度。</p></div>
 <div class="ledger-item"><div class="ledger-top"><span>SIDEBAR // 右侧情报栏</span><button class="btn" id="settingsSidebar" type="button">收起 / 展开</button></div><p class="hint">与右侧情报栏顶部的收起按钮联动。</p></div>
 <div class="ledger-item"><div class="ledger-top"><span>STAGES // 阶段显示</span><button class="btn" id="settingsStages" type="button">全部恢复</button></div><p class="hint">清除所有隐藏 / 简洁状态，五个阶段全部展开。</p></div>
 <div class="ledger-item"><div class="ledger-top"><span>ARCHIVE // 档案</span><span><button class="btn" id="settingsExport" type="button">转移</button> <button class="btn" id="settingsImport" type="button">接收</button></span></div><p class="hint">与右侧加密档案同源：作战 + 分数同包。</p></div>
@@ -2028,7 +2047,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 </div>
 <aside class="sc-history-panel">
 <div class="sc-section-title">战果履历</div>
-<div class="sc-history" id="scHistoryCard" title="点击解锁滚动"></div>
+<div class="sc-history" id="scHistoryCard" title="战果履历"></div>
 </aside>
 </div>
 </section>
@@ -2290,7 +2309,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       ['千里之行，始于足下','老子《道德经》'],['合抱之木，生于毫末','老子《道德经》'],['慎终如始，则无败事','老子《道德经》'],['学而时习之，不亦说乎','孔子《论语》'],['工欲善其事，必先利其器','孔子《论语》'],['人无远虑，必有近忧','孔子《论语》'],['见贤思齐焉，见不贤而内自省也','孔子《论语》'],['读书有三到，谓心到、眼到、口到','朱熹《训学斋规》'],
       ["The impediment to action advances action. What stands in the way becomes the way.",'Marcus Aurelius, Meditations 5.20'],["You have power over your mind—not outside events. Realize this, and you will find strength.",'Marcus Aurelius, Meditations 12.36'],["Men are disturbed not by things, but by the views which they take of things.",'Epictetus, Enchiridion 5'],["Plans are worthless, but planning is everything.",'Dwight D. Eisenhower, 1957 address'],["We shall fight on the beaches.",'Winston Churchill, 1940 speech'],["Never in the field of human conflict was so much owed by so many to so few.",'Winston Churchill, 1940 speech'],["The only way to do great work is to love what you do.",'Steve Jobs, Stanford commencement 2005'],["Stay hungry. Stay foolish.",'Steve Jobs, Stanford commencement 2005'],["The best way out is always through.",'Robert Frost, A Servant to Servants'],["Nothing in life is to be feared, it is only to be understood.",'Marie Curie'],["Chance favors only the prepared mind.",'Louis Pasteur, 1854 lecture'],["If I have seen further it is by standing on the shoulders of giants.",'Isaac Newton, 1676 letter'],["The most difficult thing is the decision to act, the rest is merely tenacity.",'Amelia Earhart'],["Life is either a daring adventure or nothing at all.",'Helen Keller, The Open Door'],["All we have to decide is what to do with the time that is given us.",'J. R. R. Tolkien, The Fellowship of the Ring'],["Not all those who wander are lost.",'J. R. R. Tolkien, The Fellowship of the Ring'],["Do. Or do not. There is no try.",'Yoda, The Empire Strikes Back'],["The readiness is all.",'William Shakespeare, Hamlet'],["Our doubts are traitors, and make us lose the good we oft might win.",'William Shakespeare, Measure for Measure'],["They can because they think they can.",'Virgil, Aeneid'],["Today is victory over yourself of yesterday; tomorrow is your victory over lesser men.",'Miyamoto Musashi, The Book of Five Rings'],["Do nothing which is of no use.",'Miyamoto Musashi, Dokkōdō'],["A pint of sweat saves a gallon of blood.",'George S. Patton'],["The will to win means nothing if you do not have the will to prepare.",'Juma Ikangaa'],["The future belongs to those who believe in the beauty of their dreams.",'Eleanor Roosevelt'],["You may encounter many defeats, but you must not be defeated.",'Maya Angelou, Letter to My Daughter']
     ];
-    const blank=()=>({version:3,cycles:Object.fromEntries(COMPONENTS.map(c=>[c.id,0])),checks:{},sealed:{},cycleLog:[],examDone:{},lastCheckin:null,soundOn:true,lightsOff:false,pinnedExam:null,updated:null});
+    const blank=()=>({version:3,cycles:Object.fromEntries(COMPONENTS.map(c=>[c.id,0])),checks:{},sealed:{},cycleLog:[],examDone:{},lastCheckin:null,soundOn:true,pinnedExam:null,updated:null});
     const NZ_FMT=new Intl.DateTimeFormat('en-CA',{timeZone:'Pacific/Auckland',year:'numeric',month:'2-digit',day:'2-digit'});
     let data=null;let todayKey=localDateKey(new Date());let renderedDate=todayKey;let nextExam=null;
     function load(){try{const raw=KV.get(KEY);if(!raw)return blank();return migrateBackup(JSON.parse(raw))}catch(e){return blank()}}
@@ -2308,8 +2327,9 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       const cycles={};
       for(const c of COMPONENTS)cycles[c.id]=c.id==='BIO'?num(src.BIO)+num(src['BIO P1'])+num(src['BIO P2']):num(src[c.id]);
       for(const k of Object.keys(src))if(!(k in cycles)&&!(k in FOLDED_CYCLES))cycles[k]=src[k];
-      const out={...base,...incoming,version:3,cycles,examDone:(incoming.examDone&&typeof incoming.examDone==='object')?incoming.examDone:{},soundOn:incoming.soundOn===undefined?true:!!incoming.soundOn,lightsOff:!!incoming.lightsOff,pinnedExam:typeof incoming.pinnedExam==='string'&&exams.some(e=>e.id===incoming.pinnedExam)?incoming.pinnedExam:null};
+      const out={...base,...incoming,version:3,cycles,examDone:(incoming.examDone&&typeof incoming.examDone==='object')?incoming.examDone:{},soundOn:incoming.soundOn===undefined?true:!!incoming.soundOn,pinnedExam:typeof incoming.pinnedExam==='string'&&exams.some(e=>e.id===incoming.pinnedExam)?incoming.pinnedExam:null};
       delete out.points;
+      delete out.lightsOff;
       return out;
     }
     function save(){data.updated=new Date().toISOString();KV.set(KEY,JSON.stringify(data));DATA_VERSION++;document.getElementById('saveState').textContent='VAULT SEALED // '+new Date().toLocaleTimeString('zh-CN');renderStats();renderLeftNote()}
@@ -2352,7 +2372,6 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       }
     }
     function updateSfxToggle(){const btn=document.getElementById('sfxToggle');btn.textContent=data.soundOn?'SFX // ARMED':'SFX // SILENT';btn.classList.toggle('sfx-on',!!data.soundOn);btn.classList.toggle('sfx-off',!data.soundOn);btn.setAttribute('aria-pressed',String(!!data.soundOn))}
-    function updateLightingToggle(){document.body.classList.toggle('lights-off',!!data.lightsOff);const btn=document.getElementById('settingsLighting');if(btn)btn.textContent=data.lightsOff?'灯光关闭':'灯光开启'}
     function localDateKey(d){return NZ_FMT.format(d)}
     function stepDateKey(key,deltaDays){const p=key.split('-');const d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2]+deltaDays,12));const m=d.getUTCMonth()+1,day=d.getUTCDate();return d.getUTCFullYear()+'-'+(m<10?'0'+m:m)+'-'+(day<10?'0'+day:day)}
     function activeStage(key=todayKey){return stages.find(s=>key>=s.start&&key<=s.end)||null}
@@ -2467,7 +2486,6 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     document.getElementById('sideSettingsBtn').addEventListener('click',()=>{openSettings();smoothScrollToMainTop()});
     document.getElementById('settingsBack').addEventListener('click',closeSettings);
     document.getElementById('settingsSfx').addEventListener('click',()=>{data.soundOn=!data.soundOn;save();updateSfxToggle();syncSettingsLabels();toast(data.soundOn?'音效已开启':'音效已关闭')});
-    document.getElementById('settingsLighting').addEventListener('click',()=>{data.lightsOff=!data.lightsOff;save();updateLightingToggle();toast(data.lightsOff?'已关灯':'灯光已开启')});
     document.getElementById('settingsSidebar').addEventListener('click',()=>setSidebarCollapsed(!document.body.classList.contains('side-collapsed')));
     document.getElementById('settingsStages').addEventListener('click',()=>{stageModes={};try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}renderStages();toast('五个阶段已全部恢复展开')});
     document.getElementById('settingsExport').addEventListener('click',()=>document.getElementById('exportBtn').click());
@@ -2486,9 +2504,9 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     /* R3-6: 统一加密档案 —— 作战数据 + 分数存档同包转移/接收（为 exe 独立容器准备：单文件即全部档案）。
        分数日常经 KV 永久保存：Tauri 下写入应用目录 war-plan.json，浏览器下为 localStorage。 */
     function collectScoreSlots(){const scores={};try{SC_SUBJECTS.forEach(s=>s.subs.forEach(sb=>{const k=scKey(s.id,sb.id),raw=KV.get(k);if(raw)scores[k]=JSON.parse(raw)}))}catch(e){}return scores}
-    function buildFieldArchive(){return {format:'charles-war-plan-bundle',bundle:1,version:3,exportedAt:new Date().toISOString(),warplan:JSON.parse(JSON.stringify(data)),scores:collectScoreSlots(),scState:scState}}
+    function buildFieldArchive(){return {format:'charles-war-plan-bundle',bundle:1,version:3,exportedAt:new Date().toISOString(),warplan:JSON.parse(JSON.stringify(data)),scores:collectScoreSlots(),scState:scState,stageModes:stageModes,ledgerHidden:ledgerHidden,sideCollapsed:document.body.classList.contains('side-collapsed')}}
     function restoreScoreSlots(scores){const keys=Object.keys(scores||{}).filter(k=>k.startsWith('scoretracker:'));keys.forEach(k=>{try{KV.set(k,JSON.stringify(scores[k]))}catch(e){}});return keys.length}
-    document.getElementById('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(buildFieldArchive(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Charles_War_Plan_Field_File_'+todayKey+'.json';a.click();URL.revokeObjectURL(a.href);toast('加密档案（含分数存档）已转移至外部保险库')});
+    document.getElementById('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(buildFieldArchive(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Charles_War_Plan_Field_File_'+todayKey+'.json';a.click();URL.revokeObjectURL(a.href);toast('加密档案（含全部作战与战区定制）已转移至外部保险库')});
     document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());
     document.getElementById('importFile').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{
       const incoming=JSON.parse(reader.result);
@@ -2496,7 +2514,10 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
         data=migrateBackup(incoming.warplan);
         const n=restoreScoreSlots(incoming.scores);
         if(incoming.scState&&typeof incoming.scState==='object'){try{KV.set(SC_STATE_KEY,JSON.stringify(incoming.scState))}catch(err){}scState=scLoadState()}
-        scCache={};save();renderAll();scRender();toast('加密档案已接入（含 '+n+' 个战区分数存档）');
+        if(incoming.stageModes&&typeof incoming.stageModes==='object'){stageModes=incoming.stageModes;try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(err){}}
+        if(Array.isArray(incoming.ledgerHidden)){ledgerHidden=incoming.ledgerHidden.filter(id=>typeof id==='string');saveLedgerHidden()}
+        if(typeof incoming.sideCollapsed==='boolean'){setSidebarCollapsed(incoming.sideCollapsed)}
+        scCache={};save();renderAll();scRender();renderStages();renderLedger();toast('加密档案已接入（含 '+n+' 个战区分数存档及定制）');
       }else if(incoming&&typeof incoming==='object'&&Object.keys(incoming).some(k=>k.startsWith('scoretracker:'))){
         const n=restoreScoreSlots(incoming);scCache={};scRender();toast('旧版分数档案已接入，恢复 '+n+' 个战区');
       }else{
@@ -2504,7 +2525,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       }
     }catch(err){alert('安全警报：档案校验失败，拒绝接入。')}};reader.readAsText(file);e.target.value=''});
     /* reset（焚毁）入口已移除：数据只能经备份文件管理，此处不再提供一键清空 */
-    function renderAll(deferHeavy=false){todayKey=localDateKey(new Date());renderedDate=todayKey;setMotto();renderTasks();renderStages();renderStats(deferHeavy);renderEvents();updateSfxToggle();updateLightingToggle();tick();renderLeftNote()}
+    function renderAll(deferHeavy=false){todayKey=localDateKey(new Date());renderedDate=todayKey;setMotto();renderTasks();renderStages();renderStats(deferHeavy);renderEvents();updateSfxToggle();tick();renderLeftNote()}
     function finishStartup(){const run=()=>{renderHeat();scStartupReady=true;scRender()};if('requestIdleCallback'in window)window.requestIdleCallback(run,{timeout:250});else requestAnimationFrame(()=>setTimeout(run,0))}
     /* 启动门：KV 快照就绪后才允许任何读取（文件模式等 bridge，浏览器模式直接过）。 */
     ;(async function(){
