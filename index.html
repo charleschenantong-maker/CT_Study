@@ -56,9 +56,9 @@
     /* ---- SCORE TRACKER MODULE (grafted into Past Paper 归档 card) ---- */
     @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
     .sc-select-box{border:2px solid var(--ink);margin-bottom:10px;background:rgba(237,230,208,.4)}
-    .sc-tabbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:0;padding:0;margin:0;overflow:visible}
-    .sc-subtabbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:0;margin:0}
-    .sc-tab,.sc-subtab{cursor:pointer;min-width:0;border:0;border-right:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 10px;font:900 9px/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;clip-path:none;border-radius:0;white-space:nowrap}
+    .sc-tabbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:0;padding:0;margin:0;overflow:visible}
+    .sc-subtabbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0;margin:0}
+    .sc-tab,.sc-subtab{cursor:pointer;min-width:0;border:0;border-right:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 3px;font:900 9px/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;clip-path:none;border-radius:0;white-space:nowrap!important;text-align:center!important;text-overflow:ellipsis!important;overflow:hidden!important}
     .sc-tabbar .sc-tab{border-bottom:1px solid var(--line)}
     .sc-select-box .sc-tab:last-child,.sc-select-box .sc-subtab:last-child{border-right:0}
     .sc-tab:hover,.sc-subtab:hover{background:var(--amber)}.sc-tab.active{background:var(--ink);color:var(--light)}
@@ -97,9 +97,9 @@
     .sc-history-item>div:first-child{min-width:0;flex:1 1 78px}
     .sc-history-item>div:last-child{min-width:0;flex:0 1 auto;margin-left:auto}
     .sc-hi-date,.sc-hi-score,.sc-hi-pct{max-width:100%;overflow-wrap:anywhere;word-break:break-word}
-    .sc-tabbar{grid-template-columns:repeat(auto-fit,minmax(min(100%,82px),1fr))}
-    .sc-subtabbar{grid-template-columns:repeat(auto-fit,minmax(min(100%,88px),1fr))}
-    .sc-tab,.sc-subtab{min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.15}
+    .sc-tabbar{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+    .sc-subtabbar{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+    .sc-tab,.sc-subtab{min-width:0;white-space:nowrap!important;text-align:center!important;text-overflow:ellipsis!important;overflow:hidden!important;line-height:1.15}
     .sc-entry>*{min-width:0}
     @container scorecard (max-width:760px){
       .sc-layout{grid-template-columns:minmax(0,1.8fr) minmax(132px,.62fr);gap:9px}
@@ -107,9 +107,9 @@
       .sc-history-item{padding:8px 7px}
       .sc-hi-date{font-size:9px}.sc-hi-score{font-size:8px}.sc-hi-pct{font-size:12px}
       .sc-del{margin-left:3px}
-      .sc-tabbar{grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
-      .sc-subtabbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
-      .sc-tab,.sc-subtab{padding:7px 4px;font-size:8px}
+      .sc-tabbar{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:0}
+      .sc-subtabbar{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0}
+      .sc-tab,.sc-subtab{padding:7px 2px!important;font-size:8px!important}
       .sc-stat-row{gap:0}.sc-stat{padding:6px 2px}.sc-stat b{font-size:17px}
     }
     @container scorecard (max-width:560px){
@@ -118,14 +118,15 @@
       .sc-history-item{display:block;padding:7px 5px}
       .sc-history-item>div:last-child{margin-top:5px;justify-content:space-between!important}
       .sc-hi-date{font-size:8px}.sc-hi-pct{font-size:11px}
-      .sc-tabbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
-      .sc-subtabbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+      .sc-tabbar{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:0}
+      .sc-subtabbar{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0}
+      .sc-tab,.sc-subtab{padding:7px 1px!important;font-size:7.5px!important}
       .sc-entry{gap:5px}.sc-entry input{padding:7px 5px;font-size:10px}
     }
 
     /* Header clock moved into the main command area */
     .command-header{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,360px);gap:28px;align-items:start;margin-bottom:24px}
-    .command-copy{min-width:0}
+    .command-copy{min-width:0}.command-copy h1{white-space:nowrap!important}
     .main-countdown{margin:0;align-self:start;min-width:0;background:#192018;color:var(--light);box-shadow:5px 6px 0 rgba(31,38,29,.24);z-index:2}
     .main-countdown .next-name{font-size:13px}.main-countdown .digits{grid-template-columns:repeat(4,minmax(0,1fr))}
     .main-countdown .digit{min-width:0}
@@ -1109,7 +1110,7 @@
     -webkit-line-clamp:2!important;
     overflow:hidden!important;
   }
-  @media(max-width:980px){
+  @media(max-width:1260px){
     .directive-motto{width:100%!important;margin-left:0!important}
     .directive-visual,.directive-theatre,.directive-theatre svg{height:52px!important;min-height:52px!important}
   }
@@ -1159,7 +1160,7 @@
     overflow:visible!important;
   }
 
-  @media(max-width:980px){
+  @media(max-width:1260px){
     .directive-motto{width:100%!important;margin-left:0!important;margin-right:0!important}
     .directive-visual{min-height:68px!important;height:auto!important;display:flex!important;flex-direction:column!important;justify-content:center!important}
     .directive-theatre,.directive-theatre svg{height:68px!important;min-height:68px!important}
@@ -1169,12 +1170,12 @@
 
 <style id="field-desk-v13-countdown-right-align">
   /* V14: countdown follows the directive right edge after an extra 0.3× countdown-width inset. */
-  @media(min-width:981px){
+  @media(min-width:1261px){
     .main-countdown{
       transform:translateX(calc(-1 * var(--directive-alignment-cut)))!important;
     }
   }
-  @media(max-width:980px){
+  @media(max-width:1260px){
     .main-countdown{transform:none!important;}
   }
 </style>
@@ -1182,7 +1183,7 @@
 
 <style id="field-desk-v15-heat-right">
   /* V15: use the space released to the RIGHT of the shifted countdown for a compact heat map. */
-  @media(min-width:981px){
+  @media(min-width:1261px){
     .command-header>.header-heat-card{
       position:absolute!important;
       top:0!important;
@@ -1269,7 +1270,7 @@
 <style id="field-desk-v16-heat-stretch">
   /* V16: stretch the compact heat panel from the countdown top to the directive bottom. */
   :root{--header-heat-height:180px}
-  @media(min-width:981px){
+  @media(min-width:1261px){
     .command-header>.header-heat-card{
       height:var(--header-heat-height)!important;
       min-height:var(--header-heat-height)!important;
@@ -1295,7 +1296,7 @@
 
 <style id="field-desk-v17-heatmap-internal-fix">
   /* V17 — internal heat-card layout only. Keep module geometry untouched. */
-  @media(min-width:981px){
+  @media(min-width:1261px){
     .command-header>.header-heat-card{
       /* reserve a real top metadata lane: rivet at left, CLASSIFIED at right */
       padding:28px 20px 16px 24px!important;
@@ -1774,11 +1775,11 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 .compact-summary-stages .stage-mode{display:none!important}
 </style>
 <style id="v172-m980">
-/* ≤980 移动布局（按断点表：标题与倒计时单列、heat 取消绝对定位；981-1280 保持删除状态） */
-@media(max-width:980px){
+/* ≤1260 切换 State 2：倒计时与 WAR PLAN 达最小空隙时切换单列，heat 取消绝对定位 */
+@media(max-width:1260px){
   .command-header{grid-template-columns:minmax(0,1fr)!important;gap:14px!important}
-  .main-countdown{width:100%!important;max-width:620px!important}
-  .command-header>.header-heat-card{position:relative!important;top:auto!important;right:auto!important;width:100%!important;margin:0!important}
+  .main-countdown{width:100%!important;max-width:620px!important;transform:none!important}
+  .command-header>.header-heat-card{position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
 }
 /* 奇数任务按 n+1 画 grid：补一个隐形格，虚线不断不悬空（桌面隐藏） */
 .task-phantom{display:none!important}
@@ -2535,7 +2536,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.9.0';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.9.1';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
@@ -2715,7 +2716,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 <script id="field-desk-v16-heat-height-sync">
 (()=>{
   function syncHeatHeight(){
-    if(innerWidth<=980)return;
+    if(innerWidth<=1260)return;
     const header=document.querySelector('.command-header');
     const directive=document.querySelector('.directive-motto');
     const heat=document.querySelector('.header-heat-card');
