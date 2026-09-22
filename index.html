@@ -152,9 +152,10 @@
     .heat-grid i{display:block;width:12px;height:12px;border:1px solid rgba(24,32,24,.38);background:#b1a37c;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
     .heat-grid i.l1{background:#7d8455}.heat-grid i.l2{background:#586440}.heat-grid i.l3{background:#3a4c2c}.heat-grid i.l4{background:#1e2e1a}
     .heat-grid i.future{background:repeating-linear-gradient(45deg,#9d9070 0 3px,#877a5e 3px 6px);opacity:.68;border-color:rgba(24,32,24,.45)}
-    .heat-grid i.today{animation:none;box-shadow:0 0 0 2px rgba(132,57,44,.6)}/* v1.7.0: 无限脉冲在 display 切换（设置返回）时必然重播造成闪 —— 改静态描边，与减弱动效分支同式 */
-    @keyframes todayPulse{0%{box-shadow:0 0 0 0 rgba(132,57,44,.55)}70%{box-shadow:0 0 0 5px rgba(132,57,44,0)}100%{box-shadow:0 0 0 0 rgba(132,57,44,0)}}
-    @media(prefers-reduced-motion:reduce){.heat-grid i.today{animation:none;box-shadow:0 0 0 2px rgba(132,57,44,.6)}}
+    .heat-grid i.today{position:relative;z-index:2;outline:1.5px solid rgba(255,250,225,.95);outline-offset:-1px;box-shadow:0 0 6px rgba(255,220,130,.75)}
+    .heat-grid i.today:after{content:"";position:absolute;inset:-2px;border-radius:2px;pointer-events:none;border:1.5px solid rgba(255,248,220,.95);box-shadow:0 0 6px rgba(255,235,160,.85),0 0 12px rgba(255,215,110,.5);animation:todayGlowPulse 2.4s cubic-bezier(.25,1,.5,1) infinite;will-change:transform,opacity}
+    @keyframes todayGlowPulse{0%{transform:scale(.85);opacity:.95}65%{transform:scale(1.55);opacity:0}100%{transform:scale(1.55);opacity:0}}
+    @media(prefers-reduced-motion:reduce){.heat-grid i.today:after{animation:none;transform:scale(1.15);opacity:.45}}
     .heat-legend{display:flex;align-items:center;gap:6px;margin-top:12px;font:800 8px/1 var(--font-mono);letter-spacing:.12em;color:#4d5344}
     .heat-legend i{display:block;width:11px;height:11px;border:1px solid rgba(24,32,24,.38)}
     .heat-legend .l0{background:#b1a37c}.heat-legend .l1{background:#7d8455}.heat-legend .l2{background:#586440}.heat-legend .l3{background:#3a4c2c}.heat-legend .l4{background:#1e2e1a}
