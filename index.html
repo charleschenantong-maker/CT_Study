@@ -2317,7 +2317,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
     let audioCtx=null;
     function playSfx(kind='click'){if(!data.soundOn)return;try{sfxFire(kind)}catch(e){}}
     let sfxBuf=null;
-    function sfxNoise(ctx){if(!sfxBuf){const n=ctx.sampleRate*2;sfxBuf=ctx.createBuffer(1,n,ctx.sampleRate);const d=sfxBuf.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1}return sfxBuf}
+    function sfxNoise(ctx){if(!sfxBuf){const n=Math.floor(ctx.sampleRate*0.4);sfxBuf=ctx.createBuffer(1,n,ctx.sampleRate);const d=sfxBuf.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1}return sfxBuf}
     function sfxHiss(ctx,t,o){const s=ctx.createBufferSource();s.buffer=sfxNoise(ctx);s.loop=true;const f=ctx.createBiquadFilter();f.type=o.type||'lowpass';f.frequency.setValueAtTime(o.f0,t);f.frequency.exponentialRampToValueAtTime(Math.max(35,o.f1||o.f0),t+o.dur);f.Q.value=o.q||1;const g=ctx.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(o.g,t+(o.atk||0.004));g.gain.exponentialRampToValueAtTime(0.0001,t+o.dur);s.connect(f);f.connect(g);g.connect(o.dest);s.start(t);s.stop(t+o.dur+0.03)}
     function sfxTone(ctx,t,o){const s=ctx.createOscillator();s.type=o.type||'sine';s.frequency.setValueAtTime(o.f0,t);s.frequency.exponentialRampToValueAtTime(Math.max(20,o.f1||o.f0),t+o.dur);const g=ctx.createGain();g.gain.setValueAtTime(o.g,t);g.gain.exponentialRampToValueAtTime(0.0001,t+o.dur);s.connect(g);g.connect(o.dest);s.start(t);s.stop(t+o.dur+0.02)}
     function sfxFire(kind){
@@ -2344,6 +2344,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
     function updateSfxToggle(){const btn=document.getElementById('sfxToggle');btn.textContent=data.soundOn?'SFX // ARMED':'SFX // SILENT';btn.classList.toggle('sfx-on',!!data.soundOn);btn.classList.toggle('sfx-off',!data.soundOn);btn.setAttribute('aria-pressed',String(!!data.soundOn))}
     function updateLightingToggle(){document.body.classList.toggle('lights-off',!!data.lightsOff);const btn=document.getElementById('settingsLighting');if(btn)btn.textContent=data.lightsOff?'灯光关闭':'灯光开启'}
     function localDateKey(d){return NZ_FMT.format(d)}
+    function stepDateKey(key,deltaDays){const p=key.split('-');const d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2]+deltaDays,12));const m=d.getUTCMonth()+1,day=d.getUTCDate();return d.getUTCFullYear()+'-'+(m<10?'0'+m:m)+'-'+(day<10?'0'+day:day)}
     function activeStage(key=todayKey){return stages.find(s=>key>=s.start&&key<=s.end)||null}
     function setMotto(){let hash=0;for(const c of todayKey)hash=(hash*31+c.charCodeAt(0))>>>0;const index=hash%mottos.length;const entry=mottos[index];const text=Array.isArray(entry)?entry[0]:entry;const by=Array.isArray(entry)?entry[1]:'';document.getElementById('dailyMotto').innerHTML=text+(by?'<span class="motto-by">—— '+by+'</span>':'');document.getElementById('mottoNo').textContent='INTERCEPTED FIELD DIRECTIVE // '+String(index+1).padStart(2,'0')}
     function taskDefs(key){return getActiveTaskIds(key).map(id=>getTaskView(id,key))}
@@ -2388,8 +2389,8 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
     function renderStages(){const MAX_STAGES=5;{const _vis=stages.filter(s=>stageMode(s.n)!=='hidden');if(_vis.length>MAX_STAGES){_vis.slice().sort((a,b)=>a.n-b.n).slice(0,_vis.length-MAX_STAGES).forEach(s=>{stageModes[s.n]='hidden'});try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}}}const html=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const collapsed=mode==='compact';return `<div class="stage ${state} ${collapsed?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode${collapsed?' is-collapsed':''}" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示" aria-expanded="${collapsed?'false':'true'}">${STAGE_CHEV}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('');document.getElementById('stageStrip').innerHTML=html||STAGE_EMPTY;const compact=document.getElementById('compactStageStrip');if(compact)compact.innerHTML=html||STAGE_EMPTY}
     const COMPONENT_LABELS={'PHYS P2':'PHY P2','PHYS P1':'PHY P1','M S1':'MATH S1','M P1':'MATH P1'};
     function renderLedger(){let total=0;const quota=missionQuotaTotal();COMPONENTS.forEach(c=>{total+=Number(data.cycles[c.id]||0)});document.getElementById('ledger').innerHTML=COMPONENTS.filter(c=>!ledgerHidden.includes(c.id)).map(c=>{const n=Number(data.cycles[c.id]||0);const label=COMPONENT_LABELS[c.id]||c.id;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${label}</span><span>${n} / ${componentQuota(c)}</span><button type="button" class="ledger-hide" data-ledger-hide="${c.id}" title="隐藏该档案" aria-label="隐藏档案 ${label}">${STAGE_EYE_OFF}</button></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';const _lhc=document.getElementById('ledgerHiddenCount');if(_lhc)_lhc.textContent=ledgerHidden.length;document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
-    function streak(){const _ck=todayKey+'|'+DATA_VERSION;if(_streakCacheKey===_ck)return _streakCacheVal;let cursor=new Date(todayKey+'T12:00:00'),n=0;if(!data.sealed[todayKey])cursor.setDate(cursor.getDate()-1);for(;;){const k=localDateKey(cursor);if(!data.sealed[k])break;n++;cursor.setDate(cursor.getDate()-1)}_streakCacheKey=_ck;_streakCacheVal=n;return n}
-    function adherenceStats(){const _ck=todayKey+'|'+DATA_VERSION;if(_adhCacheKey===_ck)return _adhCacheVal;const startKey=stages[0].start;let cursor=new Date(startKey+'T12:00:00');const todayD=new Date(todayKey+'T12:00:00');let held=0,total=0;while(cursor<=todayD){const k=localDateKey(cursor);if(k<todayKey||data.sealed[k]){total++;if(data.sealed[k])held++}cursor.setDate(cursor.getDate()+1)}const _r={held,total};_adhCacheKey=_ck;_adhCacheVal=_r;return _r}
+    function streak(){const _ck=todayKey+'|'+DATA_VERSION;if(_streakCacheKey===_ck)return _streakCacheVal;let k=todayKey,n=0;if(!data.sealed[todayKey])k=stepDateKey(k,-1);while(data.sealed[k]){n++;k=stepDateKey(k,-1)}_streakCacheKey=_ck;_streakCacheVal=n;return n}
+    function adherenceStats(){const _ck=todayKey+'|'+DATA_VERSION;if(_adhCacheKey===_ck)return _adhCacheVal;const startKey=stages[0].start;let k=startKey,held=0,total=0;while(k<=todayKey){if(k<todayKey||data.sealed[k]){total++;if(data.sealed[k])held++}k=stepDateKey(k,1)}const _r={held,total};_adhCacheKey=_ck;_adhCacheVal=_r;return _r}
     function renderStats(skipHeat=false){const st=streak(),adh=adherenceStats();document.getElementById('streakStat').textContent=st;document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;const compactStreak=document.getElementById('compactStreakStat'),compactAdherence=document.getElementById('compactAdherenceStat');if(compactStreak)compactStreak.textContent=st;if(compactAdherence)compactAdherence.textContent=adh.held+'/'+adh.total;renderLedger();if(!skipHeat)renderHeat()}
     function isWithdrawn(e){return !!data.examDone[e.id]||e.key<todayKey}
     function renderEvents(){const active=exams.filter(e=>!isWithdrawn(e)),archived=exams.filter(isWithdrawn);nextExam=active[0]||null;document.getElementById('events').innerHTML=active.map((e,i)=>`<div class="event ${i===0?'next':''}"><b><span class="ev-d">${fmtShort(e.key)}</span><span class="ev-d-full">${fmtFull(e.key)}</span></b><span>${e.name}</span><button class="pin-exam ${data.pinnedExam===e.id?'pinned':''}" data-exam-pin="${e.id}" title="设为主目标">${data.pinnedExam===e.id?'主目标':'设为目标'}</button><button class="done-exam" data-exam-done="${e.id}" title="确认目标已被肃清">肃清</button></div>`).join('')||'<div class="event next"><b>END</b><span>行动板已无敌对目标</span></div>';document.querySelectorAll('[data-exam-pin]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.examPin;data.pinnedExam=data.pinnedExam===id?null:id;save();renderEvents();tick();toast(data.pinnedExam?'主目标已锁定':'已解除主目标')}));document.querySelectorAll('[data-exam-done]').forEach(btn=>btn.addEventListener('click',()=>{data.examDone[btn.dataset.examDone]=true;save();renderEvents();tick();toast('目标已从行动板撤除')}));document.getElementById('archiveCount').textContent=archived.length;document.getElementById('archivedEvents').innerHTML=archived.map(e=>`<div class="archived-row"><span>${fmtShort(e.key)} · ${e.name}</span><button class="restore" data-exam-restore="${e.id}">重启战区</button></div>`).join('')||'<div class="archived-row">尚无已肃清战区</div>';document.querySelectorAll('[data-exam-restore]').forEach(btn=>btn.addEventListener('click',()=>{delete data.examDone[btn.dataset.examRestore];save();renderEvents();tick();toast('目标已重新列入行动板')}))}
@@ -2413,7 +2414,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
       const onEnd=ev=>{if(ev.propertyName==='transform')done()};
       const done=()=>{clearTimeout(u._flipT);leaf.removeEventListener('transitionend',onEnd);u._finishFlip=null;paint(val,val,val,val);u.classList.remove('flipping')};
       u._finishFlip=done;
-      u.classList.remove('flipping');void u.offsetWidth;u.classList.add('flipping');
+      u.classList.remove('flipping');requestAnimationFrame(()=>{u.classList.add('flipping')});
       clearTimeout(u._flipT);
       leaf.addEventListener('transitionend',onEnd);
       u._flipT=setTimeout(done,750);
@@ -2426,7 +2427,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
       const grid=document.getElementById('heatGrid');if(!grid)return;
       const WEEKS=SCORE.heatWeeks,end=weekStart(new Date(todayKey+'T12:00:00')),start=new Date(end);start.setDate(start.getDate()-7*(WEEKS-1));
       const cells=[];let max=1,active=0;
-      for(let i=0;i<WEEKS*7;i++){const c=new Date(start);c.setDate(c.getDate()+i);const k=localDateKey(c),v=dayXp(k);if(v>max)max=v;if(v>0)active++;cells.push([k,v,k>todayKey])}
+      let curKey=localDateKey(start);for(let i=0;i<WEEKS*7;i++){const k=curKey,v=dayXp(k);if(v>max)max=v;if(v>0)active++;cells.push([k,v,k>todayKey]);curKey=stepDateKey(curKey,1)}
       grid.innerHTML=cells.map(([k,v,future])=>{const r=v/max;const lv=v<=0?0:r<=.25?1:r<=.5?2:r<=.78?3:4;return `<i class="l${lv}${k===todayKey?' today':''}${future?' future':''}" data-tooltip="${k} · ${v} PT" aria-label="${k} · ${v} PT"></i>`}).join('');
       document.getElementById('heatBadge').textContent=active+' ACTIVE DAYS';
       const ws=localDateKey(weekStart(new Date(todayKey+'T12:00:00'))),mo=todayKey.slice(0,7);
@@ -2533,7 +2534,7 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.7.2';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.9.0';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
@@ -2731,9 +2732,9 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 
 <script id="v1-4-software-tooltip">
 (()=>{
-  const tip=document.getElementById('appTooltip');let target=null;
-  const move=e=>{if(!target)return;const pad=12,w=tip.offsetWidth,h=tip.offsetHeight;tip.style.left=Math.min(innerWidth-w-8,e.clientX+pad)+'px';tip.style.top=Math.min(innerHeight-h-8,e.clientY+pad)+'px'};
-  document.addEventListener('pointerover',e=>{const el=e.target.closest('[data-tooltip]');if(!el)return;target=el;tip.textContent=el.dataset.tooltip;tip.hidden=false;move(e)});
+  const tip=document.getElementById('appTooltip');let target=null,w=160,h=30;
+  const move=e=>{if(!target)return;const pad=12;tip.style.left=Math.min(innerWidth-w-8,e.clientX+pad)+'px';tip.style.top=Math.min(innerHeight-h-8,e.clientY+pad)+'px'};
+  document.addEventListener('pointerover',e=>{const el=e.target.closest('[data-tooltip]');if(!el)return;target=el;tip.textContent=el.dataset.tooltip;tip.hidden=false;w=tip.offsetWidth||160;h=tip.offsetHeight||30;move(e)});
   document.addEventListener('pointermove',move,{passive:true});
   document.addEventListener('pointerout',e=>{if(target&&(!e.relatedTarget||!target.contains(e.relatedTarget))){target=null;tip.hidden=true}});
 })();
