@@ -1610,7 +1610,7 @@ body.lights-off .app-tooltip{background:#0b0d0a}
 .main-countdown .fcc-back{align-items:flex-end;transform:rotateX(-180deg);background:linear-gradient(180deg,#141810 0%,#0a0d08 100%)}
 .flip-labels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:6px}
 .flip-labels span{text-align:center;font:800 8px/1 var(--font-mono);letter-spacing:.12em;color:#8d9478}
-@media(max-width:620px){.main-countdown .digit{height:62px}.main-countdown .fcc-top span,.main-countdown .fcc-bottom span,.main-countdown .fcc-face span{height:62px;line-height:62px;font-size:31px!important}}
+@media(max-width:620px){.main-countdown{padding:17px 14px!important}}
 @media(prefers-reduced-motion:reduce){.main-countdown .digit.flipping .fcc-leaf{transition:none!important}}
 </style>
 <style id="r3-motion">
@@ -1782,11 +1782,11 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
 /* ≤1260 切换 State 3：倒计时与 WAR PLAN 达最小空隙时切换单列，heat 取消绝对定位 */
 @media(max-width:1260px){
   .command-header{grid-template-columns:minmax(0,1fr)!important;gap:14px!important}
-  .main-countdown{width:100%!important;max-width:620px!important;transform:none!important}
+  .main-countdown{width:350px!important;max-width:100%!important;transform:none!important}
   .command-header>.header-heat-card{position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
 }
 body.state-header-stacked .command-header{grid-template-columns:minmax(0,1fr)!important;gap:14px!important}
-body.state-header-stacked .main-countdown{width:100%!important;max-width:620px!important;transform:none!important}
+body.state-header-stacked .main-countdown{width:350px!important;max-width:100%!important;transform:none!important}
 body.state-header-stacked .command-header>.header-heat-card{position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
 /* 奇数任务按 n+1 画 grid：补一个隐形格，虚线不断不悬空（桌面隐藏） */
 .task-phantom{display:none!important}
@@ -2543,7 +2543,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.9.1';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.9.2';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
@@ -2708,6 +2708,8 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     const h1=document.querySelector('.command-copy h1');
     const cd=document.querySelector('.main-countdown');
     if(!h1||!cd)return;
+    // Measure the natural layout; forced fallback classes must not become sticky after resizing back up.
+    document.body.classList.remove('state-force-state2','state-header-stacked');
     const range=document.createRange();
     if(h1.childNodes.length>0){range.selectNodeContents(h1.childNodes[0]);}else{range.selectNodeContents(h1);}
     const textRight=range.getBoundingClientRect().right;
@@ -2718,13 +2720,6 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
         document.body.classList.add('state-force-state2');
       }else{
         document.body.classList.add('state-header-stacked');
-      }
-    }else{
-      if(window.innerWidth>2090){
-        document.body.classList.remove('state-force-state2');
-      }
-      if(window.innerWidth>1260){
-        document.body.classList.remove('state-header-stacked');
       }
     }
   };
