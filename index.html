@@ -1586,7 +1586,16 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .main.pomodoro-open>.hazard,
 .main.pomodoro-open .desk-surface,
 .main.pomodoro-open .footer{display:none!important}
+.pomodoro-head-actions{display:flex;align-items:center;gap:8px}
+#pomodoroImmersiveBtn{transition:color .18s ease,background-color .18s ease,border-color .18s ease}
+#pomodoroImmersiveBtn.active{background:var(--amber);color:#14180f;border-color:var(--amber)}
 
+/* Visibility toggle: Normal vs Immersive */
+.pomodoro-immersive-wrap{display:none!important}
+body.is-immersive .pomodoro-normal-wrap{display:none!important}
+body.is-immersive .pomodoro-immersive-wrap{display:flex!important;flex-direction:column!important;justify-content:space-between!important;align-items:center!important;width:100%!important;height:100%!important}
+
+/* 1. Normal Tactical Focus Clock (Exact Original Look) */
 .pomodoro-stage{display:flex;flex-direction:column;align-items:center;padding:34px 28px 40px;margin:16px 0 12px;background:rgba(218,210,186,.78);border:1px solid var(--line);box-shadow:5px 6px 0 rgba(42,42,33,.18);clip-path:polygon(0 0,98.5% 0,100% 12px,100% 100%,14px 100%,0 calc(100% - 12px))}
 .pomodoro-status-bar{width:100%;max-width:580px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .pomodoro-status-bar .badge{font-size:11px!important;padding:5px 9px!important}
@@ -1602,10 +1611,87 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .pomodoro-modes .btn.active{background:var(--ink);color:var(--light);border-color:var(--ink)}
 .pomodoro-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:26px}
 .pomodoro-actions .btn{padding:12px 24px;font-size:11px}
-.pomodoro-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:580px;margin-bottom:16px}
-.pomodoro-stats .ledger-item{padding:14px 18px;background:rgba(237,230,208,.5)}
-.pomodoro-stats b{display:block;font:900 22px/1 var(--font-mono);color:var(--ink);margin-top:6px}
 .pomodoro-directive{max-width:580px;text-align:center;color:#606555;margin:6px 0 0;font-size:11px!important;line-height:1.5}
+
+/* 2. Tactical Minimalist Cockpit HUD (Edge-to-Edge Fullscreen, Zero Taskbar Leak) */
+html.is-immersive,
+body.is-immersive{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#080a06!important}
+body.is-immersive #desk-bg,
+body.is-immersive .left-side,
+body.is-immersive .side,
+body.is-immersive #tauri-chrome,
+body.is-immersive .main:before,
+body.is-immersive .main:after{display:none!important}
+body.is-immersive,
+body.is-immersive *{scrollbar-width:none!important}
+body.is-immersive *::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+
+body.is-immersive .shell{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;overflow:hidden!important;background:radial-gradient(circle at 50% 50%,#11160e 0%,#090c07 60%,#050704 100%)!important;z-index:9999!important;display:flex!important;align-items:center!important;justify-content:center!important}
+body.is-immersive .main{width:100%!important;height:100%!important;max-width:none!important;margin:0!important;padding:0!important;background:transparent!important;display:flex!important;align-items:center!important;justify-content:center!important}
+
+/* Cockpit HUD Main Container: Scales beautifully from 1080p 16" to 4K 27" */
+body.is-immersive #pomodoroView{width:100%!important;max-width:min(96vw,1440px)!important;height:100%!important;max-height:100vh!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;align-items:center!important;padding:clamp(16px,2.8vh,36px) clamp(20px,3.5vw,56px)!important;box-sizing:border-box!important;margin:0 auto!important}
+
+/* Immersive Top Bar */
+.pomo-imm-top{width:100%;display:flex;justify-content:space-between;align-items:center;flex:0 0 auto;padding:0 4px}
+.pomo-imm-top .btn{background:rgba(20,26,17,.75);border:1px solid #333f2b;color:#c29a4b;font:800 clamp(10px,1.2vmin,12px)/1 var(--font-mono);letter-spacing:.1em;padding:9px 18px;border-radius:4px;transition:all .18s ease;clip-path:none}
+.pomo-imm-top .btn:hover{background:#c29a4b;color:#0b0e08;border-color:#c29a4b}
+.pomo-imm-badge,
+.pomo-imm-status-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(194,154,75,.08);border:1px solid rgba(194,154,75,.28);border-radius:20px;font:800 clamp(10px,1.2vmin,12px)/1 var(--font-mono);letter-spacing:.12em;color:#d8bf78}
+.pomo-imm-dot{width:7px;height:7px;border-radius:50%;background:#667357;transition:all .3s ease}
+.main.chrono-running .pomo-imm-dot,
+body.is-immersive .main.chrono-running .pomo-imm-dot{background:#4ade80;box-shadow:0 0 10px #4ade80;animation:pomoPulse 1.8s infinite}
+@keyframes pomoPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.85)}}
+
+/* Cockpit Bay: 3-column layout on 4K/wide, center column on 1080p */
+.pomo-cockpit-bay{width:100%;flex:1 1 auto;display:grid;grid-template-columns:minmax(180px,280px) auto minmax(180px,280px);align-items:center;justify-content:center;gap:clamp(16px,3.5vw,64px);margin:auto 0}
+@media(max-width:1080px){
+  .pomo-cockpit-bay{grid-template-columns:1fr;gap:16px}
+  .pomo-telemetry-wing{display:none!important}
+}
+
+/* Wings (Left & Right Cockpit Cards) */
+.pomo-telemetry-wing{display:flex;flex-direction:column;gap:18px}
+.pomo-telemetry-card{padding:14px 18px;background:rgba(18,24,15,.65);border:1px solid #283321;border-left:3px solid #c29a4b;backdrop-filter:blur(8px)}
+.pomo-telemetry-kicker{font:800 9px/1.2 var(--font-mono);letter-spacing:.14em;color:#7e8870;text-transform:uppercase}
+.pomo-telemetry-val{font:900 13px/1.3 var(--font-mono);color:#ecdcb4;margin:6px 0 3px;letter-spacing:.03em}
+.pomo-telemetry-sub{font:800 10px/1.3 var(--font-mono);color:#6b755e}
+.pomo-sortie-grid{display:flex;gap:7px;margin:8px 0 4px}
+.pomo-sortie-pip{width:13px;height:13px;border:1px solid #3d4a32;background:#151b12;border-radius:2px;transition:all .3s ease}
+.pomo-sortie-pip.filled{background:#c29a4b;border-color:#ffd980;box-shadow:0 0 8px rgba(194,154,75,.6)}
+
+/* Center Radar Chronometer Dial */
+.pomodoro-ring-wrap{width:clamp(360px,46vmin,580px);height:clamp(360px,46vmin,580px);position:relative;display:flex;align-items:center;justify-content:center;flex:0 0 auto;margin:0 auto}
+.pomodoro-ring-svg{width:100%;height:100%;overflow:visible}
+.pomo-dial-bg{fill:#0e130b;stroke:#21291b;stroke-width:1.5}
+.pomo-crosshairs line{stroke:#2c3724;stroke-width:1;stroke-dasharray:3 4}
+.pomo-dial-tick{stroke:#38442e;stroke-width:1}
+.pomo-dial-tick.major{stroke:#788468;stroke-width:2}
+.pomo-track-base{fill:none;stroke:#192015;stroke-width:4.5}
+.pomo-track-live{fill:none;stroke:#c29a4b;stroke-width:4.5;stroke-linecap:round;transform:rotate(-90deg);transform-origin:250px 250px;stroke-dasharray:1319.47;stroke-dashoffset:0;transition:stroke-dashoffset .4s cubic-bezier(.16,1,.3,1)}
+.main.chrono-running .pomo-track-live{filter:drop-shadow(0 0 8px rgba(194,154,75,.45))}
+.pomo-leading-pip{fill:#ffd980;filter:drop-shadow(0 0 6px #ffd980);transition:cx .4s ease,cy .4s ease}
+
+/* Central Text & Telemetry */
+.pomodoro-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;padding:16px}
+.pomo-imm-digits{font:900 clamp(66px,9.2vmin,118px)/0.92 var(--font-mono);color:#f5ecda;font-variant-numeric:tabular-nums slashed-zero;letter-spacing:-0.02em;margin-bottom:8px;text-shadow:0 0 24px rgba(194,154,75,.25)}
+.pomo-imm-sublabel{font:800 clamp(10px,1.2vmin,12px)/1 var(--font-mono);letter-spacing:.16em;color:#859076;text-transform:uppercase;margin-bottom:12px}
+.pomodoro-ring-end{font:800 clamp(10px,1.1vmin,12px)/1 var(--font-mono);letter-spacing:.08em;color:#d1b168;background:rgba(18,24,15,.88);padding:6px 14px;border-radius:18px;border:1px solid #3a4730}
+
+/* Bottom Cockpit Deck */
+.pomo-imm-bottom-deck{width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;flex:0 0 auto}
+.pomo-imm-modes{display:flex;gap:8px;justify-content:center}
+.pomo-imm-modes .btn{padding:7px 18px;font-size:11px;border-radius:3px;background:rgba(20,26,17,.8);color:#8d977e;border:1px solid #2b3624;clip-path:none;transition:all .18s ease}
+.pomo-imm-modes .btn:hover{background:rgba(38,48,32,1);color:#eddcb4;border-color:#506043}
+.pomo-imm-modes .btn.active{background:#c29a4b;color:#0d1109;border-color:#c29a4b;font-weight:900}
+.pomo-imm-actions{display:flex;gap:14px;align-items:center;justify-content:center}
+.pomo-imm-actions .btn{padding:12px 26px;font-size:12px;border-radius:4px;background:rgba(22,28,19,.9);color:#d9cfb8;border:1px solid #3a4731;clip-path:none;transition:all .18s ease}
+.pomo-imm-actions .btn:hover{background:rgba(42,54,36,1);color:#fff;border-color:#5c6e4d}
+.pomo-imm-actions .btn.primary{background:#c29a4b;color:#0c1008;font-weight:900;border-color:#c29a4b}
+.pomo-imm-actions .btn.primary:hover{background:#dfb45e;border-color:#dfb45e;box-shadow:0 0 16px rgba(194,154,75,.45)}
+.pomo-imm-audio-btn{background:rgba(18,24,15,.6);border:1px solid #283321;color:#859076;padding:6px 14px;border-radius:14px;font:800 10px/1 var(--font-mono);letter-spacing:.08em;cursor:pointer;transition:all .18s ease}
+.pomo-imm-audio-btn:hover{color:#d8bf78;border-color:#48583b}
+.pomo-imm-audio-btn.active{color:#c29a4b;border-color:#c29a4b;background:rgba(194,154,75,.12)}
 </style>
 <style id="module1-left-rail-type">
 /* 模块一左侧边栏可读性：只放大极小字（font-size/line-height），不碰 grid 列数/padding/min-height/ellipsis */
@@ -2025,30 +2111,127 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 <p class="hint">WAR PLAN R3 · 单文件作战纸 · 设置即时生效并随档案保存。</p>
 </section>
 <section id="pomodoroView" hidden aria-label="战术专注时钟">
-<div class="card-head"><div><div class="eyebrow">TACTICAL CHRONO // DEEP WORK SPRINTS</div><h2>战术专注时钟</h2></div><button class="btn" id="pomodoroBack" type="button">返回作战纸</button></div>
-<div class="pomodoro-stage">
-  <div class="pomodoro-status-bar">
-    <span class="badge" id="pomodoroStatusBadge">STANDBY // 待命就绪</span>
-    <span class="pomodoro-meta" id="pomodoroSessionMeta">今日已完成: 0 轮专注</span>
+<!-- 1. 原版战术专注时钟 (未进入沉浸模式时展示：保持完全原样) -->
+<div class="pomodoro-normal-wrap">
+  <div class="card-head"><div><div class="eyebrow">TACTICAL CHRONO // DEEP WORK SPRINTS</div><h2>战术专注时钟</h2></div><div class="pomodoro-head-actions"><button class="btn" id="pomodoroImmersiveBtn" type="button" title="切换全屏沉浸模式（隐藏侧边栏与任务栏）">沉浸模式 ⛶</button><button class="btn" id="pomodoroBack" type="button">返回作战纸</button></div></div>
+  <div class="pomodoro-stage">
+    <div class="pomodoro-status-bar">
+      <span class="badge" id="pomodoroStatusBadge">STANDBY // 待命就绪</span>
+      <span class="pomodoro-meta"><span id="pomodoroSessionMeta">今日已完成: 0 轮专注</span> · <span id="pomodoroNormalEndTime">🔔 启动后预计 00:00 完结</span></span>
+    </div>
+    <div class="pomodoro-clock-face">
+      <div class="pomodoro-digits" id="pomodoroDigits">40:00</div>
+      <div class="pomodoro-sublabel" id="pomodoroModeLabel">40 MINUTE TACTICAL SPRINT</div>
+      <div class="pomodoro-bar"><i id="pomodoroBarFill" style="width:0%"></i></div>
+    </div>
+    <div class="pomodoro-modes" id="pomodoroModes">
+      <button type="button" class="btn active" data-mins="40">40 MIN // 标准包</button>
+      <button type="button" class="btn" data-mins="60">60 MIN // 深度</button>
+      <button type="button" class="btn" data-mins="75">75 MIN // 进阶</button>
+      <button type="button" class="btn" data-mins="90">90 MIN // 强化</button>
+      <button type="button" class="btn" data-mins="120">120 MIN // 极度</button>
+    </div>
+    <div class="pomodoro-actions">
+      <button type="button" class="btn primary" id="pomodoroActionBtn">开始专注</button>
+      <button type="button" class="btn" id="pomodoroResetBtn">重置时钟</button>
+      <button type="button" class="btn" id="pomodoroCompleteBtn">提前完结本轮</button>
+    </div>
+    <p class="hint pomodoro-directive">保持绝对专注与无线电静默。单兵突进，消灭一切杂念与外界干扰。</p>
   </div>
-  <div class="pomodoro-clock-face">
-    <div class="pomodoro-digits" id="pomodoroDigits">40:00</div>
-    <div class="pomodoro-sublabel" id="pomodoroModeLabel">40 MINUTE TACTICAL SPRINT</div>
-    <div class="pomodoro-bar"><i id="pomodoroBarFill" style="width:0%"></i></div>
+</div>
+
+<!-- 2. 沉浸模式舞台 (仅在 body.is-immersive 时展示：无侧边栏、战术座舱 HUD) -->
+<div class="pomodoro-immersive-wrap">
+  <div class="pomo-imm-top">
+    <button class="btn" id="pomodoroImmBackBtn" type="button">← 返回作战纸 (Esc)</button>
+    <div class="pomo-imm-status-pill">
+      <span class="pomo-imm-dot"></span>
+      <span id="pomodoroImmStatusText">STANDBY // 待命就绪</span>
+    </div>
+    <button class="btn" id="pomodoroImmExitBtn" type="button">退出沉浸 ✕</button>
   </div>
-  <div class="pomodoro-modes" id="pomodoroModes">
-    <button type="button" class="btn active" data-mins="40">40 MIN // 标准包</button>
-    <button type="button" class="btn" data-mins="60">60 MIN // 深度</button>
-    <button type="button" class="btn" data-mins="75">75 MIN // 进阶</button>
-    <button type="button" class="btn" data-mins="90">90 MIN // 强化</button>
-    <button type="button" class="btn" data-mins="120">120 MIN // 极度</button>
+
+  <div class="pomo-cockpit-bay">
+    <!-- 左翼: 战术主攻目标挂载卡片 -->
+    <div class="pomo-telemetry-wing pomo-wing-left">
+      <div class="pomo-telemetry-card">
+        <div class="pomo-telemetry-kicker">SORTIE TARGET // 当前挂载</div>
+        <div class="pomo-telemetry-val" id="pomodoroImmTarget">PHYS P2 // 2018 SAQ</div>
+        <div class="pomo-telemetry-sub" id="pomodoroImmTargetSub">锁定今日指定作战卷次</div>
+      </div>
+      <div class="pomo-telemetry-card">
+        <div class="pomo-telemetry-kicker">DIRECTIVE // 作战戒律</div>
+        <div class="pomo-telemetry-val">保持绝对专注与静默</div>
+        <div class="pomo-telemetry-sub">单兵突进 · 歼灭一切杂念与干扰</div>
+      </div>
+    </div>
+
+    <!-- 中核: 战术航空雷达表盘 -->
+    <div class="pomodoro-ring-wrap">
+      <svg class="pomodoro-ring-svg" viewBox="0 0 500 500">
+        <!-- 仪表底层暗光背景盘 -->
+        <circle class="pomo-dial-bg" cx="250" cy="250" r="240"/>
+        <!-- 瞄准十字发丝基准线 -->
+        <g class="pomo-crosshairs">
+          <line x1="250" y1="14" x2="250" y2="34"/>
+          <line x1="250" y1="466" x2="250" y2="486"/>
+          <line x1="14" y1="250" x2="34" y2="250"/>
+          <line x1="466" y1="250" x2="486" y2="250"/>
+        </g>
+        <!-- 60 标尺精密航空微米刻度环 -->
+        <g id="pomodoroDialTicks"></g>
+        <!-- 导轨底圈 -->
+        <circle class="pomo-track-base" cx="250" cy="250" r="210"/>
+        <!-- 战术推进弧 (纯正军规琥珀色) -->
+        <circle class="pomo-track-live" id="pomodoroRingFill" cx="250" cy="250" r="210"/>
+        <!-- 领先氚光指示点 -->
+        <circle class="pomo-leading-pip" id="pomodoroLeadingPip" cx="250" cy="40" r="4.5"/>
+      </svg>
+      <div class="pomodoro-ring-center">
+        <div class="pomodoro-digits pomo-imm-digits" id="pomodoroImmDigits">40:00</div>
+        <div class="pomodoro-sublabel pomo-imm-sublabel" id="pomodoroImmModeLabel">40 MINUTE TACTICAL SPRINT</div>
+        <div class="pomodoro-ring-end" id="pomodoroRingEndTime">🔔 启动后预计 00:00 完结</div>
+      </div>
+    </div>
+
+    <!-- 右翼: 态势感知与出动弹仓 -->
+    <div class="pomo-telemetry-wing pomo-wing-right">
+      <div class="pomo-telemetry-card">
+        <div class="pomo-telemetry-kicker">SORTIE MATRIX // 今日架次</div>
+        <div class="pomo-sortie-grid" id="pomodoroSortieGrid">
+          <div class="pomo-sortie-pip"></div>
+          <div class="pomo-sortie-pip"></div>
+          <div class="pomo-sortie-pip"></div>
+          <div class="pomo-sortie-pip"></div>
+          <div class="pomo-sortie-pip"></div>
+        </div>
+        <div class="pomo-telemetry-sub" id="pomodoroSortieMeta">今日已完成: 0 轮专注</div>
+      </div>
+      <div class="pomo-telemetry-card">
+        <div class="pomo-telemetry-kicker">ACOUSTIC // 声学信标</div>
+        <div style="margin: 8px 0 6px;">
+          <button type="button" class="pomo-imm-audio-btn" id="pomodoroImmAudioBtn">🔊 机械擒纵: 开启</button>
+        </div>
+        <div class="pomo-telemetry-sub" id="pomodoroAudioSub">1Hz 机械擒纵声景辅助入定</div>
+      </div>
+    </div>
   </div>
-  <div class="pomodoro-actions">
-    <button type="button" class="btn primary" id="pomodoroActionBtn">开始专注</button>
-    <button type="button" class="btn" id="pomodoroResetBtn">重置时钟</button>
-    <button type="button" class="btn" id="pomodoroCompleteBtn">提前完结本轮</button>
+
+  <!-- 底部操控台 -->
+  <div class="pomo-imm-bottom-deck">
+    <div class="pomo-imm-modes" id="pomodoroImmModes">
+      <button type="button" class="btn active" data-mins="40">40m</button>
+      <button type="button" class="btn" data-mins="60">60m</button>
+      <button type="button" class="btn" data-mins="75">75m</button>
+      <button type="button" class="btn" data-mins="90">90m</button>
+      <button type="button" class="btn" data-mins="120">120m</button>
+    </div>
+    <div class="pomo-imm-actions">
+      <button type="button" class="btn" id="pomodoroImmResetBtn" title="快捷键: R">重置时钟 (R)</button>
+      <button type="button" class="btn primary" id="pomodoroImmActionBtn" title="快捷键: Space">开始专注 (Space)</button>
+      <button type="button" class="btn" id="pomodoroImmCompleteBtn">提前完结本轮</button>
+    </div>
   </div>
-  <p class="hint pomodoro-directive">保持绝对专注与无线电静默。单兵突进，消灭一切杂念与外界干扰。</p>
 </div>
 </section>
 <div class="command-header">
@@ -2495,12 +2678,15 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
         sfxTone(ctx,t+0.12,{type:'sine',f0:880,f1:880,g:0.4,dur:0.4,dest:out});
         sfxTone(ctx,t+0.28,{type:'sine',f0:1174.66,f1:1174.66,g:0.45,dur:0.6,dest:out});
         sfxHiss(ctx,t,{type:'bandpass',f0:2400,f1:1800,q:3,g:0.08,dur:0.15,dest:out});
+      }else if(kind==='tick'){/* 机械擒纵超轻脆咔嗒 (1Hz 战术心跳) */
+        sfxHiss(ctx,t,{type:'bandpass',f0:4200,f1:2000,q:5,g:0.025,dur:0.012,atk:0.001,dest:out});
+        sfxTone(ctx,t,{type:'sine',f0:2400,f1:1200,g:0.015,dur:0.01,dest:out});
       }else{/* 金属卡榫轻击 */
         sfxHiss(ctx,t,{type:'bandpass',f0:3600,f1:1400,q:2.2,g:0.22,dur:0.045,atk:0.002,dest:out});
         sfxTone(ctx,t,{type:'square',f0:1850,f1:820,g:0.05,dur:0.035,dest:out});
         sfxTone(ctx,t+0.008,{type:'triangle',f0:2950,f1:2600,g:0.025,dur:0.13,dest:out});
       }
-      setTimeout(()=>{try{out.disconnect()}catch(e){}}, (kind==='impact'?1200:(kind==='alarm'||kind==='chime')?1000:kind==='breech'?500:300));
+      setTimeout(()=>{try{out.disconnect()}catch(e){}}, (kind==='impact'?1200:(kind==='alarm'||kind==='chime')?1000:kind==='breech'?500:kind==='tick'?100:300));
     }
     function updateSfxToggle(){const btn=document.getElementById('sfxToggle');btn.textContent=data.soundOn?'SFX // ARMED':'SFX // SILENT';btn.classList.toggle('sfx-on',!!data.soundOn);btn.classList.toggle('sfx-off',!data.soundOn);btn.setAttribute('aria-pressed',String(!!data.soundOn))}
     function localDateKey(d){return NZ_FMT.format(d)}
@@ -2649,19 +2835,146 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     document.getElementById('sideCollapseBtn').addEventListener('click',()=>setSidebarCollapsed(!document.body.classList.contains('side-collapsed')));
     document.getElementById('sfxToggle').addEventListener('click',()=>{data.soundOn=!data.soundOn;save();updateSfxToggle();if(data.soundOn)playSfx('impact')});
     /* Dedicated Pomodoro Clock View (Patterned after Settings) */
+    async function setAppFullscreen(enable){
+      if(typeof window.__setFullscreen==='function'){
+        await window.__setFullscreen(enable);
+      }else if(enable){
+        if(!document.fullscreenElement&&document.documentElement.requestFullscreen){
+          await document.documentElement.requestFullscreen().catch(()=>{});
+        }
+      }else{
+        if(document.fullscreenElement&&document.exitFullscreen){
+          await document.exitFullscreen().catch(()=>{});
+        }
+      }
+    }
+    async function togglePomodoroImmersive(force){
+      const btn=document.getElementById('pomodoroImmersiveBtn');
+      const shouldEnable=typeof force==='boolean'?force:!document.body.classList.contains('is-immersive');
+      if(shouldEnable){
+        await setAppFullscreen(true);
+        document.body.classList.add('is-immersive');
+        initCockpitDialTicks();
+        updateAudioBtnUI();
+        updateChronoUI();
+        if(btn){
+          btn.classList.add('active');
+          btn.textContent='退出沉浸 ✕';
+          btn.title='退出沉浸模式 (Esc / F11)';
+        }
+      }else{
+        await setAppFullscreen(false);
+        document.body.classList.remove('is-immersive');
+        if(btn){
+          btn.classList.remove('active');
+          btn.textContent='沉浸模式 ⛶';
+          btn.title='切换全屏沉浸模式（隐藏任务栏及标题栏）';
+        }
+        if(typeof window.checkCollision==='function'){
+          window.checkCollision(true);
+        }
+        setTimeout(()=>{
+          if(typeof window.checkCollision==='function'){
+            window.checkCollision(true);
+          }
+        },150);
+      }
+    }
+    function initCockpitDialTicks(){
+      const g=document.getElementById('pomodoroDialTicks');
+      if(!g||g.children.length>0)return;
+      let html='';
+      for(let i=0;i<60;i++){
+        const isMajor=(i%5===0);
+        const rad=(i*6*Math.PI)/180;
+        const r1=isMajor?220:226, r2=233;
+        const x1=(250+r1*Math.sin(rad)).toFixed(2), y1=(250-r1*Math.cos(rad)).toFixed(2);
+        const x2=(250+r2*Math.sin(rad)).toFixed(2), y2=(250-r2*Math.cos(rad)).toFixed(2);
+        html+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="pomo-dial-tick ${isMajor?'major':''}"/>`;
+      }
+      g.innerHTML=html;
+    }
+    function getActiveMissionDirective(){
+      try{
+        const ids=getActiveTaskIds(todayKey);
+        const checks=data.checks[todayKey]||{};
+        const remaining=ids.map(id=>getTaskView(id,todayKey)).filter(t=>t&&!checks[t.id]);
+        if(remaining.length>0){
+          return { title: remaining[0].title, sub: `锁定今日未清目标 (剩余 ${remaining.length} 项)` };
+        }
+        if(ids.length>0){
+          return { title: '今日全线目标肃清', sub: '全兵种大捷 · 处于自选纵深突破阶段' };
+        }
+      }catch(e){}
+      return { title: 'TACTICAL FOCUS SPRINT', sub: '专注单兵作战中' };
+    }
+    let chronoAcousticOn = (localStorage.getItem('charles_chrono_acoustic') !== 'false');
+    function updateAudioBtnUI(){
+      const btn=document.getElementById('pomodoroImmAudioBtn');
+      if(!btn)return;
+      if(chronoAcousticOn){
+        btn.textContent='🔊 机械擒纵: 开启';
+        btn.classList.add('active');
+      }else{
+        btn.textContent='🔇 机械擒纵: 静音';
+        btn.classList.remove('active');
+      }
+    }
     function openPomodoro(){
       document.querySelector('.main').classList.add('pomodoro-open');
       document.getElementById('pomodoroView').removeAttribute('hidden');
+      initCockpitDialTicks();
+      updateAudioBtnUI();
       updateChronoUI();
       scrollToPageTop();
     }
-    function closePomodoro(){
+    async function closePomodoro(){
+      if(document.body.classList.contains('is-immersive')){
+        await togglePomodoroImmersive(false);
+      }
       document.querySelector('.main').classList.remove('pomodoro-open');
       document.getElementById('pomodoroView').setAttribute('hidden','');
       document.body.classList.add('view-switch');
-      setTimeout(()=>document.body.classList.remove('view-switch'),300);
+      setTimeout(()=>{
+        document.body.classList.remove('view-switch');
+        if(typeof window.checkCollision==='function'){
+          window.checkCollision(true);
+        }
+      },300);
     }
-    document.getElementById('pomodoroBack').addEventListener('click',closePomodoro);
+    document.getElementById('pomodoroBack').addEventListener('click',()=>closePomodoro());
+    document.getElementById('pomodoroImmersiveBtn')?.addEventListener('click',()=>togglePomodoroImmersive());
+
+    document.addEventListener('keydown',e=>{
+      const isPomoOpen=document.querySelector('.main')?.classList.contains('pomodoro-open');
+      if(e.key==='Escape'){
+        if(document.body.classList.contains('is-immersive')){
+          e.preventDefault();
+          togglePomodoroImmersive(false);
+        }else if(isPomoOpen){
+          e.preventDefault();
+          closePomodoro();
+        }
+      }else if(e.key==='F11'&&isPomoOpen){
+        e.preventDefault();
+        togglePomodoroImmersive();
+      }else if(isPomoOpen){
+        if(e.target&&e.target.matches('input, textarea, select'))return;
+        if(e.code==='Space'||e.key===' '){
+          e.preventDefault();
+          toggleChrono();
+        }else if(e.key==='r'||e.key==='R'){
+          e.preventDefault();
+          resetChrono();
+          toast('战术时钟已重置');
+        }
+      }
+    });
+    document.addEventListener('fullscreenchange',()=>{
+      if(!document.fullscreenElement&&document.body.classList.contains('is-immersive')){
+        togglePomodoroImmersive(false);
+      }
+    });
 
     /* Pomodoro Tactical Chrono Module */
     let chronoMode=40,chronoTotalSecs=40*60,chronoRemainingSecs=40*60,chronoState='idle',chronoTimerId=null,chronoSessionsCount=0;
@@ -2705,15 +3018,13 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
           toggleBtn.title='开始计时';
         }
       }
-      // Sync Pomodoro Dedicated View
+      // 1. Sync Standard Tactical Chrono View
       const pDigits=document.getElementById('pomodoroDigits');
       const pBadge=document.getElementById('pomodoroStatusBadge');
       const pAction=document.getElementById('pomodoroActionBtn');
       const pLabel=document.getElementById('pomodoroModeLabel');
       const pBar=document.getElementById('pomodoroBarFill');
       const pMeta=document.getElementById('pomodoroSessionMeta');
-      const pToday=document.getElementById('pomodoroTodayMins');
-      const pTotal=document.getElementById('pomodoroTotalMins');
 
       if(pDigits) pDigits.textContent=timeStr;
       if(pLabel) pLabel.textContent=`${chronoMode} MINUTE TACTICAL SPRINT`;
@@ -2746,17 +3057,131 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
         }
       }
       if(pMeta) pMeta.textContent=`今日已完成: ${chronoSessionsCount} 轮专注`;
-      if(pToday){
-        const tm=(data&&data.focusByDate&&data.focusByDate[todayKey])||0;
-        pToday.textContent=`${tm} MIN`;
-      }
-      if(pTotal){
-        const tot=(data&&data.focusTotalMinutes)||0;
-        pTotal.textContent=`${tot} MIN`;
-      }
       document.querySelectorAll('#pomodoroModes .btn[data-mins]').forEach(btn=>{
         btn.classList.toggle('active',Number(btn.dataset.mins)===chronoMode);
       });
+
+      // 2. Sync Immersive Apple-Style Countdown HUD
+      const immDigits=document.getElementById('pomodoroImmDigits');
+      const immLabel=document.getElementById('pomodoroImmModeLabel');
+      const immStatusText=document.getElementById('pomodoroImmStatusText');
+      const immAction=document.getElementById('pomodoroImmActionBtn');
+
+      if(immDigits) immDigits.textContent=timeStr;
+      if(immLabel) immLabel.textContent=`${chronoMode} MINUTE TACTICAL SPRINT`;
+      if(immStatusText){
+        if(chronoState==='running'){
+          immStatusText.textContent='ENGAGED // 专注作战中';
+        }else if(chronoState==='paused'){
+          immStatusText.textContent='HOLD // 战术悬停';
+        }else{
+          immStatusText.textContent='STANDBY // 待命就绪';
+        }
+      }
+      if(immAction){
+        if(chronoState==='running'){
+          immAction.textContent='暂停专注';
+          immAction.className='btn';
+        }else if(chronoState==='paused'){
+          immAction.textContent='继续专注';
+          immAction.className='btn primary';
+        }else{
+          immAction.textContent='开始专注';
+          immAction.className='btn primary';
+        }
+      }
+      const ringFill=document.getElementById('pomodoroRingFill');
+      const RING_CIRCUMFERENCE=1319.47;
+      const remainRatio=chronoTotalSecs>0?Math.max(0,Math.min(1,chronoRemainingSecs/chronoTotalSecs)):0;
+      if(ringFill){
+        const offset=RING_CIRCUMFERENCE*(1-remainRatio);
+        ringFill.style.strokeDashoffset=offset.toFixed(2);
+      }
+      const pip=document.getElementById('pomodoroLeadingPip');
+      if(pip){
+        if(remainRatio<=0.001){
+          pip.style.display='none';
+        }else{
+          pip.style.display='';
+          const alpha=(remainRatio*360)*(Math.PI/180);
+          const px=(250+210*Math.sin(alpha)).toFixed(2);
+          const py=(250-210*Math.cos(alpha)).toFixed(2);
+          pip.setAttribute('cx',px);
+          pip.setAttribute('cy',py);
+        }
+      }
+
+      // Telemetry Wing: Active Mission Directive
+      const immTarget=document.getElementById('pomodoroImmTarget');
+      const immTargetSub=document.getElementById('pomodoroImmTargetSub');
+      if(immTarget&&immTargetSub){
+        const dir=getActiveMissionDirective();
+        immTarget.textContent=dir.title;
+        immTargetSub.textContent=dir.sub;
+      }
+
+      // Telemetry Wing: Estimated Completion Time
+      const immEtaTime=document.getElementById('pomodoroImmEtaTime');
+      const immEtaLabel=document.getElementById('pomodoroImmEtaLabel');
+      if(immEtaTime&&immEtaLabel){
+        if(chronoState==='running'){
+          const target=new Date(Date.now()+chronoRemainingSecs*1000);
+          const hh=String(target.getHours()).padStart(2,'0');
+          const mm=String(target.getMinutes()).padStart(2,'0');
+          immEtaTime.textContent=`${hh}:${mm}`;
+          immEtaLabel.textContent='预计完成时刻';
+        }else if(chronoState==='paused'){
+          immEtaTime.textContent='--:--';
+          immEtaLabel.textContent=`战术悬停中 (剩余 ${timeStr})`;
+        }else{
+          const target=new Date(Date.now()+chronoTotalSecs*1000);
+          const hh=String(target.getHours()).padStart(2,'0');
+          const mm=String(target.getMinutes()).padStart(2,'0');
+          immEtaTime.textContent=`${hh}:${mm}`;
+          immEtaLabel.textContent='启动后预计完成时刻';
+        }
+      }
+
+      // Telemetry Wing: Sortie Matrix Pips
+      const sortieGrid=document.getElementById('pomodoroSortieGrid');
+      if(sortieGrid){
+        const pips=sortieGrid.querySelectorAll('.pomo-sortie-pip');
+        const cycleFilled=(chronoSessionsCount%5===0&&chronoSessionsCount>0)?5:(chronoSessionsCount%5);
+        pips.forEach((pip,idx)=>{
+          pip.classList.toggle('filled',idx<cycleFilled);
+        });
+      }
+      const sortieMeta=document.getElementById('pomodoroSortieMeta');
+      if(sortieMeta){
+        const batch=Math.floor(chronoSessionsCount/5);
+        sortieMeta.textContent=`今日已完成: ${chronoSessionsCount} 轮专注`+(batch>0?` (第 ${batch+1} 弹匣)`:'');
+      }
+
+      let endText='';
+      if(chronoState==='running'){
+        const target=new Date(Date.now()+chronoRemainingSecs*1000);
+        const h=String(target.getHours()).padStart(2,'0');
+        const m=String(target.getMinutes()).padStart(2,'0');
+        endText=`🔔 预计 ${h}:${m} 完结`;
+      }else if(chronoState==='paused'){
+        endText=`⏸ 战术悬停 (剩余 ${formatChronoTime(chronoRemainingSecs)})`;
+      }else{
+        const target=new Date(Date.now()+chronoTotalSecs*1000);
+        const h=String(target.getHours()).padStart(2,'0');
+        const m=String(target.getMinutes()).padStart(2,'0');
+        endText=`🔔 启动后预计 ${h}:${m} 完结`;
+      }
+      const ringEnd=document.getElementById('pomodoroRingEndTime');
+      if(ringEnd) ringEnd.textContent=endText;
+      const normalEnd=document.getElementById('pomodoroNormalEndTime');
+      if(normalEnd) normalEnd.textContent=endText;
+      document.querySelectorAll('#pomodoroImmModes .btn[data-mins]').forEach(btn=>{
+        btn.classList.toggle('active',Number(btn.dataset.mins)===chronoMode);
+      });
+      const mainEl=document.querySelector('.main');
+      if(mainEl){
+        mainEl.classList.toggle('chrono-running',chronoState==='running');
+      }
     }
 
     function selectChronoMode(mins){
@@ -2775,6 +3200,9 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
         chronoState='running';playSfx('breech');updateChronoUI();
         chronoTimerId=setInterval(()=>{
           chronoRemainingSecs--;
+          if(chronoAcousticOn&&data.soundOn&&chronoState==='running'){
+            playSfx('tick');
+          }
           if(chronoRemainingSecs<=0){completeChronoSession()}else{updateChronoUI()}
         },1000);
       }
@@ -2974,6 +3402,31 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       const btn=e.target.closest('.btn[data-mins]');
       if(btn)selectChronoMode(btn.dataset.mins);
     });
+
+    // Immersive Mode HUD Event Listeners
+    document.getElementById('pomodoroImmBackBtn')?.addEventListener('click',closePomodoro);
+    document.getElementById('pomodoroImmExitBtn')?.addEventListener('click',()=>togglePomodoroImmersive(false));
+    document.getElementById('pomodoroImmActionBtn')?.addEventListener('click',toggleChrono);
+    document.getElementById('pomodoroImmResetBtn')?.addEventListener('click',()=>{resetChrono();toast('战术时钟已重置')});
+    document.getElementById('pomodoroImmCompleteBtn')?.addEventListener('click',()=>{
+      const elapsedMins=Math.floor((chronoTotalSecs-chronoRemainingSecs)/60);
+      if(elapsedMins<1&&chronoRemainingSecs>0){
+        toast('专注不足 1 分钟，未计入战果');
+        resetChrono();
+      }else{
+        completeChronoSession(true);
+      }
+    });
+    document.getElementById('pomodoroImmModes')?.addEventListener('click',e=>{
+      const btn=e.target.closest('.btn[data-mins]');
+      if(btn)selectChronoMode(btn.dataset.mins);
+    });
+    document.getElementById('pomodoroImmAudioBtn')?.addEventListener('click',()=>{
+      chronoAcousticOn=!chronoAcousticOn;
+      localStorage.setItem('charles_chrono_acoustic',String(chronoAcousticOn));
+      updateAudioBtnUI();
+      if(chronoAcousticOn) playSfx('tick');
+    });
     /* R3-6: 统一加密档案 —— 作战数据 + 分数存档同包转移/接收（为 exe 独立容器准备：单文件即全部档案）。
        分数日常经 KV 永久保存：Tauri 下写入应用目录 war-plan.json，浏览器下为 localStorage。 */
     function collectScoreSlots(){const scores={};try{SC_SUBJECTS.forEach(s=>s.subs.forEach(sb=>{const k=scKey(s.id,sb.id),raw=KV.get(k);if(raw)scores[k]=JSON.parse(raw)}))}catch(e){}return scores}
@@ -3038,7 +3491,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.9.4';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.0.0';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
@@ -3216,29 +3669,42 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     if(main&&(main.classList.contains('settings-open')||main.classList.contains('pomodoro-open'))){
       return;
     }
+    if(document.body.classList.contains('is-immersive')){
+      return;
+    }
     const h1=document.querySelector('.command-copy h1');
     const cd=document.querySelector('.main-countdown');
     if(!h1||!cd||cd.offsetParent===null||h1.offsetParent===null)return;
+    if(h1.offsetWidth===0||cd.offsetWidth===0)return;
+
+    // On wide screen > 1600, State 2 (which hides left rail and forces compact card) is strictly forbidden!
+    if(window.innerWidth > 1600){
+      document.body.classList.remove('state-force-state2');
+    }
+
     if(!force && window.innerWidth === lastCollisionWidth && (document.body.classList.contains('state-force-state2') || document.body.classList.contains('state-header-stacked'))) {
-      return;
+      if(window.innerWidth > 1600 && document.body.classList.contains('state-force-state2')){
+        document.body.classList.remove('state-force-state2');
+      }else{
+        return;
+      }
     }
     lastCollisionWidth = window.innerWidth;
     // Measure the natural layout; forced fallback classes must not become sticky after resizing back up.
     document.body.classList.remove('state-force-state2','state-header-stacked');
     const range=document.createRange();
     if(h1.childNodes.length>0){range.selectNodeContents(h1.childNodes[0]);}else{range.selectNodeContents(h1);}
-    const textRight=range.getBoundingClientRect().right;
-    const cdLeft=cd.getBoundingClientRect().left;
-    if(cdLeft<=textRight+12){
+    const textRect=range.getBoundingClientRect();
+    const cdRect=cd.getBoundingClientRect();
+    if(textRect.width===0||cdRect.width===0)return;
+    if(cdRect.left<=textRect.right+12){
       if(window.innerWidth<=1600){
         document.body.classList.add('state-force-state2');
       }else{
         document.body.classList.add('state-header-stacked');
       }
     }else{
-      if(window.innerWidth>1600){
-        document.body.classList.remove('state-force-state2');
-      }
+      document.body.classList.remove('state-force-state2');
       if(window.innerWidth>1260){
         document.body.classList.remove('state-header-stacked');
       }
