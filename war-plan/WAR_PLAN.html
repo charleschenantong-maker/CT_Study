@@ -153,8 +153,8 @@
     .heat-grid i.l1{background:#7d8455}.heat-grid i.l2{background:#586440}.heat-grid i.l3{background:#3a4c2c}.heat-grid i.l4{background:#1e2e1a}
     .heat-grid i.future{background:repeating-linear-gradient(45deg,#9d9070 0 3px,#877a5e 3px 6px);opacity:.68;border-color:rgba(24,32,24,.45)}
     .heat-grid i.today{position:relative;z-index:2;outline:1.5px solid rgba(255,250,225,.95);outline-offset:-1px;box-shadow:0 0 6px rgba(255,220,130,.75)}
-    .heat-grid i.today:after{content:"";position:absolute;inset:-2px;border-radius:2px;pointer-events:none;border:1.5px solid rgba(255,248,220,.95);box-shadow:0 0 6px rgba(255,235,160,.85),0 0 12px rgba(255,215,110,.5);animation:todayGlowPulse 2.4s cubic-bezier(.25,1,.5,1) infinite;will-change:transform,opacity}
-    @keyframes todayGlowPulse{0%{transform:scale(.85);opacity:.95}65%{transform:scale(1.55);opacity:0}100%{transform:scale(1.55);opacity:0}}
+    .heat-grid i.today:after{content:"";position:absolute;inset:-2px;border-radius:2px;pointer-events:none;border:1.5px solid rgba(255,248,220,.95);box-shadow:0 0 7px rgba(255,235,160,.9),0 0 14px rgba(255,215,110,.6);animation:todayGlowPulse 1.7s cubic-bezier(.25,1,.5,1) infinite;will-change:transform,opacity}
+    @keyframes todayGlowPulse{0%{transform:scale(.85);opacity:.95}65%{transform:scale(1.65);opacity:0}100%{transform:scale(1.65);opacity:0}}
     @media(prefers-reduced-motion:reduce){.heat-grid i.today:after{animation:none;transform:scale(1.15);opacity:.45}}
     .heat-legend{display:flex;align-items:center;gap:6px;margin-top:12px;font:800 8px/1 var(--font-mono);letter-spacing:.12em;color:#4d5344}
     .heat-legend i{display:block;width:11px;height:11px;border:1px solid rgba(24,32,24,.38)}
@@ -1771,7 +1771,7 @@ body.side-collapsed .side-toggle .chev-icon{transform:rotate(-90deg)}
 .desk-surface .grid > .card:first-child #dayMessage{margin-top:auto;margin-bottom:10px}
 .desk-surface .grid > .card:first-child #dayMessage .alert{margin-top:0}
 .desk-surface .grid > .card:first-child #dayMessage:empty{display:none}
-.desk-surface .grid > .card:first-child .actions{margin-top:0;margin-bottom:0}
+.desk-surface .grid > .card:first-child .actions{margin-top:0;margin-bottom:0;display:flex;flex-wrap:nowrap;gap:6px}
 .desk-surface .grid > .card:first-child #dayMessage:empty + .actions{margin-top:auto}
 .desk-surface .grid{align-items:stretch}
 .past-paper-card{align-self:stretch;display:flex;flex-direction:column;min-height:0}
@@ -1828,13 +1828,13 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 #taskList .task-row .task{border-top:0}
 .task-div-v{display:none}
 .past-paper-card .sc-main-panel{display:flex!important;flex-direction:column!important;min-height:0!important}
-.past-paper-card .sc-chart-wrap{flex:1 1 auto!important;height:auto!important;min-height:160px!important}
+.past-paper-card .sc-chart-wrap{flex:1 1 auto!important;height:190px!important;min-height:190px!important}
 .past-paper-card .sc-entry{position:relative;margin-top:auto!important;margin-bottom:0!important}
 .past-paper-card .sc-history-panel{display:flex!important;flex-direction:column!important;min-height:0!important}
-@media(max-width:1600px) and (min-width:1281px){.desk-surface .sc-chart-wrap{height:auto!important}}
+@media(max-width:1600px) and (min-width:1281px){.desk-surface .sc-chart-wrap{height:190px!important;min-height:190px!important}}
 @media(max-width:1280px){
   #taskList{height:auto;min-height:0;max-height:none}
-  .desk-surface .sc-chart-wrap{height:auto!important}
+  .desk-surface .sc-chart-wrap{height:190px!important;min-height:190px!important}
 }
 @media(max-width:980px){
   #taskList{height:auto;min-height:0}
@@ -1953,16 +1953,35 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 .compact-summary-stats{grid-template-columns:repeat(7,minmax(0,1fr))!important}
 @media(max-width:1280px){.compact-summary-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 @media(max-width:620px){.compact-summary-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
-/* Chrono Time Picker Dropup */
+/* Chrono Time Picker Dropup - Apple Clock 3D Wheel Picker */
 .chrono-picker-wrap{position:relative;display:inline-flex}
-.chrono-menu{position:absolute;bottom:calc(100% + 6px);right:0;min-width:175px;background:#171b15;border:1px solid #424939;box-shadow:0 6px 18px rgba(0,0,0,.65);padding:4px;z-index:100;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px))}
+#chronoToggleBtn{min-width:148px;justify-content:center;text-align:center;padding:9px 8px;white-space:nowrap}
+#chronoTimeBtn{min-width:126px;justify-content:center;text-align:center;padding:9px 8px;white-space:nowrap}
+#chronoViewBtn{white-space:nowrap;padding:9px 8px;flex-shrink:0}
+.chrono-menu{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);right:auto;width:260px;background:#141712;border:1px solid #424939;box-shadow:0 8px 24px rgba(0,0,0,.8),0 0 1px rgba(216,191,120,.4);padding:8px 10px 10px;z-index:100;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
 .chrono-menu[hidden]{display:none!important}
-.chrono-menu-item{display:block;width:100%;text-align:left;background:transparent;border:0;color:#a49e85;padding:6px 9px;font:900 9px/1 var(--font-mono);letter-spacing:.05em;cursor:pointer;transition:all .12s ease}
-.chrono-menu-item:hover{background:#232a1e;color:var(--amber)}
-.chrono-menu-item.active{color:var(--amber);background:rgba(217,117,43,.15);font-weight:900}
-.chrono-menu-item.chrono-menu-reset{color:var(--rust)}
-.chrono-menu-item.chrono-menu-reset:hover{background:rgba(132,57,44,.25);color:#f5ecd4}
-.chrono-menu-sep{height:1px;background:rgba(255,255,255,.1);margin:4px 0}
+.cap-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.08)}
+.cap-title{font:800 10px/1 var(--font-mono);letter-spacing:.1em;color:#8d9478}
+.cap-close-btn{background:none;border:none;color:#8d9478;font:700 14px/1 var(--font-mono);cursor:pointer;padding:0 2px}
+.cap-close-btn:hover{color:#e8c872}
+.cap-wheel-board{position:relative;display:flex;align-items:center;justify-content:space-between;height:128px;background:#0d100c;border:1px solid #2e3527;border-radius:3px;overflow:hidden}
+.cap-wheel-board:before{content:"";position:absolute;top:0;left:0;right:0;height:42px;background:linear-gradient(to bottom,#0d100c 0%,rgba(13,16,12,0) 100%);pointer-events:none;z-index:3}
+.cap-wheel-board:after{content:"";position:absolute;bottom:0;left:0;right:0;height:42px;background:linear-gradient(to top,#0d100c 0%,rgba(13,16,12,0) 100%);pointer-events:none;z-index:3}
+.cap-lens{position:absolute;top:48px;left:4px;right:4px;height:32px;background:rgba(216,191,120,.12);border-top:1px solid rgba(216,191,120,.45);border-bottom:1px solid rgba(216,191,120,.45);border-radius:2px;pointer-events:none;z-index:2;box-shadow:inset 0 0 6px rgba(216,191,120,.1)}
+.cap-col{flex:1;height:100%;position:relative;display:flex;flex-direction:column}
+.cap-unit-tag{position:absolute;top:2px;left:0;right:0;text-align:center;font:800 8px/1 var(--font-mono);color:#6b735c;letter-spacing:.08em;pointer-events:none;z-index:4;text-transform:uppercase}
+.cap-wheel{flex:1;height:128px;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:48px 0;box-sizing:border-box;contain:strict;will-change:scroll-position}
+.cap-wheel::-webkit-scrollbar{display:none}
+.cap-item{height:32px;line-height:32px;text-align:center;font:900 15px/32px var(--font-mono);color:#5d6550;scroll-snap-align:center;cursor:pointer;user-select:none}
+.cap-item:hover{color:#a49e85}
+.cap-item.active{color:#e8c872;font-size:17px;text-shadow:0 0 6px rgba(232,200,114,.6)}
+.cap-sep{font:900 16px/1 var(--font-mono);color:#5d6550;user-select:none;margin-top:8px;z-index:2}
+.cap-presets{display:flex;gap:4px;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,.08)}
+.cap-preset-btn{flex:1;padding:4px 0;background:#1e241b;color:#8d9478;border:1px solid #363e2e;font:800 9px/1 var(--font-mono);letter-spacing:.04em;cursor:pointer;transition:all .12s ease;text-align:center}
+.cap-preset-btn:hover{background:#2a3325;color:#e8c872;border-color:#505c44}
+.cap-preset-btn.active{background:var(--amber);color:#121610;border-color:var(--amber);font-weight:900}
+.cap-reset-btn{flex:1;color:var(--rust);border-color:#4a2b25}
+.cap-reset-btn:hover{background:rgba(132,57,44,.25);color:#f5ecd4}
 </style>
  </head>
 <body>
@@ -2012,26 +2031,21 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     <span class="pomodoro-meta" id="pomodoroSessionMeta">今日已完成: 0 轮专注</span>
   </div>
   <div class="pomodoro-clock-face">
-    <div class="pomodoro-digits" id="pomodoroDigits">25:00</div>
-    <div class="pomodoro-sublabel" id="pomodoroModeLabel">25 MINUTE TACTICAL SPRINT</div>
+    <div class="pomodoro-digits" id="pomodoroDigits">40:00</div>
+    <div class="pomodoro-sublabel" id="pomodoroModeLabel">40 MINUTE TACTICAL SPRINT</div>
     <div class="pomodoro-bar"><i id="pomodoroBarFill" style="width:0%"></i></div>
   </div>
   <div class="pomodoro-modes" id="pomodoroModes">
-    <button type="button" class="btn active" data-mins="25">25 MIN · 标准攻坚</button>
-    <button type="button" class="btn" data-mins="50">50 MIN · 深度推演</button>
-    <button type="button" class="btn" data-mins="45">45 MIN · 强化冲刺</button>
-    <button type="button" class="btn" data-mins="15">15 MIN · 快速突击</button>
-    <button type="button" class="btn" data-mins="60">60 MIN · 长程耐力</button>
-    <button type="button" class="btn" data-mins="5">5 MIN · 战术休整</button>
+    <button type="button" class="btn active" data-mins="40">40 MIN // 标准包</button>
+    <button type="button" class="btn" data-mins="60">60 MIN // 深度</button>
+    <button type="button" class="btn" data-mins="75">75 MIN // 进阶</button>
+    <button type="button" class="btn" data-mins="90">90 MIN // 强化</button>
+    <button type="button" class="btn" data-mins="120">120 MIN // 极度</button>
   </div>
   <div class="pomodoro-actions">
     <button type="button" class="btn primary" id="pomodoroActionBtn">开始专注</button>
     <button type="button" class="btn" id="pomodoroResetBtn">重置时钟</button>
     <button type="button" class="btn" id="pomodoroCompleteBtn">提前完结本轮</button>
-  </div>
-  <div class="pomodoro-stats">
-    <div class="ledger-item"><div class="ledger-top"><span>TODAY // 今日专注</span><b id="pomodoroTodayMins">0 MIN</b></div></div>
-    <div class="ledger-item"><div class="ledger-top"><span>TOTAL // 累计专注</span><b id="pomodoroTotalMins">0 MIN</b></div></div>
   </div>
   <p class="hint pomodoro-directive">保持绝对专注与无线电静默。单兵突进，消灭一切杂念与外界干扰。</p>
 </div>
@@ -2108,21 +2122,30 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 <div class="card-head"><div><div class="eyebrow" id="todayDate">TODAY</div><h2>每日行动简报</h2></div><span class="badge" id="stageBadge">STAGE</span></div>
 <div class="day-context" id="dayContext" style="display:none"></div><div id="taskList"></div><div id="dayMessage"></div>
 <div class="actions">
-<button type="button" class="btn primary" id="chronoToggleBtn" title="开始计时">开始专注 (25:00)</button>
+<button type="button" class="btn primary" id="chronoToggleBtn" title="开始计时">开始专注 (40:00)</button>
 <div class="chrono-picker-wrap">
-<button type="button" class="btn" id="chronoTimeBtn" aria-haspopup="true" aria-expanded="false" title="选择专注时长">时长: 25 MIN ▾</button>
+<button type="button" class="btn" id="chronoTimeBtn" aria-haspopup="true" aria-expanded="false" title="选择专注时长">时长: 40 MIN ▾</button>
 <div class="chrono-menu" id="chronoMenu" hidden>
-<button type="button" class="chrono-menu-item active" data-mins="25">25 MIN // 标准攻坚</button>
-<button type="button" class="chrono-menu-item" data-mins="50">50 MIN // 深度推演</button>
-<button type="button" class="chrono-menu-item" data-mins="45">45 MIN // 强化冲刺</button>
-<button type="button" class="chrono-menu-item" data-mins="15">15 MIN // 快速突击</button>
-<button type="button" class="chrono-menu-item" data-mins="60">60 MIN // 长程耐力</button>
-<button type="button" class="chrono-menu-item" data-mins="5">5 MIN // 战术休整</button>
-<div class="chrono-menu-sep" aria-hidden="true"></div>
-<button type="button" class="chrono-menu-item chrono-menu-reset" data-action="reset">重置时钟 // RESET</button>
+<div class="cap-header"><span class="cap-title">TIMER // 时长设定</span><button type="button" class="cap-close-btn" id="chronoMenuClose" aria-label="关闭">×</button></div>
+<div class="cap-wheel-board">
+<div class="cap-lens"></div>
+<div class="cap-col" data-unit="hours"><div class="cap-unit-tag">HR</div><div class="cap-wheel" id="capWheelHours"></div></div>
+<div class="cap-sep">:</div>
+<div class="cap-col" data-unit="minutes"><div class="cap-unit-tag">MIN</div><div class="cap-wheel" id="capWheelMins"></div></div>
+<div class="cap-sep">:</div>
+<div class="cap-col" data-unit="seconds"><div class="cap-unit-tag">SEC</div><div class="cap-wheel" id="capWheelSecs"></div></div>
+</div>
+<div class="cap-presets">
+<button type="button" class="cap-preset-btn active" data-preset="40">40m</button>
+<button type="button" class="cap-preset-btn" data-preset="60">60m</button>
+<button type="button" class="cap-preset-btn" data-preset="75">75m</button>
+<button type="button" class="cap-preset-btn" data-preset="90">90m</button>
+<button type="button" class="cap-preset-btn" data-preset="120">120m</button>
+<button type="button" class="cap-preset-btn cap-reset-btn" data-preset="reset">重置</button>
 </div>
 </div>
-<button type="button" class="btn" id="chronoViewBtn" title="切换到专属番茄钟界面">全屏时钟 ⛶</button>
+</div>
+<button type="button" class="btn" id="chronoViewBtn" title="切换到专属番茄钟界面">全屏 ⛶</button>
 </div>
 </section>
 <section class="card past-paper-card">
@@ -2588,7 +2611,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     document.getElementById('ledgerManageBtn').addEventListener('click',openLedgerModal);
     /* R3-7: 设置界面 — 纸面内容整体替换 */
     function openSettings(){document.querySelector('.main').classList.add('settings-open');document.getElementById('settingsView').removeAttribute('hidden');syncSettingsLabels();scrollToPageTop()}
-    function closeSettings(){document.body.classList.add('view-switch');document.querySelector('.main').classList.remove('settings-open');document.getElementById('settingsView').setAttribute('hidden','');requestAnimationFrame(()=>setTimeout(()=>{document.body.classList.remove('view-switch');if(typeof window.checkCollision==='function')window.checkCollision()},350))}
+    function closeSettings(){document.querySelector('.main').classList.remove('settings-open');document.getElementById('settingsView').setAttribute('hidden','');document.body.classList.add('view-switch');setTimeout(()=>document.body.classList.remove('view-switch'),300);}
     function syncSettingsLabels(){const s=document.getElementById('settingsSfx');if(s)s.textContent=data.soundOn?'SFX // 开':'SFX // 关'}
     document.getElementById('settingsBtn').addEventListener('click',()=>{openSettings()});
     function scrollToPageTop(){
@@ -2632,23 +2655,40 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       scrollToPageTop();
     }
     function closePomodoro(){
-      document.body.classList.add('view-switch');
       document.querySelector('.main').classList.remove('pomodoro-open');
       document.getElementById('pomodoroView').setAttribute('hidden','');
-      requestAnimationFrame(()=>setTimeout(()=>{
-        document.body.classList.remove('view-switch');
-        if(typeof window.checkCollision==='function')window.checkCollision();
-      },350));
+      document.body.classList.add('view-switch');
+      setTimeout(()=>document.body.classList.remove('view-switch'),300);
     }
     document.getElementById('pomodoroBack').addEventListener('click',closePomodoro);
 
     /* Pomodoro Tactical Chrono Module */
-    let chronoMode=25,chronoTotalSecs=25*60,chronoRemainingSecs=25*60,chronoState='idle',chronoTimerId=null,chronoSessionsCount=0;
+    let chronoMode=40,chronoTotalSecs=40*60,chronoRemainingSecs=40*60,chronoState='idle',chronoTimerId=null,chronoSessionsCount=0;
+
+    function formatChronoTime(secs){
+      const safeSecs=Math.max(0,secs);
+      const h=Math.floor(safeSecs/3600), m=Math.floor((safeSecs%3600)/60), s=safeSecs%60;
+      if(h>0){
+        return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+      }
+      return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    }
+
     function updateChronoUI(){
       const toggleBtn=document.getElementById('chronoToggleBtn'),timeBtn=document.getElementById('chronoTimeBtn');
-      const m=Math.floor(chronoRemainingSecs/60),s=chronoRemainingSecs%60;
-      const timeStr=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-      if(timeBtn)timeBtn.textContent=`时长: ${chronoMode} MIN ▾`;
+      const timeStr=formatChronoTime(chronoRemainingSecs);
+
+      const curH=Math.floor(chronoTotalSecs/3600), curM=Math.floor((chronoTotalSecs%3600)/60), curS=chronoTotalSecs%60;
+      let label='时长: ';
+      if(curH>0){
+        label+=`${curH}h ${curM}m ▾`;
+      }else if(curS>0){
+        label+=`${curM}m ${curS}s ▾`;
+      }else{
+        label+=`${curM} MIN ▾`;
+      }
+      if(timeBtn)timeBtn.textContent=label;
+
       if(toggleBtn){
         if(chronoState==='running'){
           toggleBtn.textContent=`暂停 (${timeStr})`;
@@ -2659,7 +2699,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
           toggleBtn.className='btn primary';
           toggleBtn.title='单击继续，双击重置时钟';
         }else{
-          toggleBtn.textContent=chronoMode===5?`开始休整 (${timeStr})`:`开始专注 (${timeStr})`;
+          toggleBtn.textContent=`开始专注 (${timeStr})`;
           toggleBtn.className='btn primary';
           toggleBtn.title='开始计时';
         }
@@ -2675,14 +2715,14 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       const pTotal=document.getElementById('pomodoroTotalMins');
 
       if(pDigits) pDigits.textContent=timeStr;
-      if(pLabel) pLabel.textContent=(chronoMode===5||chronoMode===15)?`${chronoMode} MINUTE TACTICAL REST`:`${chronoMode} MINUTE TACTICAL SPRINT`;
+      if(pLabel) pLabel.textContent=`${chronoMode} MINUTE TACTICAL SPRINT`;
       if(pBar){
         const pct=chronoTotalSecs>0?Math.max(0,Math.min(100,((chronoTotalSecs-chronoRemainingSecs)/chronoTotalSecs)*100)):0;
         pBar.style.width=pct+'%';
       }
       if(pBadge){
         if(chronoState==='running'){
-          pBadge.textContent=(chronoMode===5||chronoMode===15)?'RESTING // 战术整休中':'ENGAGED // 专注作战中';
+          pBadge.textContent='ENGAGED // 专注作战中';
           pBadge.className='badge active';
         }else if(chronoState==='paused'){
           pBadge.textContent='HOLD // 战术悬停';
@@ -2700,7 +2740,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
           pAction.textContent='继续专注';
           pAction.className='btn primary';
         }else{
-          pAction.textContent=(chronoMode===5||chronoMode===15)?'开始整休':'开始专注';
+          pAction.textContent='开始专注';
           pAction.className='btn primary';
         }
       }
@@ -2717,16 +2757,17 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
         btn.classList.toggle('active',Number(btn.dataset.mins)===chronoMode);
       });
     }
+
     function selectChronoMode(mins){
       const targetMins=Number(mins);
       if(chronoState==='running'&&targetMins!==chronoMode){
         if(!confirm('正在专注作战中，切换时长将重置当前时钟，确定继续？'))return;
       }
       clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';chronoMode=targetMins;chronoTotalSecs=chronoMode*60;chronoRemainingSecs=chronoTotalSecs;
-      document.querySelectorAll('#chronoMenu .chrono-menu-item[data-mins]').forEach(btn=>{const act=Number(btn.dataset.mins)===chronoMode;btn.classList.toggle('active',act)});
       updateChronoUI();
     }
     function toggleChrono(){
+      if(chronoTotalSecs<=0)return;
       if(chronoState==='running'){
         clearInterval(chronoTimerId);chronoTimerId=null;chronoState='paused';playSfx('click');updateChronoUI();
       }else{
@@ -2745,33 +2786,162 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       const creditMins=isEarly?elapsedMins:chronoMode;
       clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';chronoRemainingSecs=chronoTotalSecs;
       playSfx('alarm');
-      if(chronoMode!==5&&chronoMode!==15){
-        chronoSessionsCount++;
-        data.focusTotalMinutes=(data.focusTotalMinutes||0)+creditMins;
-        data.focusByDate=data.focusByDate||{};
-        data.focusByDate[todayKey]=(data.focusByDate[todayKey]||0)+creditMins;
-        save();
-        renderStats();
-        toast(`战术专注完成！已累积专注 ${creditMins} 分钟（总计 ${data.focusTotalMinutes} MIN）`);
-      }else{
-        toast('休整结束，准备投入下一轮战斗！');
-      }
+      chronoSessionsCount++;
+      data.focusTotalMinutes=(data.focusTotalMinutes||0)+creditMins;
+      data.focusByDate=data.focusByDate||{};
+      data.focusByDate[todayKey]=(data.focusByDate[todayKey]||0)+creditMins;
+      save();
+      renderStats();
+      toast(`战术专注完成！已累积专注 ${creditMins} 分钟（总计 ${data.focusTotalMinutes} MIN）`);
       updateChronoUI();
     }
+
+    /* Apple Clock Style Wheel Picker Module */
+    /* Apple Clock Style Wheel Picker Module */
+    const ITEM_H = 32;
+    const capWheelH = document.getElementById('capWheelHours');
+    const capWheelM = document.getElementById('capWheelMins');
+    const capWheelS = document.getElementById('capWheelSecs');
+    let isWheelsSyncing = false;
+    let appleWheelRaf = null;
+    let cachedWheelSecs = -1;
+
+    function initWheel(wheel, maxVal) {
+      if(!wheel) return;
+      let html = '';
+      for(let i = 0; i <= maxVal; i++) {
+        html += `<div class="cap-item" data-val="${i}">${String(i).padStart(2,'0')}</div>`;
+      }
+      wheel.innerHTML = html;
+      wheel._items = Array.from(wheel.children);
+      wheel._activeIdx = -1;
+    }
+    initWheel(capWheelH, 23);
+    initWheel(capWheelM, 59);
+    initWheel(capWheelS, 59);
+
+    function getWheelVal(wheel, maxVal) {
+      if(!wheel) return 0;
+      const idx = Math.round(wheel.scrollTop / ITEM_H);
+      return Math.min(maxVal, Math.max(0, idx));
+    }
+    function setWheelVal(wheel, val, smooth = true) {
+      if(!wheel) return;
+      const targetTop = val * ITEM_H;
+      if(smooth) {
+        wheel.scrollTo({ top: targetTop, behavior: 'smooth' });
+      } else {
+        wheel.scrollTop = targetTop;
+      }
+    }
+    function updateWheelHighlight(wheel, activeVal) {
+      if(!wheel || wheel._activeIdx === activeVal) return;
+      if(wheel._items && wheel._items[wheel._activeIdx]) {
+        wheel._items[wheel._activeIdx].classList.remove('active');
+      }
+      if(wheel._items && wheel._items[activeVal]) {
+        wheel._items[activeVal].classList.add('active');
+      }
+      wheel._activeIdx = activeVal;
+    }
+
+    function scheduleAppleWheelScroll() {
+      if(appleWheelRaf) return;
+      appleWheelRaf = requestAnimationFrame(() => {
+        appleWheelRaf = null;
+        onAppleWheelScroll();
+      });
+    }
+
+    function onAppleWheelScroll() {
+      if(isWheelsSyncing) return;
+      const h = getWheelVal(capWheelH, 23);
+      const m = getWheelVal(capWheelM, 59);
+      const s = getWheelVal(capWheelS, 59);
+      const totalSecs = h * 3600 + m * 60 + s;
+
+      updateWheelHighlight(capWheelH, h);
+      updateWheelHighlight(capWheelM, m);
+      updateWheelHighlight(capWheelS, s);
+
+      if(totalSecs === cachedWheelSecs) return;
+      cachedWheelSecs = totalSecs;
+
+      if(chronoState === 'idle') {
+        chronoTotalSecs = totalSecs;
+        chronoRemainingSecs = totalSecs;
+        chronoMode = Math.max(1, Math.round(totalSecs / 60));
+        updateChronoUI();
+        const totalM = Math.round(totalSecs / 60);
+        document.querySelectorAll('#chronoMenu .cap-preset-btn[data-preset]').forEach(b => {
+          b.classList.toggle('active', b.dataset.preset === String(totalM) && (totalSecs % 60 === 0));
+        });
+      }
+    }
+
+    function syncAppleWheels(secs, smooth = false) {
+      isWheelsSyncing = true;
+      cachedWheelSecs = secs;
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      const s = secs % 60;
+      setWheelVal(capWheelH, h, smooth);
+      setWheelVal(capWheelM, m, smooth);
+      setWheelVal(capWheelS, s, smooth);
+      updateWheelHighlight(capWheelH, h);
+      updateWheelHighlight(capWheelM, m);
+      updateWheelHighlight(capWheelS, s);
+      const totalM = Math.round(secs / 60);
+      document.querySelectorAll('#chronoMenu .cap-preset-btn[data-preset]').forEach(b => {
+        b.classList.toggle('active', b.dataset.preset === String(totalM) && (secs % 60 === 0));
+      });
+      setTimeout(() => { isWheelsSyncing = false; }, smooth ? 350 : 50);
+    }
+
+    [capWheelH, capWheelM, capWheelS].forEach(w => {
+      if(!w) return;
+      w.addEventListener('scroll', scheduleAppleWheelScroll, { passive: true });
+      w.addEventListener('click', e => {
+        const item = e.target.closest('.cap-item');
+        if(!item) return;
+        const val = Number(item.dataset.val);
+        setWheelVal(w, val, true);
+        playSfx('click');
+      });
+    });
+
     const chronoTimeBtn=document.getElementById('chronoTimeBtn');
     const chronoMenu=document.getElementById('chronoMenu');
     if(chronoTimeBtn&&chronoMenu){
       chronoTimeBtn.addEventListener('click',e=>{
         e.stopPropagation();
         const isHidden=chronoMenu.hasAttribute('hidden');
-        if(isHidden){chronoMenu.removeAttribute('hidden');chronoTimeBtn.setAttribute('aria-expanded','true')}
-        else{chronoMenu.setAttribute('hidden','');chronoTimeBtn.setAttribute('aria-expanded','false')}
+        if(isHidden){
+          chronoMenu.removeAttribute('hidden');
+          chronoTimeBtn.setAttribute('aria-expanded','true');
+          syncAppleWheels(chronoTotalSecs, false);
+        } else {
+          chronoMenu.setAttribute('hidden','');
+          chronoTimeBtn.setAttribute('aria-expanded','false');
+        }
+      });
+      document.getElementById('chronoMenuClose')?.addEventListener('click',()=>{
+        chronoMenu.setAttribute('hidden','');
+        chronoTimeBtn.setAttribute('aria-expanded','false');
       });
       chronoMenu.addEventListener('click',e=>{
-        const resetItem=e.target.closest('[data-action="reset"]');
-        if(resetItem){resetChrono();chronoMenu.setAttribute('hidden','');chronoTimeBtn.setAttribute('aria-expanded','false');return}
-        const item=e.target.closest('.chrono-menu-item[data-mins]');
-        if(item){selectChronoMode(item.dataset.mins);chronoMenu.setAttribute('hidden','');chronoTimeBtn.setAttribute('aria-expanded','false')}
+        const presetBtn=e.target.closest('.cap-preset-btn');
+        if(!presetBtn) return;
+        const p=presetBtn.dataset.preset;
+        playSfx('click');
+        if(p==='reset'){
+          selectChronoMode(40);
+          syncAppleWheels(40*60, true);
+          return;
+        }
+        const mins=Number(p);
+        selectChronoMode(mins);
+        syncAppleWheels(mins*60, true);
       });
       document.addEventListener('click',e=>{
         if(!chronoMenu.hasAttribute('hidden')&&!e.target.closest('#chronoMenu')&&!e.target.closest('#chronoTimeBtn')){
@@ -2867,7 +3037,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.9.2';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v1.9.4';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
@@ -3022,8 +3192,13 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     const scResponsiveCard=document.querySelector('.past-paper-card');
     function scSyncResponsiveLayout(){
       if(!scStartupReady)return;
+      const wrap=document.getElementById('scChartWrap');
+      if(!wrap || wrap.clientWidth === 0)return;
+      const W=Math.max(wrap.clientWidth,260);
+      const n=(scCache[scKey(scState.subject,scState.sub)]||[]).length;
+      if(scChartScene && scChartScene.key === W+'x'+n) return;
       clearTimeout(scSyncResponsiveLayout._timer);
-      scSyncResponsiveLayout._timer=setTimeout(()=>scDrawChart(scCache[scKey(scState.subject,scState.sub)]||[],false),90);
+      scSyncResponsiveLayout._timer=setTimeout(()=>scDrawChart(scCache[scKey(scState.subject,scState.sub)]||[],false),50);
     }
     if('ResizeObserver' in window&&scResponsiveCard)new ResizeObserver(scSyncResponsiveLayout).observe(scResponsiveCard);
     let scResizeTimer=null;
@@ -3034,15 +3209,19 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 
 <script id="field-desk-v11-directive-width-sync">
 (()=>{
-  window.checkCollision=()=>{
+  let lastCollisionWidth = -1;
+  window.checkCollision=(force = false)=>{
     const main=document.querySelector('.main');
     if(main&&(main.classList.contains('settings-open')||main.classList.contains('pomodoro-open'))){
-      document.body.classList.remove('state-force-state2','state-header-stacked');
       return;
     }
     const h1=document.querySelector('.command-copy h1');
     const cd=document.querySelector('.main-countdown');
     if(!h1||!cd||cd.offsetParent===null||h1.offsetParent===null)return;
+    if(!force && window.innerWidth === lastCollisionWidth && (document.body.classList.contains('state-force-state2') || document.body.classList.contains('state-header-stacked'))) {
+      return;
+    }
+    lastCollisionWidth = window.innerWidth;
     // Measure the natural layout; forced fallback classes must not become sticky after resizing back up.
     document.body.classList.remove('state-force-state2','state-header-stacked');
     const range=document.createRange();
