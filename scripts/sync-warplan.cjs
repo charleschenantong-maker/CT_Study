@@ -1,5 +1,5 @@
 // 单一源头同步：war-plan/WAR_PLAN.html 是页面唯一可编辑的源文件。
-// 本脚本将其同步为应用入口 index.html（注入防误改标记 + main.tsx 桥接），
+// 本脚本将其同步为应用入口 index.html（注入防误改标记 + main.ts 桥接），
 // dev/build 前自动执行（见 package.json 的 predev/prebuild）。
 // 用法：npm run sync:warplan
 const fs = require("fs");
@@ -8,7 +8,7 @@ const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const SRC = path.join(ROOT, "war-plan", "WAR_PLAN.html");
 const DST = path.join(ROOT, "index.html");
-const TAG = '<script type="module" src="/src/main.tsx"></script>';
+const TAG = '<script type="module" src="/src/main.ts"></script>';
 const MARKER =
   "<!-- SYNCED FROM war-plan/WAR_PLAN.html — DO NOT EDIT DIRECTLY, run npm run sync:warplan -->";
 // 木纹 turbulence 砖：源文件内联 data-uri（单文件预览自包含）；应用入口改走 public/ 下的
@@ -29,7 +29,7 @@ const html = raw.toString("utf8");
 const count = (s, sub) => s.split(sub).length - 1;
 if (count(html, "</body>") !== 1) fail("expected exactly one </body>");
 if (count(html, "<head>") !== 1) fail("expected exactly one <head>");
-if (html.includes(TAG)) fail("source already contains main.tsx tag");
+if (html.includes(TAG)) fail("source already contains main.ts tag");
 if (html.includes("SYNCED FROM war-plan")) fail("source looks generated, abort");
 const tileHits = html.match(TILE_RE) || [];
 if (tileHits.length !== 1) fail("expected exactly one svg tile uri, found " + tileHits.length);

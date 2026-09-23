@@ -26,6 +26,8 @@ function blank() {
     sealed: {},
     cycleLog: [],
     examDone: {},
+    focusTotalMinutes: 0,
+    focusByDate: {},
     lastCheckin: null,
     soundOn: true,
     pinnedExam: null,
@@ -57,6 +59,8 @@ function migrateBackup(incoming) {
     version: 3,
     cycles,
     examDone: (incoming.examDone && typeof incoming.examDone === 'object') ? incoming.examDone : {},
+    focusTotalMinutes: Number.isFinite(Number(incoming.focusTotalMinutes)) ? Number(incoming.focusTotalMinutes) : 0,
+    focusByDate: (incoming.focusByDate && typeof incoming.focusByDate === 'object') ? incoming.focusByDate : {},
     soundOn: incoming.soundOn === undefined ? true : !!incoming.soundOn,
     pinnedExam: typeof incoming.pinnedExam === 'string' && VALID_EXAM_IDS.includes(incoming.pinnedExam)
       ? incoming.pinnedExam
@@ -160,5 +164,22 @@ test('archive bundle: contains all customization fields', () => {
   assert.deepEqual(bundle.ledgerHidden, ['PHYS P2']);
   assert.equal(bundle.sideCollapsed, true);
   assert.equal(bundle.warplan.lightsOff, undefined);
+});
+
+test('migrateBackup: preserves focusTotalMinutes and focusByDate correctly', () => {
+  const incoming = {
+    cycles: { 'PHYS P2': 5 },
+    focusTotalMinutes: 125,
+    focusByDate: { '2026-09-22': 50, '2026-09-23': 75 }
+  };
+  const migrated = migrateBackup(incoming);
+  assert.equal(migrated.focusTotalMinutes, 125);
+  assert.deepEqual(migrated.focusByDate, { '2026-09-22': 50, '2026-09-23': 75 });
+
+  // Default fallback when not provided
+  const emptyIncoming = { cycles: {} };
+  const emptyMigrated = migrateBackup(emptyIncoming);
+  assert.equal(emptyMigrated.focusTotalMinutes, 0);
+  assert.deepEqual(emptyMigrated.focusByDate, {});
 });
 

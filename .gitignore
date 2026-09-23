@@ -14,8 +14,8 @@ dist-ssr
 *.tsbuildinfo
 
 # 本地参考素材与导出档案，不进仓库
-traffic-ref.png
-CT_study.png
+assets-reference/
+war-plan/sources/
 Charles_War_Plan_Field_File_*.json
 
 # Editor directories and files
@@ -33,6 +33,3 @@ Charles_War_Plan_Field_File_*.json
 # Tauri
 src-tauri/target/
 src-tauri/gen/
-
-# 本地大型工具，不进仓库
-blender-5.2.2-windows-x64/

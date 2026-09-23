@@ -1575,6 +1575,37 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 @keyframes r3ViewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(max-width:760px){.settings-grid{grid-template-columns:1fr}}
 </style>
+<style id="r3-pomodoro">
+/* R3: 独立番茄钟沉浸界面（参考设置界面模式） */
+#pomodoroView{position:relative;z-index:2}
+#pomodoroView:not([hidden]){animation:r3ViewIn .28s ease}
+.main.pomodoro-open .command-header,
+.main.pomodoro-open .directive-motto,
+.main.pomodoro-open>.redactions,
+.main.pomodoro-open>.hazard,
+.main.pomodoro-open .desk-surface,
+.main.pomodoro-open .footer{display:none!important}
+
+.pomodoro-stage{display:flex;flex-direction:column;align-items:center;padding:34px 28px 40px;margin:16px 0 12px;background:rgba(218,210,186,.78);border:1px solid var(--line);box-shadow:5px 6px 0 rgba(42,42,33,.18);clip-path:polygon(0 0,98.5% 0,100% 12px,100% 100%,14px 100%,0 calc(100% - 12px))}
+.pomodoro-status-bar{width:100%;max-width:580px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.pomodoro-status-bar .badge{font-size:11px!important;padding:5px 9px!important}
+.pomodoro-status-bar .badge.active{color:#e88c33!important;border-color:#e88c33!important;background:rgba(232,140,51,.12)}
+.pomodoro-meta{font:800 11px/1 var(--font-mono);letter-spacing:.08em;color:#555b4e}
+.pomodoro-clock-face{width:100%;max-width:580px;text-align:center;padding:32px 20px 26px;background:#141810;border:2px solid #3d4434;box-shadow:inset 0 2px 12px rgba(0,0,0,.7),0 3px 0 rgba(0,0,0,.35);margin-bottom:22px}
+.pomodoro-digits{font:900 clamp(58px,10vw,100px)/1 var(--font-mono);color:#d8bf78;letter-spacing:.06em;text-shadow:0 0 4px rgba(216,191,120,.9),0 0 16px rgba(216,191,120,.45);font-variant-numeric:tabular-nums;margin-bottom:10px}
+.pomodoro-sublabel{font:800 11px/1 var(--font-mono);letter-spacing:.14em;color:#8d9478;text-transform:uppercase;margin-bottom:18px}
+.pomodoro-bar{height:9px;background:#20251c;border:1px solid #3d4434;overflow:hidden}
+.pomodoro-bar i{display:block;height:100%;background:var(--amber);transition:width .4s ease}
+.pomodoro-modes{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px}
+.pomodoro-modes .btn{padding:8px 15px;font-size:10px}
+.pomodoro-modes .btn.active{background:var(--ink);color:var(--light);border-color:var(--ink)}
+.pomodoro-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:26px}
+.pomodoro-actions .btn{padding:12px 24px;font-size:11px}
+.pomodoro-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:580px;margin-bottom:16px}
+.pomodoro-stats .ledger-item{padding:14px 18px;background:rgba(237,230,208,.5)}
+.pomodoro-stats b{display:block;font:900 22px/1 var(--font-mono);color:var(--ink);margin-top:6px}
+.pomodoro-directive{max-width:580px;text-align:center;color:#606555;margin:6px 0 0;font-size:11px!important;line-height:1.5}
+</style>
 <style id="module1-left-rail-type">
 /* 模块一左侧边栏可读性：只放大极小字（font-size/line-height），不碰 grid 列数/padding/min-height/ellipsis */
 .left-side .stat small{font-size:10px!important}
@@ -1630,8 +1661,8 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 <style id="r4-fixed-desk-scroll">
-  /* Keep the original timber material; only its scroll behavior changes. */
-  html,body{background-attachment:fixed!important}
+  /* Keep the original timber material; #desk-bg is fixed via GPU layer while body scrolls smoothly */
+  html,body{background-attachment:scroll!important}
 </style>
 <style id="r3-perf-contain">
 /* R3-perf-contain: paint containment only — zero visual change. content-visibility intentionally NOT used:
@@ -1640,8 +1671,8 @@ body.side-collapsed .shell{background:transparent!important;background-image:non
 .main-countdown .fcc-leaf{will-change:transform}
 </style>
 <style id="v1-4-responsive-layout">
-/* Keep the three-column 4K composition intact; switch to State 2 at ≤2090px (where countdown reaches WAR PLAN) */
-@media(max-width:2090px){
+/* Keep the three-column desktop composition intact; switch to State 2 at ≤1600px */
+@media(max-width:1600px){
   .left-side{display:none!important}
   .shell,body.side-collapsed .shell{display:block!important;min-height:100vh!important;background:transparent!important;background-image:none!important}
   .main{display:block!important;grid-column:auto!important;width:auto!important;max-width:none!important;margin:18px 12px 30px!important}
@@ -1670,7 +1701,7 @@ body.state-force-state2 .side{display:block!important;position:relative!importan
 /* v1.5.1: restore the v1.4 compact rail flow. The real left rail stays hidden;
    its data is rendered as a paper summary in the central work sheet. */
 .compact-command-card{display:none}
-@media(max-width:2090px){
+@media(max-width:1600px){
   .compact-command-card{display:block;margin:0 0 15px;padding:17px;position:relative;background:rgba(210,194,151,.9);border:1px solid var(--line);box-shadow:0 9px 16px rgba(0,0,0,.26),5px 6px 0 rgba(42,42,33,.13);clip-path:polygon(0 0,97% 0,100% 9px,100% 100%,12px 100%,0 calc(100% - 10px))}
   .compact-command-card:before{content:"";position:absolute;left:9px;top:9px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#8d8468,#5c5643 60%,#2a2b22);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
   .compact-command-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
@@ -1735,15 +1766,16 @@ body.side-collapsed .side-toggle .chev-icon{transform:rotate(-90deg)}
 #ledger .ledger-hide{flex:0 0 auto;margin-left:auto;width:22px;height:22px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;opacity:.55;padding:0;display:inline-flex;align-items:center;justify-content:center}
 #ledger .ledger-hide:hover{opacity:1}
 #ledger .ledger-hide svg{width:12px;height:12px}
-/* 每日行动简报的警报与下方按钮留一点呼吸，不要贴上 */
-.desk-surface .grid > .card:first-child #dayMessage{margin-bottom:10px}
+/* 每日行动简报：提示框吸底贴在专注按钮上方，随按钮联动 */
+.desk-surface .grid > .card:first-child{display:flex;flex-direction:column;min-height:0}
+.desk-surface .grid > .card:first-child #dayMessage{margin-top:auto;margin-bottom:10px}
+.desk-surface .grid > .card:first-child #dayMessage .alert{margin-top:0}
+.desk-surface .grid > .card:first-child #dayMessage:empty{display:none}
+.desk-surface .grid > .card:first-child .actions{margin-top:0;margin-bottom:0}
+.desk-surface .grid > .card:first-child #dayMessage:empty + .actions{margin-top:auto}
 .desk-surface .grid{align-items:stretch}
-.past-paper-card{align-self:stretch;display:flex;flex-direction:column}
-.past-paper-card .sc-layout{flex:1;min-height:0;height:auto}
-/* 左卡只钉按钮到底，不动内部间距：行高由右卡定义时，签署/撤回按钮才下来与白线齐平 */
-.desk-surface .grid > .card:first-child{display:flex;flex-direction:column}
-.desk-surface .grid > .card:first-child .actions{margin-top:auto}
-@media(min-width:981px){.past-paper-card .sc-history{flex:none!important;height:420px!important;max-height:420px!important;min-height:0!important;margin-top:auto!important}}
+.past-paper-card{align-self:stretch;display:flex;flex-direction:column;min-height:0}
+.past-paper-card .sc-layout{flex:1 1 auto;min-height:442px;height:auto}
 /* v1.7.0: 全局抑制右侧滚动条（列表仍可滚轮滚动）+ 收起态贴边 + 设置返回防闪 */
 .side,.side .event-list{scrollbar-width:none!important}
 .side::-webkit-scrollbar,.side .event-list::-webkit-scrollbar{display:none!important}
@@ -1790,19 +1822,24 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 @media(max-width:1280px){:root{--directive-alignment-cut:560px}}
 </style>
 <style id="v173-3-fixed">
-/* v1.7.3-3: 简报锁 7 任务高，折线图锁高（宽自适应）；矮任务日不再塌 */
-#taskList{height:377px;min-height:377px;overflow:hidden}
+/* 统一三栏下边界联动：每日行动简报、Past Paper 归档申报栏、战果履历下边界完全齐平且同步移动 */
+#taskList{height:auto;min-height:0;overflow:hidden}
 #taskList .task-row{display:contents}
 #taskList .task-row .task{border-top:0}
 .task-div-v{display:none}
-.sc-chart-wrap{flex:none!important}
-@media(max-width:2090px) and (min-width:1281px){.desk-surface .sc-chart-wrap{height:258px!important}}
+.past-paper-card .sc-main-panel{display:flex!important;flex-direction:column!important;min-height:0!important}
+.past-paper-card .sc-chart-wrap{flex:1 1 auto!important;height:auto!important;min-height:160px!important}
+.past-paper-card .sc-entry{position:relative;margin-top:auto!important;margin-bottom:0!important}
+.past-paper-card .sc-history-panel{display:flex!important;flex-direction:column!important;min-height:0!important}
+@media(max-width:1600px) and (min-width:1281px){.desk-surface .sc-chart-wrap{height:auto!important}}
 @media(max-width:1280px){
-  #taskList{height:377px;min-height:377px}
-  .desk-surface .sc-chart-wrap{height:232px!important}
+  #taskList{height:auto;min-height:0;max-height:none}
+  .desk-surface .sc-chart-wrap{height:auto!important}
 }
 @media(max-width:980px){
-  #taskList{height:215px;min-height:215px}
+  #taskList{height:auto;min-height:0}
+  .past-paper-card .sc-layout{min-height:340px!important}
+  .past-paper-card .sc-chart-wrap{min-height:130px!important}
 }
 </style>
 <style id="v162-btn-chamfer">
@@ -1816,8 +1853,8 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 .sc-select-box,.sc-stat-row{clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
 </style>
 <style id="v172-small">
-/* v1.7.2 小窗 ≤2090px：heat 卡变宽/倒计时右边界左移/field note 隐藏/纵表转 4 列横表/操作钮一行 */
-@media(max-width:2090px){
+/* v1.7.2 小窗 ≤1600px：heat 卡变宽/倒计时右边界左移/field note 隐藏/纵表转 4 列横表/操作钮一行 */
+@media(max-width:1600px){
   .compact-summary-note{display:none}
   .side .event-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:none}
   .side .event{grid-template-columns:max-content minmax(0,1fr) auto auto!important;grid-template-areas:"date name pin done";align-items:center;column-gap:8px;min-width:0;overflow:hidden}
@@ -1869,7 +1906,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
   /* 2b. 战果履历与另两个形态一致：恢复两列 */
   .sc-layout{grid-template-columns:minmax(0,1.68fr) minmax(150px,.72fr)!important}
   .sc-history-panel{border-left:1px dashed rgba(43,45,36,.42)!important;border-top:0!important;padding-left:clamp(8px,1.25cqw,15px)!important;padding-top:0!important}
-  .sc-history{min-height:0!important;flex:none!important;height:420px!important;max-height:420px!important;margin-top:auto!important}
+  .sc-history{min-height:0!important;flex:1 1 0px!important;height:100%!important;max-height:none!important;margin:0!important}
   /* 2c. dossier 与考试情报一行三个（覆盖4列/2列旧规则） */
   .ledger{grid-template-columns:repeat(3,minmax(0,1fr))!important}
   .side .event-list{grid-template-columns:repeat(3,minmax(0,1fr))!important}
@@ -1880,13 +1917,13 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
   .side .event-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .archive .archived-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
-/* 履历全局锁死预设高（桌面 420px，≤980 小屏 320px），多成绩内部滚动，禁止向下撑高卡片导致行动简报下移 */
+/* 履历弹性吸满右列底缘，与左列申报及左卡简报同步联动，多成绩内部滚动 */
 .past-paper-card .sc-history,
 .sc-history-panel>.sc-history{
-  flex:none!important;
-  height:420px!important;
-  min-height:420px!important;
-  max-height:420px!important;
+  flex:1 1 0px!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
   margin:0!important;
   padding-top:0!important;
   overflow-y:auto!important;
@@ -1900,17 +1937,32 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
   width:0!important;
   height:0!important;
 }
-@media(max-width:980px){
-  .past-paper-card .sc-history,
-  .sc-history-panel>.sc-history{
-    height:320px!important;
-    min-height:320px!important;
-    max-height:320px!important;
-  }
-}
 .sc-history-panel .sc-history{margin-top:0!important}
 .sc-history-panel{position:relative;min-height:0}
 .sc-history-panel>.sc-section-title{position:static;margin:0 0 9px}
+/* Sustained Fire header streak badge (bottom-right corner) */
+.header-heat-card .heat-legend{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:4px!important}
+.header-heat-card .heat-legend .streak-badge{position:relative!important;top:0!important;margin:0 0 0 auto!important;padding:3px 6px!important;font:900 8.5px/1 var(--font-mono)!important;letter-spacing:.08em!important;transform:rotate(-2.5deg)!important;transform-origin:center center!important;white-space:nowrap!important}
+.heat-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.streak-badge{color:var(--amber)!important;border-color:var(--amber)!important}
+.streak-badge.active{color:#e88c33!important;border-color:#e88c33!important;background:rgba(232,140,51,.12)}
+/* Left sidebar & compact focus total metric */
+.left-side .stats.left-six-stats .focus-stat{border-top-color:var(--amber)!important}
+.left-side .stats.left-six-stats .focus-stat b{color:#e5b967!important;font-size:21px!important}
+.focus-stat .focus-unit{font-size:11px;font-weight:800;color:#a49e85;margin-left:2px}
+.compact-summary-stats{grid-template-columns:repeat(7,minmax(0,1fr))!important}
+@media(max-width:1280px){.compact-summary-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+@media(max-width:620px){.compact-summary-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+/* Chrono Time Picker Dropup */
+.chrono-picker-wrap{position:relative;display:inline-flex}
+.chrono-menu{position:absolute;bottom:calc(100% + 6px);right:0;min-width:175px;background:#171b15;border:1px solid #424939;box-shadow:0 6px 18px rgba(0,0,0,.65);padding:4px;z-index:100;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px))}
+.chrono-menu[hidden]{display:none!important}
+.chrono-menu-item{display:block;width:100%;text-align:left;background:transparent;border:0;color:#a49e85;padding:6px 9px;font:900 9px/1 var(--font-mono);letter-spacing:.05em;cursor:pointer;transition:all .12s ease}
+.chrono-menu-item:hover{background:#232a1e;color:var(--amber)}
+.chrono-menu-item.active{color:var(--amber);background:rgba(217,117,43,.15);font-weight:900}
+.chrono-menu-item.chrono-menu-reset{color:var(--rust)}
+.chrono-menu-item.chrono-menu-reset:hover{background:rgba(132,57,44,.25);color:#f5ecd4}
+.chrono-menu-sep{height:1px;background:rgba(255,255,255,.1);margin:4px 0}
 </style>
  </head>
 <body>
@@ -1931,6 +1983,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 <div class="stat fire-stat"><small>FIRE // THIS WEEK</small><b id="xpWeek">0</b><em>周配额 <span id="xpQuotaMax">140</span> PT · <span id="xpQuota">0%</span></em></div>
 <div class="stat fire-stat"><small>FIRE // THIS MONTH</small><b id="xpMonth">0</b><em>本月投入 PT</em></div>
 <div class="stat fire-stat"><small>FIRE // TOTAL</small><b id="xpAll">0</b><em>累计投入 PT</em></div>
+<div class="stat focus-stat" style="grid-column:1/-1"><small>FOCUS // TOTAL</small><b id="focusTotal">0 <span class="focus-unit">MIN</span></b><em>累计专注时长</em></div>
 </section>
 <div class="left-section-label stage-label-row"><span>CAMPAIGN PHASES</span><button type="button" class="stage-manage" id="stageManageBtn" title="管理隐藏阶段" aria-label="管理隐藏阶段">▦</button></div>
 <section aria-label="五阶段战线" class="stage-strip" id="stageStrip"></section>
@@ -1950,6 +2003,38 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 <div class="ledger-item"><div class="ledger-top"><span>ARCHIVE // 档案</span><span><button class="btn" id="settingsExport" type="button">转移</button> <button class="btn" id="settingsImport" type="button">接收</button></span></div><p class="hint">与右侧加密档案同源：作战 + 分数同包。</p></div>
 </div>
 <p class="hint">WAR PLAN R3 · 单文件作战纸 · 设置即时生效并随档案保存。</p>
+</section>
+<section id="pomodoroView" hidden aria-label="战术专注时钟">
+<div class="card-head"><div><div class="eyebrow">TACTICAL CHRONO // DEEP WORK SPRINTS</div><h2>战术专注时钟</h2></div><button class="btn" id="pomodoroBack" type="button">返回作战纸</button></div>
+<div class="pomodoro-stage">
+  <div class="pomodoro-status-bar">
+    <span class="badge" id="pomodoroStatusBadge">STANDBY // 待命就绪</span>
+    <span class="pomodoro-meta" id="pomodoroSessionMeta">今日已完成: 0 轮专注</span>
+  </div>
+  <div class="pomodoro-clock-face">
+    <div class="pomodoro-digits" id="pomodoroDigits">25:00</div>
+    <div class="pomodoro-sublabel" id="pomodoroModeLabel">25 MINUTE TACTICAL SPRINT</div>
+    <div class="pomodoro-bar"><i id="pomodoroBarFill" style="width:0%"></i></div>
+  </div>
+  <div class="pomodoro-modes" id="pomodoroModes">
+    <button type="button" class="btn active" data-mins="25">25 MIN · 标准攻坚</button>
+    <button type="button" class="btn" data-mins="50">50 MIN · 深度推演</button>
+    <button type="button" class="btn" data-mins="45">45 MIN · 强化冲刺</button>
+    <button type="button" class="btn" data-mins="15">15 MIN · 快速突击</button>
+    <button type="button" class="btn" data-mins="60">60 MIN · 长程耐力</button>
+    <button type="button" class="btn" data-mins="5">5 MIN · 战术休整</button>
+  </div>
+  <div class="pomodoro-actions">
+    <button type="button" class="btn primary" id="pomodoroActionBtn">开始专注</button>
+    <button type="button" class="btn" id="pomodoroResetBtn">重置时钟</button>
+    <button type="button" class="btn" id="pomodoroCompleteBtn">提前完结本轮</button>
+  </div>
+  <div class="pomodoro-stats">
+    <div class="ledger-item"><div class="ledger-top"><span>TODAY // 今日专注</span><b id="pomodoroTodayMins">0 MIN</b></div></div>
+    <div class="ledger-item"><div class="ledger-top"><span>TOTAL // 累计专注</span><b id="pomodoroTotalMins">0 MIN</b></div></div>
+  </div>
+  <p class="hint pomodoro-directive">保持绝对专注与无线电静默。单兵突进，消灭一切杂念与外界干扰。</p>
+</div>
 </section>
 <div class="command-header">
 <div class="command-copy">
@@ -1973,7 +2058,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 <div class="card heat-card header-heat-card">
 <div class="card-head"><div><div class="eyebrow">SUSTAINED FIRE // LAST 26 WEEKS</div><h2>火力投入</h2></div><span class="badge" id="heatBadge">0 ACTIVE DAYS</span></div>
 <div class="heat-wrap"><div class="heat-grid" id="heatGrid"></div></div>
-<div class="heat-legend"><span>轻</span><i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><span>重</span><em>色深 = 当日投入战功越多</em></div>
+<div class="heat-legend"><span>轻</span><i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><span>重</span><em>色深 = 当日投入战功越多</em><span class="badge streak-badge" id="heatStreakBadge">0D STREAK</span></div>
 </div>
 </div><div class="motto directive-motto">
 <small id="mottoNo">INTERCEPTED FIELD DIRECTIVE</small>
@@ -2012,6 +2097,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 <div class="compact-summary-stat"><small>FIRE // THIS WEEK</small><b id="compactXpWeek">0</b><em>周配额 <span id="compactXpQuotaMax">140</span> PT · <span id="compactXpQuota">0%</span></em></div>
 <div class="compact-summary-stat"><small>FIRE // THIS MONTH</small><b id="compactXpMonth">0</b><em>本月投入 PT</em></div>
 <div class="compact-summary-stat"><small>FIRE // TOTAL</small><b id="compactXpAll">0</b><em>累计投入 PT</em></div>
+<div class="compact-summary-stat"><small>FOCUS // TOTAL</small><b id="compactFocusTotal">0 MIN</b><em>累计专注时长</em></div>
 </div>
 <div class="stage-label-row"><span class="compact-summary-label">CAMPAIGN PHASES</span><button type="button" class="stage-manage" id="compactStageManageBtn" title="管理隐藏阶段" aria-label="管理隐藏阶段">▦</button></div>
 <section aria-label="五阶段战线摘要" class="compact-summary-stages" id="compactStageStrip"></section>
@@ -2021,7 +2107,23 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 <section class="card">
 <div class="card-head"><div><div class="eyebrow" id="todayDate">TODAY</div><h2>每日行动简报</h2></div><span class="badge" id="stageBadge">STAGE</span></div>
 <div class="day-context" id="dayContext" style="display:none"></div><div id="taskList"></div><div id="dayMessage"></div>
-<div class="actions"><button class="btn primary" id="sealDay">签署当日战报</button><button class="btn" id="undoSeal">撤回战报</button></div>
+<div class="actions">
+<button type="button" class="btn primary" id="chronoToggleBtn" title="开始计时">开始专注 (25:00)</button>
+<div class="chrono-picker-wrap">
+<button type="button" class="btn" id="chronoTimeBtn" aria-haspopup="true" aria-expanded="false" title="选择专注时长">时长: 25 MIN ▾</button>
+<div class="chrono-menu" id="chronoMenu" hidden>
+<button type="button" class="chrono-menu-item active" data-mins="25">25 MIN // 标准攻坚</button>
+<button type="button" class="chrono-menu-item" data-mins="50">50 MIN // 深度推演</button>
+<button type="button" class="chrono-menu-item" data-mins="45">45 MIN // 强化冲刺</button>
+<button type="button" class="chrono-menu-item" data-mins="15">15 MIN // 快速突击</button>
+<button type="button" class="chrono-menu-item" data-mins="60">60 MIN // 长程耐力</button>
+<button type="button" class="chrono-menu-item" data-mins="5">5 MIN // 战术休整</button>
+<div class="chrono-menu-sep" aria-hidden="true"></div>
+<button type="button" class="chrono-menu-item chrono-menu-reset" data-action="reset">重置时钟 // RESET</button>
+</div>
+</div>
+<button type="button" class="btn" id="chronoViewBtn" title="切换到专属番茄钟界面">全屏时钟 ⛶</button>
+</div>
 </section>
 <section class="card past-paper-card">
 <div class="card-head"><div><div class="eyebrow">INTELLIGENCE INTAKE</div><h2>Past Paper 归档</h2></div><span class="badge" id="scBadge">LOG</span></div>
@@ -2083,7 +2185,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     const KEY='charles-war-plan-v1';
     const SIDE_COLLAPSE_KEY='charles-war-plan-side-collapsed';
     /* ============ KV 存储抽象 ============
-       Tauri 下：main.tsx 的 bridge 在页面解析后预加载文件快照（war-plan.json），读写走内存 + 落盘；
+       Tauri 下：main.ts 的 bridge 在页面解析后预加载文件快照（war-plan.json），读写走内存 + 落盘；
        纯浏览器下：沿用 localStorage。调用方一律同步读写 KV，init 在底部启动门内完成。 */
     const KV={
       cache:{},
@@ -2308,7 +2410,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       ['千里之行，始于足下','老子《道德经》'],['合抱之木，生于毫末','老子《道德经》'],['慎终如始，则无败事','老子《道德经》'],['学而时习之，不亦说乎','孔子《论语》'],['工欲善其事，必先利其器','孔子《论语》'],['人无远虑，必有近忧','孔子《论语》'],['见贤思齐焉，见不贤而内自省也','孔子《论语》'],['读书有三到，谓心到、眼到、口到','朱熹《训学斋规》'],
       ["The impediment to action advances action. What stands in the way becomes the way.",'Marcus Aurelius, Meditations 5.20'],["You have power over your mind—not outside events. Realize this, and you will find strength.",'Marcus Aurelius, Meditations 12.36'],["Men are disturbed not by things, but by the views which they take of things.",'Epictetus, Enchiridion 5'],["Plans are worthless, but planning is everything.",'Dwight D. Eisenhower, 1957 address'],["We shall fight on the beaches.",'Winston Churchill, 1940 speech'],["Never in the field of human conflict was so much owed by so many to so few.",'Winston Churchill, 1940 speech'],["The only way to do great work is to love what you do.",'Steve Jobs, Stanford commencement 2005'],["Stay hungry. Stay foolish.",'Steve Jobs, Stanford commencement 2005'],["The best way out is always through.",'Robert Frost, A Servant to Servants'],["Nothing in life is to be feared, it is only to be understood.",'Marie Curie'],["Chance favors only the prepared mind.",'Louis Pasteur, 1854 lecture'],["If I have seen further it is by standing on the shoulders of giants.",'Isaac Newton, 1676 letter'],["The most difficult thing is the decision to act, the rest is merely tenacity.",'Amelia Earhart'],["Life is either a daring adventure or nothing at all.",'Helen Keller, The Open Door'],["All we have to decide is what to do with the time that is given us.",'J. R. R. Tolkien, The Fellowship of the Ring'],["Not all those who wander are lost.",'J. R. R. Tolkien, The Fellowship of the Ring'],["Do. Or do not. There is no try.",'Yoda, The Empire Strikes Back'],["The readiness is all.",'William Shakespeare, Hamlet'],["Our doubts are traitors, and make us lose the good we oft might win.",'William Shakespeare, Measure for Measure'],["They can because they think they can.",'Virgil, Aeneid'],["Today is victory over yourself of yesterday; tomorrow is your victory over lesser men.",'Miyamoto Musashi, The Book of Five Rings'],["Do nothing which is of no use.",'Miyamoto Musashi, Dokkōdō'],["A pint of sweat saves a gallon of blood.",'George S. Patton'],["The will to win means nothing if you do not have the will to prepare.",'Juma Ikangaa'],["The future belongs to those who believe in the beauty of their dreams.",'Eleanor Roosevelt'],["You may encounter many defeats, but you must not be defeated.",'Maya Angelou, Letter to My Daughter']
     ];
-    const blank=()=>({version:3,cycles:Object.fromEntries(COMPONENTS.map(c=>[c.id,0])),checks:{},sealed:{},cycleLog:[],examDone:{},lastCheckin:null,soundOn:true,pinnedExam:null,updated:null});
+    const blank=()=>({version:3,cycles:Object.fromEntries(COMPONENTS.map(c=>[c.id,0])),checks:{},sealed:{},cycleLog:[],examDone:{},focusTotalMinutes:0,focusByDate:{},lastCheckin:null,soundOn:true,pinnedExam:null,updated:null});
     const NZ_FMT=new Intl.DateTimeFormat('en-CA',{timeZone:'Pacific/Auckland',year:'numeric',month:'2-digit',day:'2-digit'});
     let data=null;let todayKey=localDateKey(new Date());let renderedDate=todayKey;let nextExam=null;
     function load(){try{const raw=KV.get(KEY);if(!raw)return blank();return migrateBackup(JSON.parse(raw))}catch(e){return blank()}}
@@ -2326,12 +2428,12 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       const cycles={};
       for(const c of COMPONENTS)cycles[c.id]=c.id==='BIO'?num(src.BIO)+num(src['BIO P1'])+num(src['BIO P2']):num(src[c.id]);
       for(const k of Object.keys(src))if(!(k in cycles)&&!(k in FOLDED_CYCLES))cycles[k]=src[k];
-      const out={...base,...incoming,version:3,cycles,examDone:(incoming.examDone&&typeof incoming.examDone==='object')?incoming.examDone:{},soundOn:incoming.soundOn===undefined?true:!!incoming.soundOn,pinnedExam:typeof incoming.pinnedExam==='string'&&exams.some(e=>e.id===incoming.pinnedExam)?incoming.pinnedExam:null};
+      const out={...base,...incoming,version:3,cycles,examDone:(incoming.examDone&&typeof incoming.examDone==='object')?incoming.examDone:{},focusTotalMinutes:Number.isFinite(Number(incoming.focusTotalMinutes))?Number(incoming.focusTotalMinutes):0,focusByDate:(incoming.focusByDate&&typeof incoming.focusByDate==='object')?incoming.focusByDate:{},soundOn:incoming.soundOn===undefined?true:!!incoming.soundOn,pinnedExam:typeof incoming.pinnedExam==='string'&&exams.some(e=>e.id===incoming.pinnedExam)?incoming.pinnedExam:null};
       delete out.points;
       delete out.lightsOff;
       return out;
     }
-    function save(){data.updated=new Date().toISOString();KV.set(KEY,JSON.stringify(data));DATA_VERSION++;document.getElementById('saveState').textContent='VAULT SEALED // '+new Date().toLocaleTimeString('zh-CN');renderStats();renderLeftNote()}
+    function save(){data.updated=new Date().toISOString();KV.set(KEY,JSON.stringify(data));DATA_VERSION++;_activeIdsCache.clear();_dayXpCache.clear();document.getElementById('saveState').textContent='VAULT SEALED // '+new Date().toLocaleTimeString('zh-CN');renderStats();renderLeftNote()}
     function setSidebarCollapsed(collapsed,persist=true){
       document.body.classList.toggle('side-collapsed',collapsed);
       const btn=document.getElementById('sideCollapseBtn'),label=btn.querySelector('.side-toggle-label');
@@ -2364,11 +2466,17 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
         sfxTone(ctx,t,{type:'triangle',f0:430,f1:150,g:0.16,dur:0.14,dest:out});
         sfxTone(ctx,t+0.012,{type:'square',f0:2650,f1:2100,g:0.045,dur:0.3,dest:out});
         sfxTone(ctx,t+0.012,{type:'square',f0:3380,f1:2900,g:0.03,dur:0.26,dest:out});
+      }else if(kind==='alarm'||kind==='chime'){/* 战术任务完成提示音：双音高明亮警报钟 */
+        sfxTone(ctx,t,{type:'sine',f0:587.33,f1:587.33,g:0.35,dur:0.25,dest:out});
+        sfxTone(ctx,t+0.12,{type:'sine',f0:880,f1:880,g:0.4,dur:0.4,dest:out});
+        sfxTone(ctx,t+0.28,{type:'sine',f0:1174.66,f1:1174.66,g:0.45,dur:0.6,dest:out});
+        sfxHiss(ctx,t,{type:'bandpass',f0:2400,f1:1800,q:3,g:0.08,dur:0.15,dest:out});
       }else{/* 金属卡榫轻击 */
         sfxHiss(ctx,t,{type:'bandpass',f0:3600,f1:1400,q:2.2,g:0.22,dur:0.045,atk:0.002,dest:out});
         sfxTone(ctx,t,{type:'square',f0:1850,f1:820,g:0.05,dur:0.035,dest:out});
         sfxTone(ctx,t+0.008,{type:'triangle',f0:2950,f1:2600,g:0.025,dur:0.13,dest:out});
       }
+      setTimeout(()=>{try{out.disconnect()}catch(e){}}, (kind==='impact'?1200:(kind==='alarm'||kind==='chime')?1000:kind==='breech'?500:300));
     }
     function updateSfxToggle(){const btn=document.getElementById('sfxToggle');btn.textContent=data.soundOn?'SFX // ARMED':'SFX // SILENT';btn.classList.toggle('sfx-on',!!data.soundOn);btn.classList.toggle('sfx-off',!data.soundOn);btn.setAttribute('aria-pressed',String(!!data.soundOn))}
     function localDateKey(d){return NZ_FMT.format(d)}
@@ -2377,7 +2485,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     function setMotto(){let hash=0;for(const c of todayKey)hash=(hash*31+c.charCodeAt(0))>>>0;const index=hash%mottos.length;const entry=mottos[index];const text=Array.isArray(entry)?entry[0]:entry;const by=Array.isArray(entry)?entry[1]:'';document.getElementById('dailyMotto').innerHTML=text+(by?'<span class="motto-by">—— '+by+'</span>':'');document.getElementById('mottoNo').textContent='INTERCEPTED FIELD DIRECTIVE // '+String(index+1).padStart(2,'0')}
     function taskDefs(key){return getActiveTaskIds(key).map(id=>getTaskView(id,key))}
     /* FIELD NOTE：显示今日尚未领取的行动额度，避免重复倒计时 / BPhO 情报。 */
-    function renderLeftNote(){const ids=getActiveTaskIds(todayKey),checks=data.checks[todayKey]||{},remaining=ids.map(id=>getTaskView(id,todayKey)).filter(t=>t&&!checks[t.id]),pts=remaining.reduce((sum,t)=>sum+Number(t.pts||0),0),text=data.sealed[todayKey]?'REPORT SEALED // 本日战报已归档':remaining.length?`未清 ${remaining.length} 项 · 可取 ${pts} PT`:'全部目标已清 · 等待签署';['fieldNoteBody','compactFieldNoteBody'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=text+' · '+APP_VERSION})}
+    function renderLeftNote(){const ids=getActiveTaskIds(todayKey),checks=data.checks[todayKey]||{},remaining=ids.map(id=>getTaskView(id,todayKey)).filter(t=>t&&!checks[t.id]),pts=remaining.reduce((sum,t)=>sum+Number(t.pts||0),0),text=remaining.length?`未清 ${remaining.length} 项 · 可取 ${pts} PT`:'全部目标已清 · 今日大捷';['fieldNoteBody','compactFieldNoteBody'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=text+' · '+APP_VERSION})}
     /* 计划日序号（project 相关，非挂钟展示）：V2 窗内为 PLAN DAY nn/57 + Day Type，否则 T-MINUS/OVERDUE。 */
     function planDayLabel(key){const a='2026-09-21',b='2026-11-16';const dnum=dt=>new Date(dt+'T00:00:00').getTime();if(key<a)return 'T-MINUS '+Math.ceil((dnum(a)-dnum(key))/86400000)+' // 计划 9-21 启动';if(key>b)return 'OVERDUE // 计划已结束';const d=V2_DAYS[key];const n=Math.round((dnum(key)-dnum(a))/86400000)+1;return 'PLAN DAY '+String(n).padStart(2,'0')+(d&&d.day?' · '+d.day.toUpperCase():'')}
     /* 简报上下文：V2 当天的 Day Type + Notes（附件逐字），非 V2 日隐藏。 */
@@ -2385,7 +2493,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     /* Bullet image placed into the checkbox: png (user attachment) with svg placeholder fallback. */
     const TASK_BULLET='<img class="task-bullet" src="./war-plan-assets/bullet.png" onerror="this.onerror=null;this.src=\'./war-plan-assets/bullet.svg\'" alt="" aria-hidden="true">';
     function taskImpact(taskId){const row=document.getElementById('t-'+taskId)?.closest('.task');if(!row)return;row.classList.remove('task-impacting');void row.offsetWidth;row.classList.add('task-impacting');window.setTimeout(()=>row.classList.remove('task-impacting'),780)}
-    function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{},sealed=!!data.sealed[todayKey];document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();const taskMarkup=t=>`<div class="task ${checks[t.id]?'task-complete':''}"><input class="v150-task-input" type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''} ${sealed?'disabled':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}</label><strong>+${t.pts} PT</strong>${checks[t.id]?TASK_BULLET:''}</div>`;const rows=[];for(let i=0;i<list.length;i+=2){rows.push(`<div class="task-row">${taskMarkup(list[i])}${list[i+1]?taskMarkup(list[i+1]):'<div class="task task-phantom" aria-hidden="true"></div>'}</div>`)}document.getElementById('taskList').innerHTML=(rows.length?'<div class="task-div-v" aria-hidden="true"></div>':'')+rows.join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{const completed=el.checked;data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=completed;save();renderTasks();if(completed)taskImpact(el.dataset.task)}));const all=list.every(t=>checks[t.id]);document.getElementById('sealDay').disabled=sealed||!all;document.getElementById('undoSeal').disabled=!sealed;document.getElementById('dayMessage').innerHTML=sealed?'<div class="alert success">当日战报已签署，战功进入永久档案。</div>':all?'<div class="alert success">全线目标已经肃清，等待指挥官签署战报。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
+    function renderTasks(){todayKey=localDateKey(new Date());const list=taskDefs(todayKey),checks=data.checks[todayKey]||{};document.getElementById('todayDate').textContent=planDayLabel(todayKey);const _st=activeStage();document.getElementById('stageBadge').textContent=_st?`STAGE ${_st.n}`:'RESERVE';renderDayContext();const taskMarkup=t=>`<div class="task ${checks[t.id]?'task-complete':''}"><input class="v150-task-input" type="checkbox" id="t-${t.id}" data-task="${t.id}" ${checks[t.id]?'checked':''}><label for="t-${t.id}" class="${checks[t.id]?'done-text':''}">${t.title}</label><strong>+${t.pts} PT</strong>${checks[t.id]?TASK_BULLET:''}</div>`;const rows=[];for(let i=0;i<list.length;i+=2){rows.push(`<div class="task-row">${taskMarkup(list[i])}${list[i+1]?taskMarkup(list[i+1]):'<div class="task task-phantom" aria-hidden="true"></div>'}</div>`)}document.getElementById('taskList').innerHTML=(rows.length?'<div class="task-div-v" aria-hidden="true"></div>':'')+rows.join('');document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{const completed=el.checked;data.checks[todayKey]=data.checks[todayKey]||{};data.checks[todayKey][el.dataset.task]=completed;save();renderTasks();if(completed)taskImpact(el.dataset.task)}));const all=list.length>0&&list.every(t=>checks[t.id]),hasAny=list.some(t=>checks[t.id]);document.getElementById('dayMessage').innerHTML=all?'<div class="alert success">全线目标已经肃清，今日战线大获全胜！</div>':hasAny?'<div class="alert success">战火已点燃，连续坚守战绩已延续。</div>':'<div class="alert">警报：行动板仍有未肃清目标。</div>'}
     /* NZ 时区：9-27 前 NZST(UTC+12)，之后 NZDT(UTC+13)；与 exams 倒计时实例同一规则，唯一出处。 */
     function nzOffset(key){return key<'2026-09-27'?'+12:00':'+13:00'}
     function nzAbbr(key){return key<'2026-09-27'?'NZST':'NZDT'}
@@ -2417,9 +2525,10 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     function renderStages(){const MAX_STAGES=5;{const _vis=stages.filter(s=>stageMode(s.n)!=='hidden');if(_vis.length>MAX_STAGES){_vis.slice().sort((a,b)=>a.n-b.n).slice(0,_vis.length-MAX_STAGES).forEach(s=>{stageModes[s.n]='hidden'});try{KV.set(STAGE_MODES_KEY,JSON.stringify(stageModes))}catch(e){}}}const html=stages.map(s=>{const state=`${todayKey>s.end?'done':''} ${todayKey>=s.start&&todayKey<=s.end?'active':''}`;const mode=stageMode(s.n);if(mode==='hidden')return '';const collapsed=mode==='compact';return `<div class="stage ${state} ${collapsed?'compact':''}"><div class="stage-head"><b>STAGE ${s.n} // ${s.output}</b><button type="button" class="stage-mode${collapsed?' is-collapsed':''}" data-stage="${s.n}" title="切换显示：展开/简洁" aria-label="切换阶段显示" aria-expanded="${collapsed?'false':'true'}">${STAGE_CHEV}</button><button type="button" class="stage-hide" data-hide="${s.n}" title="隐藏该阶段" aria-label="隐藏阶段 STAGE ${s.n}">${STAGE_EYE_OFF}</button></div><span>${s.label}<br>${fmtShort(s.start)} — ${fmtShort(s.end)}</span></div>`}).join('');document.getElementById('stageStrip').innerHTML=html||STAGE_EMPTY;const compact=document.getElementById('compactStageStrip');if(compact)compact.innerHTML=html||STAGE_EMPTY}
     const COMPONENT_LABELS={'PHYS P2':'PHY P2','PHYS P1':'PHY P1','M S1':'MATH S1','M P1':'MATH P1'};
     function renderLedger(){let total=0;const quota=missionQuotaTotal();COMPONENTS.forEach(c=>{total+=Number(data.cycles[c.id]||0)});document.getElementById('ledger').innerHTML=COMPONENTS.filter(c=>!ledgerHidden.includes(c.id)).map(c=>{const n=Number(data.cycles[c.id]||0);const label=COMPONENT_LABELS[c.id]||c.id;return `<div class="ledger-item ${n>=componentQuota(c)?'complete':''}"><div class="ledger-top"><span>${label}</span><span>${n} / ${componentQuota(c)}</span><button type="button" class="ledger-hide" data-ledger-hide="${c.id}" title="隐藏该档案" aria-label="隐藏档案 ${label}">${STAGE_EYE_OFF}</button></div><div class="bar"><i style="width:${Math.min(100,n/componentQuota(c)*100)}%"></i></div></div>`}).join('');document.getElementById('ledgerTotal').textContent=total+' / '+quota;document.getElementById('ledgerPct').textContent=Math.round(total/quota*100)+'%';const _lhc=document.getElementById('ledgerHiddenCount');if(_lhc)_lhc.textContent=ledgerHidden.length;document.getElementById('ledgerTitle').textContent=quota+' 项行动档案'}
-    function streak(){const _ck=todayKey+'|'+DATA_VERSION;if(_streakCacheKey===_ck)return _streakCacheVal;let k=todayKey,n=0;if(!data.sealed[todayKey])k=stepDateKey(k,-1);while(data.sealed[k]){n++;k=stepDateKey(k,-1)}_streakCacheKey=_ck;_streakCacheVal=n;return n}
-    function adherenceStats(){const _ck=todayKey+'|'+DATA_VERSION;if(_adhCacheKey===_ck)return _adhCacheVal;const startKey=stages[0].start;let k=startKey,held=0,total=0;while(k<=todayKey){if(k<todayKey||data.sealed[k]){total++;if(data.sealed[k])held++}k=stepDateKey(k,1)}const _r={held,total};_adhCacheKey=_ck;_adhCacheVal=_r;return _r}
-    function renderStats(skipHeat=false){const st=streak(),adh=adherenceStats();document.getElementById('streakStat').textContent=st;document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;const compactStreak=document.getElementById('compactStreakStat'),compactAdherence=document.getElementById('compactAdherenceStat');if(compactStreak)compactStreak.textContent=st;if(compactAdherence)compactAdherence.textContent=adh.held+'/'+adh.total;renderLedger();if(!skipHeat)renderHeat()}
+    function isDayActive(k){const c=data.checks&&data.checks[k];return !!((c&&Object.values(c).some(Boolean))||(data.sealed&&data.sealed[k]))}
+    function streak(){const _ck=todayKey+'|'+DATA_VERSION;if(_streakCacheKey===_ck)return _streakCacheVal;let k=todayKey,n=0;if(!isDayActive(todayKey))k=stepDateKey(k,-1);while(isDayActive(k)){n++;k=stepDateKey(k,-1)}_streakCacheKey=_ck;_streakCacheVal=n;return n}
+    function adherenceStats(){const _ck=todayKey+'|'+DATA_VERSION;if(_adhCacheKey===_ck)return _adhCacheVal;const startKey=stages[0].start;let k=startKey,held=0,total=0;while(k<=todayKey){const act=isDayActive(k);if(k<todayKey||act){total++;if(act)held++}k=stepDateKey(k,1)}const _r={held,total};_adhCacheKey=_ck;_adhCacheVal=_r;return _r}
+    function renderStats(skipHeat=false){const st=streak(),adh=adherenceStats();document.getElementById('streakStat').textContent=st;document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;const compactStreak=document.getElementById('compactStreakStat'),compactAdherence=document.getElementById('compactAdherenceStat');if(compactStreak)compactStreak.textContent=st;if(compactAdherence)compactAdherence.textContent=adh.held+'/'+adh.total;const hsb=document.getElementById('heatStreakBadge');if(hsb){hsb.textContent=st+'D STREAK';hsb.classList.toggle('active',st>0)}const totalFocus=Number(data.focusTotalMinutes||0);const focusEl=document.getElementById('focusTotal');if(focusEl)focusEl.innerHTML=`${totalFocus} <span class="focus-unit">MIN</span>`;const compactFocus=document.getElementById('compactFocusTotal');if(compactFocus)compactFocus.textContent=`${totalFocus} MIN`;renderLedger();if(!skipHeat)renderHeat()}
     function isWithdrawn(e){return !!data.examDone[e.id]||e.key<todayKey}
     function renderEvents(){const active=exams.filter(e=>!isWithdrawn(e)),archived=exams.filter(isWithdrawn);nextExam=active[0]||null;document.getElementById('events').innerHTML=active.map((e,i)=>`<div class="event ${i===0?'next':''}"><b><span class="ev-d">${fmtShort(e.key)}</span><span class="ev-d-full">${fmtFull(e.key)}</span></b><span>${e.name}</span><button class="pin-exam ${data.pinnedExam===e.id?'pinned':''}" data-exam-pin="${e.id}" title="设为主目标">${data.pinnedExam===e.id?'主目标':'设为目标'}</button><button class="done-exam" data-exam-done="${e.id}" title="确认目标已被肃清">肃清</button></div>`).join('')||'<div class="event next"><b>END</b><span>行动板已无敌对目标</span></div>';document.querySelectorAll('[data-exam-pin]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.examPin;data.pinnedExam=data.pinnedExam===id?null:id;save();renderEvents();tick();toast(data.pinnedExam?'主目标已锁定':'已解除主目标')}));document.querySelectorAll('[data-exam-done]').forEach(btn=>btn.addEventListener('click',()=>{data.examDone[btn.dataset.examDone]=true;save();renderEvents();tick();toast('目标已从行动板撤除')}));document.getElementById('archiveCount').textContent=archived.length;document.getElementById('archivedEvents').innerHTML=archived.map(e=>`<div class="archived-row"><span>${fmtShort(e.key)} · ${e.name}</span><button class="restore" data-exam-restore="${e.id}">重启战区</button></div>`).join('')||'<div class="archived-row">尚无已肃清战区</div>';document.querySelectorAll('[data-exam-restore]').forEach(btn=>btn.addEventListener('click',()=>{delete data.examDone[btn.dataset.examRestore];save();renderEvents();tick();toast('目标已重新列入行动板')}))}
     /* R3-8v2: 开源模板同构驱动（@leenguyen/react-flip-clock-countdown, MIT）——
@@ -2449,7 +2558,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     }
     function tick(){const pin=exams.find(e=>e.id===data.pinnedExam&&!isWithdrawn(e));if(pin)nextExam=pin;if(!nextExam){setText(document.getElementById('nextDate'),'THEATRE CLEAR');setText(document.getElementById('nextName'),'所有敌对目标均已肃清');flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const diff=nextExam.date-new Date();setText(document.getElementById('nextName'),nextExam.name);if(diff<=0&&nextExam.key===todayKey){setText(document.getElementById('nextDate'),'CONTACT TODAY // 等待战果确认');flipSet('flipD','000');flipSet('flipH','00');flipSet('flipM','00');flipSet('flipS','00');return}const safe=Math.max(0,diff),d=Math.floor(safe/86400000),h=Math.floor(safe%86400000/3600000),m=Math.floor(safe%3600000/60000),s=Math.floor(safe%60000/1000);setText(document.getElementById('nextDate'),fmtShort(nextExam.key)+' // UTC'+nzOffset(nextExam.key)+' '+nzAbbr(nextExam.key)+' · 41°S 174°E');flipSet('flipD',String(d).padStart(3,'0'));flipSet('flipH',String(h).padStart(2,'0'));flipSet('flipM',String(m).padStart(2,'0'));flipSet('flipS',String(s).padStart(2,'0'))}
     function weeklyQuota(){const ws=weekStart(new Date(todayKey+'T12:00:00'));let q=0;for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(d.getDate()+i);q+=taskDefs(localDateKey(d)).reduce((s,t)=>s+Number(t.pts||0),0)}return q}
-    function dayXp(key){const _ck=key+'|'+DATA_VERSION;const _h=_dayXpCache.get(_ck);if(_h!==undefined)return _h;const c=data.checks[key];if(!c){_dayXpCache.set(_ck,0);return 0}let x=0;taskDefs(key).forEach(t=>{if(c[t.id])x+=t.pts});if(data.sealed[key])x+=SCORE.sealBonus;_dayXpCache.set(_ck,x);return x}
+    function dayXp(key){const _ck=key+'|'+DATA_VERSION;const _h=_dayXpCache.get(_ck);if(_h!==undefined)return _h;const c=data.checks[key];if(!c){_dayXpCache.set(_ck,0);return 0}let x=0;const defs=taskDefs(key);defs.forEach(t=>{if(c[t.id])x+=t.pts});if((defs.length>0&&defs.every(t=>c[t.id]))||(data.sealed&&data.sealed[key]))x+=SCORE.sealBonus;_dayXpCache.set(_ck,x);return x}
     function weekStart(d){const c=new Date(d);c.setDate(c.getDate()-((c.getDay()+6)%7));return c}
     function renderHeat(){
       const grid=document.getElementById('heatGrid');if(!grid)return;
@@ -2458,6 +2567,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       let curKey=localDateKey(start);for(let i=0;i<WEEKS*7;i++){const k=curKey,v=dayXp(k);if(v>max)max=v;if(v>0)active++;cells.push([k,v,k>todayKey]);curKey=stepDateKey(curKey,1)}
       grid.innerHTML=cells.map(([k,v,future])=>{const r=v/max;const lv=v<=0?0:r<=.25?1:r<=.5?2:r<=.78?3:4;return `<i class="l${lv}${k===todayKey?' today':''}${future?' future':''}" data-tooltip="${k} · ${v} PT" aria-label="${k} · ${v} PT"></i>`}).join('');
       document.getElementById('heatBadge').textContent=active+' ACTIVE DAYS';
+      const hsb=document.getElementById('heatStreakBadge');if(hsb){const st=streak();hsb.textContent=st+'D STREAK';hsb.classList.toggle('active',st>0)}
       const ws=localDateKey(weekStart(new Date(todayKey+'T12:00:00'))),mo=todayKey.slice(0,7);
       let wk=0,mn=0,all=0;Object.keys(data.checks).forEach(k=>{const v=dayXp(k);all+=v;if(k>=ws&&k<=todayKey)wk+=v;if(k.slice(0,7)===mo)mn+=v});
       document.getElementById('xpToday').textContent=dayXp(todayKey);
@@ -2468,7 +2578,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       [['compactXpToday',dayXp(todayKey)],['compactXpWeek',wk],['compactXpMonth',mn],['compactXpAll',all],['compactXpQuota',Math.round(wk/Math.max(1,weeklyQuota())*100)+'%']].forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=value});document.getElementById('compactXpQuotaMax').textContent=weeklyQuota();
     }
     function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700)}
-    document.addEventListener('pointerdown',e=>{const btn=e.target.closest('button');if(!btn||btn.disabled||btn.closest('#tauri-chrome'))return;playSfx(btn.id==='sealDay'?'impact':(btn.id==='scAddBtn'||btn.hasAttribute('data-exam-done')||btn.hasAttribute('data-exam-pin'))?'breech':'click')});
+    document.addEventListener('pointerdown',e=>{const btn=e.target.closest('button');if(!btn||btn.disabled||btn.closest('#tauri-chrome'))return;playSfx((btn.id==='scAddBtn'||btn.hasAttribute('data-exam-done')||btn.hasAttribute('data-exam-pin'))?'breech':'click')});
     document.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"],select'))playSfx('click')});
     document.getElementById('stageStrip').addEventListener('click',e=>{const h=e.target.closest('.stage-hide');if(h){hideStage(Number(h.dataset.hide));return}const b=e.target.closest('.stage-mode');if(!b)return;cycleStageMode(Number(b.dataset.stage))});
     document.getElementById('compactStageStrip').addEventListener('click',e=>{const h=e.target.closest('.stage-hide');if(h){hideStage(Number(h.dataset.hide));return}const b=e.target.closest('.stage-mode');if(!b)return;cycleStageMode(Number(b.dataset.stage))});
@@ -2477,12 +2587,28 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     document.getElementById('ledger').addEventListener('click',e=>{const h=e.target.closest('[data-ledger-hide]');if(!h)return;hideLedger(h.dataset.ledgerHide)});
     document.getElementById('ledgerManageBtn').addEventListener('click',openLedgerModal);
     /* R3-7: 设置界面 — 纸面内容整体替换 */
-    function openSettings(){document.querySelector('.main').classList.add('settings-open');document.getElementById('settingsView').removeAttribute('hidden');syncSettingsLabels()}
-    function closeSettings(){document.body.classList.add('view-switch');document.querySelector('.main').classList.remove('settings-open');document.getElementById('settingsView').setAttribute('hidden','');requestAnimationFrame(()=>setTimeout(()=>document.body.classList.remove('view-switch'),350))}
+    function openSettings(){document.querySelector('.main').classList.add('settings-open');document.getElementById('settingsView').removeAttribute('hidden');syncSettingsLabels();scrollToPageTop()}
+    function closeSettings(){document.body.classList.add('view-switch');document.querySelector('.main').classList.remove('settings-open');document.getElementById('settingsView').setAttribute('hidden','');requestAnimationFrame(()=>setTimeout(()=>{document.body.classList.remove('view-switch');if(typeof window.checkCollision==='function')window.checkCollision()},350))}
     function syncSettingsLabels(){const s=document.getElementById('settingsSfx');if(s)s.textContent=data.soundOn?'SFX // 开':'SFX // 关'}
-    document.getElementById('settingsBtn').addEventListener('click',()=>{openSettings();smoothScrollToMainTop()});
-    function smoothScrollToMainTop(){const m=document.querySelector('.main');const y0=window.scrollY;const target=m?Math.max(0,m.getBoundingClientRect().top+y0-8):0;if(y0===target){window.scrollTo(0,target);return}const t0=performance.now(),dur=450;const step=t=>{const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);window.scrollTo(0,Math.round(y0+(target-y0)*e));if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step);setTimeout(()=>{if(Math.abs(window.scrollY-target)>4)window.scrollTo(0,target)},dur+250)}
-    document.getElementById('sideSettingsBtn').addEventListener('click',()=>{openSettings();smoothScrollToMainTop()});
+    document.getElementById('settingsBtn').addEventListener('click',()=>{openSettings()});
+    function scrollToPageTop(){
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      requestAnimationFrame(()=>{
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        const activeView = document.querySelector('.main.pomodoro-open #pomodoroView, .main.settings-open #settingsView');
+        if(activeView) activeView.scrollIntoView({ block: 'start', behavior: 'instant' });
+      });
+      setTimeout(()=>{
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }, 50);
+    }
+    document.getElementById('sideSettingsBtn').addEventListener('click',()=>{openSettings()});
     document.getElementById('settingsBack').addEventListener('click',closeSettings);
     document.getElementById('settingsSfx').addEventListener('click',()=>{data.soundOn=!data.soundOn;save();updateSfxToggle();syncSettingsLabels();toast(data.soundOn?'音效已开启':'音效已关闭')});
     document.getElementById('settingsSidebar').addEventListener('click',()=>setSidebarCollapsed(!document.body.classList.contains('side-collapsed')));
@@ -2498,8 +2624,185 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     document.addEventListener('click',e=>{if(!e.target.closest('.sc-history-panel'))document.getElementById('scHistoryCard').classList.remove('scroll-armed')});
     document.getElementById('sideCollapseBtn').addEventListener('click',()=>setSidebarCollapsed(!document.body.classList.contains('side-collapsed')));
     document.getElementById('sfxToggle').addEventListener('click',()=>{data.soundOn=!data.soundOn;save();updateSfxToggle();if(data.soundOn)playSfx('impact')});
-    document.getElementById('sealDay').addEventListener('click',()=>{const list=taskDefs(todayKey),checks=data.checks[todayKey]||{};if(!list.every(t=>checks[t.id]))return;data.sealed[todayKey]=true;save();renderTasks();toast('司令部已接收当日战报')});
-    document.getElementById('undoSeal').addEventListener('click',()=>{if(!data.sealed[todayKey])return;data.sealed[todayKey]=false;save();renderTasks();toast('当日战报已从档案室撤回')});
+    /* Dedicated Pomodoro Clock View (Patterned after Settings) */
+    function openPomodoro(){
+      document.querySelector('.main').classList.add('pomodoro-open');
+      document.getElementById('pomodoroView').removeAttribute('hidden');
+      updateChronoUI();
+      scrollToPageTop();
+    }
+    function closePomodoro(){
+      document.body.classList.add('view-switch');
+      document.querySelector('.main').classList.remove('pomodoro-open');
+      document.getElementById('pomodoroView').setAttribute('hidden','');
+      requestAnimationFrame(()=>setTimeout(()=>{
+        document.body.classList.remove('view-switch');
+        if(typeof window.checkCollision==='function')window.checkCollision();
+      },350));
+    }
+    document.getElementById('pomodoroBack').addEventListener('click',closePomodoro);
+
+    /* Pomodoro Tactical Chrono Module */
+    let chronoMode=25,chronoTotalSecs=25*60,chronoRemainingSecs=25*60,chronoState='idle',chronoTimerId=null,chronoSessionsCount=0;
+    function updateChronoUI(){
+      const toggleBtn=document.getElementById('chronoToggleBtn'),timeBtn=document.getElementById('chronoTimeBtn');
+      const m=Math.floor(chronoRemainingSecs/60),s=chronoRemainingSecs%60;
+      const timeStr=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+      if(timeBtn)timeBtn.textContent=`时长: ${chronoMode} MIN ▾`;
+      if(toggleBtn){
+        if(chronoState==='running'){
+          toggleBtn.textContent=`暂停 (${timeStr})`;
+          toggleBtn.className='btn';
+          toggleBtn.title='单击暂停，双击重置时钟';
+        }else if(chronoState==='paused'){
+          toggleBtn.textContent=`继续 (${timeStr})`;
+          toggleBtn.className='btn primary';
+          toggleBtn.title='单击继续，双击重置时钟';
+        }else{
+          toggleBtn.textContent=chronoMode===5?`开始休整 (${timeStr})`:`开始专注 (${timeStr})`;
+          toggleBtn.className='btn primary';
+          toggleBtn.title='开始计时';
+        }
+      }
+      // Sync Pomodoro Dedicated View
+      const pDigits=document.getElementById('pomodoroDigits');
+      const pBadge=document.getElementById('pomodoroStatusBadge');
+      const pAction=document.getElementById('pomodoroActionBtn');
+      const pLabel=document.getElementById('pomodoroModeLabel');
+      const pBar=document.getElementById('pomodoroBarFill');
+      const pMeta=document.getElementById('pomodoroSessionMeta');
+      const pToday=document.getElementById('pomodoroTodayMins');
+      const pTotal=document.getElementById('pomodoroTotalMins');
+
+      if(pDigits) pDigits.textContent=timeStr;
+      if(pLabel) pLabel.textContent=(chronoMode===5||chronoMode===15)?`${chronoMode} MINUTE TACTICAL REST`:`${chronoMode} MINUTE TACTICAL SPRINT`;
+      if(pBar){
+        const pct=chronoTotalSecs>0?Math.max(0,Math.min(100,((chronoTotalSecs-chronoRemainingSecs)/chronoTotalSecs)*100)):0;
+        pBar.style.width=pct+'%';
+      }
+      if(pBadge){
+        if(chronoState==='running'){
+          pBadge.textContent=(chronoMode===5||chronoMode===15)?'RESTING // 战术整休中':'ENGAGED // 专注作战中';
+          pBadge.className='badge active';
+        }else if(chronoState==='paused'){
+          pBadge.textContent='HOLD // 战术悬停';
+          pBadge.className='badge';
+        }else{
+          pBadge.textContent='STANDBY // 待命就绪';
+          pBadge.className='badge';
+        }
+      }
+      if(pAction){
+        if(chronoState==='running'){
+          pAction.textContent='暂停专注';
+          pAction.className='btn';
+        }else if(chronoState==='paused'){
+          pAction.textContent='继续专注';
+          pAction.className='btn primary';
+        }else{
+          pAction.textContent=(chronoMode===5||chronoMode===15)?'开始整休':'开始专注';
+          pAction.className='btn primary';
+        }
+      }
+      if(pMeta) pMeta.textContent=`今日已完成: ${chronoSessionsCount} 轮专注`;
+      if(pToday){
+        const tm=(data&&data.focusByDate&&data.focusByDate[todayKey])||0;
+        pToday.textContent=`${tm} MIN`;
+      }
+      if(pTotal){
+        const tot=(data&&data.focusTotalMinutes)||0;
+        pTotal.textContent=`${tot} MIN`;
+      }
+      document.querySelectorAll('#pomodoroModes .btn[data-mins]').forEach(btn=>{
+        btn.classList.toggle('active',Number(btn.dataset.mins)===chronoMode);
+      });
+    }
+    function selectChronoMode(mins){
+      const targetMins=Number(mins);
+      if(chronoState==='running'&&targetMins!==chronoMode){
+        if(!confirm('正在专注作战中，切换时长将重置当前时钟，确定继续？'))return;
+      }
+      clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';chronoMode=targetMins;chronoTotalSecs=chronoMode*60;chronoRemainingSecs=chronoTotalSecs;
+      document.querySelectorAll('#chronoMenu .chrono-menu-item[data-mins]').forEach(btn=>{const act=Number(btn.dataset.mins)===chronoMode;btn.classList.toggle('active',act)});
+      updateChronoUI();
+    }
+    function toggleChrono(){
+      if(chronoState==='running'){
+        clearInterval(chronoTimerId);chronoTimerId=null;chronoState='paused';playSfx('click');updateChronoUI();
+      }else{
+        chronoState='running';playSfx('breech');updateChronoUI();
+        chronoTimerId=setInterval(()=>{
+          chronoRemainingSecs--;
+          if(chronoRemainingSecs<=0){completeChronoSession()}else{updateChronoUI()}
+        },1000);
+      }
+    }
+    function resetChrono(){
+      clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';chronoRemainingSecs=chronoTotalSecs;playSfx('click');updateChronoUI();
+    }
+    function completeChronoSession(isEarly=false){
+      const elapsedMins=Math.max(1,Math.floor((chronoTotalSecs-chronoRemainingSecs)/60));
+      const creditMins=isEarly?elapsedMins:chronoMode;
+      clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';chronoRemainingSecs=chronoTotalSecs;
+      playSfx('alarm');
+      if(chronoMode!==5&&chronoMode!==15){
+        chronoSessionsCount++;
+        data.focusTotalMinutes=(data.focusTotalMinutes||0)+creditMins;
+        data.focusByDate=data.focusByDate||{};
+        data.focusByDate[todayKey]=(data.focusByDate[todayKey]||0)+creditMins;
+        save();
+        renderStats();
+        toast(`战术专注完成！已累积专注 ${creditMins} 分钟（总计 ${data.focusTotalMinutes} MIN）`);
+      }else{
+        toast('休整结束，准备投入下一轮战斗！');
+      }
+      updateChronoUI();
+    }
+    const chronoTimeBtn=document.getElementById('chronoTimeBtn');
+    const chronoMenu=document.getElementById('chronoMenu');
+    if(chronoTimeBtn&&chronoMenu){
+      chronoTimeBtn.addEventListener('click',e=>{
+        e.stopPropagation();
+        const isHidden=chronoMenu.hasAttribute('hidden');
+        if(isHidden){chronoMenu.removeAttribute('hidden');chronoTimeBtn.setAttribute('aria-expanded','true')}
+        else{chronoMenu.setAttribute('hidden','');chronoTimeBtn.setAttribute('aria-expanded','false')}
+      });
+      chronoMenu.addEventListener('click',e=>{
+        const resetItem=e.target.closest('[data-action="reset"]');
+        if(resetItem){resetChrono();chronoMenu.setAttribute('hidden','');chronoTimeBtn.setAttribute('aria-expanded','false');return}
+        const item=e.target.closest('.chrono-menu-item[data-mins]');
+        if(item){selectChronoMode(item.dataset.mins);chronoMenu.setAttribute('hidden','');chronoTimeBtn.setAttribute('aria-expanded','false')}
+      });
+      document.addEventListener('click',e=>{
+        if(!chronoMenu.hasAttribute('hidden')&&!e.target.closest('#chronoMenu')&&!e.target.closest('#chronoTimeBtn')){
+          chronoMenu.setAttribute('hidden','');chronoTimeBtn.setAttribute('aria-expanded','false');
+        }
+      });
+    }
+    const chronoToggleBtn=document.getElementById('chronoToggleBtn');
+    if(chronoToggleBtn){
+      chronoToggleBtn.addEventListener('click',toggleChrono);
+      chronoToggleBtn.addEventListener('dblclick',()=>{if(chronoState!=='idle'||chronoRemainingSecs!==chronoTotalSecs){resetChrono();toast('战术时钟已重置')}});
+    }
+    const chronoViewBtn=document.getElementById('chronoViewBtn');
+    if(chronoViewBtn){
+      chronoViewBtn.addEventListener('click',openPomodoro);
+    }
+    document.getElementById('pomodoroActionBtn').addEventListener('click',toggleChrono);
+    document.getElementById('pomodoroResetBtn').addEventListener('click',()=>{resetChrono();toast('战术时钟已重置')});
+    document.getElementById('pomodoroCompleteBtn').addEventListener('click',()=>{
+      const elapsedMins=Math.floor((chronoTotalSecs-chronoRemainingSecs)/60);
+      if(elapsedMins<1&&chronoRemainingSecs>0){
+        toast('专注不足 1 分钟，未计入战果');
+        resetChrono();
+      }else{
+        completeChronoSession(true);
+      }
+    });
+    document.getElementById('pomodoroModes').addEventListener('click',e=>{
+      const btn=e.target.closest('.btn[data-mins]');
+      if(btn)selectChronoMode(btn.dataset.mins);
+    });
     /* R3-6: 统一加密档案 —— 作战数据 + 分数存档同包转移/接收（为 exe 独立容器准备：单文件即全部档案）。
        分数日常经 KV 永久保存：Tauri 下写入应用目录 war-plan.json，浏览器下为 localStorage。 */
     function collectScoreSlots(){const scores={};try{SC_SUBJECTS.forEach(s=>s.subs.forEach(sb=>{const k=scKey(s.id,sb.id),raw=KV.get(k);if(raw)scores[k]=JSON.parse(raw)}))}catch(e){}return scores}
@@ -2524,7 +2827,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       }
     }catch(err){alert('安全警报：档案校验失败，拒绝接入。')}};reader.readAsText(file);e.target.value=''});
     /* reset（焚毁）入口已移除：数据只能经备份文件管理，此处不再提供一键清空 */
-    function renderAll(deferHeavy=false){todayKey=localDateKey(new Date());renderedDate=todayKey;setMotto();renderTasks();renderStages();renderStats(deferHeavy);renderEvents();updateSfxToggle();tick();renderLeftNote()}
+    function renderAll(deferHeavy=false){todayKey=localDateKey(new Date());renderedDate=todayKey;setMotto();renderTasks();renderStages();renderStats(deferHeavy);renderEvents();updateSfxToggle();updateChronoUI();tick();renderLeftNote()}
     function finishStartup(){const run=()=>{renderHeat();scStartupReady=true;scRender()};if('requestIdleCallback'in window)window.requestIdleCallback(run,{timeout:250});else requestAnimationFrame(()=>setTimeout(run,0))}
     /* 启动门：KV 快照就绪后才允许任何读取（文件模式等 bridge，浏览器模式直接过）。 */
     ;(async function(){
@@ -2570,7 +2873,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
     function scComponentFor(subj,sub){if(subj==='fm')return null;return SC_COMPONENT_MAP[subj+':'+sub]}
     function scKey(subj,sub){return 'scoretracker:'+subj+':'+sub}
-    async function scLoadEntries(subj,sub){const k=scKey(subj,sub);if(scCache[k])return scCache[k];let arr=[];try{const raw=KV.get(k);arr=raw?JSON.parse(raw):[]}catch(e){console.error('load failed',e);arr=[]}arr.sort((a,b)=>a.date.localeCompare(b.date));scCache[k]=arr;return arr}
+    async function scLoadEntries(subj,sub){const k=scKey(subj,sub);if(scCache[k])return scCache[k];let arr=[];try{const raw=KV.get(k);arr=raw?JSON.parse(raw):[]}catch(e){console.error('load failed',e);arr=[]}arr.sort((a,b)=>a.date<b.date?-1:(a.date>b.date?1:0));scCache[k]=arr;return arr}
     async function scSaveEntries(subj,sub,arr){const k=scKey(subj,sub);scCache[k]=arr;try{KV.set(k,JSON.stringify(arr))}catch(e){console.error('save failed',e);alert('存档失败：本机储存单元被封锁或已满，本次战果无法归档。')}}
     function scPctClass(p){if(p>=85)return 'sc-pct-good';if(p>=65)return 'sc-pct-mid';return 'sc-pct-low'}
     function scBuildTabs(){
@@ -2646,11 +2949,17 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
       scChartRaf=requestAnimationFrame(step);
     }
     const SC_UNDO_WINDOW_MS=3*60*1000;
+    const _EN_GB_MONTHS=['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+    function formatHistoryDate(iso){
+      if(!iso||iso.length<10)return iso;
+      const y=iso.slice(0,4),m=Number(iso.slice(5,7)),d=iso.slice(8,10);
+      return `${d} ${_EN_GB_MONTHS[m]||''} ${y}`;
+    }
     function scRenderHistory(entries){
       const card=document.getElementById('scHistoryCard');
       if(entries.length===0){card.innerHTML='<div class="sc-empty">履历档案空白</div>';return}
       const now=Date.now(),rev=[...entries].reverse();
-      card.innerHTML=rev.map(e=>{const pct=(e.score/e.total)*100,d=new Date(e.date+'T00:00:00'),dateStr=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),canUndo=e.createdAt&&(now-e.createdAt)<SC_UNDO_WINDOW_MS,delBtn=canUndo?`<button type="button" class="sc-del" data-id="${e.id}">✕</button>`:'';return `<div class="sc-history-item"><div><div class="sc-hi-date">${dateStr}</div><div class="sc-hi-score">${e.score}/${e.total}</div></div><div style="display:flex;align-items:center;"><div class="sc-hi-pct ${scPctClass(pct)}">${pct.toFixed(1)}%</div>${delBtn}</div></div>`}).join('');
+      card.innerHTML=rev.map(e=>{const pct=(e.score/e.total)*100,dateStr=formatHistoryDate(e.date),canUndo=e.createdAt&&(now-e.createdAt)<SC_UNDO_WINDOW_MS,delBtn=canUndo?`<button type="button" class="sc-del" data-id="${e.id}">✕</button>`:'';return `<div class="sc-history-item"><div><div class="sc-hi-date">${dateStr}</div><div class="sc-hi-score">${e.score}/${e.total}</div></div><div style="display:flex;align-items:center;"><div class="sc-hi-pct ${scPctClass(pct)}">${pct.toFixed(1)}%</div>${delBtn}</div></div>`}).join('');
       card.querySelectorAll('.sc-del').forEach(btn=>{btn.onclick=async()=>{const id=btn.getAttribute('data-id');let arr=await scLoadEntries(scState.subject,scState.sub);arr=arr.filter(e=>String(e.id)!==id);await scSaveEntries(scState.subject,scState.sub,arr);const comp=scComponentFor(scState.subject,scState.sub);if(comp){data.cycles[comp]=Math.max(0,Number(data.cycles[comp]||0)-1);save()}scRender();toast('战果已撤回，兵力统计同步回滚')}});
     }
     async function scRender(){
@@ -2719,16 +3028,21 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     if('ResizeObserver' in window&&scResponsiveCard)new ResizeObserver(scSyncResponsiveLayout).observe(scResponsiveCard);
     let scResizeTimer=null;
     window.addEventListener('resize',()=>{clearTimeout(scResizeTimer);scResizeTimer=setTimeout(scSyncResponsiveLayout,120)});
-    setInterval(()=>{const k=scKey(scState.subject,scState.sub);if(scCache[k])scRenderHistory(scCache[k])},15000);
+    setInterval(()=>{const k=scKey(scState.subject,scState.sub);const list=scCache[k];if(list&&list.some(e=>e.createdAt&&(Date.now()-e.createdAt)<(SC_UNDO_WINDOW_MS+15000)))scRenderHistory(list)},15000);
   })();
   </script>
 
 <script id="field-desk-v11-directive-width-sync">
 (()=>{
-  const checkCollision=()=>{
+  window.checkCollision=()=>{
+    const main=document.querySelector('.main');
+    if(main&&(main.classList.contains('settings-open')||main.classList.contains('pomodoro-open'))){
+      document.body.classList.remove('state-force-state2','state-header-stacked');
+      return;
+    }
     const h1=document.querySelector('.command-copy h1');
     const cd=document.querySelector('.main-countdown');
-    if(!h1||!cd)return;
+    if(!h1||!cd||cd.offsetParent===null||h1.offsetParent===null)return;
     // Measure the natural layout; forced fallback classes must not become sticky after resizing back up.
     document.body.classList.remove('state-force-state2','state-header-stacked');
     const range=document.createRange();
@@ -2736,11 +3050,17 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     const textRight=range.getBoundingClientRect().right;
     const cdLeft=cd.getBoundingClientRect().left;
     if(cdLeft<=textRight+12){
-      const leftSide=document.querySelector('.left-side');
-      if(leftSide&&window.getComputedStyle(leftSide).display!=='none'){
+      if(window.innerWidth<=1600){
         document.body.classList.add('state-force-state2');
       }else{
         document.body.classList.add('state-header-stacked');
+      }
+    }else{
+      if(window.innerWidth>1600){
+        document.body.classList.remove('state-force-state2');
+      }
+      if(window.innerWidth>1260){
+        document.body.classList.remove('state-header-stacked');
       }
     }
   };
@@ -2750,7 +3070,7 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
     const w=cd.getBoundingClientRect().width;
     document.documentElement.style.setProperty('--directive-countdown-cut',w+'px');
     document.documentElement.style.setProperty('--directive-alignment-cut',(w*(window.innerWidth<=1280?1.7:1.3))+'px');
-    checkCollision();
+    window.checkCollision();
   };
   sync();
   window.addEventListener('resize',sync,{passive:true});
@@ -2782,11 +3102,16 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 
 <script id="v1-4-software-tooltip">
 (()=>{
-  const tip=document.getElementById('appTooltip');let target=null,w=160,h=30;
-  const move=e=>{if(!target)return;const pad=12;tip.style.left=Math.min(innerWidth-w-8,e.clientX+pad)+'px';tip.style.top=Math.min(innerHeight-h-8,e.clientY+pad)+'px'};
-  document.addEventListener('pointerover',e=>{const el=e.target.closest('[data-tooltip]');if(!el)return;target=el;tip.textContent=el.dataset.tooltip;tip.hidden=false;w=tip.offsetWidth||160;h=tip.offsetHeight||30;move(e)});
+  const tip=document.getElementById('appTooltip');let target=null,w=160,h=30,raf=0,lastEvt=null;
+  const updatePos=()=>{
+    raf=0;if(!target||!lastEvt)return;const pad=12;
+    tip.style.left=Math.min(innerWidth-w-8,lastEvt.clientX+pad)+'px';
+    tip.style.top=Math.min(innerHeight-h-8,lastEvt.clientY+pad)+'px';
+  };
+  const move=e=>{lastEvt=e;if(!target)return;if(!raf)raf=requestAnimationFrame(updatePos)};
+  document.addEventListener('pointerover',e=>{const el=e.target.closest('[data-tooltip]');if(!el)return;target=el;tip.textContent=el.dataset.tooltip;tip.hidden=false;w=tip.offsetWidth||160;h=tip.offsetHeight||30;lastEvt=e;updatePos()});
   document.addEventListener('pointermove',move,{passive:true});
-  document.addEventListener('pointerout',e=>{if(target&&(!e.relatedTarget||!target.contains(e.relatedTarget))){target=null;tip.hidden=true}});
+  document.addEventListener('pointerout',e=>{if(target&&(!e.relatedTarget||!target.contains(e.relatedTarget))){target=null;lastEvt=null;tip.hidden=true;if(raf){cancelAnimationFrame(raf);raf=0}}});
 })();
 </script>
 
