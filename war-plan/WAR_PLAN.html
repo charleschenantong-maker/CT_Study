@@ -2220,6 +2220,31 @@ body.is-immersive .main.chrono-running .pomo-imm-dot {
   border-color: #dfb45e;
   box-shadow: 0 0 16px rgba(194,154,75,.45);
 }
+.pomo-imm-actions .btn.btn-break,
+.pomodoro-actions .btn.btn-break {
+  background: #38bdf8 !important;
+  color: #03131e !important;
+  font-weight: 900 !important;
+  border-color: #38bdf8 !important;
+}
+.pomo-imm-actions .btn.btn-break:hover,
+.pomodoro-actions .btn.btn-break:hover {
+  background: #7dd3fc !important;
+  border-color: #7dd3fc !important;
+  box-shadow: 0 0 16px rgba(56,189,248,.45) !important;
+}
+body.is-break .pomo-track-live {
+  stroke: #38bdf8 !important;
+  filter: drop-shadow(0 0 8px rgba(56,189,248,.45)) !important;
+}
+body.is-break .pomo-leading-pip {
+  fill: #7dd3fc !important;
+  filter: drop-shadow(0 0 6px #7dd3fc) !important;
+}
+body.is-break .pomo-imm-dot {
+  background: #38bdf8 !important;
+  box-shadow: 0 0 10px #38bdf8 !important;
+}
 </style>
 <style id="module1-left-rail-type">
 /* 模块一左侧边栏可读性：只放大极小字（font-size/line-height），不碰 grid 列数/padding/min-height/ellipsis */
@@ -2962,6 +2987,7 @@ body.pomodoro-open:not(.is-immersive) {
       <button type="button" class="btn primary" id="pomodoroActionBtn">开始专注</button>
       <button type="button" class="btn" id="pomodoroResetBtn">重置时钟</button>
       <button type="button" class="btn" id="pomodoroCompleteBtn">提前完结本轮</button>
+      <button type="button" class="btn btn-break" id="pomodoroSkipBreakBtn" style="display:none;" title="快捷键: Space">跳过休整</button>
     </div>
     <p class="hint pomodoro-directive">保持绝对专注与无线电静默。单兵突进，消灭一切杂念与外界干扰。</p>
   </div>
@@ -3072,6 +3098,7 @@ body.pomodoro-open:not(.is-immersive) {
       <button type="button" class="btn" id="pomodoroImmResetBtn" title="快捷键: R">重置时钟 (R)</button>
       <button type="button" class="btn primary" id="pomodoroImmActionBtn" title="快捷键: Space">开始专注 (Space)</button>
       <button type="button" class="btn" id="pomodoroImmCompleteBtn">提前完结本轮</button>
+      <button type="button" class="btn btn-break" id="pomodoroImmSkipBreakBtn" style="display:none;" title="快捷键: Space">跳过休整</button>
     </div>
   </div>
 </div>
@@ -3581,7 +3608,8 @@ body.pomodoro-open:not(.is-immersive) {
         click: "metalTap",
         chime: "alarm",
         metalLatch: "taskComplete",
-        metalRelease: "taskUncheck"
+        metalRelease: "taskUncheck",
+        metalClick: "modalOpen"
       };
       const key = aliasMap[kind] || kind;
       const buffer = sfxBuffers[key];
@@ -3710,7 +3738,7 @@ body.pomodoro-open:not(.is-immersive) {
       try{preloadAllSfx()}catch(err){};
       const btn=e.target.closest('button');
       if(!btn||btn.disabled||btn.closest('#tauri-chrome'))return;
-      if(btn.id==='sideCollapseBtn'||btn.id==='settingsSidebar'||btn.id==='settingsBtn'||btn.id==='sideSettingsBtn'||btn.id==='settingsBack'||btn.id==='pomodoroBack'||btn.id==='pomodoroImmBackBtn'||btn.id==='pomodoroImmExitBtn'||btn.id==='stageManageBtn'||btn.id==='compactStageManageBtn'||btn.id==='stageModalClose'||btn.id==='ledgerManageBtn'||btn.id==='ledgerModalClose'||btn.id==='chronoToggleBtn'||btn.id==='pomodoroActionBtn'||btn.id==='pomodoroImmActionBtn'||btn.id==='pomodoroResetBtn'||btn.id==='pomodoroCompleteBtn'||btn.id==='sfxToggle'||btn.id==='settingsSfx'||btn.id==='pomoToggleViewBtn'){
+      if(btn.id==='sideCollapseBtn'||btn.id==='settingsSidebar'||btn.id==='settingsBtn'||btn.id==='sideSettingsBtn'||btn.id==='settingsBack'||btn.id==='pomodoroBack'||btn.id==='pomodoroImmBackBtn'||btn.id==='pomodoroImmExitBtn'||btn.id==='pomodoroImmersiveBtn'||btn.id==='pomodoroImmSkipBreakBtn'||btn.id==='pomodoroSkipBreakBtn'||btn.id==='stageManageBtn'||btn.id==='compactStageManageBtn'||btn.id==='stageModalClose'||btn.id==='ledgerManageBtn'||btn.id==='ledgerModalClose'||btn.id==='chronoToggleBtn'||btn.id==='pomodoroActionBtn'||btn.id==='pomodoroImmActionBtn'||btn.id==='pomodoroResetBtn'||btn.id==='pomodoroCompleteBtn'||btn.id==='sfxToggle'||btn.id==='settingsSfx'||btn.id==='pomoToggleViewBtn'){
         return;
       }
       if(btn.id==='scAddBtn'){
@@ -3786,6 +3814,7 @@ body.pomodoro-open:not(.is-immersive) {
       const btn=document.getElementById('pomodoroImmersiveBtn');
       const shouldEnable=typeof force==='boolean'?force:!document.body.classList.contains('is-immersive');
       if(shouldEnable){
+        playSfx('modalOpen');
         await setAppFullscreen(true);
         document.body.classList.add('is-immersive');
         initCockpitDialTicks();
@@ -3798,6 +3827,7 @@ body.pomodoro-open:not(.is-immersive) {
           btn.title='退出沉浸模式 (Esc / F11)';
         }
       }else{
+        playSfx('modalClose');
         await setAppFullscreen(false);
         document.body.classList.remove('is-immersive');
         requestAnimationFrame(()=>{ if(typeof syncAppleWheels==='function') syncAppleWheels(chronoTotalSecs, false); });
@@ -3917,6 +3947,7 @@ body.pomodoro-open:not(.is-immersive) {
 
     /* Pomodoro Tactical Chrono Module */
     let chronoMode=40,chronoTotalSecs=40*60,chronoRemainingSecs=40*60,chronoState='idle',chronoTimerId=null,chronoSessionsCount=0;
+    let breakRemainingSecs=0,breakTotalSecs=600,chronoPausedTickerId=null;
 
     function formatChronoTime(secs){
       const safeSecs=Math.max(0,secs);
@@ -3925,6 +3956,34 @@ body.pomodoro-open:not(.is-immersive) {
         return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
       }
       return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    }
+
+    function getChronoRemainingBreakSecs(chronoTotalSecs, chronoRemainingSecs, chronoState, breakRemainingSecs = 0) {
+      if (chronoTotalSecs <= 0) return 0;
+      const BREAK_DUR = 600;
+      const elapsedFocus = Math.max(0, chronoTotalSecs - chronoRemainingSecs);
+      if (chronoState === "break") {
+        const currentK = Math.max(1, Math.floor(elapsedFocus / 3600));
+        let subsequentCount = 0;
+        for (let k = currentK + 1; k * 3600 < chronoTotalSecs; k++) {
+          subsequentCount++;
+        }
+        return Math.max(0, breakRemainingSecs) + subsequentCount * BREAK_DUR;
+      } else {
+        let futureCount = 0;
+        for (let k = 1; k * 3600 < chronoTotalSecs; k++) {
+          if (k * 3600 > elapsedFocus) {
+            futureCount++;
+          }
+        }
+        return futureCount * BREAK_DUR;
+      }
+    }
+
+    function getProjectedEndTime(nowMs, chronoTotalSecs, chronoRemainingSecs, chronoState, breakRemainingSecs = 0) {
+      const remFocus = chronoState === "idle" ? chronoTotalSecs : Math.max(0, chronoRemainingSecs);
+      const remBreak = getChronoRemainingBreakSecs(chronoTotalSecs, chronoRemainingSecs, chronoState, breakRemainingSecs);
+      return new Date(nowMs + (remFocus + remBreak) * 1000);
     }
 
     
@@ -4008,7 +4067,9 @@ body.pomodoro-open:not(.is-immersive) {
 
     function updateChronoUI(){
       const toggleBtn=document.getElementById('chronoToggleBtn'),timeBtn=document.getElementById('chronoTimeBtn');
-      const timeStr=formatChronoTime(chronoRemainingSecs);
+      const isBreak=(chronoState==='break');
+      const activeSecs=isBreak?breakRemainingSecs:chronoRemainingSecs;
+      const timeStr=formatChronoTime(activeSecs);
 
       const curH=Math.floor(chronoTotalSecs/3600), curM=Math.floor((chronoTotalSecs%3600)/60), curS=chronoTotalSecs%60;
       let label='时长: ';
@@ -4026,7 +4087,11 @@ body.pomodoro-open:not(.is-immersive) {
       const isStandardPreset = isCleanMin && [40, 60, 75, 90, 120].includes(totalM);
 
       if(toggleBtn){
-        if(chronoState==='running'){
+        if(isBreak){
+          toggleBtn.textContent=`休整中 (${timeStr})`;
+          toggleBtn.className='btn btn-break';
+          toggleBtn.title='战术休整中，点击或按空格可跳过休整';
+        }else if(chronoState==='running'){
           toggleBtn.textContent=`暂停 (${timeStr})`;
           toggleBtn.className='btn';
           toggleBtn.title='单击暂停，双击重置时钟';
@@ -4044,22 +4109,30 @@ body.pomodoro-open:not(.is-immersive) {
       const pDigits=document.getElementById('pomodoroDigits');
       const pBadge=document.getElementById('pomodoroStatusBadge');
       const pAction=document.getElementById('pomodoroActionBtn');
+      const pSkipBreak=document.getElementById('pomodoroSkipBreakBtn');
       const pLabel=document.getElementById('pomodoroModeLabel');
       const pBar=document.getElementById('pomodoroBarFill');
       const pMeta=document.getElementById('pomodoroSessionMeta');
 
-      const hasHours = (Math.floor(chronoRemainingSecs / 3600) > 0);
+      const hasHours = !isBreak && (Math.floor(chronoRemainingSecs / 3600) > 0);
       if(pDigits){
         pDigits.textContent=timeStr;
         pDigits.classList.toggle('has-hours', hasHours);
       }
-      if(pLabel) pLabel.textContent=`${chronoMode} MINUTE TACTICAL SPRINT`;
+      if(pLabel) {
+        pLabel.textContent = isBreak ? '☕ TACTICAL BREAK // 10分钟战术休整' : `${chronoMode} MINUTE TACTICAL SPRINT`;
+      }
       if(pBar){
-        const pct=chronoTotalSecs>0?Math.max(0,Math.min(100,((chronoTotalSecs-chronoRemainingSecs)/chronoTotalSecs)*100)):0;
+        const pct=isBreak
+          ? (breakTotalSecs>0 ? Math.max(0,Math.min(100,((breakTotalSecs-breakRemainingSecs)/breakTotalSecs)*100)) : 0)
+          : (chronoTotalSecs>0 ? Math.max(0,Math.min(100,((chronoTotalSecs-chronoRemainingSecs)/chronoTotalSecs)*100)) : 0);
         pBar.style.width=pct+'%';
       }
       if(pBadge){
-        if(chronoState==='running'){
+        if(chronoState==='break'){
+          pBadge.textContent='REST // 战术休整中';
+          pBadge.className='badge active';
+        }else if(chronoState==='running'){
           pBadge.textContent='ENGAGED // 专注作战中';
           pBadge.className='badge active';
         }else if(chronoState==='paused'){
@@ -4070,7 +4143,11 @@ body.pomodoro-open:not(.is-immersive) {
           pBadge.className='badge';
         }
       }
+      if(pSkipBreak){
+        pSkipBreak.style.display = isBreak ? 'inline-block' : 'none';
+      }
       if(pAction){
+        pAction.style.display = isBreak ? 'none' : 'inline-block';
         if(chronoState==='running'){
           pAction.textContent='暂停专注';
           pAction.className='btn';
@@ -4103,6 +4180,7 @@ body.pomodoro-open:not(.is-immersive) {
       const immLabel=document.getElementById('pomodoroImmModeLabel');
       const immStatusText=document.getElementById('pomodoroImmStatusText');
       const immAction=document.getElementById('pomodoroImmActionBtn');
+      const immSkipBreak=document.getElementById('pomodoroImmSkipBreakBtn');
 
       if(immDigits){
         immDigits.textContent=timeStr;
@@ -4123,10 +4201,16 @@ body.pomodoro-open:not(.is-immersive) {
         if(focusTask) activeFocusTitle = focusTask.title;
       } catch(e) {}
       if(immLabel) {
-        immLabel.textContent = activeFocusTitle ? `🎯 攻坚: ${activeFocusTitle}` : `${chronoMode} MINUTE TACTICAL SPRINT`;
+        if(isBreak){
+          immLabel.textContent = '☕ TACTICAL BREAK // 10分钟战术休整';
+        }else{
+          immLabel.textContent = activeFocusTitle ? `🎯 攻坚: ${activeFocusTitle}` : `${chronoMode} MINUTE TACTICAL SPRINT`;
+        }
       }
       if(immStatusText){
-        if(chronoState==='running'){
+        if(chronoState==='break'){
+          immStatusText.textContent='REST // 战术休整中';
+        }else if(chronoState==='running'){
           immStatusText.textContent='ENGAGED // 专注作战中';
         }else if(chronoState==='paused'){
           immStatusText.textContent='HOLD // 战术悬停';
@@ -4134,7 +4218,11 @@ body.pomodoro-open:not(.is-immersive) {
           immStatusText.textContent='STANDBY // 待命就绪';
         }
       }
+      if(immSkipBreak){
+        immSkipBreak.style.display = isBreak ? 'inline-block' : 'none';
+      }
       if(immAction){
+        immAction.style.display = isBreak ? 'none' : 'inline-block';
         if(chronoState==='running'){
           immAction.textContent='暂停专注';
           immAction.className='btn';
@@ -4148,7 +4236,12 @@ body.pomodoro-open:not(.is-immersive) {
       }
       const ringFill=document.getElementById('pomodoroRingFill');
       const RING_CIRCUMFERENCE=1319.47;
-      const remainRatio=chronoTotalSecs>0?Math.max(0,Math.min(1,chronoRemainingSecs/chronoTotalSecs)):0;
+      let remainRatio=0;
+      if(isBreak){
+        remainRatio=breakTotalSecs>0?Math.max(0,Math.min(1,breakRemainingSecs/breakTotalSecs)):0;
+      }else{
+        remainRatio=chronoTotalSecs>0?Math.max(0,Math.min(1,chronoRemainingSecs/chronoTotalSecs)):0;
+      }
       if(ringFill){
         const offset=RING_CIRCUMFERENCE*(1-remainRatio);
         ringFill.style.strokeDashoffset=offset.toFixed(2);
@@ -4173,24 +4266,21 @@ body.pomodoro-open:not(.is-immersive) {
         immTargetSub.textContent=dir.sub;
       }
 
-      // Telemetry Wing: Estimated Completion Time
+      // Telemetry Wing: Estimated Completion Time (accounting for 10m breaks & dynamic rolling on pause)
       const immEtaTime=document.getElementById('pomodoroImmEtaTime');
       const immEtaLabel=document.getElementById('pomodoroImmEtaLabel');
+      const target=getProjectedEndTime(Date.now(), chronoTotalSecs, chronoRemainingSecs, chronoState, breakRemainingSecs);
+      const hh=String(target.getHours()).padStart(2,'0');
+      const mm=String(target.getMinutes()).padStart(2,'0');
       if(immEtaTime&&immEtaLabel){
-        if(chronoState==='running'){
-          const target=new Date(Date.now()+chronoRemainingSecs*1000);
-          const hh=String(target.getHours()).padStart(2,'0');
-          const mm=String(target.getMinutes()).padStart(2,'0');
-          immEtaTime.textContent=`${hh}:${mm}`;
-          immEtaLabel.textContent='预计完成时刻';
+        immEtaTime.textContent=`${hh}:${mm}`;
+        if(chronoState==='break'){
+          immEtaLabel.textContent='预计总完结时刻 (含当前休整)';
+        }else if(chronoState==='running'){
+          immEtaLabel.textContent='预计完成时刻 (含战术休整)';
         }else if(chronoState==='paused'){
-          immEtaTime.textContent='--:--';
-          immEtaLabel.textContent=`战术悬停中 (剩余 ${timeStr})`;
+          immEtaLabel.textContent=`战术悬停顺延中 (剩余 ${timeStr})`;
         }else{
-          const target=new Date(Date.now()+chronoTotalSecs*1000);
-          const hh=String(target.getHours()).padStart(2,'0');
-          const mm=String(target.getMinutes()).padStart(2,'0');
-          immEtaTime.textContent=`${hh}:${mm}`;
           immEtaLabel.textContent='启动后预计完成时刻';
         }
       }
@@ -4211,18 +4301,14 @@ body.pomodoro-open:not(.is-immersive) {
       }
 
       let endText='';
-      if(chronoState==='running'){
-        const target=new Date(Date.now()+chronoRemainingSecs*1000);
-        const h=String(target.getHours()).padStart(2,'0');
-        const m=String(target.getMinutes()).padStart(2,'0');
-        endText=`🔔 预计 ${h}:${m} 完结`;
+      if(chronoState==='break'){
+        endText=`☕ 休整中 · 预计 ${hh}:${mm} 总完结`;
+      }else if(chronoState==='running'){
+        endText=`🔔 预计 ${hh}:${mm} 完结`;
       }else if(chronoState==='paused'){
-        endText=`⏸ 战术悬停 (剩余 ${formatChronoTime(chronoRemainingSecs)})`;
+        endText=`⏸ 战术悬停顺延 · 预计 ${hh}:${mm} 完结`;
       }else{
-        const target=new Date(Date.now()+chronoTotalSecs*1000);
-        const h=String(target.getHours()).padStart(2,'0');
-        const m=String(target.getMinutes()).padStart(2,'0');
-        endText=`🔔 启动后预计 ${h}:${m} 完结`;
+        endText=`🔔 启动后预计 ${hh}:${mm} 完结`;
       }
       const ringEnd=document.getElementById('pomodoroRingEndTime');
       if(ringEnd) ringEnd.textContent=endText;
@@ -4235,6 +4321,7 @@ body.pomodoro-open:not(.is-immersive) {
       if(mainEl){
         mainEl.classList.toggle('chrono-running',chronoState==='running');
       }
+      document.body.classList.toggle('is-break', isBreak);
     }
 
     
@@ -4256,29 +4343,88 @@ body.pomodoro-open:not(.is-immersive) {
       if(chronoState==='running'&&targetMins!==chronoMode){
         if(!confirm('正在专注作战中，切换时长将重置当前时钟，确定继续？'))return;
       }
-      clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';chronoMode=targetMins;chronoTotalSecs=chronoMode*60;chronoRemainingSecs=chronoTotalSecs;
+      if(chronoPausedTickerId){clearInterval(chronoPausedTickerId);chronoPausedTickerId=null;}
+      clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';
+      breakRemainingSecs=0;
+      document.body.classList.remove('is-break');
+      chronoMode=targetMins;chronoTotalSecs=chronoMode*60;chronoRemainingSecs=chronoTotalSecs;
       updateChronoUI();
     }
     function toggleChrono(){
       if(chronoTotalSecs<=0)return;
+      if(chronoState==='break'){
+        skipBreak();
+        return;
+      }
       if(chronoState==='running'){
-        clearInterval(chronoTimerId);chronoTimerId=null;chronoState='paused';playSfx('click');updateChronoUI();
+        clearInterval(chronoTimerId);chronoTimerId=null;chronoState='paused';playSfx('metalTap');
+        if(!chronoPausedTickerId){
+          chronoPausedTickerId=setInterval(()=>{
+            if(chronoState==='paused') updateChronoUI();
+          }, 4000);
+        }
+        updateChronoUI();
       }else{
+        if(chronoPausedTickerId){clearInterval(chronoPausedTickerId);chronoPausedTickerId=null;}
         chronoState='running';playSfx('breech');updateChronoUI();
+        if(chronoTimerId){clearInterval(chronoTimerId);chronoTimerId=null;}
         chronoTimerId=setInterval(()=>{
+          if(chronoState==='break'){
+            breakRemainingSecs--;
+            if(breakRemainingSecs<=0){
+              breakRemainingSecs=0;
+              chronoState='running';
+              document.body.classList.remove('is-break');
+              playSfx('breech');
+              toast('战术休整结束，继续投入专注作战！');
+              updateChronoUI();
+            }else{
+              updateChronoUI();
+            }
+            return;
+          }
+
           chronoRemainingSecs--;
-          
+          const elapsedFocus = chronoTotalSecs - chronoRemainingSecs;
+          if(elapsedFocus > 0 && elapsedFocus % 3600 === 0 && chronoRemainingSecs > 0){
+            chronoState='break';
+            breakRemainingSecs=600;
+            breakTotalSecs=600;
+            document.body.classList.add('is-break');
+            playSfx('alarm');
+            toast('已完成 1 小时专注！进入 10 分钟战术休整 ☕');
+            updateChronoUI();
+            return;
+          }
+
           if(chronoRemainingSecs<=0){completeChronoSession()}else{updateChronoUI()}
         },1000);
       }
     }
+    function skipBreak(){
+      if(chronoState!=='break') return;
+      breakRemainingSecs=0;
+      chronoState='running';
+      document.body.classList.remove('is-break');
+      playSfx('breech');
+      toast('已跳过战术休整，立即恢复专注作战！');
+      updateChronoUI();
+    }
     function resetChrono(){
-      clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';chronoRemainingSecs=chronoTotalSecs;playSfx('metalTap');const _ps=document.querySelector('.pomodoro-stage');if(_ps)_ps.classList.remove('show-countdown');const _pt=document.getElementById('pomoToggleViewText');if(_pt)_pt.textContent='⏱ 预览倒计时';updateChronoUI();
+      if(chronoPausedTickerId){clearInterval(chronoPausedTickerId);chronoPausedTickerId=null;}
+      clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';
+      breakRemainingSecs=0;
+      document.body.classList.remove('is-break');
+      chronoRemainingSecs=chronoTotalSecs;playSfx('metalTap');const _ps=document.querySelector('.pomodoro-stage');if(_ps)_ps.classList.remove('show-countdown');const _pt=document.getElementById('pomoToggleViewText');if(_pt)_pt.textContent='⏱ 预览倒计时';updateChronoUI();
     }
     function completeChronoSession(isEarly=false){
+      if(chronoPausedTickerId){clearInterval(chronoPausedTickerId);chronoPausedTickerId=null;}
       const elapsedMins=Math.max(1,Math.floor((chronoTotalSecs-chronoRemainingSecs)/60));
       const creditMins=isEarly?elapsedMins:chronoMode;
-      clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';chronoRemainingSecs=chronoTotalSecs;
+      clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';
+      breakRemainingSecs=0;
+      document.body.classList.remove('is-break');
+      chronoRemainingSecs=chronoTotalSecs;
       playSfx('alarm');
       chronoSessionsCount++;
       data.focusTotalMinutes=(data.focusTotalMinutes||0)+creditMins;
@@ -4289,6 +4435,8 @@ body.pomodoro-open:not(.is-immersive) {
       toast(`战术专注完成！已累积专注 ${creditMins} 分钟（总计 ${data.focusTotalMinutes} MIN）`);
       updateChronoUI();
     }
+    document.getElementById('pomodoroImmSkipBreakBtn')?.addEventListener('click', skipBreak);
+    document.getElementById('pomodoroSkipBreakBtn')?.addEventListener('click', skipBreak);
 
     /* Apple Clock Style Wheel Picker Module */
     const ITEM_H = 32;
