@@ -2074,13 +2074,6 @@ body.is-break .pomo-imm-dot {
   font-size: clamp(48px, 7.5vmin, 92px) !important;
   letter-spacing: -0.01em !important;
 }
-.pomo-imm-sublabel {
-  font: 800 clamp(11px, 1.4vmin, 14px)/1 var(--font-mono) !important;
-  letter-spacing: .16em !important;
-  color: #859076 !important;
-  text-transform: uppercase !important;
-  margin-bottom: 10px !important;
-}
 .pomodoro-ring-end {
   font: 800 clamp(11px, 1.3vmin, 13px)/1 var(--font-mono) !important;
   letter-spacing: .08em !important;
@@ -3109,7 +3102,6 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
         </g>
       </svg>
       <div class="pomodoro-ring-center">
-        <div class="pomodoro-sublabel pomo-imm-sublabel" id="pomodoroImmModeLabel">40 MINUTE TACTICAL SPRINT</div>
         <div class="pomodoro-digits pomo-imm-digits" id="pomodoroImmDigits">40:00</div>
         <div class="pomodoro-ring-end" id="pomodoroRingEndTime">🔔 启动后预计 00:00 完结</div>
       </div>
@@ -4242,7 +4234,6 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
 
       // 2. Sync Immersive Apple-Style Countdown HUD
       const immDigits=document.getElementById('pomodoroImmDigits');
-      const immLabel=document.getElementById('pomodoroImmModeLabel');
       const immStatusText=document.getElementById('pomodoroImmStatusText');
       const immAction=document.getElementById('pomodoroImmActionBtn');
       const immSkipBreak=document.getElementById('pomodoroImmSkipBreakBtn');
@@ -4250,27 +4241,6 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
       if(immDigits){
         immDigits.textContent=evHasBreaks?formatChronoTime(evSecs):timeStr;
         immDigits.classList.toggle('has-hours', hasHours);
-      }
-      let activeFocusTitle = '';
-      try {
-        const todayTasks = taskDefs(todayKey);
-        const checks = data.checks[todayKey] || {};
-        let focusTask = null;
-        if(currentFocusTaskId){
-          focusTask = todayTasks.find(t => t.id === currentFocusTaskId);
-        }
-        if(!focusTask){
-          focusTask = todayTasks.find(t => !checks[t.id]) || todayTasks[0];
-          if(focusTask) currentFocusTaskId = focusTask.id;
-        }
-        if(focusTask) activeFocusTitle = focusTask.title;
-      } catch(e) {}
-      if(immLabel) {
-        if(isBreak){
-          immLabel.textContent = '☕ TACTICAL BREAK // 10分钟战术休整';
-        }else{
-          immLabel.textContent = activeFocusTitle ? `🎯 攻坚: ${activeFocusTitle}` : `${chronoMode} MINUTE TACTICAL SPRINT`;
-        }
       }
       if(immStatusText){
         if(chronoState==='break'){
@@ -4922,7 +4892,7 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.1.1';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.1.2';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护

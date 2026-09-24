@@ -50,9 +50,11 @@ export function mountWindowChrome(): void {
 
   const bar = document.createElement("div");
   bar.id = "tauri-chrome";
+  bar.setAttribute("data-tauri-drag-region", "");
 
   const controls = document.createElement("div");
   controls.className = "window-controls";
+  controls.setAttribute("data-tauri-drag-region", "");
   controls.setAttribute("aria-label", "窗口控制");
   const layers: Array<{ img: HTMLImageElement; lamp: Lamp; isHover: boolean }> = [];
   for (const lamp of LAMPS) {
