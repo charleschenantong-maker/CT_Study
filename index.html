@@ -1748,6 +1748,7 @@ body.is-immersive #pomodoroView {
   color: #d8bf78 !important;
   box-shadow: 0 2px 8px rgba(0,0,0,.5) !important;
 }
+.pomo-imm-status-pill{position:absolute!important;left:50%!important;transform:translateX(-50%)!important}
 .pomo-imm-dot {
   width: 7px;
   height: 7px;
@@ -1757,6 +1758,11 @@ body.is-immersive #pomodoroView {
 }
 .main.chrono-running .pomo-imm-dot,
 body.is-immersive .main.chrono-running .pomo-imm-dot {
+  background: #e0524d;
+  box-shadow: 0 0 10px #e0524d;
+  animation: pomoPulse 1.8s infinite;
+}
+body.is-break .pomo-imm-dot {
   background: #4ade80;
   box-shadow: 0 0 10px #4ade80;
   animation: pomoPulse 1.8s infinite;
@@ -1784,7 +1790,7 @@ body.is-immersive .main.chrono-running .pomo-imm-dot {
   left: 28px !important;
   top: 72px !important;
   bottom: 82px !important;
-  width: clamp(300px, 23vw, 370px) !important;
+  width: clamp(250px, 19vw, 310px) !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 12px !important;
@@ -1794,7 +1800,7 @@ body.is-immersive .main.chrono-running .pomo-imm-dot {
   justify-content: flex-start !important;
 }
 .pomo-telemetry-card {
-  padding: 13px 16px;
+  padding: 9px 14px;
   background: rgba(18,24,15,.78);
   border: 1px solid #283321;
   border-left: 3px solid #c29a4b;
@@ -1841,24 +1847,20 @@ body.is-immersive .main.chrono-running .pomo-imm-dot {
 .pomo-imm-target-card {
   display: flex !important;
   flex-direction: column !important;
-  flex: 1 1 auto !important;
-  min-height: 180px !important;
-  max-height: clamp(240px, 48vh, 460px) !important;
+  flex: 0 1 auto !important;
+  min-height: 0 !important;
+  max-height: clamp(180px, 36vh, 340px) !important;
   overflow: hidden !important;
 }
 .pomo-imm-target-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
-  padding-bottom: 6px;
+  margin-bottom: 6px;
+  padding-bottom: 5px;
   border-bottom: 1px solid rgba(61,74,50,.45);
 }
-.pomo-imm-task-summary {
-  font: 800 9px/1.2 var(--font-mono);
-  color: #a4b094;
-  letter-spacing: .06em;
-}
+.pomo-imm-target-header{justify-content:flex-start}
 .pomo-imm-task-list {
   display: flex;
   flex-direction: column;
@@ -2078,7 +2080,7 @@ body.is-immersive .main.chrono-running .pomo-imm-dot {
   letter-spacing: .16em !important;
   color: #859076 !important;
   text-transform: uppercase !important;
-  margin-bottom: 14px !important;
+  margin-bottom: 10px !important;
 }
 .pomodoro-ring-end {
   font: 800 clamp(11px, 1.3vmin, 13px)/1 var(--font-mono) !important;
@@ -2762,9 +2764,12 @@ body.pomodoro-open:not(.is-immersive) {
 }
 .pomodoro-meta{flex:0 0 100%;text-align:right;line-height:1.55}
 .pomodoro-clock-face{position:relative}
-.pomodoro-clock-face .pomo-mini-ring{position:absolute;top:8px;right:10px;width:44px;height:44px}
+.pomodoro-clock-face .pomo-mini-ring{position:absolute;top:4px;right:10px;width:44px;height:44px}
+body.is-break #pomodoroDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,122,.9),0 0 16px rgba(143,208,122,.45)}
+body.is-break #pomodoroBarFill{background:#8fd07a}
+body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,122,.9),0 0 16px rgba(143,208,122,.45)}
 .pomo-mini-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:800 9px/1 var(--font-mono);color:#d8bf78;letter-spacing:.02em;pointer-events:none}
-.pomo-event-cluster{position:absolute;top:8px;right:60px;height:44px;display:flex;flex-direction:column;justify-content:center;text-align:left;font:800 9px/1.7 var(--font-mono);letter-spacing:.06em;color:#8d9478;white-space:nowrap}
+.pomo-event-cluster{position:absolute;top:10px;right:60px;height:44px;display:flex;flex-direction:column;justify-content:center;text-align:left;font:800 9px/1.7 var(--font-mono);letter-spacing:.06em;color:#8d9478;white-space:nowrap}
 .pomo-event-cluster .ev-val{display:inline-block;min-width:8ch;text-align:right;font-variant-numeric:tabular-nums slashed-zero;color:#d8bf78}
 .pomo-next-event{position:absolute;top:10px;left:0;right:0;margin:0;text-align:center;font:800 10px/1 var(--font-mono);letter-spacing:.14em;color:#c29a4b}
 .pomo-mini-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
@@ -3061,7 +3066,6 @@ body.pomodoro-open:not(.is-immersive) {
       <div class="pomo-telemetry-card pomo-imm-target-card">
         <div class="pomo-imm-target-header">
           <div class="pomo-telemetry-kicker">SORTIE TARGETS // 战术突击任务</div>
-          <div class="pomo-imm-task-summary" id="pomodoroImmTaskSummary">待清 0 项</div>
         </div>
         <div class="pomo-imm-task-list" id="pomodoroImmTaskList">
           <!-- 动态渲染今日任务项 -->
@@ -3106,8 +3110,8 @@ body.pomodoro-open:not(.is-immersive) {
         </g>
       </svg>
       <div class="pomodoro-ring-center">
-        <div class="pomodoro-digits pomo-imm-digits" id="pomodoroImmDigits">40:00</div>
         <div class="pomodoro-sublabel pomo-imm-sublabel" id="pomodoroImmModeLabel">40 MINUTE TACTICAL SPRINT</div>
+        <div class="pomodoro-digits pomo-imm-digits" id="pomodoroImmDigits">40:00</div>
         <div class="pomodoro-ring-end" id="pomodoroRingEndTime">🔔 启动后预计 00:00 完结</div>
       </div>
     </div>
@@ -4038,16 +4042,10 @@ body.pomodoro-open:not(.is-immersive) {
 
     function renderImmTasks(){
       const listEl = document.getElementById('pomodoroImmTaskList');
-      const summaryEl = document.getElementById('pomodoroImmTaskSummary');
       if(!listEl) return;
       todayKey = localDateKey(new Date());
       const list = taskDefs(todayKey);
       const checks = data.checks[todayKey] || {};
-      const remaining = list.filter(t => !checks[t.id]).length;
-
-      if(summaryEl){
-        summaryEl.textContent = `待清 ${remaining} 项 · 共 ${list.length} 项`;
-      }
 
       if(!currentFocusTaskId || !list.some(t => t.id === currentFocusTaskId)){
         const firstUnchecked = list.find(t => !checks[t.id]) || list[0];
@@ -4122,7 +4120,7 @@ body.pomodoro-open:not(.is-immersive) {
       const evRemBreak=getChronoRemainingBreakSecs(chronoTotalSecs,chronoRemainingSecs,chronoState,breakRemainingSecs);
       const evTotalLeft=(chronoState==='idle'?chronoTotalSecs:Math.max(0,chronoRemainingSecs))+evRemBreak;
       let evLabel='',evSecs=0,evLeg=1;
-      if(chronoState==='break'){evLabel='RESUME';evSecs=breakRemainingSecs;evLeg=600;}
+      if(chronoState==='break'){evLabel='NEXT SESSION';evSecs=breakRemainingSecs;evLeg=600;}
       else{let evNk=0;for(let ek=1;ek*3600<chronoTotalSecs;ek++){if(ek*3600>evElapsed){evNk=ek;break;}}
         if(evNk>0){evLabel='NEXT BREAK';evSecs=evNk*3600-evElapsed;evLeg=3600;}
         else{evLabel='SESSION END';evSecs=chronoState==='idle'?chronoTotalSecs:Math.max(0,chronoRemainingSecs);let evLastK=0;for(let ek=1;ek*3600<chronoTotalSecs;ek++){if(ek*3600<=evElapsed)evLastK=ek;}evLeg=Math.max(1,chronoTotalSecs-evLastK*3600);}}
@@ -4179,7 +4177,7 @@ body.pomodoro-open:not(.is-immersive) {
         pDigits.classList.toggle('has-hours', hasHours);
       }
       if(pLabel) {
-        if(evHasBreaks){pLabel.style.display='block';pLabel.textContent = evLabel==='RESUME' ? `☕ RESUME AT ${evHHMM}` : (evLabel==='NEXT BREAK' ? `NEXT BREAK AT ${evHHMM}` : `SESSION END AT ${evHHMM}`);}
+        if(evHasBreaks){pLabel.style.display='block';pLabel.textContent = evLabel==='NEXT SESSION' ? `NEXT SESSION AT ${evHHMM}` : (evLabel==='NEXT BREAK' ? `NEXT BREAK AT ${evHHMM}` : `SESSION END AT ${evHHMM}`);}
         else{pLabel.style.display='none';}
       }
       const evCluster=document.getElementById('pomodoroEventCluster');
@@ -4251,7 +4249,7 @@ body.pomodoro-open:not(.is-immersive) {
       const immSkipBreak=document.getElementById('pomodoroImmSkipBreakBtn');
 
       if(immDigits){
-        immDigits.textContent=timeStr;
+        immDigits.textContent=evHasBreaks?formatChronoTime(evSecs):timeStr;
         immDigits.classList.toggle('has-hours', hasHours);
       }
       let activeFocusTitle = '';
@@ -4304,11 +4302,13 @@ body.pomodoro-open:not(.is-immersive) {
       }
       const ringFill=document.getElementById('pomodoroRingFill');
       const RING_CIRCUMFERENCE=1319.47;
-      let remainRatio=0;
-      if(isBreak){
-        remainRatio=breakTotalSecs>0?Math.max(0,Math.min(1,breakRemainingSecs/breakTotalSecs)):0;
-      }else{
-        remainRatio=chronoTotalSecs>0?Math.max(0,Math.min(1,chronoRemainingSecs/chronoTotalSecs)):0;
+      let remainRatio=evHasBreaks?evRatio:0;
+      if(!evHasBreaks){
+        if(isBreak){
+          remainRatio=breakTotalSecs>0?Math.max(0,Math.min(1,breakRemainingSecs/breakTotalSecs)):0;
+        }else{
+          remainRatio=chronoTotalSecs>0?Math.max(0,Math.min(1,chronoRemainingSecs/chronoTotalSecs)):0;
+        }
       }
       if(ringFill){
         const offset=RING_CIRCUMFERENCE*(1-remainRatio);
@@ -4923,7 +4923,7 @@ body.pomodoro-open:not(.is-immersive) {
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.1.0';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.1.1';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
