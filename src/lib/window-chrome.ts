@@ -42,6 +42,15 @@ const LAMPS: Lamp[] = [
   { name: "fullscreen", label: "最大化", base: fullscreenPng, hover: fullscreenHoverPng, fn: toggleMaximizeWindow },
 ];
 
+async function syncMaximizedClass(): Promise<void> {
+  try {
+    const maximized = await getCurrentWindow().isMaximized();
+    document.body.classList.toggle("is-maximized", maximized);
+  } catch {
+    document.body.classList.remove("is-maximized");
+  }
+}
+
 export function mountWindowChrome(): void {
   if (document.getElementById("tauri-chrome")) return;
   const style = document.createElement("style");
@@ -91,12 +100,21 @@ export function mountWindowChrome(): void {
   bar.append(controls, label, spacer);
   document.body.prepend(bar);
 
+  void syncMaximizedClass();
+
   try {
-    void getCurrentWindow()
+    const win = getCurrentWindow();
+    void win
       .onFocusChanged(({ payload }) => {
         for (const { img, lamp, isHover } of layers) {
           img.src = payload ? (isHover ? lamp.hover : lamp.base) : unfocusedSvg;
         }
+        void syncMaximizedClass();
+      })
+      .catch(() => {});
+    void win
+      .onResized(() => {
+        void syncMaximizedClass();
       })
       .catch(() => {});
   } catch {

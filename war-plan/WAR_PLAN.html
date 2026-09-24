@@ -2213,28 +2213,24 @@ body.is-break .pomo-imm-dot {
 }
 .pomo-imm-actions .btn.btn-break,
 .pomodoro-actions .btn.btn-break {
-  background: #38bdf8 !important;
-  color: #03131e !important;
+  background: #8fd07a !important;
+  color: #0d140c !important;
   font-weight: 900 !important;
-  border-color: #38bdf8 !important;
+  border-color: #8fd07a !important;
 }
 .pomo-imm-actions .btn.btn-break:hover,
 .pomodoro-actions .btn.btn-break:hover {
-  background: #7dd3fc !important;
-  border-color: #7dd3fc !important;
-  box-shadow: 0 0 16px rgba(56,189,248,.45) !important;
+  background: #b2f0ad !important;
+  border-color: #b2f0ad !important;
+  box-shadow: 0 0 16px rgba(143,208,122,.45) !important;
 }
 body.is-break .pomo-track-live {
-  stroke: #38bdf8 !important;
-  filter: drop-shadow(0 0 8px rgba(56,189,248,.45)) !important;
+  stroke: #8fd07a !important;
+  filter: drop-shadow(0 0 8px rgba(143,208,122,.45)) !important;
 }
 body.is-break .pomo-leading-pip {
-  fill: #7dd3fc !important;
-  filter: drop-shadow(0 0 6px #7dd3fc) !important;
-}
-body.is-break .pomo-imm-dot {
-  background: #38bdf8 !important;
-  box-shadow: 0 0 10px #38bdf8 !important;
+  fill: #b2f0ad !important;
+  filter: drop-shadow(0 0 6px #b2f0ad) !important;
 }
 </style>
 <style id="module1-left-rail-type">
@@ -2767,6 +2763,8 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
 .pomo-mini-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .pomo-mini-track{fill:none;stroke:#2a3125;stroke-width:3.5}
 .pomo-mini-fill{fill:none;stroke:#d8bf78;stroke-width:3.5;stroke-linecap:round;stroke-dasharray:163.36;filter:drop-shadow(0 0 2px rgba(216,191,120,.45));transition:stroke-dashoffset .4s ease}
+body.is-break .pomo-mini-fill{stroke:#8fd07a;filter:drop-shadow(0 0 2px rgba(143,208,122,.45))}
+body.is-break .pomo-mini-pct{color:#8fd07a}
 
 .pomo-toggle-view-btn {
   background: rgba(28, 34, 24, 0.85);
@@ -2936,6 +2934,16 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
 .side-actions{flex:0 0 auto;margin-top:auto;padding-top:14px}
 .save-state{flex:0 0 auto}
 @media(max-width:980px){.side{height:auto;overflow:visible}#events{overflow:visible}}
+</style>
+<style id="v176-app-frame-strict">
+/* Floating-window frame only: rounded corners + faint outline. Square when maximized/fullscreen. */
+html{background:transparent!important}
+body{background:transparent!important}
+#desk-bg{border-radius:12px}
+body:not(.is-maximized):not(.is-immersive) #tauri-chrome{border-radius:12px 12px 0 0!important;border:1px solid rgba(216,200,155,.20)!important;border-bottom:0!important}
+body:not(.is-maximized):not(.is-immersive) .left-side{border-radius:0 0 0 12px;border-left:1px solid rgba(216,200,155,.20);border-bottom:1px solid rgba(216,200,155,.20)}
+body:not(.is-maximized):not(.is-immersive) .side{border-radius:0 0 12px 0;border-right:1px solid rgba(216,200,155,.20);border-bottom:1px solid rgba(216,200,155,.20)}
+body.is-maximized #desk-bg,body.is-maximized #tauri-chrome,body.is-maximized .left-side,body.is-maximized .side{border-radius:0!important}
 </style>
 </head>
 <body>
@@ -3985,7 +3993,7 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
     });
 
     /* Pomodoro Tactical Chrono Module */
-    let chronoMode=40,chronoTotalSecs=40*60,chronoRemainingSecs=40*60,chronoState='idle',chronoTimerId=null,chronoSessionsCount=0;
+    let chronoMode=40,chronoTotalSecs=40*60,chronoRemainingSecs=40*60,chronoState='idle',chronoTimerId=null,chronoSessionsCount=0,chronoRunCredited=0;
     let breakRemainingSecs=0,breakTotalSecs=600,chronoPausedTickerId=null;
 
     function formatChronoTime(secs){
@@ -4216,7 +4224,7 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
         }
       }
       const miniRing=document.getElementById('pomodoroMiniRing');
-      if(miniRing){miniRing.style.strokeDashoffset=(163.36*(1-evRatio)).toFixed(2);const miniPct=document.getElementById('pomodoroMiniPct');if(miniPct)miniPct.textContent=Math.round(evRatio*100)+'%';}
+      if(miniRing){const allRatio=chronoTotalSecs>0?Math.max(0,Math.min(1,chronoRemainingSecs/chronoTotalSecs)):0;miniRing.style.strokeDashoffset=(163.36*(1-allRatio)).toFixed(2);const miniPct=document.getElementById('pomodoroMiniPct');if(miniPct)miniPct.textContent=Math.round(allRatio*100)+'%';}
       document.querySelectorAll('#pomodoroModes .btn[data-mins]').forEach(btn=>{
         btn.classList.toggle('active',isStandardPreset && Number(btn.dataset.mins)===totalM);
       });
@@ -4384,9 +4392,13 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
       clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';
       breakRemainingSecs=0;
       document.body.classList.remove('is-break');
+      flushFocusMinutes();
       chronoMode=targetMins;chronoTotalSecs=chronoMode*60;chronoRemainingSecs=chronoTotalSecs;
       updateChronoUI();
     }
+    function focusMinutesDue(elapsedSecs,creditedMins){return Math.max(0,Math.floor(elapsedSecs/60)-creditedMins);}
+    function bankFocusMinutes(mins){if(mins<=0)return;data.focusTotalMinutes=(data.focusTotalMinutes||0)+mins;data.focusByDate=data.focusByDate||{};data.focusByDate[todayKey]=(data.focusByDate[todayKey]||0)+mins;}
+    function flushFocusMinutes(){const due=focusMinutesDue(chronoTotalSecs-chronoRemainingSecs,chronoRunCredited);if(due>0){chronoRunCredited+=due;bankFocusMinutes(due);save();renderStats();}const total=chronoRunCredited;chronoRunCredited=0;return total;}
     function toggleChrono(){
       if(chronoTotalSecs<=0)return;
       if(chronoState==='break'){
@@ -4434,6 +4446,8 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
             return;
           }
 
+          const dueMins=focusMinutesDue(chronoTotalSecs-chronoRemainingSecs,chronoRunCredited);
+          if(dueMins>0){chronoRunCredited+=dueMins;bankFocusMinutes(dueMins);save();renderStats();}
           if(chronoRemainingSecs<=0){completeChronoSession()}else{updateChronoUI()}
         },1000);
       }
@@ -4452,12 +4466,15 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
       clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';
       breakRemainingSecs=0;
       document.body.classList.remove('is-break');
+      flushFocusMinutes();
       chronoRemainingSecs=chronoTotalSecs;playSfx('metalTap');const _ps=document.querySelector('.pomodoro-stage');if(_ps)_ps.classList.remove('show-countdown');const _pt=document.getElementById('pomoToggleViewText');if(_pt)_pt.textContent='⏱ 预览倒计时';updateChronoUI();
     }
     function completeChronoSession(isEarly=false){
       if(chronoPausedTickerId){clearInterval(chronoPausedTickerId);chronoPausedTickerId=null;}
       const elapsedMins=Math.max(1,Math.floor((chronoTotalSecs-chronoRemainingSecs)/60));
-      const creditMins=isEarly?elapsedMins:chronoMode;
+      const creditMins=Math.max(0,(isEarly?elapsedMins:chronoMode)-chronoRunCredited);
+      const runTotalMins=chronoRunCredited+creditMins;
+      chronoRunCredited=0;
       clearInterval(chronoTimerId);chronoTimerId=null;chronoState='idle';
       breakRemainingSecs=0;
       document.body.classList.remove('is-break');
@@ -4469,7 +4486,7 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
       data.focusByDate[todayKey]=(data.focusByDate[todayKey]||0)+creditMins;
       save();
       renderStats();
-      toast(`战术专注完成！已累积专注 ${creditMins} 分钟（总计 ${data.focusTotalMinutes} MIN）`);
+      toast(`战术专注完成！本轮累积 ${runTotalMins} 分钟（总计 ${data.focusTotalMinutes} MIN）`);
       updateChronoUI();
     }
     document.getElementById('pomodoroImmSkipBreakBtn')?.addEventListener('click', skipBreak);
@@ -4892,7 +4909,7 @@ body.is-break #pomodoroImmDigits{color:#8fd07a;text-shadow:0 0 4px rgba(143,208,
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.1.2';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.1.3';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
