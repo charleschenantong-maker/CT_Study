@@ -1,0 +1,17 @@
+{
+  "metalTap": 0.35,
+  "sidebarExpand": 0.4,
+  "sidebarCollapse": 0.4,
+  "modalOpen": 0.45,
+  "modalClose": 0.4,
+  "taskComplete": 0.45,
+  "taskUncheck": 0.35,
+  "presetSwitch": 0.45,
+  "scoreStamp": 0.45,
+  "examPin": 0.4,
+  "wheelTick": 0.5,
+  "tick": 0.25,
+  "breech": 0.5,
+  "alarm": 0.55,
+  "impact": 0.65
+}

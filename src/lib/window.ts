@@ -29,17 +29,31 @@ export function toggleMaximizeWindow(): Promise<void> {
 let wasMaximizedBeforeFullscreen = false;
 
 export async function setFullscreen(fullscreen: boolean): Promise<void> {
-  let nativeSuccess = false;
+  // 1. Standard HTML5 fullscreen API (same as video players, forces OS/WebView2 to cover the Windows taskbar)
+  try {
+    if (fullscreen) {
+      if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      }
+    } else {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        await document.exitFullscreen();
+      }
+    }
+  } catch (e) {
+    console.warn("[window] browser HTML fullscreen error", e);
+  }
+
+  // 2. Tauri native window fullscreen API
   if (typeof (window as unknown as { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__ !== "undefined") {
     try {
       const win = getCurrentWindow();
       if (fullscreen) {
         wasMaximizedBeforeFullscreen = await win.isMaximized().catch(() => false);
+        await win.setAlwaysOnTop(false).catch(() => {});
         await win.setFullscreen(true);
-        await win.setAlwaysOnTop(true).catch(() => {});
         await win.setFocus().catch(() => {});
       } else {
-        await win.setAlwaysOnTop(false).catch(() => {});
         await win.setFullscreen(false);
         if (wasMaximizedBeforeFullscreen) {
           setTimeout(async () => {
@@ -52,24 +66,8 @@ export async function setFullscreen(fullscreen: boolean): Promise<void> {
           }, 60);
         }
       }
-      nativeSuccess = true;
     } catch (e) {
-      console.warn("[window] native setFullscreen failed, falling back to browser API", e);
-    }
-  }
-  if (!nativeSuccess) {
-    try {
-      if (fullscreen) {
-        if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-          await document.documentElement.requestFullscreen();
-        }
-      } else {
-        if (document.fullscreenElement && document.exitFullscreen) {
-          await document.exitFullscreen();
-        }
-      }
-    } catch (e) {
-      console.warn("[window] browser fullscreen fallback error", e);
+      console.warn("[window] native setFullscreen failed", e);
     }
   }
 }
