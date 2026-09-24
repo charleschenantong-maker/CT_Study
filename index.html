@@ -2592,12 +2592,12 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 @media(max-width:620px){.compact-summary-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 /* Chrono Time Picker Dropup - Apple Clock 3D Wheel Picker */
 .chrono-picker-wrap{position:relative;display:inline-flex}
-#chronoToggleBtn{min-width:148px;justify-content:center;text-align:center;padding:9px 8px;white-space:nowrap}
+#chronoToggleBtn{min-width:172px;justify-content:center;text-align:center;padding:9px 8px;white-space:nowrap}
 #chronoTimeBtn{min-width:126px;justify-content:center;text-align:center;padding:9px 8px;white-space:nowrap}
 #chronoViewBtn{white-space:nowrap;padding:9px 8px;flex-shrink:0}
 .chrono-menu{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);right:auto;width:260px;max-width:min(260px,calc(100vw - 24px));background:#141712;border:1px solid #424939;box-shadow:0 8px 24px rgba(0,0,0,.8),0 0 1px rgba(216,191,120,.4);padding:8px 10px 10px;z-index:200;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
 .chrono-menu[hidden]{display:none!important}
-.pomo-embedded-wheel-wrap{width:100%;max-width:270px;margin:0 auto 16px;display:flex;justify-content:center}
+.pomo-embedded-wheel-wrap{width:100%;max-width:none;margin:0 auto 16px;display:flex;justify-content:center}
 .pomo-imm-wheel-wrap{width:100%;max-width:260px;margin:0 auto;display:flex;justify-content:center}
 .pomo-wheel-board{width:100%;box-shadow:inset 0 2px 10px rgba(0,0,0,.7),0 2px 4px rgba(0,0,0,.35)}
 .pomo-imm-wheel-board{background:rgba(13,16,12,.88);border-color:#2a3523}
@@ -2606,18 +2606,18 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 .cap-title{font:800 10px/1 var(--font-mono);letter-spacing:.1em;color:#8d9478}
 .cap-close-btn{background:none;border:none;color:#8d9478;font:700 14px/1 var(--font-mono);cursor:pointer;padding:0 2px}
 .cap-close-btn:hover{color:#e8c872}
-.cap-wheel-board{position:relative;display:flex;align-items:center;justify-content:space-between;height:128px;background:#0d100c;border:1px solid #2e3527;border-radius:3px;overflow:hidden}
-.cap-wheel-board:before{content:"";position:absolute;top:0;left:0;right:0;height:42px;background:linear-gradient(to bottom,#0d100c 0%,rgba(13,16,12,0) 100%);pointer-events:none;z-index:3}
-.cap-wheel-board:after{content:"";position:absolute;bottom:0;left:0;right:0;height:42px;background:linear-gradient(to top,#0d100c 0%,rgba(13,16,12,0) 100%);pointer-events:none;z-index:3}
-.cap-lens{position:absolute;top:48px;left:4px;right:4px;height:32px;background:rgba(216,191,120,.12);border-top:1px solid rgba(216,191,120,.45);border-bottom:1px solid rgba(216,191,120,.45);border-radius:2px;pointer-events:none;z-index:2;box-shadow:inset 0 0 6px rgba(216,191,120,.1)}
+.cap-wheel-board{position:relative;display:flex;align-items:center;justify-content:space-between;height:192px;background:#0d100c;border:1px solid #2e3527;border-radius:3px;overflow:hidden}
+.cap-wheel-board:before{content:"";position:absolute;top:0;left:0;right:0;height:48px;background:linear-gradient(to bottom,#0d100c 0%,rgba(13,16,12,.45) 42%,rgba(13,16,12,0) 100%);pointer-events:none;z-index:3}
+.cap-wheel-board:after{content:"";position:absolute;bottom:0;left:0;right:0;height:48px;background:linear-gradient(to top,#0d100c 0%,rgba(13,16,12,.45) 42%,rgba(13,16,12,0) 100%);pointer-events:none;z-index:3}
+.cap-lens{position:absolute;top:72px;left:4px;right:4px;height:48px;background:rgba(216,191,120,.12);border-top:1px solid rgba(216,191,120,.45);border-bottom:1px solid rgba(216,191,120,.45);border-radius:2px;pointer-events:none;z-index:2;box-shadow:inset 0 0 6px rgba(216,191,120,.1)}
 .cap-col{flex:1;height:100%;position:relative;display:flex;flex-direction:column}
-.cap-unit-tag{position:absolute;top:2px;left:0;right:0;text-align:center;font:800 8px/1 var(--font-mono);color:#6b735c;letter-spacing:.08em;pointer-events:none;z-index:4;text-transform:uppercase}
-.cap-wheel{flex:1;height:128px;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:48px 0;box-sizing:border-box;contain:strict;will-change:scroll-position}
+.cap-unit-tag{position:absolute;top:2px;left:0;right:0;text-align:center;font:800 12px/1 var(--font-mono);color:#6b735c;letter-spacing:.08em;pointer-events:none;z-index:4;text-transform:uppercase}
+.cap-wheel{flex:1;height:192px;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:72px 0;box-sizing:border-box;contain:strict;will-change:scroll-position}
 .cap-wheel::-webkit-scrollbar{display:none}
-.cap-item{height:32px;line-height:32px;text-align:center;font:900 15px/32px var(--font-mono);color:#5d6550;scroll-snap-align:center;cursor:pointer;user-select:none}
+.cap-item{height:48px;line-height:48px;text-align:center;font:900 22px/48px var(--font-mono);color:#5d6550;scroll-snap-align:center;cursor:pointer;user-select:none}
 .cap-item:hover{color:#a49e85}
-.cap-item.active{color:#e8c872;font-size:17px;text-shadow:0 0 6px rgba(232,200,114,.6)}
-.cap-sep{font:900 16px/1 var(--font-mono);color:#5d6550;user-select:none;margin-top:8px;z-index:2}
+.cap-item.active{color:#e8c872;font-size:25px;text-shadow:0 0 6px rgba(232,200,114,.6)}
+.cap-sep{font:900 22px/1 var(--font-mono);color:#5d6550;user-select:none;margin-top:12px;z-index:2}
 .cap-presets{display:flex;gap:4px;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,.08)}
 .cap-preset-btn{flex:1;padding:4px 0;background:#1e241b;color:#8d9478;border:1px solid #363e2e;font:800 9px/1 var(--font-mono);letter-spacing:.04em;cursor:pointer;transition:all .12s ease;text-align:center}
 .cap-preset-btn:hover{background:#2a3325;color:#e8c872;border-color:#505c44}
@@ -2653,18 +2653,22 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 }
 
 /* 2. Wheel Popover Menu Smooth Fade In / Out */
+@keyframes chronoPop {
+  from { opacity: 0; transform: translateX(-50%) scale(.97) translateY(6px); }
+  to { opacity: 1; transform: translateX(-50%); }
+}
 .chrono-menu {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
   transition: opacity .16s ease, transform .16s ease;
-  animation: r3Pop .18s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: chronoPop .18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .chrono-menu[hidden] {
   display: none !important;
 }
 .chrono-menu.menu-closing {
   opacity: 0 !important;
-  transform: translateY(-6px) !important;
+  transform: translateX(-50%) translateY(-6px) !important;
   pointer-events: none !important;
 }
 
@@ -2708,22 +2712,20 @@ body.pomodoro-open:not(.is-immersive) {
 }
 
 .main.pomodoro-open {
-  max-width: 620px !important;
-  margin: 0 auto !important;
-  padding: clamp(14px, 2vh, 22px) clamp(16px, 2.5vw, 28px) clamp(20px, 2.5vh, 32px) !important;
+  /* Same sheet geometry as the main page; bottom edge stays content-adaptive. */
+  max-width: none !important;
   min-height: auto !important;
 }
 
 .main.settings-open {
-  max-width: 720px !important;
-  margin: 0 auto !important;
-  padding: 24px 28px 36px !important;
+  /* Same sheet geometry as the main page; bottom edge stays content-adaptive. */
+  max-width: none !important;
   min-height: auto !important;
 }
 
 .pomodoro-normal-wrap {
   width: 100%;
-  max-width: 580px;
+  max-width: none;
   margin: 0 auto;
 }
 
@@ -2738,13 +2740,15 @@ body.pomodoro-open:not(.is-immersive) {
   box-shadow: 5px 6px 0 rgba(42,42,33,.18);
   clip-path: polygon(0 0, 98.5% 0, 100% 12px, 100% 100%, 14px 100%, 0 calc(100% - 12px));
   width: 100%;
-  max-width: 580px;
+  max-width: none;
   box-sizing: border-box;
 }
 
 .pomodoro-status-bar {
   width: 100% !important;
+  max-width: none;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 14px !important;
@@ -2756,6 +2760,16 @@ body.pomodoro-open:not(.is-immersive) {
   align-items: center;
   gap: 8px;
 }
+.pomodoro-meta{flex:0 0 100%;text-align:right;line-height:1.55}
+.pomodoro-clock-face{position:relative}
+.pomodoro-clock-face .pomo-mini-ring{position:absolute;top:8px;right:10px;width:44px;height:44px}
+.pomo-mini-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:800 9px/1 var(--font-mono);color:#d8bf78;letter-spacing:.02em;pointer-events:none}
+.pomo-event-cluster{position:absolute;top:8px;right:60px;height:44px;display:flex;flex-direction:column;justify-content:center;text-align:left;font:800 9px/1.7 var(--font-mono);letter-spacing:.06em;color:#8d9478;white-space:nowrap}
+.pomo-event-cluster .ev-val{display:inline-block;min-width:8ch;text-align:right;font-variant-numeric:tabular-nums slashed-zero;color:#d8bf78}
+.pomo-next-event{position:absolute;top:10px;left:0;right:0;margin:0;text-align:center;font:800 10px/1 var(--font-mono);letter-spacing:.14em;color:#c29a4b}
+.pomo-mini-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.pomo-mini-track{fill:none;stroke:#2a3125;stroke-width:3.5}
+.pomo-mini-fill{fill:none;stroke:#d8bf78;stroke-width:3.5;stroke-linecap:round;stroke-dasharray:163.36;filter:drop-shadow(0 0 2px rgba(216,191,120,.45));transition:stroke-dashoffset .4s ease}
 
 .pomo-toggle-view-btn {
   background: rgba(28, 34, 24, 0.85);
@@ -2790,6 +2804,13 @@ body.pomodoro-open:not(.is-immersive) {
 /* Face A: Countdown Display */
 .pomodoro-clock-face {
   width: 100% !important;
+  max-width: 700px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
   padding: clamp(22px, 3vh, 32px) 20px clamp(18px, 2.5vh, 26px) !important;
   background: #141810;
@@ -2800,32 +2821,44 @@ body.pomodoro-open:not(.is-immersive) {
 }
 
 .pomodoro-digits {
-  font: 900 clamp(54px, 7.5vw, 84px)/1 var(--font-mono) !important;
+  font: 900 clamp(64px, 9vw, 104px)/1 var(--font-mono) !important;
   color: #d8bf78;
   letter-spacing: .06em;
   text-shadow: 0 0 4px rgba(216,191,120,.9), 0 0 16px rgba(216,191,120,.45);
   font-variant-numeric: tabular-nums;
-  margin-bottom: 8px !important;
+  margin-bottom: 0 !important;
 }
 
 .pomodoro-sublabel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 36px;
+  margin: 0 !important;
   font: 800 11px/1 var(--font-mono);
   letter-spacing: .14em;
   color: #8d9478;
   text-transform: uppercase;
-  margin-bottom: 12px !important;
+  text-align: center;
 }
 
 .pomodoro-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 8px !important;
   background: #20251c;
-  border: 1px solid #3d4434;
+  border: 0;
   overflow: hidden;
 }
 
 /* Face B: Spin Clock Time Setter */
 .pomodoro-setter-face {
   width: 100% !important;
+  max-width: 700px;
+  min-height: 300px;
+  justify-content: center;
   margin: 0 auto 14px !important;
   background: #141810;
   border: 2px solid #3d4434;
@@ -2886,7 +2919,7 @@ body.pomodoro-open:not(.is-immersive) {
 }
 
 .pomodoro-directive {
-  max-width: 580px !important;
+  max-width: 700px !important;
   text-align: center;
   color: #606555;
   margin: 6px 0 0 !important;
@@ -2897,6 +2930,16 @@ body.pomodoro-open:not(.is-immersive) {
 /* Consolidated into main cockpit stylesheet */
 </style>
 
+<style id="v174-sidebar-dock">
+/* Situation room: exam box holds a fixed share of the rail (inner scroll only),
+   bottom actions stay docked even as tests move to the archive. */
+.side{display:flex;flex-direction:column;overflow:hidden}
+#events{flex:0 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.archive{flex:0 0 auto}
+.side-actions{flex:0 0 auto;margin-top:auto;padding-top:14px}
+.save-state{flex:0 0 auto}
+@media(max-width:980px){.side{height:auto;overflow:visible}#events{overflow:visible}}
+</style>
 </head>
 <body>
 <div id="desk-bg" aria-hidden="true"></div>
@@ -2949,7 +2992,7 @@ body.pomodoro-open:not(.is-immersive) {
           <span id="pomoToggleViewText">⏱ 预览倒计时</span>
         </button>
       </div>
-      <span class="pomodoro-meta"><span id="pomodoroSessionMeta">今日已完成: 0 轮专注</span> · <span id="pomodoroNormalEndTime">🔔 启动后预计 00:00 完结</span></span>
+      <span class="pomodoro-meta"><span id="pomodoroNormalEndTime">🔔 启动后预计 00:00 完结</span></span>
     </div>
 
     <!-- 1. 旋转滚轮设置专注时间 (待命/设置时显示) -->
@@ -2975,6 +3018,9 @@ body.pomodoro-open:not(.is-immersive) {
 
     <!-- 2. 倒计时数字与进度表盘 (倒计时/专注中显示) -->
     <div class="pomodoro-clock-face" id="pomodoroCountdownDisplay">
+      <div class="pomo-mini-ring" id="pomodoroMiniRingWrap" title="剩余专注"><svg viewBox="0 0 64 64"><circle class="pomo-mini-track" cx="32" cy="32" r="26"></circle><circle class="pomo-mini-fill" id="pomodoroMiniRing" cx="32" cy="32" r="26"></circle></svg><span class="pomo-mini-pct" id="pomodoroMiniPct">100%</span></div>
+      <div class="pomo-event-cluster" id="pomodoroEventCluster"><div>TOTAL <span class="ev-val" id="pomodoroTotalLeft">40:00</span></div><div>BREAK <span class="ev-val" id="pomodoroBreaksLeft">0 LEFT</span></div></div>
+      <div class="pomo-next-event" id="pomodoroNextEvent">NEXT BREAK</div>
       <div class="pomodoro-digits" id="pomodoroDigits">40:00</div>
       <div class="pomodoro-sublabel" id="pomodoroModeLabel">40 MINUTE TACTICAL SPRINT</div>
       <div class="pomodoro-bar"><i id="pomodoroBarFill" style="width:0%"></i></div>
@@ -3683,7 +3729,7 @@ body.pomodoro-open:not(.is-immersive) {
     function adherenceStats(){const _ck=todayKey+'|'+DATA_VERSION;if(_adhCacheKey===_ck)return _adhCacheVal;const startKey=stages[0].start;let k=startKey,held=0,total=0;while(k<=todayKey){const act=isDayActive(k);if(k<todayKey||act){total++;if(act)held++}k=stepDateKey(k,1)}const _r={held,total};_adhCacheKey=_ck;_adhCacheVal=_r;return _r}
     function renderStats(skipHeat=false){const st=streak(),adh=adherenceStats();document.getElementById('streakStat').textContent=st;document.getElementById('adherenceStat').textContent=adh.held+'/'+adh.total;const compactStreak=document.getElementById('compactStreakStat'),compactAdherence=document.getElementById('compactAdherenceStat');if(compactStreak)compactStreak.textContent=st;if(compactAdherence)compactAdherence.textContent=adh.held+'/'+adh.total;const hsb=document.getElementById('heatStreakBadge');if(hsb){hsb.textContent=st+'D STREAK';hsb.classList.toggle('active',st>0)}const totalFocus=Number(data.focusTotalMinutes||0);const focusEl=document.getElementById('focusTotal');if(focusEl)focusEl.innerHTML=`${totalFocus} <span class="focus-unit">MIN</span>`;const compactFocus=document.getElementById('compactFocusTotal');if(compactFocus)compactFocus.textContent=`${totalFocus} MIN`;renderLedger();if(!skipHeat)renderHeat()}
     function isWithdrawn(e){return !!data.examDone[e.id]||e.key<todayKey}
-    function renderEvents(){const active=exams.filter(e=>!isWithdrawn(e)),archived=exams.filter(isWithdrawn);nextExam=active[0]||null;document.getElementById('events').innerHTML=active.map((e,i)=>`<div class="event ${i===0?'next':''}"><b><span class="ev-d">${fmtShort(e.key)}</span><span class="ev-d-full">${fmtFull(e.key)}</span></b><span>${e.name}</span><button class="pin-exam ${data.pinnedExam===e.id?'pinned':''}" data-exam-pin="${e.id}" title="设为主目标">${data.pinnedExam===e.id?'主目标':'设为目标'}</button><button class="done-exam" data-exam-done="${e.id}" title="确认目标已被肃清">肃清</button></div>`).join('')||'<div class="event next"><b>END</b><span>行动板已无敌对目标</span></div>';document.querySelectorAll('[data-exam-pin]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.examPin;data.pinnedExam=data.pinnedExam===id?null:id;save();renderEvents();tick();toast(data.pinnedExam?'主目标已锁定':'已解除主目标')}));document.querySelectorAll('[data-exam-done]').forEach(btn=>btn.addEventListener('click',()=>{data.examDone[btn.dataset.examDone]=true;save();renderEvents();tick();toast('目标已从行动板撤除')}));document.getElementById('archiveCount').textContent=archived.length;document.getElementById('archivedEvents').innerHTML=archived.map(e=>`<div class="archived-row"><span>${fmtShort(e.key)} · ${e.name}</span><button class="restore" data-exam-restore="${e.id}">重启战区</button></div>`).join('')||'<div class="archived-row">尚无已肃清战区</div>';document.querySelectorAll('[data-exam-restore]').forEach(btn=>btn.addEventListener('click',()=>{delete data.examDone[btn.dataset.examRestore];save();renderEvents();tick();toast('目标已重新列入行动板')}))}
+    function renderEvents(){const active=exams.filter(e=>!isWithdrawn(e)),archived=exams.filter(isWithdrawn);nextExam=active[0]||null;document.getElementById('events').innerHTML=active.map((e,i)=>`<div class="event ${i===0?'next':''}"><b><span class="ev-d">${fmtShort(e.key)}</span><span class="ev-d-full">${fmtFull(e.key)}</span></b><span>${e.name}</span><button class="pin-exam ${data.pinnedExam===e.id?'pinned':''}" data-exam-pin="${e.id}" title="设为主目标">${data.pinnedExam===e.id?'主目标':'设为目标'}</button><button class="done-exam" data-exam-done="${e.id}" title="确认目标已被肃清">肃清</button></div>`).join('')||'<div class="event next"><b>END</b><span>行动板已无敌对目标</span></div>';{const evBox=document.getElementById('events');if(evBox&&!evBox.dataset.frozen&&active.length>0){evBox.dataset.frozen='1';evBox.style.height=evBox.offsetHeight+'px';}}document.querySelectorAll('[data-exam-pin]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.examPin;data.pinnedExam=data.pinnedExam===id?null:id;save();renderEvents();tick();toast(data.pinnedExam?'主目标已锁定':'已解除主目标')}));document.querySelectorAll('[data-exam-done]').forEach(btn=>btn.addEventListener('click',()=>{data.examDone[btn.dataset.examDone]=true;save();renderEvents();tick();toast('目标已从行动板撤除')}));document.getElementById('archiveCount').textContent=archived.length;document.getElementById('archivedEvents').innerHTML=archived.map(e=>`<div class="archived-row"><span>${fmtShort(e.key)} · ${e.name}</span><button class="restore" data-exam-restore="${e.id}">重启战区</button></div>`).join('')||'<div class="archived-row">尚无已肃清战区</div>';document.querySelectorAll('[data-exam-restore]').forEach(btn=>btn.addEventListener('click',()=>{delete data.examDone[btn.dataset.examRestore];save();renderEvents();tick();toast('目标已重新列入行动板')}))}
     /* R3-8v2: 开源模板同构驱动（@leenguyen/react-flip-clock-countdown, MIT）——
        上半静态=新值、下半静态=旧值；活页正面旧值翻下、背面新值接上；transitionend 归位同步 */
     const FLIP_CALM_MQ=matchMedia('(prefers-reduced-motion: reduce)');
@@ -3759,7 +3805,7 @@ body.pomodoro-open:not(.is-immersive) {
     document.getElementById('ledger').addEventListener('click',e=>{const h=e.target.closest('[data-ledger-hide]');if(!h)return;hideLedger(h.dataset.ledgerHide)});
     document.getElementById('ledgerManageBtn').addEventListener('click',openLedgerModal);
     /* R3-7: 设置界面 — 纸面内容整体替换 */
-    function openSettings(){playSfx('modalOpen');document.querySelector('.main').classList.add('settings-open');document.getElementById('settingsView').removeAttribute('hidden');syncSettingsLabels();scrollToPageTop()}
+    function openSettings(){if(!document.getElementById('pomodoroView').hasAttribute('hidden')){void closePomodoro();}playSfx('modalOpen');document.querySelector('.main').classList.add('settings-open');document.getElementById('settingsView').removeAttribute('hidden');syncSettingsLabels();scrollToPageTop()}
     function closeSettings(){playSfx('modalClose');const sv=document.getElementById('settingsView');sv.classList.add('view-closing');setTimeout(()=>{sv.classList.remove('view-closing');document.querySelector('.main').classList.remove('settings-open');sv.setAttribute('hidden','');document.body.classList.add('view-switch');setTimeout(()=>document.body.classList.remove('view-switch'),160);},170);}
     function syncSettingsLabels(){const s=document.getElementById('settingsSfx');if(s)s.textContent=data.soundOn?'SFX // 开':'SFX // 关'}
     document.getElementById('settingsBtn').addEventListener('click',()=>{openSettings()});
@@ -3872,6 +3918,7 @@ body.pomodoro-open:not(.is-immersive) {
       return { title: 'TACTICAL FOCUS SPRINT', sub: '专注单兵作战中' };
     }
     function openPomodoro(){
+      if(!document.getElementById('settingsView').hasAttribute('hidden')){closeSettings();}
       playSfx('modalOpen');
       document.body.classList.add('pomodoro-open');
       document.querySelector('.main').classList.add('pomodoro-open');
@@ -4066,7 +4113,23 @@ body.pomodoro-open:not(.is-immersive) {
       const toggleBtn=document.getElementById('chronoToggleBtn'),timeBtn=document.getElementById('chronoTimeBtn');
       const isBreak=(chronoState==='break');
       const activeSecs=isBreak?breakRemainingSecs:chronoRemainingSecs;
-      const timeStr=formatChronoTime(activeSecs);
+      const evElapsed=Math.max(0,chronoTotalSecs-chronoRemainingSecs);
+      let evBreaksLeft=0;
+      if(chronoState==='idle'){for(let ek=1;ek*3600<chronoTotalSecs;ek++)evBreaksLeft++;}
+      else if(chronoState==='break'){evBreaksLeft=1;const evCurK=Math.max(1,Math.floor(evElapsed/3600));for(let ek=evCurK+1;ek*3600<chronoTotalSecs;ek++)evBreaksLeft++;}
+      else{for(let ek=1;ek*3600<chronoTotalSecs;ek++){if(ek*3600>evElapsed)evBreaksLeft++;}}
+      const evHasBreaks=getChronoRemainingBreakSecs(chronoTotalSecs,chronoTotalSecs,'idle',0)>0;
+      const evRemBreak=getChronoRemainingBreakSecs(chronoTotalSecs,chronoRemainingSecs,chronoState,breakRemainingSecs);
+      const evTotalLeft=(chronoState==='idle'?chronoTotalSecs:Math.max(0,chronoRemainingSecs))+evRemBreak;
+      let evLabel='',evSecs=0,evLeg=1;
+      if(chronoState==='break'){evLabel='RESUME';evSecs=breakRemainingSecs;evLeg=600;}
+      else{let evNk=0;for(let ek=1;ek*3600<chronoTotalSecs;ek++){if(ek*3600>evElapsed){evNk=ek;break;}}
+        if(evNk>0){evLabel='NEXT BREAK';evSecs=evNk*3600-evElapsed;evLeg=3600;}
+        else{evLabel='SESSION END';evSecs=chronoState==='idle'?chronoTotalSecs:Math.max(0,chronoRemainingSecs);let evLastK=0;for(let ek=1;ek*3600<chronoTotalSecs;ek++){if(ek*3600<=evElapsed)evLastK=ek;}evLeg=Math.max(1,chronoTotalSecs-evLastK*3600);}}
+      const evRatio=Math.max(0,Math.min(1,evLeg>0?evSecs/evLeg:0));
+      const evAt=new Date(Date.now()+evSecs*1000);
+      const evHHMM=String(evAt.getHours()).padStart(2,'0')+':'+String(evAt.getMinutes()).padStart(2,'0');
+      const timeStr=formatChronoTime(evHasBreaks?evSecs:activeSecs);
 
       const curH=Math.floor(chronoTotalSecs/3600), curM=Math.floor((chronoTotalSecs%3600)/60), curS=chronoTotalSecs%60;
       let label='时长: ';
@@ -4109,20 +4172,27 @@ body.pomodoro-open:not(.is-immersive) {
       const pSkipBreak=document.getElementById('pomodoroSkipBreakBtn');
       const pLabel=document.getElementById('pomodoroModeLabel');
       const pBar=document.getElementById('pomodoroBarFill');
-      const pMeta=document.getElementById('pomodoroSessionMeta');
 
       const hasHours = !isBreak && (Math.floor(chronoRemainingSecs / 3600) > 0);
       if(pDigits){
-        pDigits.textContent=timeStr;
+        pDigits.textContent=evHasBreaks?formatChronoTime(evSecs):timeStr;
         pDigits.classList.toggle('has-hours', hasHours);
       }
       if(pLabel) {
-        pLabel.textContent = isBreak ? '☕ TACTICAL BREAK // 10分钟战术休整' : `${chronoMode} MINUTE TACTICAL SPRINT`;
+        if(evHasBreaks){pLabel.style.display='block';pLabel.textContent = evLabel==='RESUME' ? `☕ RESUME AT ${evHHMM}` : (evLabel==='NEXT BREAK' ? `NEXT BREAK AT ${evHHMM}` : `SESSION END AT ${evHHMM}`);}
+        else{pLabel.style.display='none';}
       }
+      const evCluster=document.getElementById('pomodoroEventCluster');
+      if(evCluster){evCluster.style.display=evHasBreaks?'block':'none';
+        if(evHasBreaks){const evT=document.getElementById('pomodoroTotalLeft');if(evT)evT.textContent=formatChronoTime(evTotalLeft);const evB=document.getElementById('pomodoroBreaksLeft');if(evB)evB.textContent=evBreaksLeft+' LEFT';}}
+      const evLine=document.getElementById('pomodoroNextEvent');
+      if(evLine){evLine.style.display=evHasBreaks?'block':'none';if(evHasBreaks)evLine.textContent=evLabel;}
       if(pBar){
-        const pct=isBreak
+        const pct=evHasBreaks
+          ? Math.max(0,Math.min(100,(1-evRatio)*100))
+          : (isBreak
           ? (breakTotalSecs>0 ? Math.max(0,Math.min(100,((breakTotalSecs-breakRemainingSecs)/breakTotalSecs)*100)) : 0)
-          : (chronoTotalSecs>0 ? Math.max(0,Math.min(100,((chronoTotalSecs-chronoRemainingSecs)/chronoTotalSecs)*100)) : 0);
+          : (chronoTotalSecs>0 ? Math.max(0,Math.min(100,((chronoTotalSecs-chronoRemainingSecs)/chronoTotalSecs)*100)) : 0));
         pBar.style.width=pct+'%';
       }
       if(pBadge){
@@ -4156,7 +4226,8 @@ body.pomodoro-open:not(.is-immersive) {
           pAction.className='btn primary';
         }
       }
-      if(pMeta) pMeta.textContent=`今日已完成: ${chronoSessionsCount} 轮专注`;
+      const miniRing=document.getElementById('pomodoroMiniRing');
+      if(miniRing){miniRing.style.strokeDashoffset=(163.36*(1-evRatio)).toFixed(2);const miniPct=document.getElementById('pomodoroMiniPct');if(miniPct)miniPct.textContent=Math.round(evRatio*100)+'%';}
       document.querySelectorAll('#pomodoroModes .btn[data-mins]').forEach(btn=>{
         btn.classList.toggle('active',isStandardPreset && Number(btn.dataset.mins)===totalM);
       });
@@ -4436,7 +4507,7 @@ body.pomodoro-open:not(.is-immersive) {
     document.getElementById('pomodoroSkipBreakBtn')?.addEventListener('click', skipBreak);
 
     /* Apple Clock Style Wheel Picker Module */
-    const ITEM_H = 32;
+    const ITEM_H = 48;
     const WHEEL_SETS = [
       { id: 'desk', h: document.getElementById('capWheelHours'), m: document.getElementById('capWheelMins'), s: document.getElementById('capWheelSecs') },
       { id: 'pomo', h: document.getElementById('pomoWheelHours'), m: document.getElementById('pomoWheelMins'), s: document.getElementById('pomoWheelSecs') },
@@ -4628,7 +4699,10 @@ body.pomodoro-open:not(.is-immersive) {
           if (step !== 0) {
             const nextVal = Math.min(maxVal, Math.max(0, currentVal + step));
             if(nextVal !== currentVal) {
-              setWheelVal(w, nextVal, false);
+              // Slow steps glide; fast flurries jump instantly so animations never pile up.
+              const stepGap = now - (w._lastStepDone || 0);
+              w._lastStepDone = now;
+              setWheelVal(w, nextVal, stepGap >= 180);
               updateWheelHighlight(w, nextVal);
               onWheelSetChanged(ws, true);
             }
@@ -4849,7 +4923,7 @@ body.pomodoro-open:not(.is-immersive) {
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.0.3';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.1.0';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
