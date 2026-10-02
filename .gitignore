@@ -33,3 +33,4 @@ Charles_War_Plan_Field_File_*.json
 # Tauri
 src-tauri/target/
 src-tauri/gen/
+.tmp.driveupload/

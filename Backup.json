@@ -1,0 +1,351 @@
+{
+  "version": 3,
+  "cycles": {
+    "PHYS P2": 15,
+    "CHEM P2": 18,
+    "BIO": 11,
+    "PHYS P1": 4,
+    "CHEM P1": 4,
+    "M S1": 8,
+    "M P1": 4,
+    "FM FP1": 0,
+    "FM FS": 0
+  },
+  "checks": {
+    "2026-07-22": {
+      "nzmo": true,
+      "paper": true,
+      "bpho": true
+    },
+    "2026-07-23": {
+      "mathclass": true,
+      "schoolwork": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-07-24": {
+      "physicsclass": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-07-25": {
+      "basketball": true,
+      "bpho": true,
+      "paper": true,
+      "mathclass": true
+    },
+    "2026-07-26": {
+      "basketball": true,
+      "audit": true,
+      "nzmo": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-07-27": {
+      "bpho": true,
+      "schoolwork": true,
+      "nzmo": true,
+      "paper": true
+    },
+    "2026-07-28": {
+      "schoolwork": true,
+      "mathclass": true,
+      "paper": true,
+      "bpho": true
+    },
+    "2026-07-29": {
+      "nzmo": true,
+      "schoolwork": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-07-30": {
+      "mathclass": true,
+      "paper": true
+    },
+    "2026-07-31": {
+      "paper": true,
+      "physicsclass": true
+    },
+    "2026-08-01": {
+      "basketball": true,
+      "mathclass": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-08-02": {
+      "audit": true,
+      "basketball": true,
+      "nzmo": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-08-03": {
+      "schoolwork": true,
+      "nzmo": true
+    },
+    "2026-08-04": {
+      "schoolwork": true,
+      "mathclass": true,
+      "paper": true
+    },
+    "2026-08-05": {
+      "nzmo": true,
+      "bpho": true,
+      "paper": true,
+      "schoolwork": true
+    },
+    "2026-08-06": {
+      "schoolwork": true,
+      "mathclass": true
+    },
+    "2026-08-07": {
+      "physicsclass": true
+    },
+    "2026-08-08": {
+      "mathclass": true,
+      "basketball": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-08-09": {
+      "basketball": true,
+      "nzmo": true,
+      "bpho": true,
+      "paper": true,
+      "audit": true
+    },
+    "2026-08-10": {
+      "paper": true,
+      "schoolwork": true,
+      "nzmo": true,
+      "bpho": true
+    },
+    "2026-08-11": {
+      "mathclass": true,
+      "schoolwork": true,
+      "paper": true,
+      "bpho": true
+    },
+    "2026-08-12": {
+      "nzmo": true
+    },
+    "2026-08-13": {
+      "mathclass": true,
+      "schoolwork": true,
+      "paper": true
+    },
+    "2026-08-14": {
+      "paper": true,
+      "physicsclass": true,
+      "bpho": true
+    },
+    "2026-08-15": {
+      "basketball": true,
+      "paper": true,
+      "mathclass": true,
+      "bpho": true
+    },
+    "2026-08-17": {
+      "nzmo": true,
+      "schoolwork": true,
+      "paper": true,
+      "bpho": true
+    },
+    "2026-08-18": {
+      "mathclass": true,
+      "schoolwork": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-08-19": {
+      "nzmo": true,
+      "schoolwork": true,
+      "paper": true,
+      "bpho": true
+    },
+    "2026-08-20": {
+      "schoolwork": true,
+      "mathclass": true,
+      "paper": true,
+      "bpho": true
+    },
+    "2026-08-21": {
+      "bpho": true,
+      "paper": true,
+      "physicsclass": true
+    },
+    "2026-08-22": {
+      "mathclass": true,
+      "paper": true,
+      "basketball": true,
+      "bpho": true
+    },
+    "2026-08-23": {
+      "basketball": true,
+      "paper": true,
+      "audit": true
+    },
+    "2026-08-24": {
+      "nzmo": true,
+      "schoolwork": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-08-25": {
+      "schoolwork": true,
+      "mathclass": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-08-26": {
+      "paper": true,
+      "bpho": true,
+      "nzmo": true,
+      "schoolwork": true
+    },
+    "2026-08-27": {
+      "mathclass": true,
+      "schoolwork": true,
+      "bpho": true,
+      "paper": true
+    },
+    "2026-08-28": {
+      "physicsclass": true,
+      "paper": true,
+      "bpho": true
+    },
+    "2026-08-29": {
+      "basketball": true,
+      "bpho": true,
+      "paper": true,
+      "mathclass": true
+    },
+    "2026-08-30": {
+      "basketball": true,
+      "paper": true,
+      "bpho": true,
+      "audit": true,
+      "nzmo": false
+    },
+    "2026-08-31": {
+      "paper": true,
+      "bpho": true,
+      "schoolwork": true,
+      "nzmo": true
+    },
+    "2026-09-01": {
+      "bmo": false
+    },
+    "2026-09-02": {
+      "paper": false
+    },
+    "2026-09-04": {
+      "paper": true,
+      "physicsclass": true,
+      "bmo": true
+    },
+    "2026-09-08": {
+      "bmo": true,
+      "schoolwork": true,
+      "paper": true
+    },
+    "2026-09-14": {
+      "bmo": false
+    },
+    "2026-09-19": {
+      "bmoclass": true,
+      "paper": true,
+      "basketball": true
+    },
+    "2026-09-20": {
+      "basketball": true,
+      "bphoclass": false,
+      "paper": false,
+      "audit": false
+    }
+  },
+  "sealed": {
+    "2026-07-22": true,
+    "2026-07-23": true,
+    "2026-07-24": true,
+    "2026-07-25": true,
+    "2026-07-26": true,
+    "2026-07-27": true,
+    "2026-07-29": true,
+    "2026-08-01": true,
+    "2026-08-02": true,
+    "2026-08-05": true,
+    "2026-08-08": true,
+    "2026-08-09": true,
+    "2026-08-10": true,
+    "2026-08-11": true,
+    "2026-08-14": true,
+    "2026-08-15": true,
+    "2026-08-18": true,
+    "2026-08-19": true,
+    "2026-08-20": true,
+    "2026-08-21": true,
+    "2026-08-22": true,
+    "2026-08-24": true,
+    "2026-08-25": true,
+    "2026-08-26": true,
+    "2026-08-27": true,
+    "2026-08-28": true,
+    "2026-08-29": true,
+    "2026-08-31": true,
+    "2026-09-08": true,
+    "2026-09-19": true
+  },
+  "cycleLog": [
+    {
+      "id": "mrxdmip9-9or6c",
+      "component": "PHYS P2",
+      "score": null,
+      "at": "2026-07-23T10:36:42.670Z"
+    },
+    {
+      "id": "mryrxofn-q862e",
+      "component": "PHYS P2",
+      "score": 85,
+      "at": "2026-07-24T10:05:04.115Z"
+    },
+    {
+      "id": "mrzwsowz-e5ci7",
+      "component": "PHYS P2",
+      "score": null,
+      "at": "2026-07-25T05:08:55.715Z"
+    },
+    {
+      "id": "mrzwsun7-oe5up",
+      "component": "M P1",
+      "score": null,
+      "at": "2026-07-25T05:09:03.139Z"
+    },
+    {
+      "id": "ms1oo8ox-hendk",
+      "component": "M P1",
+      "score": null,
+      "at": "2026-07-26T10:57:03.489Z"
+    },
+    {
+      "id": "ms1qocim-u3m5z",
+      "component": "M P1",
+      "score": null,
+      "at": "2026-07-26T11:53:07.678Z"
+    },
+    {
+      "id": "ms32b91m-cml0r",
+      "component": "CHEM P2",
+      "score": null,
+      "at": "2026-07-27T10:06:38.218Z"
+    }
+  ],
+  "examDone": {},
+  "focusTotalMinutes": 0,
+  "focusByDate": {},
+  "lastCheckin": null,
+  "soundOn": true,
+  "pinnedExam": "eng-p1",
+  "updated": "2026-09-20T00:08:47.766Z"
+}

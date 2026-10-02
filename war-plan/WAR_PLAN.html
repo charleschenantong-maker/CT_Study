@@ -1346,11 +1346,12 @@
       flex:1 1 auto!important;
       min-height:0!important;
       width:100%!important;
-      padding:4px 0 6px!important;
-      overflow:hidden!important;
+      padding:4px 6px!important;
+      overflow:visible!important;
       display:flex!important;
       align-items:center!important;
       justify-content:center!important;
+      box-sizing:border-box!important;
     }
     .header-heat-card .heat-grid{
       display:grid!important;
@@ -1358,17 +1359,42 @@
       grid-template-columns:repeat(26,minmax(0,1fr))!important;
       grid-template-rows:repeat(7,minmax(0,1fr))!important;
       grid-auto-columns:minmax(0,1fr)!important;
-      gap:4px!important;
+      gap:3px!important;
       width:100%!important;
-      max-width:none!important;
+      max-width:100%!important;
       min-width:0!important;
+      margin:0!important;
       aspect-ratio:26 / 7!important;
+      box-sizing:border-box!important;
     }
     .header-heat-card .heat-grid i{
+      display:block!important;
       width:100%!important;
       height:100%!important;
+      aspect-ratio:1 / 1!important;
       min-width:0!important;
       min-height:0!important;
+      box-sizing:border-box!important;
+    }
+    .header-heat-card .heat-grid i.today{
+      position:relative!important;
+      z-index:2!important;
+      border:1px solid rgba(255,248,220,.95)!important;
+      outline:1.5px solid rgba(255,248,220,.9)!important;
+      outline-offset:0px!important;
+      box-shadow:0 0 6px rgba(255,220,130,.75)!important;
+      box-sizing:border-box!important;
+    }
+    .header-heat-card .heat-grid i.today:after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:2px;
+      pointer-events:none;
+      border:1.5px solid rgba(255,248,220,.95);
+      box-shadow:0 0 7px rgba(255,235,160,.9),0 0 14px rgba(255,215,110,.6);
+      animation:todayGlowPulse 1.7s cubic-bezier(.25,1,.5,1) infinite;
+      will-change:transform,opacity;
     }
 
     .header-heat-card .heat-legend{
@@ -1389,18 +1415,56 @@
 
 
 <style id="field-desk-v18-heatmap-left-nudge">
-  /* V18 — nudge heatmap left and reserve breathing room for the final column/today outline. */
+  /* V18 — ensure heatmap centered and balanced with zero clipping on column 26 / today box across all states */
   @media(min-width:981px){
     .header-heat-card .heat-wrap{
-      justify-content:flex-start!important;
-      padding-left:0!important;
-      padding-right:8px!important;
+      justify-content:center!important;
+      padding:4px 6px!important;
       overflow:visible!important;
+      width:100%!important;
+      box-sizing:border-box!important;
     }
     .header-heat-card .heat-grid{
-      width:calc(100% - 6px)!important;
-      margin-left:-3px!important;
-      margin-right:9px!important;
+      display:grid!important;
+      grid-auto-flow:column!important;
+      grid-template-columns:repeat(26,minmax(0,1fr))!important;
+      grid-template-rows:repeat(7,minmax(0,1fr))!important;
+      grid-auto-columns:minmax(0,1fr)!important;
+      gap:3px!important;
+      width:100%!important;
+      max-width:100%!important;
+      margin:0!important;
+      aspect-ratio:26 / 7!important;
+      box-sizing:border-box!important;
+    }
+    .header-heat-card .heat-grid i{
+      display:block!important;
+      width:100%!important;
+      height:100%!important;
+      aspect-ratio:1 / 1!important;
+      min-width:0!important;
+      min-height:0!important;
+      box-sizing:border-box!important;
+    }
+    .header-heat-card .heat-grid i.today{
+      position:relative!important;
+      z-index:2!important;
+      border:1px solid rgba(255,248,220,.95)!important;
+      outline:1.5px solid rgba(255,248,220,.9)!important;
+      outline-offset:0px!important;
+      box-shadow:0 0 6px rgba(255,220,130,.75)!important;
+      box-sizing:border-box!important;
+    }
+    .header-heat-card .heat-grid i.today:after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:2px;
+      pointer-events:none;
+      border:1.5px solid rgba(255,248,220,.95);
+      box-shadow:0 0 7px rgba(255,235,160,.9),0 0 14px rgba(255,215,110,.6);
+      animation:todayGlowPulse 1.7s cubic-bezier(.25,1,.5,1) infinite;
+      will-change:transform,opacity;
     }
   }
 </style>
@@ -1846,39 +1910,47 @@ body.is-break .pomo-imm-dot {
 .pomo-imm-target-card {
   display: flex !important;
   flex-direction: column !important;
-  flex: 0 1 auto !important;
+  flex: 1 1 auto !important;
   min-height: 0 !important;
-  max-height: clamp(180px, 36vh, 340px) !important;
+  max-height: none !important;
   overflow: hidden !important;
 }
 .pomo-imm-target-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid rgba(61,74,50,.45);
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  margin-bottom: 6px !important;
+  padding-bottom: 5px !important;
+  border-bottom: 1px solid rgba(61,74,50,.45) !important;
+  flex: 0 0 auto !important;
 }
-.pomo-imm-target-header{justify-content:flex-start}
 .pomo-imm-task-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 4px;
-  flex: 1 1 auto;
-  min-height: 0;
-  scrollbar-width: thin !important;
-  scrollbar-color: #3d4a32 transparent !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 4px !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
 }
-.pomo-imm-task-list::-webkit-scrollbar {
+body.is-immersive .pomo-imm-task-list {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(194, 154, 75, 0.45) transparent !important;
+}
+body.is-immersive .pomo-imm-task-list::-webkit-scrollbar {
   display: block !important;
   width: 4px !important;
 }
-.pomo-imm-task-list::-webkit-scrollbar-thumb {
-  background: #3d4a32 !important;
+body.is-immersive .pomo-imm-task-list::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+body.is-immersive .pomo-imm-task-list::-webkit-scrollbar-thumb {
+  background: rgba(194, 154, 75, 0.4) !important;
   border-radius: 2px !important;
+}
+body.is-immersive .pomo-imm-task-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(194, 154, 75, 0.7) !important;
 }
 .pomo-imm-task-item {
   display: flex;
@@ -3767,7 +3839,19 @@ body.is-maximized #desk-bg,body.is-maximized #tauri-chrome,body.is-maximized .le
       const WEEKS=SCORE.heatWeeks,end=weekStart(new Date(todayKey+'T12:00:00')),start=new Date(end);start.setDate(start.getDate()-7*(WEEKS-1));
       const cells=[];let max=1,active=0;
       let curKey=localDateKey(start);for(let i=0;i<WEEKS*7;i++){const k=curKey,v=dayXp(k);if(v>max)max=v;if(v>0)active++;cells.push([k,v,k>todayKey]);curKey=stepDateKey(curKey,1)}
-      grid.innerHTML=cells.map(([k,v,future])=>{const r=v/max;const lv=v<=0?0:r<=.25?1:r<=.5?2:r<=.78?3:4;return `<i class="l${lv}${k===todayKey?' today':''}${future?' future':''}" data-tooltip="${k} · ${v} PT" aria-label="${k} · ${v} PT"></i>`}).join('');
+      grid.innerHTML=cells.map(([k,v,future])=>{
+        const r=v/max;
+        const lv=v<=0?0:r<=.25?1:r<=.5?2:r<=.78?3:4;
+        let bgStyle='';
+        if(v>0){
+          const cr=Math.round(125-r*(125-26));
+          const cg=Math.round(132-r*(132-41));
+          const cb=Math.round(85-r*(85-22));
+          bgStyle=` style="background-color:rgb(${cr},${cg},${cb})"`;
+        }
+        const tipText=v>0?`${k} · ${v} PT (${Math.round(r*100)}% / max ${max} PT)`:`${k} · 0 PT`;
+        return `<i class="l${lv}${k===todayKey?' today':''}${future?' future':''}"${bgStyle} data-tooltip="${tipText}" aria-label="${tipText}"></i>`;
+      }).join('');
       document.getElementById('heatBadge').textContent=active+' ACTIVE DAYS';
       const hsb=document.getElementById('heatStreakBadge');if(hsb){const st=streak();hsb.textContent=st+'D STREAK';hsb.classList.toggle('active',st>0)}
       const ws=localDateKey(weekStart(new Date(todayKey+'T12:00:00'))),mo=todayKey.slice(0,7);
