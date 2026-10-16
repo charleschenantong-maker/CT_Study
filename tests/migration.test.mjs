@@ -1,15 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-// Canonical schema definition and migration logic matching WAR_PLAN.html
 const COMPONENTS = [
-  { id: 'PHYS P2', planned: 19, baseline: 15 },
-  { id: 'PHYS P1', planned: 38, baseline: 4 },
-  { id: 'CHEM P2', planned: 19, baseline: 18 },
-  { id: 'CHEM P1', planned: 38, baseline: 4 },
-  { id: 'BIO', planned: 60, baseline: 11 },
-  { id: 'M S1', planned: 18, baseline: 8 },
-  { id: 'M P1', planned: 8, baseline: 4 }
+  { id: 'PHYS P2' }, { id: 'CHEM P2' }, { id: 'BIO' },
+  { id: 'MATH P1' }, { id: 'MATH S1' }, { id: 'PHYS PRAC' },
+  { id: 'CHEM PRAC' }, { id: 'BIO PRAC' }, { id: 'PHYS P1' },
+  { id: 'CHEM P1' }, { id: 'ENG P1' }, { id: 'ENG P2' }
 ];
 
 const VALID_EXAM_IDS = [
@@ -28,6 +24,7 @@ function blank() {
     examDone: {},
     focusTotalMinutes: 0,
     focusByDate: {},
+    focusSessionsByDate: {},
     lastCheckin: null,
     soundOn: true,
     pinnedExam: null,
@@ -61,6 +58,7 @@ function migrateBackup(incoming) {
     examDone: (incoming.examDone && typeof incoming.examDone === 'object') ? incoming.examDone : {},
     focusTotalMinutes: Number.isFinite(Number(incoming.focusTotalMinutes)) ? Number(incoming.focusTotalMinutes) : 0,
     focusByDate: (incoming.focusByDate && typeof incoming.focusByDate === 'object') ? incoming.focusByDate : {},
+    focusSessionsByDate: (incoming.focusSessionsByDate && typeof incoming.focusSessionsByDate === 'object') ? incoming.focusSessionsByDate : {},
     soundOn: incoming.soundOn === undefined ? true : !!incoming.soundOn,
     pinnedExam: typeof incoming.pinnedExam === 'string' && VALID_EXAM_IDS.includes(incoming.pinnedExam)
       ? incoming.pinnedExam
@@ -79,6 +77,7 @@ test('migrateBackup: initializes empty state cleanly', () => {
   assert.equal(migrated.cycles['BIO'], 0);
   assert.equal(migrated.pinnedExam, null);
   assert.equal(migrated.lightsOff, undefined);
+  assert.deepEqual(migrated.focusSessionsByDate, {});
 });
 
 test('migrateBackup: folds BIO P1 and BIO P2 into canonical BIO without loss', () => {
@@ -166,20 +165,22 @@ test('archive bundle: contains all customization fields', () => {
   assert.equal(bundle.warplan.lightsOff, undefined);
 });
 
-test('migrateBackup: preserves focusTotalMinutes and focusByDate correctly', () => {
+test('migrateBackup: preserves focusTotalMinutes, focusByDate, and focusSessionsByDate correctly', () => {
   const incoming = {
     cycles: { 'PHYS P2': 5 },
     focusTotalMinutes: 125,
-    focusByDate: { '2026-09-22': 50, '2026-09-23': 75 }
+    focusByDate: { '2026-09-22': 50, '2026-09-23': 75 },
+    focusSessionsByDate: { '2026-09-22': 2, '2026-09-23': 3 }
   };
   const migrated = migrateBackup(incoming);
   assert.equal(migrated.focusTotalMinutes, 125);
   assert.deepEqual(migrated.focusByDate, { '2026-09-22': 50, '2026-09-23': 75 });
+  assert.deepEqual(migrated.focusSessionsByDate, { '2026-09-22': 2, '2026-09-23': 3 });
 
   // Default fallback when not provided
   const emptyIncoming = { cycles: {} };
   const emptyMigrated = migrateBackup(emptyIncoming);
   assert.equal(emptyMigrated.focusTotalMinutes, 0);
   assert.deepEqual(emptyMigrated.focusByDate, {});
+  assert.deepEqual(emptyMigrated.focusSessionsByDate, {});
 });
-

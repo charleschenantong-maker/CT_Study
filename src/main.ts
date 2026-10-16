@@ -12,5 +12,10 @@ declare global {
 window.__setFullscreen = setFullscreen;
 window.__isFullscreen = isFullscreen;
 
+if (typeof (window as unknown as { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__ === "undefined") {
+  document.documentElement.classList.add("in-browser");
+  document.body.classList.add("in-browser");
+}
+
 mountWindowChrome();
 installKvBridge();
