@@ -1268,12 +1268,11 @@
 </style>
 
 <style id="field-desk-v16-heat-stretch">
-  /* V16: stretch the compact heat panel from the countdown top to the directive bottom. */
-  :root{--header-heat-height:180px}
+  /* V16: the compact heat panel hugs its own content instead of a JS-synced pixel height. */
   @media(min-width:1261px){
     .command-header>.header-heat-card{
-      height:var(--header-heat-height)!important;
-      min-height:var(--header-heat-height)!important;
+      height:auto!important;
+      min-height:0!important;
       display:flex!important;
       flex-direction:column!important;
       align-items:stretch!important;
@@ -1517,7 +1516,7 @@ body:has(#tauri-chrome:not([hidden])){--chrome-top:34px}
 .left-side .stage{padding:6px 8px!important;min-height:0!important}
 .left-note{position:static!important;margin:auto 14px 0!important}
 .side{top:var(--chrome-top,0px)!important;height:calc(100vh - var(--chrome-top,0px))!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
-.side .event-list{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important}
+.side .event-list{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;grid-auto-rows:42px!important;align-content:start!important}
 .side .archive{flex:0 0 auto!important}
 .day-context{font:800 10px/1.5 var(--font-mono);color:#5f6357;border-left:4px solid var(--amber);padding:6px 10px;margin-bottom:12px;background:rgba(132,57,44,.07)}
 /* 桌面一致性：收起态 shell 不再自绘背景，与展开态一样透出 body 木质桌面 */
@@ -1911,10 +1910,13 @@ body.is-break .pomo-imm-dot {
 .pomo-imm-target-card {
   display: flex !important;
   flex-direction: column !important;
-  flex: 1 1 auto !important;
+  flex: 0 1 auto !important;
   min-height: 0 !important;
   max-height: none !important;
   overflow: hidden !important;
+}
+.pomo-imm-sortie-card {
+  margin-top: auto !important;
 }
 .pomo-imm-target-header {
   display: flex !important;
@@ -2512,9 +2514,11 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
   .main-countdown{width:350px!important;max-width:100%!important;transform:none!important}
   .command-header>.header-heat-card{position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
 }
-body.state-header-stacked .command-header{grid-template-columns:minmax(0,1fr)!important;gap:14px!important}
-body.state-header-stacked .main-countdown{width:350px!important;max-width:100%!important;transform:none!important}
-body.state-header-stacked .command-header>.header-heat-card{position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
+body.state-header-stacked .command-header{grid-template-columns:350px minmax(0,1fr)!important;gap:14px!important}
+body.state-header-stacked .command-copy{grid-column:1/-1!important;grid-row:1!important}
+body.state-header-stacked .directive-motto{grid-column:1/-1!important;grid-row:3!important}
+body.state-header-stacked .main-countdown{grid-column:1!important;grid-row:2!important;align-self:end!important;width:350px!important;max-width:100%!important;transform:none!important}
+body.state-header-stacked .command-header>.header-heat-card{grid-column:2!important;grid-row:1/3!important;align-self:end!important;position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
 /* 奇数任务按 n+1 画 grid：补一个隐形格，虚线不断不悬空（桌面隐藏） */
 .task-phantom{display:none!important}
 @media(max-width:1280px){.task-phantom{display:block!important;visibility:hidden!important;min-height:0!important}}
@@ -5159,7 +5163,7 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.2.1';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.2.2';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
@@ -5392,25 +5396,6 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
     const cd=document.querySelector('.main-countdown');
     if(cd)new ResizeObserver(sync).observe(cd);
   }
-})();
-</script>
-
-<script id="field-desk-v16-heat-height-sync">
-(()=>{
-  function syncHeatHeight(){
-    if(innerWidth<=1260)return;
-    const header=document.querySelector('.command-header');
-    const directive=document.querySelector('.directive-motto');
-    const heat=document.querySelector('.header-heat-card');
-    if(!header||!directive||!heat)return;
-    const top=header.getBoundingClientRect().top;
-    const bottom=directive.getBoundingClientRect().bottom;
-    const h=Math.max(110,Math.round(bottom-top));
-    document.documentElement.style.setProperty('--header-heat-height',h+'px');
-  }
-  const run=()=>requestAnimationFrame(syncHeatHeight);
-  addEventListener('load',run);
-  addEventListener('resize',run);
 })();
 </script>
 
