@@ -2668,18 +2668,20 @@ body.state-header-stacked .command-header>.header-heat-card{position:relative!im
 .cap-title{font:800 10px/1 var(--font-mono);letter-spacing:.1em;color:#8d9478}
 .cap-close-btn{background:none;border:none;color:#8d9478;font:700 14px/1 var(--font-mono);cursor:pointer;padding:0 2px}
 .cap-close-btn:hover{color:#e8c872}
-.cap-wheel-board{position:relative;display:flex;align-items:center;justify-content:space-between;height:192px;background:#0d100c;border:1px solid #2e3527;border-radius:3px;overflow:hidden}
+.cap-wheel-board{position:relative;display:flex;align-items:center;justify-content:space-between;height:192px;box-sizing:content-box;background:#0d100c;border:1px solid #2e3527;border-radius:3px;overflow:hidden}
 .cap-wheel-board:before{content:"";position:absolute;top:0;left:0;right:0;height:48px;background:linear-gradient(to bottom,#0d100c 0%,rgba(13,16,12,.45) 42%,rgba(13,16,12,0) 100%);pointer-events:none;z-index:3}
 .cap-wheel-board:after{content:"";position:absolute;bottom:0;left:0;right:0;height:48px;background:linear-gradient(to top,#0d100c 0%,rgba(13,16,12,.45) 42%,rgba(13,16,12,0) 100%);pointer-events:none;z-index:3}
 .cap-lens{position:absolute;top:72px;left:4px;right:4px;height:48px;background:rgba(216,191,120,.12);border-top:1px solid rgba(216,191,120,.45);border-bottom:1px solid rgba(216,191,120,.45);border-radius:2px;pointer-events:none;z-index:2;box-shadow:inset 0 0 6px rgba(216,191,120,.1)}
 .cap-col{flex:1;height:100%;position:relative;display:flex;flex-direction:column}
 .cap-unit-tag{position:absolute;top:2px;left:0;right:0;text-align:center;font:800 12px/1 var(--font-mono);color:#6b735c;letter-spacing:.08em;pointer-events:none;z-index:4;text-transform:uppercase}
-.cap-wheel{flex:1;height:192px;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:72px 0;box-sizing:border-box;contain:strict;will-change:scroll-position}
+.cap-wheel{flex:1;height:192px;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:72px 0;scroll-padding:72px 0;box-sizing:border-box;contain:strict;will-change:scroll-position;overscroll-behavior-y:contain}
 .cap-wheel::-webkit-scrollbar{display:none}
-.cap-item{height:48px;line-height:48px;text-align:center;font:900 22px/48px var(--font-mono);color:#5d6550;scroll-snap-align:center;cursor:pointer;user-select:none;transition:filter .12s cubic-bezier(0.16, 1, 0.3, 1),opacity .12s cubic-bezier(0.16, 1, 0.3, 1),font-size .15s ease,color .15s ease}
+.cap-item{height:48px;display:flex;align-items:center;justify-content:center;text-align:center;font:900 22px var(--font-mono);line-height:1;color:#5d6550;scroll-snap-align:center;scroll-snap-stop:normal;cursor:pointer;user-select:none;transition:color .12s ease,opacity .12s ease,text-shadow .12s ease}
 .cap-item:hover{color:#a49e85}
-.cap-item.active{color:#e8c872;font-size:25px;text-shadow:0 0 6px rgba(232,200,114,.6)}
-.cap-sep{font:900 22px/1 var(--font-mono);color:#5d6550;user-select:none;margin-top:12px;z-index:2}
+.cap-item.active{color:#e8c872;font-size:24px;text-shadow:0 0 6px rgba(232,200,114,.6)}
+.cap-wheel.wheel-spinning .cap-item,
+.cap-wheel.wheel-scrolling .cap-item{transition:none!important}
+.cap-sep{height:48px;display:flex;align-items:center;justify-content:center;font:900 22px var(--font-mono);line-height:1;color:#5d6550;user-select:none;margin:0;z-index:2}
 .cap-presets{display:flex;gap:4px;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,.08)}
 .cap-preset-btn{flex:1;padding:4px 0;background:#1e241b;color:#8d9478;border:1px solid #363e2e;font:800 9px/1 var(--font-mono);letter-spacing:.04em;cursor:pointer;transition:all .12s ease;text-align:center}
 .cap-preset-btn:hover{background:#2a3325;color:#e8c872;border-color:#505c44}
@@ -4018,7 +4020,10 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
         initCockpitDialTicks();
         if(typeof renderImmTasks==='function') renderImmTasks();
         updateChronoUI();
-        requestAnimationFrame(()=>{ if(typeof syncAppleWheels==='function') syncAppleWheels(chronoTotalSecs, false); });
+        requestAnimationFrame(()=>{
+        if(typeof syncAppleWheels==='function') syncAppleWheels(chronoTotalSecs, false);
+        setTimeout(()=>{ if(typeof syncAppleWheels==='function') syncAppleWheels(chronoTotalSecs, false); }, 60);
+      });
         if(btn){
           btn.classList.add('active');
           btn.textContent='退出沉浸 ✕';
@@ -4535,6 +4540,11 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
       const isShowingCountdown = stage.classList.toggle('show-countdown');
       const txt = document.getElementById('pomoToggleViewText');
       if (txt) txt.textContent = isShowingCountdown ? '⚙ 返回时间滚轮' : '⏱ 预览倒计时';
+      if (!isShowingCountdown) {
+        requestAnimationFrame(() => {
+          if (typeof syncAppleWheels === 'function') syncAppleWheels(chronoTotalSecs, false);
+        });
+      }
     });
     document.getElementById('pomodoroView')?.addEventListener('wheel', e => {
       if (!e.target.closest('.cap-wheel')) e.preventDefault();
@@ -4675,7 +4685,7 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
 
     function playWheelTick() {
       const now = performance.now();
-      if (now - lastWheelTickTime < 32) return;
+      if (now - lastWheelTickTime < 45) return;
       lastWheelTickTime = now;
       playSfx('wheelTick');
     }
@@ -4722,6 +4732,43 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
       wheel._activeIdx = activeVal;
     }
 
+    // Micro-fast text updates while scrolling (avoids heavy SVG & break ETA recomputations during active drag)
+    function updateChronoTimeDisplayFast(totalSecs) {
+      const curH = Math.floor(totalSecs / 3600);
+      const curM = Math.floor((totalSecs % 3600) / 60);
+      const curS = totalSecs % 60;
+      const timeStr = formatChronoTime(totalSecs);
+
+      const timeBtn = document.getElementById('chronoTimeBtn');
+      if (timeBtn) {
+        let label = '时长: ';
+        if (curH > 0) {
+          label += `${curH}h ${curM}m ▾`;
+        } else if (curS > 0) {
+          label += `${curM}m ${curS}s ▾`;
+        } else {
+          label += `${curM} MIN ▾`;
+        }
+        timeBtn.textContent = label;
+      }
+
+      const toggleBtn = document.getElementById('chronoToggleBtn');
+      if (toggleBtn && chronoState === 'idle') {
+        toggleBtn.textContent = `开始专注 (${timeStr})`;
+      }
+
+      const pDigits = document.getElementById('pomodoroDigits');
+      if (pDigits && chronoState === 'idle') {
+        pDigits.textContent = timeStr;
+      }
+
+      const immDigits = document.getElementById('pomodoroImmDigits');
+      if (immDigits && chronoState === 'idle') {
+        immDigits.textContent = timeStr;
+      }
+    }
+
+    // High frequency scroll handler: updates ONLY the active wheel and fast digits with ZERO feedback loop
     function onWheelSetChanged(sourceWs, playSound = true) {
       if(isWheelsSyncing) return;
       const h = getWheelVal(sourceWs.h, 23);
@@ -4744,6 +4791,19 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
         chronoTotalSecs = totalSecs;
         chronoRemainingSecs = totalSecs;
         chronoMode = Math.max(1, Math.round(totalSecs / 60));
+        updateChronoTimeDisplayFast(totalSecs);
+      }
+    }
+
+    // Settle handler: runs once user stops spinning, synchronizing full UI and other wheel sets safely
+    function finalizeWheelScroll(sourceWs) {
+      if(isWheelsSyncing) return;
+      const h = getWheelVal(sourceWs.h, 23);
+      const m = getWheelVal(sourceWs.m, 59);
+      const s = getWheelVal(sourceWs.s, 59);
+      const totalSecs = h * 3600 + m * 60 + s;
+
+      if(chronoState === 'idle') {
         updateChronoUI();
 
         const isCleanMin = (totalSecs % 60 === 0);
@@ -4758,7 +4818,21 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
           b.classList.toggle('active', isCleanMin && b.dataset.mins === String(totalM));
         });
 
-        // Silently synchronize other wheel sets
+        // Silently synchronize other wheel sets now that scrolling has settled,
+        // and cleanly snap sourceWs to the exact integer slot so it rests perfectly centered
+        isWheelsSyncing = true;
+        [
+          { w: sourceWs.h, val: h },
+          { w: sourceWs.m, val: m },
+          { w: sourceWs.s, val: s }
+        ].forEach(({ w, val }) => {
+          if (!w) return;
+          const targetTop = val * ITEM_H;
+          if (w.scrollTop !== targetTop) {
+            w.scrollTop = targetTop;
+          }
+        });
+
         WHEEL_SETS.forEach(other => {
           if(other !== sourceWs) {
             setWheelVal(other.h, h, false);
@@ -4769,6 +4843,7 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
             updateWheelHighlight(other.s, s);
           }
         });
+        setTimeout(() => { isWheelsSyncing = false; }, 160);
       }
     }
 
@@ -4813,14 +4888,16 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
         if(!w) return;
         function markWheelSpinning(el) {
           if(!el) return;
-          el.classList.add('wheel-spinning', 'spinning');
+          el.classList.add('wheel-spinning', 'wheel-scrolling');
           clearTimeout(el._spinStopTimer);
           el._spinStopTimer = setTimeout(() => {
-            el.classList.remove('wheel-spinning', 'spinning');
+            el.classList.remove('wheel-spinning', 'wheel-scrolling');
+            finalizeWheelScroll(ws);
           }, 85);
         }
 
         w.addEventListener('scroll', () => {
+          if (isWheelsSyncing) return;
           markWheelSpinning(w);
           scheduleWheelScroll(ws);
         }, { passive: true });
@@ -4834,7 +4911,37 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
           setWheelVal(w, Math.min(maxVal, Math.max(0, val)), true);
           updateWheelHighlight(w, val);
           onWheelSetChanged(ws, true);
+          clearTimeout(w._spinStopTimer);
+          w._spinStopTimer = setTimeout(() => {
+            finalizeWheelScroll(ws);
+          }, 85);
         });
+
+        // Intercept physical mouse wheel notches for crisp, instantaneous 1-item steps
+        // while allowing precision trackpads to glide natively with momentum
+        w.addEventListener('wheel', e => {
+          if(chronoState !== 'idle') return;
+          const isPhysicalNotch = (e.deltaMode !== 0) || (Math.abs(e.deltaY) >= 40);
+          if(!isPhysicalNotch) {
+            // Precision trackpads glide natively
+            return;
+          }
+          e.preventDefault();
+          const now = performance.now();
+          if(now - (w._lastNotchTime || 0) < 35) return;
+          w._lastNotchTime = now;
+
+          const maxVal = (w === ws.h) ? 23 : 59;
+          const currentVal = getWheelVal(w, maxVal);
+          const dir = e.deltaY > 0 ? 1 : -1;
+          const nextVal = Math.min(maxVal, Math.max(0, currentVal + dir));
+          if(nextVal !== currentVal) {
+            setWheelVal(w, nextVal, false);
+            updateWheelHighlight(w, nextVal);
+            onWheelSetChanged(ws, true);
+            markWheelSpinning(w);
+          }
+        }, { passive: false });
 
       });
     });
@@ -5051,7 +5158,7 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.1.3';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.2.1';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
