@@ -1516,7 +1516,7 @@ body:has(#tauri-chrome:not([hidden])){--chrome-top:34px}
 .left-side .stage{padding:6px 8px!important;min-height:0!important}
 .left-note{position:static!important;margin:auto 14px 0!important}
 .side{top:var(--chrome-top,0px)!important;height:calc(100vh - var(--chrome-top,0px))!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
-.side .event-list{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;grid-auto-rows:42px!important;align-content:start!important}
+.side .event-list{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;grid-auto-rows:var(--side-event-row,46px)!important;align-content:start!important}
 .side .archive{flex:0 0 auto!important}
 .day-context{font:800 10px/1.5 var(--font-mono);color:#5f6357;border-left:4px solid var(--amber);padding:6px 10px;margin-bottom:12px;background:rgba(132,57,44,.07)}
 /* 桌面一致性：收起态 shell 不再自绘背景，与展开态一样透出 body 木质桌面 */
@@ -2465,7 +2465,7 @@ body.side-collapsed .side-toggle .chev-icon{transform:rotate(-90deg)}
 <style id="v163-align-allwidths">
 /* v1.7.2: dossier 一行4个 + 每节最右隐藏按钮（无折叠，只有隐藏+弹窗恢复，搬运 campaign phases 模式） */
 #ledger .ledger-top{justify-content:flex-start}
-#ledger .ledger-hide{flex:0 0 auto;margin-left:auto;width:22px;height:22px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;opacity:.55;padding:0;display:inline-flex;align-items:center;justify-content:center}
+#ledger .ledger-hide{flex:0 0 auto;margin-left:0;width:22px;height:22px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;opacity:.55;padding:0;display:inline-flex;align-items:center;justify-content:center}
 #ledger .ledger-hide:hover{opacity:1}
 #ledger .ledger-hide svg{width:12px;height:12px}
 /* 每日行动简报：提示框吸底贴在专注按钮上方，随按钮联动 */
@@ -5403,6 +5403,34 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
     const cd=document.querySelector('.main-countdown');
     if(cd)new ResizeObserver(sync).observe(cd);
   }
+})();
+</script>
+
+<script id="field-desk-v18-event-row-fit">
+(()=>{
+  const DEF=46,MIN=34,GAP_FALLBACK=5;
+  const list=document.getElementById('events');
+  if(!list)return;
+  function fit(){
+    document.documentElement.style.setProperty('--side-event-row',DEF+'px');
+    requestAnimationFrame(()=>{
+      const n=list.children.length;
+      if(!n)return;
+      const cs=getComputedStyle(list);
+      const gap=parseFloat(cs.rowGap)||GAP_FALLBACK;
+      const cols=cs.gridTemplateColumns.trim()?cs.gridTemplateColumns.trim().split(/\s+/).length:1;
+      const rows=Math.ceil(n/cols);
+      const avail=list.clientHeight;
+      if(rows*DEF+(rows-1)*gap>avail){
+        const h=Math.max(MIN,Math.floor((avail-(rows-1)*gap)/rows));
+        document.documentElement.style.setProperty('--side-event-row',h+'px');
+      }
+    });
+  }
+  fit();
+  addEventListener('load',fit);
+  addEventListener('resize',fit);
+  new MutationObserver(fit).observe(list,{childList:true});
 })();
 </script>
 
