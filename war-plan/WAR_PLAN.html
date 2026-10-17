@@ -1267,11 +1267,12 @@
 </style>
 
 <style id="field-desk-v16-heat-stretch">
-  /* V16: the compact heat panel hugs its own content instead of a JS-synced pixel height. */
+  /* V16: stretch the compact heat panel from the countdown top to the directive bottom. */
+  :root{--header-heat-height:180px}
   @media(min-width:1261px){
     .command-header>.header-heat-card{
-      height:auto!important;
-      min-height:0!important;
+      height:var(--header-heat-height)!important;
+      min-height:var(--header-heat-height)!important;
       display:flex!important;
       flex-direction:column!important;
       align-items:stretch!important;
@@ -2513,11 +2514,11 @@ body.view-switch *,body.view-switch *:before,body.view-switch *:after{animation:
   .main-countdown{width:350px!important;max-width:100%!important;transform:none!important}
   .command-header>.header-heat-card{position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
 }
-body.state-header-stacked .command-header{grid-template-columns:350px minmax(0,1fr)!important;gap:14px!important}
+body.state-header-stacked .command-header{grid-template-columns:308px minmax(0,1fr)!important;gap:14px!important}
 body.state-header-stacked .command-copy{grid-column:1/-1!important;grid-row:1!important}
-body.state-header-stacked .directive-motto{grid-column:1/-1!important;grid-row:3!important}
-body.state-header-stacked .main-countdown{grid-column:1!important;grid-row:2!important;align-self:end!important;width:350px!important;max-width:100%!important;transform:none!important}
-body.state-header-stacked .command-header>.header-heat-card{grid-column:2!important;grid-row:1/3!important;align-self:end!important;position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
+body.state-header-stacked .directive-motto{grid-column:1/-1!important;grid-row:3!important;width:350px!important;margin-left:-42px!important}
+body.state-header-stacked .main-countdown{grid-column:1!important;grid-row:2!important;align-self:end!important;width:350px!important;max-width:none!important;margin-left:-42px!important;transform:none!important}
+body.state-header-stacked .command-header>.header-heat-card{grid-column:2!important;grid-row:1/4!important;align-self:end!important;position:relative!important;top:auto!important;right:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important}
 /* 奇数任务按 n+1 画 grid：补一个隐形格，虚线不断不悬空（桌面隐藏） */
 .task-phantom{display:none!important}
 @media(max-width:1280px){.task-phantom{display:block!important;visibility:hidden!important;min-height:0!important}}
@@ -5162,7 +5163,7 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
       scState.lastSub[scState.subject]=scState.sub;
       try{KV.set(SC_STATE_KEY,JSON.stringify(scState))}catch(e){}
     }
-    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.2.2';
+    let scState=null;let scCache={};let scStartupReady=false;const APP_VERSION='v2.2.3';
     /* 科目:子项 → canonical component id 的唯一映射；配额出处见 COMPONENTS，值必须与 COMPONENTS id 一致 */
     const SC_COMPONENT_MAP={'phy:mcq':'PHYS P1','phy:saq':'PHYS P2','phy:p4':'PHYS P2','phy:p5':'PHYS P2','chem:mcq':'CHEM P1','chem:saq':'CHEM P2','chem:p4':'CHEM P2','chem:p5':'CHEM P2','bio:mcq':'BIO','bio:saq':'BIO','bio:p4':'BIO','bio:p5':'BIO','math:pure1':'M P1','math:stats1':'M S1'};
     // FM 只记履历不计数：无映射时显式返回 null，调用方已有 `if(comp)` 保护
@@ -5386,8 +5387,15 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
     if(!cd)return;
     const w=cd.getBoundingClientRect().width;
     document.documentElement.style.setProperty('--directive-countdown-cut',w+'px');
-    document.documentElement.style.setProperty('--directive-alignment-cut',(w*(window.innerWidth<=1280?1.7:1.3))+'px');
+    document.documentElement.style.setProperty('--directive-alignment-cut',(w*(window.innerWidth<=1280?1.7:(window.innerWidth<=1600?1.58:1.3)))+'px');
+    const hc=document.querySelector('.command-header > .header-heat-card');
+    if(hc)hc.style.marginBottom='';
     window.checkCollision();
+    const mo=document.querySelector('.directive-motto');
+    if(hc&&mo&&document.body.classList.contains('state-header-stacked')){
+      const gap=mo.getBoundingClientRect().bottom-hc.getBoundingClientRect().bottom;
+      if(gap>0.5)hc.style.setProperty('margin-bottom',(-gap)+'px','important');
+    }
   };
   sync();
   window.addEventListener('resize',sync,{passive:true});
@@ -5395,6 +5403,25 @@ body.is-immersive #desk-bg,body.is-immersive #tauri-chrome,body.is-immersive .sh
     const cd=document.querySelector('.main-countdown');
     if(cd)new ResizeObserver(sync).observe(cd);
   }
+})();
+</script>
+
+<script id="field-desk-v16-heat-height-sync">
+(()=>{
+  function syncHeatHeight(){
+    if(innerWidth<=1260)return;
+    const header=document.querySelector('.command-header');
+    const directive=document.querySelector('.directive-motto');
+    const heat=document.querySelector('.header-heat-card');
+    if(!header||!directive||!heat)return;
+    const top=header.getBoundingClientRect().top;
+    const bottom=directive.getBoundingClientRect().bottom;
+    const h=Math.max(110,Math.round(bottom-top));
+    document.documentElement.style.setProperty('--header-heat-height',h+'px');
+  }
+  const run=()=>requestAnimationFrame(syncHeatHeight);
+  addEventListener('load',run);
+  addEventListener('resize',run);
 })();
 </script>
 
